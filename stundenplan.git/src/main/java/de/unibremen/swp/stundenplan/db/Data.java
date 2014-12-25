@@ -2,7 +2,10 @@ package de.unibremen.swp.stundenplan.db;
 
 import java.sql.*;
 
-public class Datenbank {
+public class Data {
+	public final static int MAX_ACRONYM_LEN = 3;
+	public final static int MAX_NORMAL_STRING_LEN = 20;
+	
 	public static void main( String args[] ) {
 	    Connection c = null;
 	    Statement stmt = null;

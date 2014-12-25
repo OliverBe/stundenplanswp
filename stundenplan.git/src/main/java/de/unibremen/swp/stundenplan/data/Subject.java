@@ -34,13 +34,11 @@ public final class Subject implements Serializable {
     /**
      * Der Name diese Faches.
      */
-    @Column(nullable = false, length = Data.MAX_NORMAL_STRING_LEN)
     private String name;
 
     /**
      * Das K�rzel dieses Faches. Ein Kürzel muss systemweit eindeutig sein.
      */
-    @Column(length = Data.MAX_ACRONYM_LEN)
     private String acronym;
     
     @Id

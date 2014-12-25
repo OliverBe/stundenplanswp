@@ -66,7 +66,6 @@ public final class Personal implements Serializable {
     /**
      * Der Name dieser LehrerIn.
      */
-    @Column(nullable = false, length = Data.MAX_NORMAL_STRING_LEN)
     private String name;
 
     /**
