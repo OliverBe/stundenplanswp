@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.db;
 
 import java.sql.*;
 
+import de.unibremen.swp.stundenplan.config.Config;
+
 public class Data {
 	public final static int MAX_ACRONYM_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
@@ -12,7 +14,7 @@ public class Data {
 	    String sql;
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
-	    	c = DriverManager.getConnection("jdbc:sqlite:sp.db");
+	    	c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
 	    	c.setAutoCommit(false);
 		    System.out.println("Opened database successfully");
 		    

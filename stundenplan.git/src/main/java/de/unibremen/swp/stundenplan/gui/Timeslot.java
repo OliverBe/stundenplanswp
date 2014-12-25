@@ -32,7 +32,7 @@ import javax.persistence.Transient;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import config.Weekday;
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.config.Config;
 
 /**
@@ -56,7 +56,7 @@ public final class Timeslot implements Serializable {
      */
     @Transient
     public static final int LENGTH = Config.getInt(Config.TIMESLOT_LENGTH_STRING,
-            Config.TIMESLOT_LENGTH_DEFAULT);
+            Config.TIMESLOT_LENGTH);
 
     /**
      * Die eindeutige, von der unterliegenden Persistenzschicht automatisch erzeugte ID.
