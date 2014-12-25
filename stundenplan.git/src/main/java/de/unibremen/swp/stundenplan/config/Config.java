@@ -76,7 +76,7 @@ public final class Config {
      * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
      * Konfigurationsdatei überschrieben werden.
      */
-    public static final int TIMESLOT_LENGTH_DEFAULT = 60;
+    public static int TIMESLOT_LENGTH_DEFAULT = 60;
 
     /**
      * Der Schlüssel für den Eintrag der Zeiteinheit-Länge in der Konfigurationsdatei.

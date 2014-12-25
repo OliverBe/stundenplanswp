@@ -15,6 +15,11 @@ import javax.swing.JTabbedPane;
 
 public class MainFrame extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private MenuBar menu = new MenuBar(this);
 	
 	private JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
@@ -34,7 +39,7 @@ public class MainFrame extends JFrame{
         initComponents();
         pack();
 		setVisible(true);
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 	
 	private void initComponents(){

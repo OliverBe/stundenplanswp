@@ -25,6 +25,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.config.Config;
+
 public class ConfigPanel extends JPanel {
 
 
@@ -130,7 +132,7 @@ public class ConfigPanel extends JPanel {
 	}
 	
 	public class PlanungsEinheitConfig extends JPanel {
-		private Label lTime = new Label("Dauer einer Planungseinheit");
+		private Label lTime = new Label("Dauer einer Planungseinheit:");
 		private String[] min = {"1","5","10","15","20","30","45","60"};
 		private JComboBox jc = new JComboBox(min);
 		private GridBagConstraints c = new GridBagConstraints();
@@ -140,7 +142,6 @@ public class ConfigPanel extends JPanel {
 			setLayout(new GridBagLayout());
 			setBorder(BorderFactory.createTitledBorder("Dauer einer Planungseinheit"));
 			c.insets=new Insets(1,1,1,1);
-			c.anchor=GridBagConstraints.PAGE_START;
 			c.gridx=0;
 			c.gridy=0;
 			add(lTime,c);
@@ -148,11 +149,16 @@ public class ConfigPanel extends JPanel {
 			add(jc,c);
 			c.gridx=2;
 			add(new Label("Minuten"),c);
-			c.anchor = GridBagConstraints.PAGE_END;  //top padding
-			c.gridwidth=2;
-			c.gridx=10;
-			c.gridy=10;
+			c.gridwidth=3;
+			c.gridx=0;
+			c.gridy=1;
 			add(button, c);
+			button.addActionListener(new ActionListener() {			
+				public void actionPerformed(ActionEvent ae) {
+					Config.TIMESLOT_LENGTH_DEFAULT=Integer.parseInt(min[jc.getSelectedIndex()]);
+					System.out.println(Config.TIMESLOT_LENGTH_DEFAULT);
+				}
+			});
 		}
 		
 	}

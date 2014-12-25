@@ -28,12 +28,12 @@ import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
-import de.unibremen.swp.stundenplan.data.DayTable;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Subject;
 import de.unibremen.swp.stundenplan.data.Teacher;
-import de.unibremen.swp.stundenplan.data.Timeslot;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
+import de.unibremen.swp.stundenplan.gui.DayTable;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 /**
  * Utility-Klasse als konkrete Persistenz-Implementierung. Verwendet JPA 2.0 zum Verwalten des Datenbestandes. Der

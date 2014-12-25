@@ -26,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 /**
  * Repräsentiert eine LehrerIn. Eine LehrerIn hat einen Namen, ein systemweit eindeutiges Kürzel und eine Anzahl von

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 /**
  * Repr�sentiert ein Fach 

@@ -33,9 +33,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import de.unibremen.swp.stundenplan.IntegrationTest;
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.Teacher;
-import de.unibremen.swp.stundenplan.data.Timeslot;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 /**
  * Integrationstest für die Klassen {@link TeacherManager}, {@link Data} und {@link Teacher}. Die Methode

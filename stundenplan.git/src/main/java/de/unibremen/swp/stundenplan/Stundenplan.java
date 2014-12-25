@@ -15,8 +15,6 @@
  */
 package de.unibremen.swp.stundenplan;
 
-import gui.MainFrame;
-
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
@@ -25,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
+import de.unibremen.swp.stundenplan.gui.MainFrame;
 
 /**
  * Hauptklasse für den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
