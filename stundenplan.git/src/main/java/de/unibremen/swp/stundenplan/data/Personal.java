@@ -1,18 +1,3 @@
-/*
- * Copyright 2014 AG Softwaretechnik, University of Bremen, Germany
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
 package de.unibremen.swp.stundenplan.data;
 
 import java.io.Serializable;
@@ -33,35 +18,9 @@ import javax.persistence.Transient;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 
-/**
- * Repräsentiert eine LehrerIn. Eine LehrerIn hat einen Namen, ein systemweit eindeutiges Kürzel und eine Anzahl von
- * Stunden, die sie unterrichtet bzw. arbeitet.
- * 
- * Zwei LehrerInnen werden als gleich angesehen, wenn sie das gleiche Kürzel haben.
- * 
- * @author D. Lüdemann, K. Hölscher
- * @version 0.1
- */
-@Entity
-public final class Personal implements Serializable {
-
-    /**
-     * Die generierte serialVersionUID.
-     */
-    private static final long serialVersionUID = -2391687797016927732L;
-
-    /**
-     * Rechengenauigkeit der verwendeten Kommazahlen.
-     */
-    private static final int PRECISION = 4;
-
-    /**
-     * Anzahl der Nachkommstellen bei Kommazahlen.
-     */
-    private static final int SCALE = 2;
+public final class Personal {
     
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
     
     /**
      * Der Name dieser LehrerIn.
@@ -71,8 +30,6 @@ public final class Personal implements Serializable {
     /**
      * Das Kürzel dieser LehrerIn. Ein Kürzel muss systemweit eindeutig sein.
      */
-    @Id
-    @Column(length = Data.MAX_ACRONYM_LEN)
     private String acronym;
 
     //integer referenziert zu stundeninhalt
@@ -88,8 +45,10 @@ public final class Personal implements Serializable {
     //array of time[2] geht irgendwie nicht
     private HashMap<Weekday,Time[]> wunschZeiten;
     
+    // schon einmal am tag gependelt true
     private boolean gependelt;
     
+    //lehrer true, p�dagoge false
     private boolean lehrer;
  
     /**
@@ -177,5 +136,67 @@ public final class Personal implements Serializable {
     public int hashCode() {
         return acronym.hashCode();
     }
+
+	public int getErsatzZeit() {
+		return ersatzZeit;
+	}
+
+	public void setErsatzZeit(final int pErsatzZeit) {
+		if (pErsatzZeit <0) {
+            throw new IllegalArgumentException("Negativer Wert");
+        }
+		ersatzZeit = pErsatzZeit;
+	}
+
+	public int getSollZeit() {
+		return sollZeit;
+	}
+
+	public void setSollZeit(final int pSollZeit) {
+		if (pSollZeit <0) {
+            throw new IllegalArgumentException("Negativer Wert");
+        }
+		sollZeit = pSollZeit;
+	}
+
+	public ArrayList<Integer> getMoeglicheStundeninhalte() {
+		return moeglicheStundeninhalte;
+	}
+
+	public void setMoeglicheStundeninhalte(final ArrayList<Integer> pMoeglicheStundeninhalte) {
+		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
+	}
+
+	public HashMap<Weekday,Time[]> getWunschZeiten() {
+		return wunschZeiten;
+	}
+
+	public void setWunschZeiten(final HashMap<Weekday,Time[]> pWunschZeiten) {
+		wunschZeiten = pWunschZeiten;
+	}
+
+	public boolean isGependelt() {
+		return gependelt;
+	}
+
+	public void setGependelt(final boolean pGependelt) {
+		gependelt = pGependelt;
+	}
+
+	public boolean isLehrer() {
+		return lehrer;
+	}
+
+	public void setLehrer(final boolean pLehrer) {
+		lehrer = pLehrer;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(final int pId) {
+		id = pId;
+	}
 
 }

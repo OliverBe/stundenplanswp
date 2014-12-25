@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
-public class AddNewSubject extends JPanel {
+public class AddNewStundeninhalt extends JPanel {
 
 	private String name;
 	private String acro;
@@ -46,7 +46,7 @@ public class AddNewSubject extends JPanel {
 	 */
 	private static final long serialVersionUID = 1219589162309740553L;
 
-	public AddNewSubject() {
+	public AddNewStundeninhalt() {
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Neuen Stundeninhalt hinzufügen"));
 		c.insets=new Insets(1,1,1,1);

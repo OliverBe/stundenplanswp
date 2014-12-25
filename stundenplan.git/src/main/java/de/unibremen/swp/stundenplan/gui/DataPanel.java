@@ -55,13 +55,13 @@ public class DataPanel extends JPanel {
 	private JMenuItem mR = new JMenuItem("Raeume");
 
 	private AddNewTeacher addNewTeacher = new AddNewTeacher();
-	private AddNewSubject addNewSubject = new AddNewSubject();
+	private AddNewStundeninhalt addNewSubject = new AddNewStundeninhalt();
 	private AddNewSchoolclass addNewSchoolclass = new AddNewSchoolclass();
 	private AddNewRoom addNewRoom = new AddNewRoom();
 
 	private static TeacherListModel teacherListModel = new TeacherListModel();
 	private static SchoolclassListModel schoolclassListModel = new SchoolclassListModel();
-	private static SubjectListModel subjectListModel = new SubjectListModel();
+	private static StundeninhaltListModel subjectListModel = new StundeninhaltListModel();
 	private static RoomListModel roomListModel = new RoomListModel();
 	
 	private JList<String> teacherList = new JList<String>(teacherListModel);;

@@ -29,7 +29,7 @@ import de.unibremen.swp.stundenplan.data.Subject;
  * @version 0.1
  * 
  */
-public final class SubjectListModel extends DefaultListModel<String> {
+public final class StundeninhaltListModel extends DefaultListModel<String> {
 
     /**
      * Die generierte serialVersionUID.
@@ -44,7 +44,7 @@ public final class SubjectListModel extends DefaultListModel<String> {
     /**
      * Der Konstruktor für des FaecherListMode. Hier wird nur die Liste der faecher initialisiert.
      */
-    protected SubjectListModel() {
+    protected StundeninhaltListModel() {
         super();
         subjects = new ArrayList<>();
     }

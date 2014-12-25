@@ -9,4 +9,7 @@ public class Jahrgang {
     private int jahrgang;
     
     private HashMap<Integer,Stundeninhalt> stundenBedarf;
+    
+    public Jahrgang(){
+    }
 }

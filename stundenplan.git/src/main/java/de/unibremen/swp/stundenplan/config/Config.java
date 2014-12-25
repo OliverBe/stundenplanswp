@@ -40,6 +40,24 @@ public final class Config {
     private static PropertiesConfiguration propertiesConfig;
 
     /**
+     * Zu verplanende Wochentage jeweils mit true,false angegeben
+     */
+    public static boolean MONDAY = true;
+    public static String MONDAY_STRING = "Montag";
+    public static boolean TUESDAY = true;
+    public static String TUESDAY_STRING = "Dienstag";
+    public static boolean WEDNESDAY = true;
+    public static String WEDNESDAY_STRING = "Mittwoch";
+    public static boolean THURSDAY = true;
+    public static String THURSDAY_STRING = "Donnerstag";
+    public static boolean FRIDAY = true;
+    public static String FRIDAY_STRING = "Freitag";
+    public static boolean SATURDAY = false;
+    public static String SATURDAY_STRING = "Samstag";
+    public static boolean SUNDAY = false;
+    public static String SUNDAY_STRING = "Sonntag";
+    
+    /**
      * Die Anzahl an Zeiteinheiten, die alle Tagespläne per Default haben. Kann durch einen Eintrag in der
      * Konfigurationsdatei überschrieben werden.
      */
@@ -76,14 +94,13 @@ public final class Config {
      * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
      * Konfigurationsdatei überschrieben werden.
      */
-    public static int TIMESLOT_LENGTH = 60;
+    public static int TIMESLOT_LENGTH = 10;
 
     /**
      * Der Schlüssel für den Eintrag der Zeiteinheit-Länge in der Konfigurationsdatei.
      */
     public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
     
-
     /**
      * in minuten
      */

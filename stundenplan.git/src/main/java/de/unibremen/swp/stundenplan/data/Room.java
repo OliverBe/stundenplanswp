@@ -14,19 +14,15 @@ public final class Room implements Serializable {
 
     private static final long serialVersionUID = 3137139574206115533L;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
-    @Id
     private String name;
     
     private String kuerzel;
     
-    private int gebaude;
+    private int gebaeude;
     
-    private ArrayList<Integer> moeglicheStundeninhalte; 
-    
-    private ArrayList<Planungseinheit> planungseinheiten;
+    private ArrayList<String> moeglicheFunktionen; 
 
     /**
      * Gibt den Namen dieses Raumes zurück.
@@ -46,4 +42,36 @@ public final class Room implements Serializable {
     public void setName(final String pName) {
         name = pName;
     }
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(final int pId) {
+		id = pId;
+	}
+
+	public String getKuerzel() {
+		return kuerzel;
+	}
+
+	public void setKuerzel(final String pKuerzel) {
+		kuerzel = pKuerzel;
+	}
+
+	public int getGebaeude() {
+		return gebaeude;
+	}
+
+	public void setGebaeude(final int pGebaeude) {
+		gebaeude = pGebaeude;
+	}
+
+	public ArrayList<String> getMoeglicheFunktionen() {
+		return moeglicheFunktionen;
+	}
+
+	public void setMoeglicheFunktionen(final ArrayList<String> pMoeglicheFunktionen) {
+		moeglicheFunktionen = pMoeglicheFunktionen;
+	}
 }
