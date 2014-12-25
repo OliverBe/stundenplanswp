@@ -39,7 +39,7 @@ public class MainFrame extends JFrame{
         initComponents();
         pack();
 		setVisible(true);
-	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 	
 	private void initComponents(){
