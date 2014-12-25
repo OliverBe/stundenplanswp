@@ -36,7 +36,6 @@ public class MenuBar extends JMenuBar{
 	
 	private void initComponents() {
 		
-		add(Box.createGlue());
 		data.add(neww);
 		data.add(open);
 		data.add(save);

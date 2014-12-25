@@ -30,7 +30,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import config.Weekday;
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 
 /**
