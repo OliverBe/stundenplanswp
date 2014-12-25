@@ -76,17 +76,25 @@ public final class Config {
      * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
      * Konfigurationsdatei überschrieben werden.
      */
-    public static int TIMESLOT_LENGTH_DEFAULT = 60;
+    public static int TIMESLOT_LENGTH = 60;
 
     /**
      * Der Schlüssel für den Eintrag der Zeiteinheit-Länge in der Konfigurationsdatei.
      */
     public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
+    
 
     /**
-     * Default-Wer für den Namen der Persistenzeinheit.
+     * in minuten
      */
-    public static final String PERSISTENCE_UNIT_NAME_DEFAULT = "stundenplan";
+    public static int BACKUPINTERVALL = 60;
+
+    public static final String BACKUPINTERVALL_STRING = "backupintervall";
+
+    /**
+     * Default-Wer für den Namen der Datenbankeinheit.
+     */
+    public static final String DATABASE_UNIT_NAME_DEFAULT = "stundenplan";
 
     /**
      * Der Dateiname der Konfigurationsdatei.

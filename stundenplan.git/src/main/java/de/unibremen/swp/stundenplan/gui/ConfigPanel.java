@@ -22,13 +22,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import de.unibremen.swp.stundenplan.config.Config;
 
 public class ConfigPanel extends JPanel {
-
 
 	/**
 	 * 
@@ -41,16 +41,17 @@ public class ConfigPanel extends JPanel {
 	private JMenuItem mBI = new JMenuItem("Back-Up Intervall");
 	private JMenuItem mV = new JMenuItem("Zu verplanende Wochentage");
 	private JMenuItem mBE = new JMenuItem("Beginn und Ende eines Wochentags");
-	private JMenuItem mBStd = new JMenuItem("Bedarf an Stundeninhalten fuer die Klassen");
+	private JMenuItem mBStd = new JMenuItem(
+			"Bedarf an Stundeninhalten fuer die Klassen");
 	private JPanel allgConfig = new PlanungsEinheitConfig();
 	private JPanel advConfig = new BackUpConfig();
-	
-	public ConfigPanel(){
+
+	public ConfigPanel() {
 		init();
 	}
-	
-	public void init(){
-		
+
+	public void init() {
+
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
@@ -72,13 +73,13 @@ public class ConfigPanel extends JPanel {
 		c.weighty = 1.8;
 		c.gridx = 0;
 		c.gridy = 1;
-		
+
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBI.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mV.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBE.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBStd.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		
+
 		menuBar.add(mP);
 		menuBar.add(mBI);
 		menuBar.add(mV);
@@ -86,8 +87,7 @@ public class ConfigPanel extends JPanel {
 		menuBar.add(mBStd);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
-		
-	
+
 		// klick auf mA
 		mP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -101,93 +101,101 @@ public class ConfigPanel extends JPanel {
 				c.weighty = 1.0;
 				removeOld();
 				add(allgConfig, c);
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(allgConfig);
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(allgConfig);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
-		
+
 		// klick auf mE
-				mBI.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent ae) {
-						c.fill = GridBagConstraints.BOTH;
-						c.anchor = GridBagConstraints.EAST;
-						c.gridwidth = 1;
-						c.gridheight = 1;
-						c.gridx = 1;
-						c.gridy = 1;
-						c.weightx = 1.8;
-						c.weighty = 1.0;
-						removeOld();
-						add(advConfig, c);
-						JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(advConfig);
-						SwingUtilities.updateComponentTreeUI(frame);
-					}
-				});
+		mBI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.EAST;
+				c.gridwidth = 1;
+				c.gridheight = 1;
+				c.gridx = 1;
+				c.gridy = 1;
+				c.weightx = 1.8;
+				c.weighty = 1.0;
+				removeOld();
+				add(advConfig, c);
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(advConfig);
+				SwingUtilities.updateComponentTreeUI(frame);
+			}
+		});
 
 	}
-	
+
 	private void removeOld() {
 		remove(allgConfig);
 		remove(advConfig);
 	}
-	
+
 	public class PlanungsEinheitConfig extends JPanel {
 		private Label lTime = new Label("Dauer einer Planungseinheit:");
-		private String[] min = {"1","5","10","15","20","30","45","60"};
-		private JComboBox jc = new JComboBox(min);
+		private JTextField tf = new JTextField(2);
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
-		
-		public PlanungsEinheitConfig(){
+
+		public PlanungsEinheitConfig() {
 			setLayout(new GridBagLayout());
-			setBorder(BorderFactory.createTitledBorder("Dauer einer Planungseinheit"));
-			c.insets=new Insets(1,1,1,1);
-			c.gridx=0;
-			c.gridy=0;
-			add(lTime,c);
-			c.gridx=1;
-			add(jc,c);
-			c.gridx=2;
-			add(new Label("Minuten"),c);
-			c.gridwidth=3;
-			c.gridx=0;
-			c.gridy=1;
+			setBorder(BorderFactory
+					.createTitledBorder("Dauer einer Planungseinheit"));
+			c.insets = new Insets(1, 1, 1, 1);
+			c.gridx = 0;
+			c.gridy = 0;
+			add(lTime, c);
+			c.gridx = 1;
+			add(tf, c);
+			c.gridx = 2;
+			add(new Label("Minuten"), c);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = 3;
+			c.gridx = 0;
+			c.gridy = 1;
 			add(button, c);
-			button.addActionListener(new ActionListener() {			
+			tf.setText(""+Config.TIMESLOT_LENGTH);
+			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					Config.TIMESLOT_LENGTH_DEFAULT=Integer.parseInt(min[jc.getSelectedIndex()]);
-					System.out.println(Config.TIMESLOT_LENGTH_DEFAULT);
+					Config.TIMESLOT_LENGTH = Integer.parseInt(tf
+							.getText());
+					System.out.println(Config.TIMESLOT_LENGTH);
 				}
 			});
 		}
-		
 	}
 
 	public class BackUpConfig extends JPanel {
-		private Label lTime = new Label("Back-Up wird alle");
-		private String[] min = {"1","5","10","15","20","30","45","60"};
-		private JComboBox jc = new JComboBox(min);
+		private Label lTime = new Label("Backup alle");
+		private JTextField tf = new JTextField(2);
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
-		
-		public BackUpConfig(){
-			setLayout(new GridBagLayout());
-			setBorder(BorderFactory.createTitledBorder("Zeitintervall der Back-Ups"));
-			c.insets=new Insets(1,1,1,1);
-			c.anchor=GridBagConstraints.PAGE_START;
-			c.gridx=0;
-			c.gridy=0;
-			add(lTime,c);
-			c.gridx=1;
-			add(jc,c);
-			c.gridx=2;
-			add(new Label("Minuten erstellt."),c);
-			c.anchor = GridBagConstraints.PAGE_END;  //top padding
-			c.gridwidth=2;
-			c.gridx=10;
-			c.gridy=10;
-			add(button, c);
-		}	
-	}
 
+		public BackUpConfig() {
+			setLayout(new GridBagLayout());
+			setBorder(BorderFactory.createTitledBorder("Backupintervall "));
+			c.insets = new Insets(1, 1, 1, 1);
+			c.gridx = 0;
+			c.gridy = 0;
+			add(lTime, c);
+			c.gridx = 1;
+			add(tf, c);
+			c.gridx = 2;
+			add(new Label("Minuten"), c);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = 3;
+			c.gridx = 0;
+			c.gridy = 1;
+			add(button, c);
+			tf.setText(""+Config.BACKUPINTERVALL);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					Config.BACKUPINTERVALL = Integer.parseInt(tf.getText());
+					System.out.println(Config.BACKUPINTERVALL);
+				}
+			});
+		}
+	}
 }
