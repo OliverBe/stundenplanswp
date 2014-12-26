@@ -159,6 +159,10 @@ public final class Personal {
 		sollZeit = pSollZeit;
 	}
 
+	public int getIstZeit(){
+		return istZeit;
+	}
+	
 	public ArrayList<Integer> getMoeglicheStundeninhalte() {
 		return moeglicheStundeninhalte;
 	}

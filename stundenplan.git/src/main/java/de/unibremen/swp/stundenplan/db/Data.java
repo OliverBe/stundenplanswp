@@ -3,6 +3,7 @@ package de.unibremen.swp.stundenplan.db;
 import java.sql.*;
 
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.data.Personal;
 
 public class Data {
 	public final static int MAX_ACRONYM_LEN = 3;
@@ -81,6 +82,30 @@ public class Data {
 	    	stmt.close();
 	    	c.commit();
 	    	c.close();
+	    }catch ( Exception e ) {
+	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	    	System.exit(0);
+	    }
+	}
+	
+	public static void addPersonal(final Personal person){
+		try {
+		Connection c = null;
+		Statement stmt = null;
+	    String sql;
+	    
+			stmt = c.createStatement();
+			sql = "INSERT INTO Personal VALUES("
+					+person.getId()+","
+					+person.getName()+","
+					+person.getAcronym()+","
+					+person.getSollZeit()+","
+					+person.getIstZeit()+","
+					+person.getErsatzZeit()+","
+					+person.isGependelt()+","
+					+person.isLehrer();
+				stmt.executeUpdate(sql);
+    	
 	    }catch ( Exception e ) {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	    	System.exit(0);
