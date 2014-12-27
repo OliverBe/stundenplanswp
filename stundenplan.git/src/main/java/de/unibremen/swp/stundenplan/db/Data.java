@@ -111,12 +111,12 @@ public class Data {
 	    	
 	    	//ArrayList von Raum(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
-	    			+ "(raum_name VARCHAR NOT NULL, "
-	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
-	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
-	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
+//	    			+ "(raum_name VARCHAR NOT NULL, "
+//	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL)";
+//	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+//	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+//	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)
@@ -156,8 +156,6 @@ public class Data {
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
 	    	System.out.println("Tables created.");
-	    	stmt.close();
-    		c.close();
 	    }catch ( Exception e ) {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	    	System.exit(0);
@@ -259,14 +257,18 @@ public class Data {
 					+ "VALUES (" + raum.getName() + ","
 					+ raum.getGebaeude() + ");";
 			stmt.executeUpdate(sql);
-			for(String kuerzel : raum.getMoeglicheFunktionen()) {
-				sql = "INSERT INTO Raumfunktion "
-						+ "VALUES (" + raum.getName() + ","
-						+ kuerzel + ");";
-				stmt.executeUpdate(sql);
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void addRaumfunktion(Raumfunktion rf) {
+		try {
+			sql = "INSERT INTO Raumfunktion "
+					+ "VALUES (" + rf.getName() + ")";
+			stmt.executeUpdate(sql);
+		}catch (SQLException e) {
+			
 		}
 	}
 	
@@ -293,6 +295,31 @@ public class Data {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
+		try {
+			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
+			sql = "SELECT * FROM Raumfunktion;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				String name = rs.getString("name");
+				rfs.add(new Raumfunktion(name));
+			}
+			return rfs;
+		}catch(Exception e) {
+			
+		}
+		return null;
+	}
+	
+	public static void deleteRaumfunktionByName(String name) {
+		try {
+			sql = "DELETE FROM Raumfunktion WHERE name = " + name;
+			stmt.executeUpdate(sql);
+		}catch(SQLException e) {
+			
+		}
 	}
 	
 	public static void close() {
