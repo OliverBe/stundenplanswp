@@ -257,7 +257,7 @@ public class Data {
 	public static void addRaum(Room raum) {
 		try {
 			sql = "INSERT INTO Raum "
-					+ "VALUES (" + raum.getName() + ","
+					+ "VALUES ('" + raum.getName() + "',"
 					+ raum.getGebaeude() + ");";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
