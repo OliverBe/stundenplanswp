@@ -1,6 +1,9 @@
 package de.unibremen.swp.stundenplan.db;
 
 import java.sql.*;
+import java.util.Collection;
+
+import javax.management.Query;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.Personal;
@@ -88,11 +91,17 @@ public class Data {
 	    }
 	}
 	
+	/**
+	 * Fügt Personal zu DB hinzu.
+	 * @param person
+	 * 		Person die hinzugefügt werden soll.
+	 */
 	public static void addPersonal(final Personal person){
 		try {
 		Connection c = null;
 		Statement stmt = null;
 	    String sql;
+	    c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
 	    
 			stmt = c.createStatement();
 			sql = "INSERT INTO Personal VALUES("
@@ -110,5 +119,42 @@ public class Data {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	    	System.exit(0);
 	    }
+	}
+	
+	/**
+	 * Gibt Person mit gesuchtem Acronym zurück
+	 * @param pAcro
+	 * 			Acronym nach dem gesucht werden soll.
+	 * @return
+	 * 	Person, die Acronym besitzt oder {@code null}, wenn nicht gefunden
+	 */
+	public static Personal getPersonalByAcronym(final String pAcro){
+		
+		try {
+			Connection c = null;
+			Statement stmt = null;
+		    String sql;
+		    c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
+		    
+		    stmt = c.createStatement();
+		    sql = "SELECT * FROM Personal where kuerzel= "+pAcro;
+		    ResultSet result = stmt.executeQuery(sql);
+		    Personal personal = new Personal();
+		    personal.setId(result.getInt(1));
+		    personal.setName(result.getString(2));
+		    personal.setAcronym(result.getString(3));
+		    personal.setSollZeit(result.getInt(4));
+		    personal.setIstZeit(result.getInt(5));
+		    personal.setErsatzZeit(result.getInt(6));
+		    personal.setGependelt(result.getBoolean(7));
+		    personal.setLehrer(result.getBoolean(8));
+		    
+		    return personal;
+		    
+		}catch ( Exception e ) {
+	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	    	System.exit(0);
+	    }
+		return null;
 	}
 }
