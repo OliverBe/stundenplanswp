@@ -46,7 +46,7 @@ public final class Personal {
     private ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
     
     //array of time[2] geht irgendwie nicht
-    private HashMap<Weekday,Time[]> wunschZeiten = new HashMap<Weekday,Time[]>();
+    private HashMap<Weekday, int[]> wunschZeiten = new HashMap<Weekday,int[]>();
  
     /**
      * Gibt den Namen dieses Lehrers zurück.
@@ -194,7 +194,7 @@ public final class Personal {
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 	}
 
-	public HashMap<Weekday,Time[]> getWunschZeiten() {
+	public HashMap<Weekday,int[]> getWunschZeiten() {
 		return wunschZeiten;
 	}
 

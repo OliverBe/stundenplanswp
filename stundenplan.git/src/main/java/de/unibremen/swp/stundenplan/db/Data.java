@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.*;
 import de.unibremen.swp.stundenplan.data.*;
@@ -178,9 +179,13 @@ public class Data {
 						+ "VALUES (" + personal.getKuerzel() + ","
 						+ kuerzel + ");";
 			}
-//			for(Weekday weekday : personal.getWunschZeiten().keySet()) {
-//				for()
-//			}
+			for(Entry<Weekday, int[]> entry : personal.getWunschZeiten().entrySet()) {
+					sql = "INSERT INTO Zeitwunsch "
+							+ "VALUES (" + entry.getKey().getOrdinal() + ","
+							+ entry.getValue()[0] + ","
+							+ entry.getValue()[1] + ");";
+					stmt.executeUpdate(sql);
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -196,26 +201,26 @@ public class Data {
 //			stmt.executeUpdate(sql);
 //			for(int kuerzel : planungseinheit.getStundeninhalte()) {
 //				sql = "INSERT INTO planungseinheit_Stundeninhalt "
-//						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ kuerzel + ");";
+//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ kuerzel + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int name : planungseinheit.getKlassen()) {
 //				sql = "INSERT INTO planungseinheit_Schulklasse "
-//						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ name + ");";
+//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ name + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int name : planungseinheit.getRaeume()) {
 //				sql = "INSERT INTO planungseinheit_Raum "
-//						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ name + ");";
+//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ name + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int kuerzel : planungseinheit.getPersonal()) {
 //				sql = "INSERT INTO planungseinheit_Personal "
-//						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ kuerzel + ");";
+//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ kuerzel + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //		}catch (SQLException e) {
@@ -226,8 +231,8 @@ public class Data {
 //	public void addStundeninhalt(Stundeninhalt stundeninhalt) {
 //		try {
 //			sql = "INSERT INTO Stundeninhalt "
-//					+ "VALUES (" + stundeninhalt.getName() + ","
-//					+ stundeninhalt.getkuerzel() + ","
+//					+ "VALUES ('" + stundeninhalt.getName() + "','"
+//					+ stundeninhalt.getkuerzel() + "',"
 //					+ stundeninhalt.getRegeldauer() + ","
 //					+ stundeninhalt.getRhythmustyp() + ");";
 //			stmt.executeUpdate(sql);
@@ -239,14 +244,14 @@ public class Data {
 //	public void addSchulklasse(Schoolclass schulklasse) {
 //		try {
 //			sql = "INSERT INTO Schulklasse "
-//					+ "VALUES (" + schulklasse.getName() + ","
-//					+ schulklasse.getJahrgang() + ","
-//					+ schulklasse.getKlassenraum().getName() + ");";
+//					+ "VALUES ('" + schulklasse.getName() + "',"
+//					+ schulklasse.getJahrgang() + ",'"
+//					+ schulklasse.getKlassenraum().getName() + "');";
 //			stmt.executeUpdate(sql);
 //			for(int kuerzel : schulklasse.getKlassenlehrer()) {
 //				sql = "INSERT INTO klassenlehrer "
-//						+ "VALUES (" + schulklasse.getName() + ","
-//						+ kuerzel + ");";
+//						+ "VALUES ('" + schulklasse.getName() + "','"
+//						+ kuerzel + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //		}catch (SQLException e) {
@@ -270,6 +275,7 @@ public class Data {
 			sql = "INSERT INTO Raumfunktion "
 					+ "VALUES ('" + rf.getName() + "');";
 			stmt.executeUpdate(sql);
+			System.out.println(rf.getName()+"add");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
