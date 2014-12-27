@@ -20,10 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.data.Teacher;
+import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
-public class AddNewTeacher extends JPanel {
+public class AddNewPersonal extends JPanel {
 	
 	private String name;
 	private String acro;
@@ -65,7 +65,7 @@ public class AddNewTeacher extends JPanel {
 	 */
 	private static final long serialVersionUID = 1219589162309740553L;
 
-	public AddNewTeacher(){
+	public AddNewPersonal(){
 	    setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Neues Personal hinzufuegen"));
 		c.insets=new Insets(1,1,1,1);

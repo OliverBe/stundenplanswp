@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import de.unibremen.swp.stundenplan.data.Teacher;
+import de.unibremen.swp.stundenplan.data.Personal;
 
 public class DataPopup extends JPopupMenu{
 
@@ -20,15 +20,15 @@ public class DataPopup extends JPopupMenu{
 
 	private JList<String> list = new JList<String>();
 	
-	private static TeacherListModel model;
+	private static PersonalListModel model;
 	
-	private Teacher t = new Teacher();
+	private Personal p = new Personal();
 	
 
 	JMenuItem edit = new JMenuItem("Edit");
 	JMenuItem delete = new JMenuItem("Delete");
 	
-	public DataPopup(final JList<String> pList, final TeacherListModel pModel){
+	public DataPopup(final JList<String> pList, final PersonalListModel pModel){
 		list=pList;
 		model=pModel;
 		init();
@@ -40,8 +40,8 @@ public class DataPopup extends JPopupMenu{
 		add(delete);
 	}
 	
-	public Teacher getTeacher() {
-		return t;	
+	public Personal getPersonal() {
+		return p;	
 	};
 	
 }

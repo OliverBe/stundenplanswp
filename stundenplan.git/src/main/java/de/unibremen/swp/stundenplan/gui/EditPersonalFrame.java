@@ -17,24 +17,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.data.Teacher;
+import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
-public class EditTeacherFrame extends JFrame {
+public class EditPersonalFrame extends JFrame {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1579391984515127831L;
 
-	private EditTeacher editTeacher = new EditTeacher(this);
-	public TextField nameField = editTeacher.nameField;
-	public TextField acroField = editTeacher.acroField;
-	public TextField timeField = editTeacher.timeField;
+	private EditPersonal editPersonal = new EditPersonal(this);
+	public TextField nameField = editPersonal.nameField;
+	public TextField acroField = editPersonal.acroField;
+	public TextField timeField = editPersonal.timeField;
 
-	public EditTeacherFrame(){
+	public EditPersonalFrame(){
 		super("Lehrer bearbeiten");
-		add(editTeacher);
+		add(editPersonal);
 		setSize(600,400);
 		setVisible(true);	
 	}

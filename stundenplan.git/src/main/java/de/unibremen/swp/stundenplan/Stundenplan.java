@@ -43,6 +43,7 @@ public final class Stundenplan {
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
+    	final MainFrame mainFrame= new MainFrame();
     }
     
     /**
@@ -55,6 +56,6 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-            final MainFrame mainFrame= new MainFrame();
+            final Stundenplan stundenplan= new Stundenplan();
     }
 }
