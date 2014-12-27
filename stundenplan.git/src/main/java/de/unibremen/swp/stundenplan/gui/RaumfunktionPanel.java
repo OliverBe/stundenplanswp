@@ -1,10 +1,12 @@
 package de.unibremen.swp.stundenplan.gui;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,18 +36,16 @@ public class RaumfunktionPanel extends JPanel {
 
 
 		private static DefaultListModel listModel = new DefaultListModel();
-		
 		private JList<String> list = new JList<String>(listModel);
-
 		private JScrollPane listScroller = new JScrollPane(list);
 
 		public RaumfunktionPanel() {
 			setLayout(new GridBagLayout());
-			createAdd(new JPanel());
-			createList(new JPanel());
+			createAddPanel(new JPanel());
+			createListPanel(new JPanel());
 		}
 		
-		private void createAdd(final JPanel p){
+		private void createAddPanel(final JPanel p){
 			p.setLayout(new GridBagLayout());
 			p.setBorder(BorderFactory
 					.createTitledBorder("Funktionen von Räumen "));
@@ -65,7 +65,7 @@ public class RaumfunktionPanel extends JPanel {
 					Raumfunktion rf;
 					try {
 						listModel.clear();
-						if(tf.getText().isEmpty()) throw new InvalidNameException();
+						if(textFieldsEmpty(p)) throw new InvalidNameException();
 						rf = new Raumfunktion(tf.getText());
 						Data.addRaumfunktion(rf);
 						for (Raumfunktion r : Data.getAllRaumfunktion()){
@@ -89,18 +89,36 @@ public class RaumfunktionPanel extends JPanel {
 			add(p,c2);
 		}
 		
-		private void createList(final JPanel p){
+		private void createListPanel(final JPanel p){
+			p.setLayout(new GridBagLayout());
 			p.setBorder(BorderFactory.createTitledBorder("Existierende Raumfunktionen"));
+			
 			list.setLayoutOrientation(JList.VERTICAL);
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
 			listScroller.setPreferredSize(new Dimension(250, 200));
 
-			c.gridwidth=3;
 			c.fill = GridBagConstraints.BOTH;
-			c.gridy = 2;
+			c.anchor = GridBagConstraints.EAST;
+			c.gridwidth = 1;
+			c.gridheight = 1;
+			c.gridx = 1;
+			c.gridy = 1;
+			c.weightx = 1.8;
+			c.weighty = 1.0;
 			p.add(listScroller, c);
+			
 			c2.gridy=2;
 			add(p,c2);
+		}
+		
+		private boolean textFieldsEmpty(final JPanel p){
+			boolean b=true;
+			for(Component c : p.getComponents()){
+				if(c instanceof TextField){
+					TextField tf = (TextField) c;
+					if(!tf.getText().isEmpty()) b=false;
+				}
+			}
+			return b;
 		}
 	}

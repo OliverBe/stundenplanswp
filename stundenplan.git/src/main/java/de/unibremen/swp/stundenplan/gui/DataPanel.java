@@ -49,7 +49,7 @@ public class DataPanel extends JPanel {
 
 	private JMenuBar menuBar = new JMenuBar();
 
-	private JMenuItem mT = new JMenuItem("Personal");
+	private JMenuItem mP = new JMenuItem("Personal");
 	private JMenuItem mS = new JMenuItem("Klassen");
 	private JMenuItem mF = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
@@ -96,13 +96,13 @@ public class DataPanel extends JPanel {
 		c.weighty = 1.8;
 		c.gridx = 0;
 		c.gridy = 1;
-		mT.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mR.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mRF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		
-		menuBar.add(mT);
+		menuBar.add(mP);
 		menuBar.add(mS);
 		menuBar.add(mF);
 		menuBar.add(mR);
@@ -110,8 +110,8 @@ public class DataPanel extends JPanel {
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
-		// klick auf mT
-		mT.addActionListener(new ActionListener() {
+		// klick auf mP
+		mP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -122,71 +122,10 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewPersonal, c);
+				add(personalPanel, c);
 				
-				Personal p1 = new Personal();
-				p1.setName("Mr. Boombastik");
-				p1.setKuerzel("Boom");
-			//	p1.setHoursPerWeek("20");
-				personalListModel.addPersonal(p1);
-				
-				Personal p2 = new Personal();
-				p2.setName("Fathan der Unglaubliche");
-				p2.setKuerzel("Fath");
-		//		p2.setHoursPerWeek("23");
-				personalListModel.addPersonal(p2);
-				
-		   //     personalList = new JList<String>(personalListModel);
-				personalList.setLayoutOrientation(JList.VERTICAL);
-				personalList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-				personalListScroller.setPreferredSize(new Dimension(250, 200));
-				// updatepersonalList();
-
-				c.gridy = 2;
-				personalListScroller.setBorder(BorderFactory.createTitledBorder("Existierendes Personal"));	
-				add(personalListScroller, c);
-				addPersonal(addNewPersonal.button);
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewPersonal);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(personalPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
-				
-				personalList.addListSelectionListener(new ListSelectionListener() { 
-					public void valueChanged(ListSelectionEvent event) {
-						System.out.println("selected "+personalList.getSelectedValue()+" "+personalList.getSelectedIndex()+" "+personalList.getComponentCount());
-						final DataPopup pop = new DataPopup(personalList, personalListModel);
-						setComponentPopupMenu(pop);	 
-						personalList.addMouseListener(new MouseAdapter() {
-				            public void mouseClicked(MouseEvent e) {
-				            	if ( e.isMetaDown() ) {  				            	
-				            		pop.show(personalList,e.getX(),e.getY()); 
-				            		System.out.println("YO");	
-				                }  
-				            }			      
-				        });
-						pop.edit.addActionListener(new ActionListener() {
-	                        public void actionPerformed(ActionEvent ae) {
-//	                       	 personal t = personalListModel.getpersonalAt(personalList.getSelectedIndex());
-//	                       	 addNewpersonal.nameField.setText(t.getName());
-//	                       	 addNewpersonal.acroField.setText(t.getAcronym());
-//	                       	 addNewpersonal.timeField.setText((String)t.getHoursPerWeek().toString());
-//	                       	 addNewpersonal.setVisible(true);
-	                         EditPersonalFrame editPersonal = new EditPersonalFrame();
-	                       	 editPersonal.setVisible(true);
-	                    	 Personal p = personalListModel.getPersonalAt(personalList.getSelectedIndex());
-	                       	 editPersonal.nameField.setText(p.getName());
-	                       	 editPersonal.acroField.setText(p.getKuerzel());
-	                    //   editPersonal.timeField.setText((String)p.getHoursPerWeek().toString());
-	                       }
-	                   });
-						pop.delete.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								DeleteDialogue deleteD = new DeleteDialogue();
-								deleteD.setVisible(true);
-							}
-						});
-					}});
 			}
 		});	
 
@@ -334,7 +273,7 @@ public class DataPanel extends JPanel {
 	}
 
 	private void removeOld() {
-		remove(addNewPersonal);
+		remove(personalPanel);
 		remove(addNewStundeninhalt);
 		remove(addNewSchoolclass);
 		remove(addNewRoom);

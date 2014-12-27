@@ -20,7 +20,7 @@ public class DataPopup extends JPopupMenu{
 
 	private JList<String> list = new JList<String>();
 	
-	private static PersonalListModel model;
+	private static DefaultListModel model;
 	
 	private Personal p = new Personal();
 	
@@ -28,7 +28,7 @@ public class DataPopup extends JPopupMenu{
 	JMenuItem edit = new JMenuItem("Edit");
 	JMenuItem delete = new JMenuItem("Delete");
 	
-	public DataPopup(final JList<String> pList, final PersonalListModel pModel){
+	public DataPopup(final JList<String> pList, final DefaultListModel pModel){
 		list=pList;
 		model=pModel;
 		init();
