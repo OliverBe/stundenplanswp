@@ -77,9 +77,9 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS moegliche_Stundeninhalte_Personal "
 	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
 	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "PRIMARY KEY (personal_kuerzel, stundeninhalte_kuerzel), "
+	    			+ "PRIMARY KEY (personal_kuerzel, stundeninhalt_kuerzel), "
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel), "
-	    			+ "FOREIGN KEY (stundeninhalte_kuerzel) REFERENCES Stundeninhalte(kuerzel))";
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalte(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Personal)
