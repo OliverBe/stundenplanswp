@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.db;
 import java.sql.*;
 import java.util.ArrayList;
 
-import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.config.*;
 import de.unibremen.swp.stundenplan.data.*;
 
 public class Data {
@@ -178,6 +178,9 @@ public class Data {
 						+ "VALUES (" + personal.getKuerzel() + ","
 						+ kuerzel + ");";
 			}
+//			for(Weekday weekday : personal.getWunschZeiten().keySet()) {
+//				for()
+//			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
