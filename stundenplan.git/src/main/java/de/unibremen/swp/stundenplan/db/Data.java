@@ -189,28 +189,28 @@ public class Data {
 //					+ planungseinheit.getStartTimeslot().getId() + ","
 //					+ planungseinheit.getEndTimeslot().getId() + ");";
 //			stmt.executeUpdate(sql);
-//			for(int id : planungseinheit.getStundeninhalte()) {
+//			for(int kuerzel : planungseinheit.getStundeninhalte()) {
 //				sql = "INSERT INTO planungseinheit_Stundeninhalt "
 //						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ id + ");";
+//						+ kuerzel + ");";
 //				stmt.executeUpdate(sql);
 //			}
-//			for(int id : planungseinheit.getKlassen()) {
+//			for(int name : planungseinheit.getKlassen()) {
 //				sql = "INSERT INTO planungseinheit_Schulklasse "
 //						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ id + ");";
+//						+ name + ");";
 //				stmt.executeUpdate(sql);
 //			}
-//			for(int id : planungseinheit.getRaeume()) {
+//			for(int name : planungseinheit.getRaeume()) {
 //				sql = "INSERT INTO planungseinheit_Raum "
 //						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ id + ");";
+//						+ name + ");";
 //				stmt.executeUpdate(sql);
 //			}
-//			for(int id : planungseinheit.getPersonal()) {
+//			for(int kuerzel : planungseinheit.getPersonal()) {
 //				sql = "INSERT INTO planungseinheit_Personal "
 //						+ "VAUES (" + planungseinheit.getId() + ","
-//						+ id + ");";
+//						+ kuerzel + ");";
 //				stmt.executeUpdate(sql);
 //			}
 //		}catch (SQLException e) {
@@ -249,14 +249,12 @@ public class Data {
 	public static void addRaum(Room raum) {
 		try {
 			sql = "INSERT INTO Raum "
-					+ "VALUES (" + raum.getId() + ","
-					+ raum.getName() + ","
-					+ raum.getKuerzel() + ","
+					+ "VALUES (" + raum.getName() + ","
 					+ raum.getGebaeude() + ");";
 			stmt.executeUpdate(sql);
 			for(String kuerzel : raum.getMoeglicheFunktionen()) {
 				sql = "INSERT INTO moegliche_Stundeninhalte_Raum "
-						+ "VALUES (" + raum.getId() + ","
+						+ "VALUES (" + raum.getName() + ","
 						+ kuerzel + ");";
 				stmt.executeUpdate(sql);
 			}
@@ -292,5 +290,15 @@ public class Data {
     	}catch (Exception e) {
     		System.out.println("Error on closing.");
     	}
+	}
+	
+	public static void dbRaumLesen() {
+		try {
+			sql = "SELECT * FROM Raum;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				System.out.println("Name: " + rs.getString("name") + ", Gebäudennr: " + rs.getInt("gebaeudennr"));
+			}
+		}catch(SQLException e) {}
 	}
 }
