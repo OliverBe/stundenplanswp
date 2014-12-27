@@ -61,6 +61,13 @@ public final class Personal {
     }
 
     /**
+     * Konstruktor f�r Personal.
+     *
+     */
+    public Personal(){
+    }
+    
+    /**
      * Setzt den Namen dieser LehrerIn auf den übergebenen Namen. Falls der Name länger als
      * {@linkplain Data#MAX_NORMAL_STRING_LEN} Zeichen ist, wird er entsprechend gekürzt. Führende und folgende
      * Leerzeichen werden entfernt. Löst eine {@link IllegalArgumentException} aus, falls der Name leer ist.
@@ -159,6 +166,14 @@ public final class Personal {
 		sollZeit = pSollZeit;
 	}
 
+	public int getIstZeit(){
+		return istZeit;
+	}
+	
+	public void setIstZeit(final int i){
+		istZeit = i;
+	}
+	
 	public ArrayList<Integer> getMoeglicheStundeninhalte() {
 		return moeglicheStundeninhalte;
 	}
