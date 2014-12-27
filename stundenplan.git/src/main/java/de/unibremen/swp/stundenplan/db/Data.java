@@ -270,7 +270,6 @@ public class Data {
 			sql = "INSERT INTO Raumfunktion "
 					+ "VALUES ('" + rf.getName() + "');";
 			stmt.executeUpdate(sql);
-			System.out.println(rf.getName()+"add");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -64,15 +64,16 @@ public class RaumfunktionPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					Raumfunktion rf;
 					try {
+						listModel.clear();
+						if(tf.getText().isEmpty()) throw new InvalidNameException();
 						rf = new Raumfunktion(tf.getText());
 						Data.addRaumfunktion(rf);
-						listModel.addElement(rf);
 						for (Raumfunktion r : Data.getAllRaumfunktion()){
 							listModel.addElement(r);
 						}
 						
 					} catch (InvalidNameException e) {
-						// TODO Auto-generated catch block
+						System.out.println("ERROR beim Hinzufügen");
 						e.printStackTrace();
 					}
 				}

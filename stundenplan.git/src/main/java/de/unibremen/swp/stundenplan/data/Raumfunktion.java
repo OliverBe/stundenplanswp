@@ -10,7 +10,7 @@ public class Raumfunktion {
 	}
 	
 	public Raumfunktion(final String pName) throws InvalidNameException{
-		if(pName==null) throw new InvalidNameException();
+		if(pName==null || pName=="" ) throw new InvalidNameException();
 		name=pName;
 	}
 	
