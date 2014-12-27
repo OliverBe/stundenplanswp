@@ -3,31 +3,27 @@ package de.unibremen.swp.stundenplan.db;
 import java.sql.*;
 
 import de.unibremen.swp.stundenplan.config.Config;
-import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.*;
 
 public class Data {
 	public final static int MAX_ACRONYM_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
-//	private Connection c = null;
-//    private Statement stmt = null;
-//    private String sql;
+	private static Connection c = null;
+    private static Statement stmt = null;
+    private static String sql;
 	
-	public static void main(String[] args) {
-		Connection c = null;
-	    Statement stmt = null;
-	    String sql;
+	public static void start() {
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
 	    	c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
 		    System.out.println("Opened database successfully");
 		    
 	    	stmt = c.createStatement();
-//	    	stmt.executeUpdate("DROP TABLE moegliche_Stundeninhalte_Raum");
+	    	
 	    	//Personal
 	    	sql = "CREATE TABLE IF NOT EXISTS Personal "
-	    			+ "(id INT PRIMARY KEY NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL, "
+	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "sollZeit INT NOT NULL, "
 	    			+ "istZeit INT NOT NULL, "
 	    			+ "ersatzZeit INT NOT NULL, "
@@ -45,117 +41,115 @@ public class Data {
 	    	
 	    	//Schulklasse
 	    	sql = "CREATE TABLE IF NOT EXISTS Schulklasse "
-	    			+ "(id INT PRIMARY KEY NOT NULL, "
+	    			+ "(name VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "jahrgang INT NOT NULL, "
 	    			+ "klassenraumId INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Raum
 	    	sql = "CREATE TABLE IF NOT EXISTS Raum "
-	    			+ "(id INT PRIMARY KEY NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "gebaeudennr INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Stundeninhalt
 	    	sql = "CREATE TABLE IF NOT EXISTS Stundeninhalt "
-	    			+ "(id INT PRIMARY KEY NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL, "
+	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "regeldauer INT NOT NULL, "
 	    			+ "rhythmustyp INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Map von Personal
 	    	sql = "CREATE TABLE IF NOT EXISTS Zeitwunsch "
-	    			+ "(personal_id INT NOT NULL, "
+	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
 	    			+ "weekday INT NOT NULL, "
 	    			+ "startZeit INT NOT NULL, "
 	    			+ "endZeit INT NOT NULL, "
-	    			+ "PRIMARY KEY (personal_id, weekday)"
-	    			+ "FOREIGN KEY (personal_id) REFERENCES Personal(id))";
+	    			+ "PRIMARY KEY (personal_kuerzel, weekday)"
+	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Personal(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS moegliche_Stundeninhalte_Personal "
-	    			+ "(personal_id INT NOT NULL, "
-	    			+ "stundeninhalt_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (personal_id, stundeninhalte_id), "
-	    			+ "FOREIGN KEY (personal_id) REFERENCES Personal(id), "
-	    			+ "FOREIGN KEY (stundeninhalte_id) REFERENCES Stundeninhalte(id))";
+	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (personal_kuerzel, stundeninhalte_kuerzel), "
+	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel), "
+	    			+ "FOREIGN KEY (stundeninhalte_kuerzel) REFERENCES Stundeninhalte(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Personal)
 	    	sql = "CREATE TABLE IF NOT EXISTS planungseinheit_Personal "
 	    			+ "(planungseinheit_id INT NOT NULL, "
-	    			+ "personal_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (planungseinheit_id, personal_id), "
-	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id))";
+	    			+ "personal_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (planungseinheit_id, personal_kuerzel), "
+	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id)"
+	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Personal)
 	    	sql = "CREATE TABLE IF NOT EXISTS klassenlehrer "
-	    			+ "(schulklasse_id INT NOT NULL, "
-	    			+ "personal_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (schulklasse_id, personal_id), "
-	    			+ "FOREIGN KEY (schulklasse_id) REFERENCES Schulklasse(id), "
-	    			+ "FOREIGN KEY (personal_id) REFERENCES Personal(id))";
+	    			+ "(schulklasse_name VARCHAR NOT NULL, "
+	    			+ "personal_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (schulklasse_name, personal_kuerzel), "
+	    			+ "FOREIGN KEY (schulklasse_name) REFERENCES Schulklasse(name), "
+	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS planungseinheit_Stundeninhalt "
 	    			+ "(planungseinheit_id INT NOT NULL, "
-	    			+ "stundeninhalt_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (planungseinheit_id, stundeninhalt_id), "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (planungseinheit_id, stundeninhalt_kuerzel), "
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
-	    			+ "FOREIGN KEY (stundeninhalt_id) REFERENCES Stundeninhalt(id))";
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Raum(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS moegliche_Stundeninhalte_Raum "
-	    			+ "(raum_id INT NOT NULL, "
-	    			+ "stundeninhalt_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (raum_id, stundeninhalt_id), "
-	    			+ "FOREIGN KEY (raum_id) REFERENCES Raum(id), "
-	    			+ "FOREIGN KEY (stundeninhalt_id) REFERENCES Stundeninhalt(id))";
+	    			+ "(raum_name VARCHAR NOT NULL, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS stundenbedarf "
-	    			+ "(schulklasse_id INT NOT NULL, "
-	    			+ "stundeninhalt_id INT NOT NULL, "
+	    			+ "(schulklasse_name VARCHAR NOT NULL, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
 	    			+ "bedarf INT NOT NULL, "
-	    			+ "PRIMARY KEY (schulklasse_id, stundeninhalt_id), "
-	    			+ "FOREIGN KEY (schulklasse_id) REFERENCES Schulklasse(id), "
-	    			+ "FOREIGN KEY (stundeninhalt_id) REFERENCES Stundeninhalt(id))";
+	    			+ "PRIMARY KEY (schulklasse_name, stundeninhalt_kuerzel), "
+	    			+ "FOREIGN KEY (schulklasse_name) REFERENCES Schulklasse(name), "
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Jahrgang(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS Jahrgang_Stundenbedarf "
-	    			+ "(jahrgang_id INT NOT NULL, "
-	    			+ "stundeninhalt_id INT NOT NULL, "
+	    			+ "(jahrgang INT NOT NULL, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
 	    			+ "bedarf INT NOT NULL, "
-	    			+ "PRIMARY KEY (jahrgang_id, stundeninhalt_id), "
-	    			+ "FOREIGN KEY (stundeninhalt_id) REFERENCES Stundeninhalt(id))";
+	    			+ "PRIMARY KEY (jahrgang, stundeninhalt_kuerzel), "
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Schulklasse)
 	    	sql = "CREATE TABLE IF NOT EXISTS planungseinheit_Schulklasse "
 	    			+ "(planungseinheit_id INT NOT NULL, "
-	    			+ "schulklasse_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (planungseinheit_id, schulklasse_id), "
+	    			+ "schulklasse_name VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (planungseinheit_id, schulklasse_name), "
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
-	    			+ "FOREIGN KEY (schulklasse_id) REFERENCES Schulklasse(id))";
+	    			+ "FOREIGN KEY (schulklasse_name) REFERENCES Schulklasse(name))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Raum)
 	    	sql = "CREATE TABLE IF NOT EXISTS planungseinheit_Raum "
 	    			+ "(planungseinheit_id INT NOT NULL, "
-	    			+ "raum_id INT NOT NULL, "
-	    			+ "PRIMARY KEY (planungseinheit_id, raum_id), "
+	    			+ "raum_name VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (planungseinheit_id, raum_name), "
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
-	    			+ "FOREIGN KEY (raum_id) REFERENCES Raum(id))";
+	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
 	    	System.out.println("Tables created.");
 	    	stmt.close();
@@ -166,112 +160,132 @@ public class Data {
 	    }
 	}
 	
-/*	
-	public void addPersonal(Personal personal) {
-		sql = "INSERT INTO Personal "
-				+ "VALUES (" + personal.getId() + ","
-				+ personal.getName() + ","
-				+ personal.getAcronym() + ","
-				+ personal.getSollZeit() + ","
-				+ personal.getIstZeit() + ","
-				+ personal.getErsatzZeit() + ","
-				+ toString(personal.getGependelt()) + ","
-				+ toString(personal.getLehrer()) + ");";
-		stmt.executeUpdate(sql);
-		for(Int id : personal.getMoeglicheStundeninhalte()) {
-			sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
-					+ "VALUES (" + personal.getId() + ","
-					+ id + ");";
-		}
-	}
-	
-	public void addPlanungseinheit(Planungseinheit planungseinheit) {
-		sql = "INSERT INTO Planungseinheit "
-				+ "VALUES (" + planungseinheit.getId() + ","
-				+ planungseinheit.getWeekday() + ","
-				+ planungseinheit.getStartTimeslot().getId() + ","
-				+ planungseinheit.getEndTimeslot().getId() + ");";
-		stmt.executeUpdate(sql);
-		for(Int id : planungseinheit.getStundeninhalte()) {
-			sql = "INSERT INTO planungseinheit_Stundeninhalt "
-					+ "VAUES (" + planungseinheit.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-		for(Int id : planungseinheit.getKlassen()) {
-			sql = "INSERT INTO planungseinheit_Schulklasse "
-					+ "VAUES (" + planungseinheit.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-		for(Int id : planungseinheit.getRaeume()) {
-			sql = "INSERT INTO planungseinheit_Raum "
-					+ "VAUES (" + planungseinheit.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-		for(Int id : planungseinheit.getPersonal()) {
-			sql = "INSERT INTO planungseinheit_Personal "
-					+ "VAUES (" + planungseinheit.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-	}
-	
-	public void addStundeninhalt(Stundeninhalt stundeninhalt) {
-		sql = "INSERT INTO Stundeninhalt "
-				+ "VALUES (" + stundeninhalt.getId() + ","
-				+ stundeninhalt.getName() + ","
-				+ stundeninhalt.getKuerzel() + ","
-				+ stundeninhalt.getRegeldauer() + ","
-				+ stundeninhalt.getRhythmustyp() + ");";
-		stmt.executeUpdate(sql);
-	}
-	
-	public void addSchulklasse(Schulklasse schulklasse) {
-		sql = "INSERT INTO Schulklasse "
-				+ "VALUES (" + schulklasse.getId() + ","
-				+ schulklasse.getJahrgang() + ","
-				+ schulklasse.getKlassenraum().getId() + ");";
-		stmt.executeUpdate(sql);
-		for(Int id : schulklasse.getKlassenlehrer()) {
-			sql = "INSERT INTO klassenlehrer "
-					+ "VALUES (" + schulklasse.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-	}
-	
-	public void addRaum(Raum raum) {
-		sql = "INSERT INTO Raum "
-				+ "VALUES (" + raum.getId() + ","
-				+ raum.getName() + ","
-				+ raum.getKuerzel() + ","
-				+ raum.getGebaeudennr() + ");";
-		stmt.executeUpdate();
-		for(Int id : raum.getMoeglicheStundeninhalte()) {
-			sql = "INSERT INTO moegliche_Stundeninhalte_Raum "
-					+ "VALUES (" + raum.getId() + ","
-					+ id + ");";
-			stmt.executeUpdate(sql);
-		}
-	}
-	
-	public Personal getPersonalById(int pId) {
-		sql = "SELECT * Personal WHERE id = " + pId;
-		ResultSet rs = stmt.executeQuery(sql);
+	public static void addPersonal(Personal personal) {
 		try {
-			rs.next();
-			int id = rs.getInt("id");
-			String name = rs.getString("name");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			sql = "INSERT INTO Personal "
+					+ "VALUES (" + personal.getName() + ","
+					+ personal.getAcronym() + ","
+					+ personal.getSollZeit() + ","
+					+ personal.getIstZeit() + ","
+					+ personal.getErsatzZeit() + ","
+					+ Boolean.toString(personal.isGependelt()) + ","
+					+ Boolean.toString(personal.isLehrer()) + ");";
+			stmt.executeUpdate(sql);
+			for(int id : personal.getMoeglicheStundeninhalte()) {
+				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
+						+ "VALUES (" + personal.getId() + ","
+						+ id + ");";
+			}
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new Personal(id, name, kuerzel, sollZeit, istZeit, ersatzZeit, )
 	}
 	
-	public void close() {
+//	public void addPlanungseinheit(Planungseinheit planungseinheit) {
+//		try {
+//			sql = "INSERT INTO Planungseinheit "
+//					+ "VALUES (" + planungseinheit.getId() + ","
+//					+ planungseinheit.getWeekday() + ","
+//					+ planungseinheit.getStartTimeslot().getId() + ","
+//					+ planungseinheit.getEndTimeslot().getId() + ");";
+//			stmt.executeUpdate(sql);
+//			for(int id : planungseinheit.getStundeninhalte()) {
+//				sql = "INSERT INTO planungseinheit_Stundeninhalt "
+//						+ "VAUES (" + planungseinheit.getId() + ","
+//						+ id + ");";
+//				stmt.executeUpdate(sql);
+//			}
+//			for(int id : planungseinheit.getKlassen()) {
+//				sql = "INSERT INTO planungseinheit_Schulklasse "
+//						+ "VAUES (" + planungseinheit.getId() + ","
+//						+ id + ");";
+//				stmt.executeUpdate(sql);
+//			}
+//			for(int id : planungseinheit.getRaeume()) {
+//				sql = "INSERT INTO planungseinheit_Raum "
+//						+ "VAUES (" + planungseinheit.getId() + ","
+//						+ id + ");";
+//				stmt.executeUpdate(sql);
+//			}
+//			for(int id : planungseinheit.getPersonal()) {
+//				sql = "INSERT INTO planungseinheit_Personal "
+//						+ "VAUES (" + planungseinheit.getId() + ","
+//						+ id + ");";
+//				stmt.executeUpdate(sql);
+//			}
+//		}catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void addStundeninhalt(Stundeninhalt stundeninhalt) {
+//		try {
+//			sql = "INSERT INTO Stundeninhalt "
+//					+ "VALUES (" + stundeninhalt.getId() + ","
+//					+ stundeninhalt.getName() + ","
+//					+ stundeninhalt.getKuerzel() + ","
+//					+ stundeninhalt.getRegeldauer() + ","
+//					+ stundeninhalt.getRhythmustyp() + ");";
+//			stmt.executeUpdate(sql);
+//		}catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void addSchulklasse(Schoolclass schulklasse) {
+//		sql = "INSERT INTO Schulklasse "
+//				+ "VALUES (" + schulklasse.getId() + ","
+//				+ schulklasse.getJahrgang() + ","
+//				+ schulklasse.getKlassenraum().getId() + ");";
+//		stmt.executeUpdate(sql);
+//		for(int id : schulklasse.getKlassenlehrer()) {
+//			sql = "INSERT INTO klassenlehrer "
+//					+ "VALUES (" + schulklasse.getId() + ","
+//					+ id + ");";
+//			stmt.executeUpdate(sql);
+//		}
+//	}
+	
+	public static void addRaum(Room raum) {
+		try {
+			sql = "INSERT INTO Raum "
+					+ "VALUES (" + raum.getId() + ","
+					+ raum.getName() + ","
+					+ raum.getKuerzel() + ","
+					+ raum.getGebaeude() + ");";
+			stmt.executeUpdate(sql);
+			for(String kuerzel : raum.getMoeglicheFunktionen()) {
+				sql = "INSERT INTO moegliche_Stundeninhalte_Raum "
+						+ "VALUES (" + raum.getId() + ","
+						+ kuerzel + ");";
+				stmt.executeUpdate(sql);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	public Personal getPersonalById(int pId) {
+//		sql = "SELECT * Personal WHERE id = " + pId;
+//		ResultSet rs = stmt.executeQuery(sql);
+//		try {
+//			rs.next();
+//			int id = rs.getInt("id");
+//			String name = rs.getString("name");
+//			String kuerzel = rs.getString("kuerzel");
+//			int sollZeit = rs.getInt("sollZeit");
+//			int istZeit = rs.getInt("istZeit");
+//			int ersatzZeit = rs.getInt("ersatzZeit");
+//			boolean schonGependelt = rs.getBoolean("schonGependelt");
+//			boolean lehrer = rs.getBoolean("lehrer");
+//			return new Personal(id, name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public static void close() {
     	try {
     		stmt.close();
     		c.close();
@@ -279,5 +293,4 @@ public class Data {
     		System.out.println("Error on closing.");
     	}
 	}
-*/
 }
