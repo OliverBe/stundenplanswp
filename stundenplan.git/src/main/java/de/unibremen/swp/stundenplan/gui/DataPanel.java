@@ -56,6 +56,8 @@ public class DataPanel extends JPanel {
 	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
 
 	private RaumfunktionPanel raumfunktionPanel = new RaumfunktionPanel();
+	private PersonalPanel personalPanel = new PersonalPanel();
+	
 	private AddNewPersonal addNewPersonal = new AddNewPersonal();
 	private AddNewStundeninhalt addNewStundeninhalt = new AddNewStundeninhalt();
 	private AddNewSchoolclass addNewSchoolclass = new AddNewSchoolclass();

@@ -79,6 +79,13 @@ public class RaumfunktionPanel extends JPanel {
 				}
 			});
 			c2.fill=GridBagConstraints.BOTH;
+			c2.anchor = GridBagConstraints.EAST;
+			c2.gridwidth = 1;
+			c2.gridheight = 1;
+			c2.gridx = 1;
+			c2.gridy = 1;
+			c2.weightx = 1.8;
+			c2.weighty = 1.0;
 			add(p,c2);
 		}
 		
@@ -88,11 +95,9 @@ public class RaumfunktionPanel extends JPanel {
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 			listScroller.setPreferredSize(new Dimension(250, 200));
-			// updatepersonalList();
 
-			c.gridy = 2;
-			c.gridwidth = 2;
-			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth=3;
+			c.fill = GridBagConstraints.BOTH;
 			c.gridy = 2;
 			p.add(listScroller, c);
 			c2.gridy=2;
