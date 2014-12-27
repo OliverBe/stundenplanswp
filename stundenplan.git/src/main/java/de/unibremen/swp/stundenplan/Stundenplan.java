@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
 
@@ -44,6 +45,7 @@ public final class Stundenplan {
      */
     private Stundenplan() {
     	final MainFrame mainFrame= new MainFrame();
+    	Data.start();
     }
     
     /**

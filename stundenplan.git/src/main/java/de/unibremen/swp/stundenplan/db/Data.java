@@ -270,7 +270,7 @@ public class Data {
 		}
 	}
 	
-	public Personal getPersonalByKuerzel(String pKuerzel) {
+	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM Personal WHERE kuerzel = " + pKuerzel + ";";
 			ResultSet rs = stmt.executeQuery(sql);

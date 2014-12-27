@@ -32,7 +32,6 @@ public class DataPopup extends JPopupMenu{
 		list=pList;
 		model=pModel;
 		init();
-		
 	}
 	
 	private void init(){
