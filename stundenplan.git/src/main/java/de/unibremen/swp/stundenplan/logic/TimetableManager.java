@@ -308,7 +308,7 @@ private static int endTimeHour() {
             timeDifInMilliSec = milliSec2 - milliSec1;
         }
         long timeDifMinutes = timeDifInMilliSec / (60 * 1000);
-        return (int) (timeDifMinutes/Config.TIMESLOT_LENGTH);
+        return (int) (timeDifMinutes/Timeslot.LENGTH);
 	}
 
 //    /**
