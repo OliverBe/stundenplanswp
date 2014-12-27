@@ -27,6 +27,7 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
+import de.unibremen.swp.stundenplan.config.Config;
 
 /**
  * Diese Utility-Klasse verwaltet die Tagespläne.
@@ -255,18 +256,33 @@ public final class TimetableManager {
      * @return eine Zeichenkette, die die Start- und Endzeit einer Zeiteinheit darstellt
      */
     public static String getTimeframeDisplay(final int position) {
-        if (position < 0 || position > DayTable.LENGTH) {
+        if (position < 0 || position > daytablelength()) {
             return "";
         }
         final Calendar time = Calendar.getInstance();
-        time.set(Calendar.HOUR_OF_DAY, DayTable.STARTTIME_HOUR);
-        time.set(Calendar.MINUTE, DayTable.STARTTIME_MINUTE);
+        time.set(Calendar.HOUR_OF_DAY, startTimeHour());
+        time.set(Calendar.MINUTE, startTimeMinute());
         time.add(Calendar.MINUTE, Timeslot.LENGTH * position);
         String display = String.format("%02d:%02d - ", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
         time.add(Calendar.MINUTE, Timeslot.LENGTH);
         display += String.format("%02d:%02d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
         return display;
     }
+
+private static int startTimeMinute() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+private static int startTimeHour() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+private static int daytablelength() {
+	
+	return 0;
+}
 
 //    /**
 //     * Aktualisiert die Werte für die gegebene Zeiteinheit im Datenbestand.
