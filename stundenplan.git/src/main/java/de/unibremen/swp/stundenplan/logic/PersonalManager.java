@@ -36,9 +36,9 @@ public class PersonalManager {
      * @param Acronym der gesuchten Person
      * @return gefundene Person mit Acronym
      */
-    public static Personal getPersonalByAcro(final String acro) {
-    	System.out.println("Searching for Personal with acro: "+acro+"...");
-    	Personal p = Data.getPersonalByAcronym(acro);
+    public static Personal getPersonalByKuerzel(final String kuerz) {
+    	System.out.println("Searching for Personal with acro: "+kuerz+"...");
+    	Personal p = Data.getPersonalByKuerzel(kuerz);
     	if(p!=null){
     		System.out.println("Found: "+p);
     	}else{

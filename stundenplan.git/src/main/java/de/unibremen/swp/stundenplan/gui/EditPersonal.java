@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class EditTeacher extends JPanel {
+public class EditPersonal extends JPanel {
 	/**
 	 * 
 	 */
@@ -60,7 +60,7 @@ public class EditTeacher extends JPanel {
 	
 	private JFrame mainFrame;
 	
-	public EditTeacher(JFrame j){
+	public EditPersonal(JFrame j){
 	mainFrame= j;
 	
 	setLayout(new GridBagLayout());

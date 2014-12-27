@@ -57,38 +57,44 @@ public final class Config {
     public static boolean SUNDAY = false;
     public static String SUNDAY_STRING = "Sonntag";
     
-    /**
-     * Die Anzahl an Zeiteinheiten, die alle Tagespläne per Default haben. Kann durch einen Eintrag in der
-     * Konfigurationsdatei überschrieben werden.
-     */
-    public static final int DAYTABLE_LENGTH_DEFAULT = 8;
-
-    /**
-     * Der Schlüssel für den Eintrag der Tagesplan-Anzahl in der Konfigurationsdatei.
-     */
-    public static final String DAYTABLE_LENGTH_STRING = "daytablelength";
+//    /**
+//     * Die Anzahl an Zeiteinheiten, die alle Tagespläne per Default haben. Kann durch einen Eintrag in der
+//     * Konfigurationsdatei überschrieben werden.
+//     */
+//    public static final int DAYTABLE_LENGTH_DEFAULT = 8;
+//
+//    /**
+//     * Der Schlüssel für den Eintrag der Tagesplan-Anzahl in der Konfigurationsdatei.
+//     */
+//    public static final String DAYTABLE_LENGTH_STRING = "daytablelength";
 
     /**
      * Default-Wert für die Stunde der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
      * überschrieben werden.
      */
-    public static final int DAYTABLE_STARTTIME_HOUR_DEFAULT = 7;
+    public static int DAY_STARTTIME_HOUR = 07;
 
     /**
      * Der Schlüssel für den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
-    public static final String DAYTABLE_STARTTIME_HOUR_STRING = "hour";
+    public static final String DAY_STARTTIME_HOUR_STRING = "hour";
 
     /**
      * Default-Wert für die Minute der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
      * überschrieben werden.
      */
-    public static final int DAYTABLE_STARTTIME_MINUTE_DEFAULT = 0;
+    public static int DAY_STARTTIME_MINUTE = 00;
 
     /**
      * Der Schlüssel für den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
-    public static final String DAYTABLE_STARTTIME_MINUTE_STRING = "minute";
+    public static final String DAYT_STARTTIME_MINUTE_STRING = "minute";
+    
+    public static int DAY_ENDTIME_HOUR = 15;
+    public static final String DAY_ENDTIME_HOUR_STRING = "stunde";
+    
+    public static int DAY_ENDTIME_MINUTE = 00;
+    public static final String DAYT_ENDTIME_MINUTE_STRING = "minute";
 
     /**
      * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der

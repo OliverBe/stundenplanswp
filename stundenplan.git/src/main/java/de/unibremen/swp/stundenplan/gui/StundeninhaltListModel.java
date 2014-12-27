@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import de.unibremen.swp.stundenplan.data.Subject;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 /**
  * Das ListModel für die Faecher.
@@ -39,14 +39,14 @@ public final class StundeninhaltListModel extends DefaultListModel<String> {
     /**
      * Die Liste der Faecher dieses Modells.
      */
-    private final List<Subject> subjects;
+    private final List<Stundeninhalt> Stundeninhaelte;
 
     /**
      * Der Konstruktor für des FaecherListMode. Hier wird nur die Liste der faecher initialisiert.
      */
     protected StundeninhaltListModel() {
         super();
-        subjects = new ArrayList<>();
+        Stundeninhaelte = new ArrayList<>();
     }
 
     /**
@@ -55,9 +55,9 @@ public final class StundeninhaltListModel extends DefaultListModel<String> {
      * @param teacher
      *            Das hinzuzufügende Fach.
      */
-    protected void addSubject(final Subject subject) {
-        subjects.add(subject);
-        addElement(String.format("%s (%s)", subject.getName(), subject.getAcronym()));
+    protected void addStundeninhalt(final Stundeninhalt Stundeninhalt) {
+        Stundeninhaelte.add(Stundeninhalt);
+        addElement(String.format("%s (%s)", Stundeninhalt.getName(), Stundeninhalt.getKuerzel()));
     }
 
     /**
@@ -67,8 +67,8 @@ public final class StundeninhaltListModel extends DefaultListModel<String> {
      *            Das Fach an dem der Index steht, der zurückgegeben werden soll.
      * @return die Fach am gegebenen Index
      */
-    protected Subject getSubjectAt(final int index) {
-        return subjects.get(index);
+    protected Stundeninhalt getStundeninhaltAt(final int index) {
+        return Stundeninhaelte.get(index);
     }
 
     /*
@@ -79,10 +79,10 @@ public final class StundeninhaltListModel extends DefaultListModel<String> {
     @Override
     public void clear() {
         super.clear();
-        subjects.clear();
+        Stundeninhaelte.clear();
     }
 
-    public List<Subject> getSubjects(){
-    	return subjects;
+    public List<Stundeninhalt> getStundeninhalts(){
+    	return Stundeninhaelte;
     }
 }
