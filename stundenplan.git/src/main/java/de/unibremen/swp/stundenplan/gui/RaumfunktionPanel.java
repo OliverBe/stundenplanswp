@@ -67,6 +67,10 @@ public class RaumfunktionPanel extends JPanel {
 						rf = new Raumfunktion(tf.getText());
 						Data.addRaumfunktion(rf);
 						listModel.addElement(rf);
+						for (Raumfunktion r : Data.getAllRaumfunktion()){
+							listModel.addElement(r);
+						}
+						
 					} catch (InvalidNameException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

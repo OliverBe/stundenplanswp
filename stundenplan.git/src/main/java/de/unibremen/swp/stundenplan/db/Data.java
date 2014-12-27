@@ -109,7 +109,7 @@ public class Data {
 	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
-	    	//ArrayList von Raum(Stundeninhalt)
+	    	//ArrayList von Raumfunktion(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
 //	    			+ "(raum_name VARCHAR NOT NULL, "
 //	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
@@ -268,10 +268,11 @@ public class Data {
 	public static void addRaumfunktion(Raumfunktion rf) {
 		try {
 			sql = "INSERT INTO Raumfunktion "
-					+ "VALUES (" + rf.getName() + ")";
+					+ "VALUES ('" + rf.getName() + "');";
 			stmt.executeUpdate(sql);
+			System.out.println(rf.getName()+"add");
 		}catch (SQLException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -307,6 +308,7 @@ public class Data {
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String name = rs.getString("name");
+				System.out.println(name);
 				rfs.add(new Raumfunktion(name));
 			}
 			return rfs;
