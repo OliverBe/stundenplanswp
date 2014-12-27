@@ -276,13 +276,40 @@ private static int startTimeMinute() {
 
 private static int startTimeHour() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 7;
 	}
 
-private static int daytablelength() {
-	
+private static int endTimeMinute() {
+	// TODO Auto-generated method stub
 	return 0;
 }
+
+private static int endTimeHour() {
+		// TODO Auto-generated method stub
+		return 15;
+	}
+
+	public static int daytablelength() {
+		final Calendar starttime = Calendar.getInstance();
+		starttime.set(Calendar.HOUR_OF_DAY, startTimeHour());
+		starttime.set(Calendar.MINUTE, startTimeMinute());
+		final Calendar endtime = Calendar.getInstance();
+		endtime.set(Calendar.HOUR_OF_DAY, endTimeHour());
+		endtime.set(Calendar.MINUTE, endTimeMinute());
+		long milliSec1 = starttime.getTimeInMillis();
+        long milliSec2 = endtime.getTimeInMillis();
+        long timeDifInMilliSec;
+        if(milliSec1 >= milliSec2)
+        {
+            timeDifInMilliSec = milliSec1 - milliSec2;
+        }
+        else
+        {
+            timeDifInMilliSec = milliSec2 - milliSec1;
+        }
+        long timeDifMinutes = timeDifInMilliSec / (60 * 1000);
+        return (int) (timeDifMinutes/Config.TIMESLOT_LENGTH);
+	}
 
 //    /**
 //     * Aktualisiert die Werte für die gegebene Zeiteinheit im Datenbestand.

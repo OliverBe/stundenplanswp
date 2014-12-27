@@ -112,4 +112,5 @@ public final class Timeslot implements Serializable {
         final int minute = startzeit.get(Calendar.MINUTE);
         return String.format("%02d:%02d", hour, minute);
     }
+    
 }
