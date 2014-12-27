@@ -293,7 +293,13 @@ public class ConfigPanel extends JPanel {
 			add(button, c);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-		//			mo.isSelected() ? Config.MONDAY=true : Config.MONDAY=false;
+					Config.MONDAY = mo.isSelected() ? true : false;
+					Config.TUESDAY = di.isSelected() ? true : false;
+					Config.WEDNESDAY = mi.isSelected() ? true : false;
+					Config.THURSDAY = don.isSelected() ? true : false;
+					Config.FRIDAY = fr.isSelected() ? true : false;
+					Config.SATURDAY = sa.isSelected() ? true : false;
+					Config.SUNDAY = so.isSelected() ? true : false;
 				}
 			});
 		}
