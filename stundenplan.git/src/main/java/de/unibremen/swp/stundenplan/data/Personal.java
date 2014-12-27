@@ -198,7 +198,7 @@ public final class Personal {
 		return wunschZeiten;
 	}
 
-	public void setWunschZeiten(final HashMap<Weekday,Time[]> pWunschZeiten) {
+	public void setWunschZeiten(final HashMap<Weekday, int[]> pWunschZeiten) {
 		wunschZeiten = pWunschZeiten;
 	}
 
