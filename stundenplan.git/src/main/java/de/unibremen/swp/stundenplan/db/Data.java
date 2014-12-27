@@ -1,6 +1,7 @@
 package de.unibremen.swp.stundenplan.db;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.*;
@@ -12,6 +13,8 @@ public class Data {
     private static Statement stmt = null;
     private static String sql;
 	
+    private Data() {}
+    
 	public static void start() {
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
@@ -107,9 +110,10 @@ public class Data {
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Raum(Stundeninhalt)
-	    	sql = "CREATE TABLE IF NOT EXISTS moegliche_Stundeninhalte_Raum "
+	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
 	    			+ "(raum_name VARCHAR NOT NULL, "
 	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "name VARCHAR NOT NULL, "
 	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
 	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
@@ -171,7 +175,7 @@ public class Data {
 					+ Boolean.toString(personal.isGependelt()) + ","
 					+ Boolean.toString(personal.isLehrer()) + ");";
 			stmt.executeUpdate(sql);
-			for(int kuerzel : personal.getMoeglicheStundeninhalte()) {
+			for(String kuerzel : personal.getMoeglicheStundeninhalte()) {
 				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
 						+ "VALUES (" + personal.getKuerzel() + ","
 						+ kuerzel + ");";
@@ -256,7 +260,7 @@ public class Data {
 					+ raum.getGebaeude() + ");";
 			stmt.executeUpdate(sql);
 			for(String kuerzel : raum.getMoeglicheFunktionen()) {
-				sql = "INSERT INTO moegliche_Stundeninhalte_Raum "
+				sql = "INSERT INTO Raumfunktion "
 						+ "VALUES (" + raum.getName() + ","
 						+ kuerzel + ");";
 				stmt.executeUpdate(sql);
@@ -266,23 +270,30 @@ public class Data {
 		}
 	}
 	
-//	public Personal getPersonalByKuerzel(String pKuerzel) {
-//		sql = "SELECT * Personal WHERE kuerzel = " + pKuerzel;
-//		ResultSet rs = stmt.executeQuery(sql);
-//		try {
-//			rs.next();
-//			String name = rs.getString("name");
-//			int sollZeit = rs.getInt("sollZeit");
-//			int istZeit = rs.getInt("istZeit");
-//			int ersatzZeit = rs.getInt("ersatzZeit");
-//			boolean schonGependelt = rs.getBoolean("schonGependelt");
-//			boolean lehrer = rs.getBoolean("lehrer");
-//			return new Personal(id, name, pKuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	public Personal getPersonalByKuerzel(String pKuerzel) {
+		try {
+			sql = "SELECT * FROM Personal WHERE kuerzel = " + pKuerzel + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			String name = rs.getString("name");
+			int sollZeit = rs.getInt("sollZeit");
+			int istZeit = rs.getInt("istZeit");
+			int ersatzZeit = rs.getInt("ersatzZeit");
+			boolean schonGependelt = rs.getBoolean("schonGependelt");
+			boolean lehrer = rs.getBoolean("lehrer");
+			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = " + pKuerzel + ";";
+			rs = stmt.executeQuery(sql);
+			ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
+			while(rs.next()) {
+				moeglicheStundeninhalte.add(rs.getString("stundeninhalt_kuerzel"));
+			}
+			return new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer, moeglicheStundeninhalte);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public static void close() {
     	try {

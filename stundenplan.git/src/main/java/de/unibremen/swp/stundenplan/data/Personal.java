@@ -19,9 +19,6 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 
 public final class Personal {
-    
-    private int id;
-    
     /**
      * Der Name dieser LehrerIn.
      */
@@ -31,9 +28,6 @@ public final class Personal {
      * Das KÃ¼rzel dieser LehrerIn. Ein KÃ¼rzel muss systemweit eindeutig sein.
      */
     private String kuerzel;
-
-    //integer referenziert zu stundeninhalt
-    private ArrayList<Integer> moeglicheStundeninhalte;
     
     private int sollZeit;
     
@@ -42,14 +36,17 @@ public final class Personal {
     
     private int ersatzZeit;
     
-    //array of time[2] geht irgendwie nicht
-    private HashMap<Weekday,Time[]> wunschZeiten;
-    
     // schon einmal am tag gependelt true
     private boolean gependelt;
     
-    //lehrer true, pädagoge false
+    //lehrer true, pï¿½dagoge false
     private boolean lehrer;
+    
+    //integer referenziert zu stundeninhalt
+    private ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
+    
+    //array of time[2] geht irgendwie nicht
+    private HashMap<Weekday,Time[]> wunschZeiten;
  
     /**
      * Gibt den Namen dieses Lehrers zurÃ¼ck.
@@ -61,10 +58,25 @@ public final class Personal {
     }
 
     /**
-     * Konstruktor für Personal.
+     * Konstruktor fï¿½r Personal.
      *
      */
     public Personal(){
+    }
+    
+    /**
+     * Konstruktor fï¿½r Personal.
+     *
+     */
+    public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte) {
+    	name = pName;
+    	kuerzel = pKuerzel;
+    	sollZeit = pSollZeit;
+    	istZeit = pIstZeit;
+    	ersatzZeit = pErsatzZeit;
+    	gependelt = pGependelt;
+    	lehrer = pLehrer;
+    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
     }
     
     /**
@@ -174,11 +186,11 @@ public final class Personal {
 		istZeit = i;
 	}
 	
-	public ArrayList<Integer> getMoeglicheStundeninhalte() {
+	public ArrayList<String> getMoeglicheStundeninhalte() {
 		return moeglicheStundeninhalte;
 	}
 
-	public void setMoeglicheStundeninhalte(final ArrayList<Integer> pMoeglicheStundeninhalte) {
+	public void setMoeglicheStundeninhalte(final ArrayList<String> pMoeglicheStundeninhalte) {
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 	}
 
@@ -205,13 +217,4 @@ public final class Personal {
 	public void setLehrer(final boolean pLehrer) {
 		lehrer = pLehrer;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(final int pId) {
-		id = pId;
-	}
-
 }
