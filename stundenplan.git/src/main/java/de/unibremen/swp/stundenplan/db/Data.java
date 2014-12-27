@@ -6,7 +6,7 @@ import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.*;
 
 public class Data {
-	public final static int MAX_ACRONYM_LEN = 3;
+	public final static int MAX_KUERZEL_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
 	private static Connection c = null;
     private static Statement stmt = null;
@@ -164,17 +164,17 @@ public class Data {
 		try {
 			sql = "INSERT INTO Personal "
 					+ "VALUES (" + personal.getName() + ","
-					+ personal.getAcronym() + ","
+					+ personal.getKuerzel() + ","
 					+ personal.getSollZeit() + ","
 					+ personal.getIstZeit() + ","
 					+ personal.getErsatzZeit() + ","
 					+ Boolean.toString(personal.isGependelt()) + ","
 					+ Boolean.toString(personal.isLehrer()) + ");";
 			stmt.executeUpdate(sql);
-			for(int id : personal.getMoeglicheStundeninhalte()) {
+			for(int kuerzel : personal.getMoeglicheStundeninhalte()) {
 				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
-						+ "VALUES (" + personal.getId() + ","
-						+ id + ");";
+						+ "VALUES (" + personal.getKuerzel() + ","
+						+ kuerzel + ");";
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -221,9 +221,8 @@ public class Data {
 //	public void addStundeninhalt(Stundeninhalt stundeninhalt) {
 //		try {
 //			sql = "INSERT INTO Stundeninhalt "
-//					+ "VALUES (" + stundeninhalt.getId() + ","
-//					+ stundeninhalt.getName() + ","
-//					+ stundeninhalt.getKuerzel() + ","
+//					+ "VALUES (" + stundeninhalt.getName() + ","
+//					+ stundeninhalt.getkuerzel() + ","
 //					+ stundeninhalt.getRegeldauer() + ","
 //					+ stundeninhalt.getRhythmustyp() + ");";
 //			stmt.executeUpdate(sql);
@@ -233,16 +232,20 @@ public class Data {
 //	}
 //	
 //	public void addSchulklasse(Schoolclass schulklasse) {
-//		sql = "INSERT INTO Schulklasse "
-//				+ "VALUES (" + schulklasse.getId() + ","
-//				+ schulklasse.getJahrgang() + ","
-//				+ schulklasse.getKlassenraum().getId() + ");";
-//		stmt.executeUpdate(sql);
-//		for(int id : schulklasse.getKlassenlehrer()) {
-//			sql = "INSERT INTO klassenlehrer "
-//					+ "VALUES (" + schulklasse.getId() + ","
-//					+ id + ");";
+//		try {
+//			sql = "INSERT INTO Schulklasse "
+//					+ "VALUES (" + schulklasse.getName() + ","
+//					+ schulklasse.getJahrgang() + ","
+//					+ schulklasse.getKlassenraum().getName() + ");";
 //			stmt.executeUpdate(sql);
+//			for(int kuerzel : schulklasse.getKlassenlehrer()) {
+//				sql = "INSERT INTO klassenlehrer "
+//						+ "VALUES (" + schulklasse.getName() + ","
+//						+ kuerzel + ");";
+//				stmt.executeUpdate(sql);
+//			}
+//		}catch (SQLException e) {
+//			e.printStackTrace();
 //		}
 //	}
 	
@@ -263,20 +266,18 @@ public class Data {
 		}
 	}
 	
-//	public Personal getPersonalById(int pId) {
-//		sql = "SELECT * Personal WHERE id = " + pId;
+//	public Personal getPersonalByKuerzel(String pKuerzel) {
+//		sql = "SELECT * Personal WHERE kuerzel = " + pKuerzel;
 //		ResultSet rs = stmt.executeQuery(sql);
 //		try {
 //			rs.next();
-//			int id = rs.getInt("id");
 //			String name = rs.getString("name");
-//			String kuerzel = rs.getString("kuerzel");
 //			int sollZeit = rs.getInt("sollZeit");
 //			int istZeit = rs.getInt("istZeit");
 //			int ersatzZeit = rs.getInt("ersatzZeit");
 //			boolean schonGependelt = rs.getBoolean("schonGependelt");
 //			boolean lehrer = rs.getBoolean("lehrer");
-//			return new Personal(id, name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer);
+//			return new Personal(id, name, pKuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer);
 //		} catch (SQLException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
