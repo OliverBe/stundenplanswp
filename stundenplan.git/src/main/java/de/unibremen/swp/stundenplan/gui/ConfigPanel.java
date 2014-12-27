@@ -47,13 +47,15 @@ public class ConfigPanel extends JPanel {
 	private JMenuItem mP = new JMenuItem("Dauer Planungseinheit");
 	private JMenuItem mBI = new JMenuItem("Back-Up Intervall");
 	private JMenuItem mWD = new JMenuItem("Zu verplanende Wochentage");
-	private JMenuItem mBE = new JMenuItem("Beginn und Ende eines Wochentags");
+	private JMenuItem mDL = new JMenuItem("Dauer eines Wochentags");
 	private JMenuItem mBStd = new JMenuItem(
 			"Bedarf an Stundeninhalten fuer die Klassen");
 	private JMenuItem mF = new JMenuItem("Funktionen von Räumen");
 	private JPanel plnConfig = new PlanungsEinheitConfig();
 	private JPanel bkpConfig = new BackUpConfig();
 	private JPanel wdConfig = new WeekdayConfig();
+	private JPanel dlConfig = new DaylengthConfig();
+	private JPanel bSConfig = new BedarfStundenConfig();
 	private JPanel fnktConfig = new FunktionConfig();
 
 	public ConfigPanel() {
@@ -87,14 +89,14 @@ public class ConfigPanel extends JPanel {
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBI.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mWD.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mBE.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mDL.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBStd.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		menuBar.add(mP);
 		menuBar.add(mBI);
 		menuBar.add(mWD);
-		menuBar.add(mBE);
+		menuBar.add(mDL);
 		menuBar.add(mBStd);
 		menuBar.add(mF);
 		menuBar.setLayout(new GridLayout(0, 1));
@@ -139,23 +141,61 @@ public class ConfigPanel extends JPanel {
 		});
 
 		// klick auf mWD
-		mWD.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
-				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
-				removeOld();
-				add(wdConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(wdConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
-			}
-		});
+				mWD.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						c.fill = GridBagConstraints.BOTH;
+						c.anchor = GridBagConstraints.EAST;
+						c.gridwidth = 1;
+						c.gridheight = 1;
+						c.gridx = 1;
+						c.gridy = 1;
+						c.weightx = 1.8;
+						c.weighty = 1.0;
+						removeOld();
+						add(wdConfig, c);
+						JFrame frame = (JFrame) SwingUtilities
+								.getWindowAncestor(wdConfig);
+						SwingUtilities.updateComponentTreeUI(frame);
+					}
+				});
+				
+				// klick auf mDL
+				mWD.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						c.fill = GridBagConstraints.BOTH;
+						c.anchor = GridBagConstraints.EAST;
+						c.gridwidth = 1;
+						c.gridheight = 1;
+						c.gridx = 1;
+						c.gridy = 1;
+						c.weightx = 1.8;
+						c.weighty = 1.0;
+						removeOld();
+						add(dlConfig, c);
+						JFrame frame = (JFrame) SwingUtilities
+								.getWindowAncestor(dlConfig);
+						SwingUtilities.updateComponentTreeUI(frame);
+					}
+				});
+				
+				// klick auf mBStd
+				mWD.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						c.fill = GridBagConstraints.BOTH;
+						c.anchor = GridBagConstraints.EAST;
+						c.gridwidth = 1;
+						c.gridheight = 1;
+						c.gridx = 1;
+						c.gridy = 1;
+						c.weightx = 1.8;
+						c.weighty = 1.0;
+						removeOld();
+						add(bSConfig, c);
+						JFrame frame = (JFrame) SwingUtilities
+								.getWindowAncestor(bSConfig);
+						SwingUtilities.updateComponentTreeUI(frame);
+					}
+				});
 
 		// klick auf mF
 		mF.addActionListener(new ActionListener() {
@@ -300,6 +340,98 @@ public class ConfigPanel extends JPanel {
 					Config.FRIDAY = fr.isSelected() ? true : false;
 					Config.SATURDAY = sa.isSelected() ? true : false;
 					Config.SUNDAY = so.isSelected() ? true : false;
+				}
+			});
+		}
+	}
+	
+	public class DaylengthConfig extends JPanel {
+		private Label lTime = new Label(
+				"Wählen sie die Wochentage des Stundenplans");
+		private GridBagConstraints c = new GridBagConstraints();
+		private JButton button = new JButton("Einstellungen speichern");
+
+		JCheckBox mo = new JCheckBox("Montag");
+		JCheckBox di = new JCheckBox("Dienstag");
+		JCheckBox mi = new JCheckBox("Mittwoch");
+		JCheckBox don = new JCheckBox("Donnerstag");
+		JCheckBox fr = new JCheckBox("Freitag");
+		JCheckBox sa = new JCheckBox("Samstag");
+		JCheckBox so = new JCheckBox("Sonntag");
+		
+
+		public DaylengthConfig() {
+			setLayout(new GridBagLayout());
+			setBorder(BorderFactory
+					.createTitledBorder("Wochentage des Stundenplanes "));
+			c.insets = new Insets(1, 1, 1, 1);
+			c.gridx = 0;
+			c.gridy = 0;
+			add(lTime, c);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridy = 1;
+		    CheckBoxList checkList = new CheckBoxList();
+		    checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		    JCheckBox[] boxes = {mo,di,mi,don,fr,sa,so};
+		    if(Config.MONDAY==true) mo.setSelected(true);
+		    if(Config.TUESDAY==true) di.setSelected(true);
+		    if(Config.WEDNESDAY==true) mi.setSelected(true);
+		    if(Config.THURSDAY==true) don.setSelected(true);
+		    if(Config.FRIDAY==true) fr.setSelected(true);
+		    if(Config.SATURDAY==true) sa.setSelected(true);
+		    if(Config.SUNDAY==true) so.setSelected(true);
+		    checkList.setListData(boxes);
+			add(checkList,c);
+			c.gridy = 2;
+			add(button, c);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+				}
+			});
+		}
+	}
+	
+	public class BedarfStundenConfig extends JPanel {
+		private Label lTime = new Label(
+				"Wählen sie die Wochentage des Stundenplans");
+		private GridBagConstraints c = new GridBagConstraints();
+		private JButton button = new JButton("Einstellungen speichern");
+
+		JCheckBox mo = new JCheckBox("Montag");
+		JCheckBox di = new JCheckBox("Dienstag");
+		JCheckBox mi = new JCheckBox("Mittwoch");
+		JCheckBox don = new JCheckBox("Donnerstag");
+		JCheckBox fr = new JCheckBox("Freitag");
+		JCheckBox sa = new JCheckBox("Samstag");
+		JCheckBox so = new JCheckBox("Sonntag");
+		
+
+		public BedarfStundenConfig() {
+			setLayout(new GridBagLayout());
+			setBorder(BorderFactory
+					.createTitledBorder("Wochentage des Stundenplanes "));
+			c.insets = new Insets(1, 1, 1, 1);
+			c.gridx = 0;
+			c.gridy = 0;
+			add(lTime, c);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridy = 1;
+		    CheckBoxList checkList = new CheckBoxList();
+		    checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		    JCheckBox[] boxes = {mo,di,mi,don,fr,sa,so};
+		    if(Config.MONDAY==true) mo.setSelected(true);
+		    if(Config.TUESDAY==true) di.setSelected(true);
+		    if(Config.WEDNESDAY==true) mi.setSelected(true);
+		    if(Config.THURSDAY==true) don.setSelected(true);
+		    if(Config.FRIDAY==true) fr.setSelected(true);
+		    if(Config.SATURDAY==true) sa.setSelected(true);
+		    if(Config.SUNDAY==true) so.setSelected(true);
+		    checkList.setListData(boxes);
+			add(checkList,c);
+			c.gridy = 2;
+			add(button, c);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
 				}
 			});
 		}
