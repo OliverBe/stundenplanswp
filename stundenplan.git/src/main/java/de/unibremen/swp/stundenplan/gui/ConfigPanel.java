@@ -53,7 +53,6 @@ public class ConfigPanel extends JPanel {
 	private JMenuItem mDL = new JMenuItem("Dauer eines Wochentags");
 	private JMenuItem mBS = new JMenuItem(
 			"Bedarf an Stundeninhalten fuer die Klassen");
-	private JMenuItem mF = new JMenuItem("Funktionen von Räumen");
 	private JPanel plnConfig = new PlanungsEinheitConfig();
 	private JPanel bkpConfig = new BackUpConfig();
 	private JPanel wdConfig = new WeekdayConfig();
@@ -93,14 +92,12 @@ public class ConfigPanel extends JPanel {
 		mWD.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mDL.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		menuBar.add(mP);
 		menuBar.add(mBI);
 		menuBar.add(mWD);
 		menuBar.add(mDL);
 		menuBar.add(mBS);
-		menuBar.add(mF);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
