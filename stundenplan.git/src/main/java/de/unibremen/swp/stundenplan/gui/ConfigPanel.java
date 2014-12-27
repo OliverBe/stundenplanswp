@@ -36,6 +36,7 @@ import javax.swing.text.BadLocationException;
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.db.Data;
 
 public class ConfigPanel extends JPanel {
 
@@ -52,13 +53,11 @@ public class ConfigPanel extends JPanel {
 	private JMenuItem mDL = new JMenuItem("Dauer eines Wochentags");
 	private JMenuItem mBS = new JMenuItem(
 			"Bedarf an Stundeninhalten fuer die Klassen");
-	private JMenuItem mF = new JMenuItem("Funktionen von Räumen");
 	private JPanel plnConfig = new PlanungsEinheitConfig();
 	private JPanel bkpConfig = new BackUpConfig();
 	private JPanel wdConfig = new WeekdayConfig();
 	private JPanel dlConfig = new DaylengthConfig();
 	private JPanel bsConfig = new BedarfStundenConfig();
-	private JPanel fnktConfig = new FunktionConfig();
 
 	public ConfigPanel() {
 		init();
@@ -93,14 +92,12 @@ public class ConfigPanel extends JPanel {
 		mWD.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mDL.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		menuBar.add(mP);
 		menuBar.add(mBI);
 		menuBar.add(mWD);
 		menuBar.add(mDL);
 		menuBar.add(mBS);
-		menuBar.add(mF);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
@@ -198,26 +195,6 @@ public class ConfigPanel extends JPanel {
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
-
-		// klick auf mF
-		mF.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
-				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
-				removeOld();
-				add(fnktConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(fnktConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
-			}
-		});
-
 	}
 
 	private void removeOld() {
@@ -226,7 +203,6 @@ public class ConfigPanel extends JPanel {
 		remove(wdConfig);
 		remove(dlConfig);
 		remove(bsConfig);
-		remove(fnktConfig);
 	}
 
 	public class PlanungsEinheitConfig extends JPanel {
@@ -478,53 +454,6 @@ public class ConfigPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 				}
 			});
-		}
-	}
-
-	public class FunktionConfig extends JPanel {
-		private Label lTime = new Label("Name der Funktion");
-		private JTextField tf = new JTextField(20);
-		private GridBagConstraints c = new GridBagConstraints();
-		private JButton button = new JButton("Funktion hinzufügen");
-
-		DefaultListModel listModel = new DefaultListModel();
-		JList<String> list = new JList<String>(listModel);;
-		JScrollPane listScroller = new JScrollPane(list);
-
-		public FunktionConfig() {
-			setLayout(new GridBagLayout());
-			setBorder(BorderFactory
-					.createTitledBorder("Funktionen von Räumen "));
-			c.insets = new Insets(1, 1, 1, 1);
-			c.gridx = 0;
-			c.gridy = 0;
-			add(lTime, c);
-			c.gridx = 1;
-			add(tf, c);
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridwidth = 3;
-			c.gridx = 0;
-			c.gridy = 1;
-			add(button, c);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					Raumfunktion rf;
-					try {
-						rf = new Raumfunktion(tf.getText());
-//						Data.addRaumfunktion(rf);
-						listModel.addElement(rf);
-					} catch (InvalidNameException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			c.gridy = 2;
-			add(new JSeparator(SwingConstants.HORIZONTAL), c);
-			c.gridy = 3;
-			c.gridwidth = 2;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			add(listScroller, c);
 		}
 	}
 }

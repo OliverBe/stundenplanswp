@@ -46,7 +46,7 @@ public final class Personal {
     private ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
     
     //array of time[2] geht irgendwie nicht
-    private HashMap<Weekday,Time[]> wunschZeiten;
+    private HashMap<Weekday,Time[]> wunschZeiten = new HashMap<Weekday,Time[]>();
  
     /**
      * Gibt den Namen dieses Lehrers zurück.

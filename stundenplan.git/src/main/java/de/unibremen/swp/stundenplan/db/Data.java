@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.db;
 import java.sql.*;
 import java.util.ArrayList;
 
-import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.config.*;
 import de.unibremen.swp.stundenplan.data.*;
 
 public class Data {
@@ -77,9 +77,9 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS moegliche_Stundeninhalte_Personal "
 	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
 	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "PRIMARY KEY (personal_kuerzel, stundeninhalte_kuerzel), "
+	    			+ "PRIMARY KEY (personal_kuerzel, stundeninhalt_kuerzel), "
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel), "
-	    			+ "FOREIGN KEY (stundeninhalte_kuerzel) REFERENCES Stundeninhalte(kuerzel))";
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalte(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Planungseinheit(Personal)
@@ -109,14 +109,14 @@ public class Data {
 	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
-	    	//ArrayList von Raum(Stundeninhalt)
+	    	//ArrayList von Raumfunktion(Stundeninhalt)
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
-	    			+ "(raum_name VARCHAR NOT NULL, "
-	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
-	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
-	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
+//	    			+ "(raum_name VARCHAR NOT NULL, "
+//	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL)";
+//	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+//	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+//	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)
@@ -156,8 +156,6 @@ public class Data {
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
 	    	System.out.println("Tables created.");
-	    	stmt.close();
-    		c.close();
 	    }catch ( Exception e ) {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	    	System.exit(0);
@@ -180,6 +178,9 @@ public class Data {
 						+ "VALUES (" + personal.getKuerzel() + ","
 						+ kuerzel + ");";
 			}
+//			for(Weekday weekday : personal.getWunschZeiten().keySet()) {
+//				for()
+//			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -256,21 +257,26 @@ public class Data {
 	public static void addRaum(Room raum) {
 		try {
 			sql = "INSERT INTO Raum "
-					+ "VALUES (" + raum.getName() + ","
+					+ "VALUES ('" + raum.getName() + "',"
 					+ raum.getGebaeude() + ");";
 			stmt.executeUpdate(sql);
-			for(String kuerzel : raum.getMoeglicheFunktionen()) {
-				sql = "INSERT INTO Raumfunktion "
-						+ "VALUES (" + raum.getName() + ","
-						+ kuerzel + ");";
-				stmt.executeUpdate(sql);
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public Personal getPersonalByKuerzel(String pKuerzel) {
+	public static void addRaumfunktion(Raumfunktion rf) {
+		try {
+			sql = "INSERT INTO Raumfunktion "
+					+ "VALUES ('" + rf.getName() + "');";
+			stmt.executeUpdate(sql);
+			System.out.println(rf.getName()+"add");
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM Personal WHERE kuerzel = " + pKuerzel + ";";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -293,6 +299,32 @@ public class Data {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
+		try {
+			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
+			sql = "SELECT * FROM Raumfunktion;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				String name = rs.getString("name");
+				System.out.println(name);
+				rfs.add(new Raumfunktion(name));
+			}
+			return rfs;
+		}catch(Exception e) {
+			
+		}
+		return null;
+	}
+	
+	public static void deleteRaumfunktionByName(String name) {
+		try {
+			sql = "DELETE FROM Raumfunktion WHERE name = " + name;
+			stmt.executeUpdate(sql);
+		}catch(SQLException e) {
+			
+		}
 	}
 	
 	public static void close() {

@@ -5,6 +5,10 @@ import javax.naming.InvalidNameException;
 public class Raumfunktion {
 	private String name;
 
+	public Raumfunktion(){
+		name="Gamecuberaum";
+	}
+	
 	public Raumfunktion(final String pName) throws InvalidNameException{
 		if(pName==null) throw new InvalidNameException();
 		name=pName;
@@ -14,8 +18,8 @@ public class Raumfunktion {
 		return name;
 	}
 
-	public void setName(String pName) {
-		name = pName;
+	public void setName(String pName) throws InvalidNameException {
+		if(pName==null) throw new InvalidNameException();
 	}
 	
 	@Override

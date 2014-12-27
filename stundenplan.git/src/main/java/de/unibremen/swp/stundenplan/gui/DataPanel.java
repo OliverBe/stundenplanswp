@@ -53,7 +53,9 @@ public class DataPanel extends JPanel {
 	private JMenuItem mS = new JMenuItem("Klassen");
 	private JMenuItem mF = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
+	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
 
+	private RaumfunktionPanel raumfunktionPanel = new RaumfunktionPanel();
 	private AddNewPersonal addNewPersonal = new AddNewPersonal();
 	private AddNewStundeninhalt addNewStundeninhalt = new AddNewStundeninhalt();
 	private AddNewSchoolclass addNewSchoolclass = new AddNewSchoolclass();
@@ -96,11 +98,13 @@ public class DataPanel extends JPanel {
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mR.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mRF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		
 		menuBar.add(mT);
 		menuBar.add(mS);
 		menuBar.add(mF);
 		menuBar.add(mR);
+		menuBar.add(mRF);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
@@ -140,7 +144,7 @@ public class DataPanel extends JPanel {
 				c.gridy = 2;
 				personalListScroller.setBorder(BorderFactory.createTitledBorder("Existierendes Personal"));	
 				add(personalListScroller, c);
-				addpersonal(addNewPersonal.button);
+				addPersonal(addNewPersonal.button);
 				
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewPersonal);
 				SwingUtilities.updateComponentTreeUI(frame);
@@ -237,7 +241,7 @@ public class DataPanel extends JPanel {
 				c.gridy = 2;
 				stundeninhaltListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Faecher"));
 				add(stundeninhaltListScroller, c);
-				addstundeninhalt(addNewStundeninhalt.button);
+				addStundeninhalt(addNewStundeninhalt.button);
 				
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewStundeninhalt);
 				SwingUtilities.updateComponentTreeUI(frame);
@@ -273,9 +277,29 @@ public class DataPanel extends JPanel {
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});		
+	
+	
+	// klick auf mRF
+			mRF.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					c.fill = GridBagConstraints.BOTH;
+					c.anchor = GridBagConstraints.EAST;
+					c.gridwidth = 1;
+					c.gridheight = 1;
+					c.gridx = 1;
+					c.gridy = 1;
+					c.weightx = 1.8;
+					c.weighty = 1.0;
+					removeOld();
+					add(raumfunktionPanel, c);
+					JFrame frame = (JFrame) SwingUtilities
+							.getWindowAncestor(raumfunktionPanel);
+					SwingUtilities.updateComponentTreeUI(frame);
+				}
+			});
 	}
 
-	private void addpersonal(JButton b) {
+	private void addPersonal(JButton b) {
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// updatepersonalList();
@@ -291,7 +315,7 @@ public class DataPanel extends JPanel {
 		});
 	}
 
-	private void addstundeninhalt(JButton b) {
+	private void addStundeninhalt(JButton b) {
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				//updatestundeninhaltList();
@@ -316,6 +340,7 @@ public class DataPanel extends JPanel {
 		remove(stundeninhaltListScroller);
 		remove(schoolclassListScroller);
 		remove(roomListScroller);
+		remove(raumfunktionPanel);
 	}
 //
 //	public static void updatepersonalList() {

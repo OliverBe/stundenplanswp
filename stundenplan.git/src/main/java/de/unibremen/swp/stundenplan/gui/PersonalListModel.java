@@ -57,7 +57,7 @@ public final class PersonalListModel extends DefaultListModel<String> {
      */
     protected void addPersonal(final Personal personal) {
         personall.add(personal);
-        addElement(String.format("%s (%s) %sh", personal.getName(), personal.getAcronym(), personal.getIstZeit()));
+        addElement(String.format("%s (%s) %sh", personal.getName(), personal.getKuerzel(), personal.getIstZeit()));
     }
 
     /**
