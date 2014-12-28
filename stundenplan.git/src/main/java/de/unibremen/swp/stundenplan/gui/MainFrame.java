@@ -30,7 +30,7 @@ public class MainFrame extends JFrame{
     private JPanel paneRaeume = new RaumbelegungsplanPanel();
     private JPanel paneConfig = new ConfigPanel();
     private WochenplanPanel paneWochen = new WochenplanPanel(); 
-    private WarningPanel paneWarning = new WarningPanel();
+    private static WarningPanel paneWarning = new WarningPanel();
     
 	public MainFrame() {
 		super("GUI-Prototype");	
@@ -55,4 +55,8 @@ public class MainFrame extends JFrame{
         add(tabpane);
         add(paneWarning, BorderLayout.SOUTH);
 	};
+	
+	public static WarningPanel getWarning() {
+		return paneWarning;
+	}
 }
