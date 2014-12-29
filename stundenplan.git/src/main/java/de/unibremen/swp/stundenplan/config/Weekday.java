@@ -27,37 +27,37 @@ public enum Weekday {
     /**
      * Der Wochentag Montag.
      */
-    MONDAY("Montag", 0),
+    MONDAY("Montag", 0, true),
 
     /**
      * Der Wochentag Dienstag.
      */
-    TUESDAY("Dienstag", 1),
+    TUESDAY("Dienstag", 1, true),
 
     /**
      * Der Wochentag Mittwoch.
      */
-    WEDNESDAY("Mittwoch", 2),
+    WEDNESDAY("Mittwoch", 2, true),
 
     /**
      * Der Wochentag Donnerstag.
      */
-    THURSDAY("Donnerstag", 3),
+    THURSDAY("Donnerstag", 3, true),
 
     /**
      * Der Wochentag Freitag.
      */
-    FRIDAY("Freitag", 4),
+    FRIDAY("Freitag", 4, true),
     
     /**
      * Der Wochentag Samstag.
      */
-    SATURDAY("Samstag", 5),
+    SATURDAY("Samstag", 5, false),
     
     /**
      * Der Wochentag Sonntag.
      */
-    SUNDAY("Sonntag", 6);
+    SUNDAY("Sonntag", 6, false);
 
     /**
      * Der Anzeigename dieses Wochentages.
@@ -70,6 +70,11 @@ public enum Weekday {
     private final int ordinal;
 
     /**
+     * Speichert ob an dem Tag unterricht stattfindet.
+     */
+    private boolean isSchoolday;
+    
+    /**
      * Erzeugt einen neuen Wochentag mit dem gegebenen Anzeigenamen und der gegebenen Ordinalzahl. Da es sich um einen
      * privaten Konstruktor handelt, werden die Parameterwerte nicht auf Plausibilität geprüft.
      * 
@@ -78,9 +83,10 @@ public enum Weekday {
      * @param pOrdinal
      *            die Ordinalzahl für den neuen Wochentag
      */
-    private Weekday(final String pDisplayName, final int pOrdinal) {
+    private Weekday(final String pDisplayName, final int pOrdinal, final boolean pDay) {
         displayName = pDisplayName;
         ordinal = pOrdinal;
+        isSchoolday = pDay;
     }
 
     @Override
@@ -95,5 +101,16 @@ public enum Weekday {
      */
     public int getOrdinal() {
         return ordinal;
+    }
+    
+    /**
+     *  Gibt zurück ob Tag verplant.
+     */
+    public boolean isSchoolday() {
+        return isSchoolday;
+    }
+    
+    public void switchDay(final boolean pDay){
+    	isSchoolday=pDay;
     }
 }

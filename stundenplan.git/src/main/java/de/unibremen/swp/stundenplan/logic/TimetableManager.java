@@ -269,26 +269,29 @@ public final class TimetableManager {
         return display;
     }
 
-private static int startTimeMinute() {
+    private static int startTimeMinute() {
 	// TODO Auto-generated method stub
-	return 0;
-}
-
-private static int startTimeHour() {
-		// TODO Auto-generated method stub
-		return 7;
+		return Config.DAY_STARTTIME_MINUTE;
 	}
 
-private static int endTimeMinute() {
-	// TODO Auto-generated method stub
-	return 0;
-}
-
-private static int endTimeHour() {
+	private static int startTimeHour() {
 		// TODO Auto-generated method stub
-		return 15;
+		return Config.DAY_STARTTIME_HOUR;
 	}
 
+	private static int endTimeMinute() {
+	// TODO Auto-generated method stub
+		return Config.DAY_ENDTIME_MINUTE;
+	}
+
+	private static int endTimeHour() {
+		// TODO Auto-generated method stub
+		return Config.DAY_ENDTIME_HOUR;
+	}
+	
+	/*
+	 * errechnet die Anzahl der Timeslots die in dem Tag passt
+	 */
 	public static int daytablelength() {
 		final Calendar starttime = Calendar.getInstance();
 		starttime.set(Calendar.HOUR_OF_DAY, startTimeHour());
