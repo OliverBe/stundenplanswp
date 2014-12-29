@@ -20,6 +20,39 @@ public class PersonalManager {
 	
 	}
 	
+	 /**
+     * istZeit wird in Minuten angegeben. Methode rechnet die Zeit in Stunden um.
+     * @return
+     * 		IstZeit in Stunden
+     */
+    public double berechneIstZeitInStunden(Personal p){
+	
+    	double ergebnis=0;
+	
+    	if(p.isLehrer()){
+    		ergebnis = p.getIstZeit()/45;
+    		return ergebnis;
+    	}else{
+    		ergebnis = p.getIstZeit()/60;
+    		return ergebnis;
+    	}
+	}
+    
+    /**
+     * Berechnet Sollzeit von Minuten in Stunden.
+     */
+    public double berechneSollZeitInStunden(Personal p){
+    	double ergebnis=0;
+    	
+    	if(p.isLehrer()){
+    		ergebnis = p.getSollZeit()/45;
+    		return ergebnis;
+    	}else{
+    		ergebnis = p.getSollZeit()/60;
+    		return ergebnis;
+    	}
+    }
+	
 	/**
 	 * Übergibt Personal an DB, dort wird Personal hinzugefügt.
 	 * @param personal
