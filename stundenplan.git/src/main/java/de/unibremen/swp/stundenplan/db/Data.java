@@ -1,5 +1,6 @@
 package de.unibremen.swp.stundenplan.db;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -310,7 +311,38 @@ public class Data {
 		}
 		return null;
 	}
+	
+	/**
+	 * Fathanisiert
+	 * @return
+	 * 		Liste mit allem Personal das sich in der DB befindet.
+	 */
+	public static ArrayList<Personal> getAllPersonal() {
+		ArrayList<Personal> allPersonal = new ArrayList<>();
+		try {
+		sql = "SELECT * FROM Personal";
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while(rs.next()){
+			String kuerzel = rs.getString("kuerzel");
+			allPersonal.add(getPersonalByKuerzel(kuerzel));
+		}	
+		
+		}catch (SQLException e){
+		}
+				
+		return allPersonal;
+	}
 
+	public static void deletePersonalByKuerzel(String pKuerzel)	{
+		try {
+			
+			sql = "DELETE FROM Personal WHERE kuerzel = " + pKuerzel;
+			stmt.executeUpdate(sql);
+			}catch(SQLException e) {
+				
+			}
+	}
 	
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
 		try{

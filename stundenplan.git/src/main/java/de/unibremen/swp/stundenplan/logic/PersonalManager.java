@@ -1,4 +1,5 @@
 package de.unibremen.swp.stundenplan.logic;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.unibremen.swp.stundenplan.data.*;
@@ -46,5 +47,25 @@ public class PersonalManager {
     	}
         return p;        
     }
+    
+    /**
+     * löscht Person mit angegebenem Kürzel aus der DB. Leutet Kürzel an DB weiter.
+     * @param kuerz
+     * 		Kürzel, das gesucht werden soll
+     */
+    public static void deletePersonalFromDB(final String kuerz)	{
+    	if(getPersonalByKuerzel(kuerz)!= null){
+    		System.out.println("Deleting...");
+    		Data.deletePersonalByKuerzel(kuerz);
+    	}else{
+    		System.out.println("Kuerzel "+kuerz+" not found.");
+    	}
+    }
 	
+    /**
+     * Gibt Liste mit allem Personal in der DB zurück. Leitet Anfrage an DB weiter.
+     */
+    public static ArrayList<Personal> getAllPersonalFromDB(){
+    	System.out.println()
+    }
 }
