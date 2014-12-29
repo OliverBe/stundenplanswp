@@ -64,7 +64,7 @@ public class Planungseinheit implements Serializable{
 	public Schoolclass getSchoolclassByName(final String pName){
 		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
 		for(Schoolclass s : schulklassen){
-			if(s.getName()==pName)return s;
+			if(s.getName().equals(pName))return s;
 		}
 		return null;
 	}
@@ -76,12 +76,24 @@ public class Planungseinheit implements Serializable{
 	public Room getRoomByName(final String pName){
 		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
 		for(Room r : raeume){
-			if(r.getName()==pName)return r;
+			if(r.getName().equals(pName))return r;
 		}
 		return null;
 	}
 	public HashMap<Personal, Time[]> getPersonal(){
 		return personal;
+	}
+	/*
+	 * gibt Personal fuer eine Name oder Kuerzel zurück.
+	 */
+	public Personal getPersonalbyName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(Personal p: personal.keySet()){
+			if(p.getKuerzel().equals(pName) || p.getName().equals(pName)){
+				return p;
+			}
+		}
+		return null;
 	}
 	
 	public Time[] getTimesofPersonal(final Personal pPerson){
