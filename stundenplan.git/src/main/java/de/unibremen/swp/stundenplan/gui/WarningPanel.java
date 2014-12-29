@@ -24,4 +24,12 @@ public class WarningPanel extends JPanel{
 		setLayout(new GridBagLayout());
 		add(t);
 	}
+	
+	public void setText(String pMessage) {
+		t.setText(pMessage);
+	}
+	
+	public void setColor(Color bg) {
+		t.setBackground(bg);
+	}
 }

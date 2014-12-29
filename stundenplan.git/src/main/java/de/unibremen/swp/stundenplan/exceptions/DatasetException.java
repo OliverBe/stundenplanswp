@@ -15,6 +15,10 @@
  */
 package de.unibremen.swp.stundenplan.exceptions;
 
+import java.awt.Color;
+
+import de.unibremen.swp.stundenplan.gui.MainFrame;
+
 /**
  * Eine Ausnahme, die ein Problem mit der Persistierungskomponente anzeigt.
  * 
@@ -31,11 +35,16 @@ public class DatasetException extends Exception {
     /**
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.
      * 
+     * 
+     * Bei einer ausgelösten Exception wird im Warningpanel eine Fehlermeldung ausgegeben
+     * 
      * @param message
      *            die Nachricht der neuen Ausnahme
      */
     public DatasetException(final String message) {
         super(message);
+        MainFrame.getWarning().setText(message);
+        MainFrame.getWarning().setColor(new Color (255, 0, 0));
     }
 
 }

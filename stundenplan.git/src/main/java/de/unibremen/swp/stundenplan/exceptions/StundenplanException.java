@@ -15,6 +15,10 @@
  */
 package de.unibremen.swp.stundenplan.exceptions;
 
+import java.awt.Color;
+
+import de.unibremen.swp.stundenplan.gui.MainFrame;
+
 /**
  * Eine Ausnahme, die ein generelles Problem mit der Applikation anzeigt.
  * 
@@ -31,10 +35,15 @@ public class StundenplanException extends Exception {
     /**
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.
      * 
+     * 
+     * Bei einer ausgelösten Exception wird im Warningpanel eine Fehlermeldung ausgegeben
+     * 
      * @param message
      *            die Nachricht der neuen Ausnahme
      */
     public StundenplanException(final String message) {
         super(message);
+        MainFrame.getWarning().setText(message);
+        MainFrame.getWarning().setColor(new Color (255, 0, 0));
     }
 }

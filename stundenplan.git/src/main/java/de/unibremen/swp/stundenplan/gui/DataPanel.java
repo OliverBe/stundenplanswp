@@ -35,8 +35,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Subject;
-import de.unibremen.swp.stundenplan.data.Teacher;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 public class DataPanel extends JPanel {
@@ -49,29 +49,33 @@ public class DataPanel extends JPanel {
 
 	private JMenuBar menuBar = new JMenuBar();
 
-	private JMenuItem mT = new JMenuItem("Personal");
+	private JMenuItem mP = new JMenuItem("Personal");
 	private JMenuItem mS = new JMenuItem("Klassen");
 	private JMenuItem mF = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
+	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
 
-	private AddNewTeacher addNewTeacher = new AddNewTeacher();
-	private AddNewStundeninhalt addNewSubject = new AddNewStundeninhalt();
+	private RaumfunktionPanel raumfunktionPanel = new RaumfunktionPanel();
+	private PersonalPanel personalPanel = new PersonalPanel();
+	
+	private AddNewPersonal addNewPersonal = new AddNewPersonal();
+	private AddNewStundeninhalt addNewStundeninhalt = new AddNewStundeninhalt();
 	private AddNewSchoolclass addNewSchoolclass = new AddNewSchoolclass();
 	private AddNewRoom addNewRoom = new AddNewRoom();
 
-	private static TeacherListModel teacherListModel = new TeacherListModel();
+	private static PersonalListModel personalListModel = new PersonalListModel();
 	private static SchoolclassListModel schoolclassListModel = new SchoolclassListModel();
-	private static StundeninhaltListModel subjectListModel = new StundeninhaltListModel();
+	private static StundeninhaltListModel stundeninhaltListModel = new StundeninhaltListModel();
 	private static RoomListModel roomListModel = new RoomListModel();
 	
-	private JList<String> teacherList = new JList<String>(teacherListModel);;
+	private JList<String> personalList = new JList<String>(personalListModel);;
 	private JList<String> schoolclassList = new JList<String>(schoolclassListModel);
-	private JList<String> subjectList = new JList<String>(subjectListModel);
+	private JList<String> stundeninhaltList = new JList<String>(stundeninhaltListModel);
 	private JList<String> roomList = new JList<String>(roomListModel);
 
-	private JScrollPane teacherListScroller = new JScrollPane(teacherList);
+	private JScrollPane personalListScroller = new JScrollPane(personalList);
 	private JScrollPane schoolclassListScroller = new JScrollPane(schoolclassList);
-	private JScrollPane subjectListScroller = new JScrollPane(subjectList);
+	private JScrollPane stundeninhaltListScroller = new JScrollPane(stundeninhaltList);
 	private JScrollPane roomListScroller = new JScrollPane(roomList);
 
 	public DataPanel() {
@@ -92,20 +96,22 @@ public class DataPanel extends JPanel {
 		c.weighty = 1.8;
 		c.gridx = 0;
 		c.gridy = 1;
-		mT.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mR.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mRF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		
-		menuBar.add(mT);
+		menuBar.add(mP);
 		menuBar.add(mS);
 		menuBar.add(mF);
 		menuBar.add(mR);
+		menuBar.add(mRF);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
-		// klick auf mT
-		mT.addActionListener(new ActionListener() {
+		// klick auf mP
+		mP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -116,71 +122,10 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewTeacher, c);
+				add(personalPanel, c);
 				
-				Teacher t1 = new Teacher();
-				t1.setName("Mr. Boombastik");
-				t1.setAcronym("Boom");
-				t1.setHoursPerWeek("20");
-				teacherListModel.addTeacher(t1);
-				
-				Teacher t2 = new Teacher();
-				t2.setName("Fathan der Unglaubliche");
-				t2.setAcronym("Fath");
-				t2.setHoursPerWeek("23");
-				teacherListModel.addTeacher(t2);
-				
-		   //     teacherList = new JList<String>(teacherListModel);
-				teacherList.setLayoutOrientation(JList.VERTICAL);
-				teacherList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-				teacherListScroller.setPreferredSize(new Dimension(250, 200));
-				// updateTeacherList();
-
-				c.gridy = 2;
-				teacherListScroller.setBorder(BorderFactory.createTitledBorder("Existierendes Personal"));	
-				add(teacherListScroller, c);
-				addTeacher(addNewTeacher.button);
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewTeacher);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(personalPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
-				
-				teacherList.addListSelectionListener(new ListSelectionListener() { 
-					public void valueChanged(ListSelectionEvent event) {
-						System.out.println("selected "+teacherList.getSelectedValue()+" "+teacherList.getSelectedIndex()+" "+teacherList.getComponentCount());
-						final DataPopup pop = new DataPopup(teacherList, teacherListModel);
-						setComponentPopupMenu(pop);	 
-						teacherList.addMouseListener(new MouseAdapter() {
-				            public void mouseClicked(MouseEvent e) {
-				            	if ( e.isMetaDown() ) {  				            	
-				            		pop.show(teacherList,e.getX(),e.getY()); 
-				            		System.out.println("YO");	
-				                }  
-				            }			      
-				        });
-						pop.edit.addActionListener(new ActionListener() {
-	                        public void actionPerformed(ActionEvent ae) {
-//	                       	 Teacher t = teacherListModel.getTeacherAt(teacherList.getSelectedIndex());
-//	                       	 addNewTeacher.nameField.setText(t.getName());
-//	                       	 addNewTeacher.acroField.setText(t.getAcronym());
-//	                       	 addNewTeacher.timeField.setText((String)t.getHoursPerWeek().toString());
-//	                       	 addNewTeacher.setVisible(true);
-	                         EditTeacherFrame editTeacher = new EditTeacherFrame();
-	                       	 editTeacher.setVisible(true);
-	                    	 Teacher t = teacherListModel.getTeacherAt(teacherList.getSelectedIndex());
-	                       	 editTeacher.nameField.setText(t.getName());
-	                       	 editTeacher.acroField.setText(t.getAcronym());
-	                       	 editTeacher.timeField.setText((String)t.getHoursPerWeek().toString());
-	                       }
-	                   });
-						pop.delete.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								DeleteDialogue deleteD = new DeleteDialogue();
-								deleteD.setVisible(true);
-							}
-						});
-					}});
 			}
 		});	
 
@@ -202,7 +147,7 @@ public class DataPanel extends JPanel {
 				schoolclassList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 				schoolclassListScroller.setPreferredSize(new Dimension(250, 200));
-				// updateTeacherList();
+				// updatepersonalList();
 
 				c.gridy = 2;
 				schoolclassListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Schulklassen"));
@@ -226,20 +171,20 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewSubject, c);
+				add(addNewStundeninhalt, c);
 
-				subjectList.setLayoutOrientation(JList.VERTICAL);
-				subjectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				stundeninhaltList.setLayoutOrientation(JList.VERTICAL);
+				stundeninhaltList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-				subjectListScroller.setPreferredSize(new Dimension(250, 200));
-				// updateTeacherList();
+				stundeninhaltListScroller.setPreferredSize(new Dimension(250, 200));
+				// updatepersonalList();
 
 				c.gridy = 2;
-				subjectListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Faecher"));
-				add(subjectListScroller, c);
-				addSubject(addNewSubject.button);
+				stundeninhaltListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Faecher"));
+				add(stundeninhaltListScroller, c);
+				addStundeninhalt(addNewStundeninhalt.button);
 				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewSubject);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewStundeninhalt);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
@@ -262,7 +207,7 @@ public class DataPanel extends JPanel {
 				roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 				roomListScroller.setPreferredSize(new Dimension(250, 200));
-				// updateTeacherList();
+				// updatepersonalList();
 
 				c.gridy = 2;
 				roomListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Räume"));
@@ -273,12 +218,32 @@ public class DataPanel extends JPanel {
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});		
+	
+	
+	// klick auf mRF
+			mRF.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					c.fill = GridBagConstraints.BOTH;
+					c.anchor = GridBagConstraints.EAST;
+					c.gridwidth = 1;
+					c.gridheight = 1;
+					c.gridx = 1;
+					c.gridy = 1;
+					c.weightx = 1.8;
+					c.weighty = 1.0;
+					removeOld();
+					add(raumfunktionPanel, c);
+					JFrame frame = (JFrame) SwingUtilities
+							.getWindowAncestor(raumfunktionPanel);
+					SwingUtilities.updateComponentTreeUI(frame);
+				}
+			});
 	}
 
-	private void addTeacher(JButton b) {
+	private void addPersonal(JButton b) {
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				// updateTeacherList();
+				// updatepersonalList();
 			}
 		});
 	}
@@ -291,10 +256,10 @@ public class DataPanel extends JPanel {
 		});
 	}
 
-	private void addSubject(JButton b) {
+	private void addStundeninhalt(JButton b) {
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//updateSubjectList();
+				//updatestundeninhaltList();
 			}
 		});
 	}
@@ -308,22 +273,23 @@ public class DataPanel extends JPanel {
 	}
 
 	private void removeOld() {
-		remove(addNewTeacher);
-		remove(addNewSubject);
+		remove(personalPanel);
+		remove(addNewStundeninhalt);
 		remove(addNewSchoolclass);
 		remove(addNewRoom);
-		remove(teacherListScroller);
-		remove(subjectListScroller);
+		remove(personalListScroller);
+		remove(stundeninhaltListScroller);
 		remove(schoolclassListScroller);
 		remove(roomListScroller);
+		remove(raumfunktionPanel);
 	}
 //
-//	public static void updateTeacherList() {
+//	public static void updatepersonalList() {
 //        try {
-//			Collection<Teacher> teachers = TeacherManager.getAllTeachers();
-//			teacherListModel.clear();
-//            for (final Teacher teacher : teachers) {
-//            	teacherListModel.addTeacher(teacher);
+//			Collection<personal> personals = personalManager.getAllpersonals();
+//			personalListModel.clear();
+//            for (final personal personal : personals) {
+//            	personalListModel.addpersonal(personal);
 //            }
 //		} catch (DatasetException e1) {
 //			e1.printStackTrace();
@@ -342,12 +308,12 @@ public class DataPanel extends JPanel {
 //		}
 //	}
 //
-//	public static void updateSubjectList() {
+//	public static void updatestundeninhaltList() {
 //        try {
-//		Collection<Subject> subjects = SubjectManager.getAllSubjects();
-//			subjectListModel.clear();
-//            for (final Subject subject : subjects) {
-//            	subjectListModel.addSubject(subject);
+//		Collection<stundeninhalt> stundeninhalts = stundeninhaltManager.getAllstundeninhalts();
+//			stundeninhaltListModel.clear();
+//            for (final stundeninhalt stundeninhalt : stundeninhalts) {
+//            	stundeninhaltListModel.addstundeninhalt(stundeninhalt);
 //            }
 //		} catch (DatasetException e1) {
 //			e1.printStackTrace();

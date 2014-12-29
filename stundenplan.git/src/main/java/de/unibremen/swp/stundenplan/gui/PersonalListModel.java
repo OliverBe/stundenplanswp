@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import de.unibremen.swp.stundenplan.data.Teacher;
+import de.unibremen.swp.stundenplan.data.Personal;
 
 /**
  * Das ListModel für die Lehrer.
@@ -29,7 +29,7 @@ import de.unibremen.swp.stundenplan.data.Teacher;
  * @version 0.1
  * 
  */
-public final class TeacherListModel extends DefaultListModel<String> {
+public final class PersonalListModel extends DefaultListModel<String> {
 
     /**
      * Die generierte serialVersionUID.
@@ -39,14 +39,14 @@ public final class TeacherListModel extends DefaultListModel<String> {
     /**
      * Die Liste der Lehrkräfte dieses Modells.
      */
-    private final List<Teacher> teachers;
+    private final List<Personal> personall;
 
     /**
      * Der Konstruktor für des TecherListMode. Hier wird nur die Liste der teacher initialisiert.
      */
-    protected TeacherListModel() {
+    protected PersonalListModel() {
         super();
-        teachers = new ArrayList<>();
+        personall = new ArrayList<>();
     }
 
     /**
@@ -55,9 +55,9 @@ public final class TeacherListModel extends DefaultListModel<String> {
      * @param teacher
      *            Der hinzuzufügende Lehrer.
      */
-    protected void addTeacher(final Teacher teacher) {
-        teachers.add(teacher);
-        addElement(String.format("%s (%s) %sh", teacher.getName(), teacher.getAcronym(), teacher.getHoursPerWeek().intValue()));
+    protected void addPersonal(final Personal personal) {
+        personall.add(personal);
+        addElement(String.format("%s (%s) %sh", personal.getName(), personal.getKuerzel(), personal.getIstZeit()));
     }
 
     /**
@@ -67,8 +67,8 @@ public final class TeacherListModel extends DefaultListModel<String> {
      *            Der Index an dem der Lehrer steht, der zurückgegeben werden soll.
      * @return die Lehrkraft am gegebenen Index
      */
-    protected Teacher getTeacherAt(final int index) {
-        return teachers.get(index);
+    protected Personal getPersonalAt(final int index) {
+        return personall.get(index);
     }
 
     /*
@@ -79,7 +79,7 @@ public final class TeacherListModel extends DefaultListModel<String> {
     @Override
     public void clear() {
         super.clear();
-        teachers.clear();
+        personall.clear();
     }
 
 }

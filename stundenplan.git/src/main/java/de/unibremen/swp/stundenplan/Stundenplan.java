@@ -22,9 +22,9 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
-
 /**
  * Hauptklasse für den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
  * und die GUI und zeigt dann das Hauptfenster an.
@@ -43,6 +43,14 @@ public final class Stundenplan {
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
+    	final MainFrame mainFrame= new MainFrame();
+    	try {
+			Config.init(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	Data.start();
     }
     
     /**
@@ -55,6 +63,6 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-            final MainFrame mainFrame= new MainFrame();
+            final Stundenplan stundenplan= new Stundenplan();
     }
 }

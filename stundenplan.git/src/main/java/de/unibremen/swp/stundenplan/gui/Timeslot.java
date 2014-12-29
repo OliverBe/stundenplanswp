@@ -78,7 +78,9 @@ public final class Timeslot implements Serializable {
     /**
      * Erzeugt eine neue Zeiteinheit mit leeren Sammlungen für die zugeordneten LehrerInnen und Schulklassen.
      */
-    public Timeslot() {
+    public Timeslot(Calendar pStart, Weekday pWeekday) {
+    	startzeit = pStart;
+    	wochentag = pWeekday;
     }
 
     /**
@@ -95,8 +97,6 @@ public final class Timeslot implements Serializable {
             startzeit = pstartzeit;
         }
     }
-
-    
     
     /**
      * Gibt die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. führenden Nullen zurück oder einen
@@ -112,4 +112,5 @@ public final class Timeslot implements Serializable {
         final int minute = startzeit.get(Calendar.MINUTE);
         return String.format("%02d:%02d", hour, minute);
     }
+    
 }

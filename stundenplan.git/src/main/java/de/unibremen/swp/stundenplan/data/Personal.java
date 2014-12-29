@@ -19,9 +19,6 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 
 public final class Personal {
-    
-    private int id;
-    
     /**
      * Der Name dieser LehrerIn.
      */
@@ -30,10 +27,7 @@ public final class Personal {
     /**
      * Das Kürzel dieser LehrerIn. Ein Kürzel muss systemweit eindeutig sein.
      */
-    private String acronym;
-
-    //integer referenziert zu stundeninhalt
-    private ArrayList<Integer> moeglicheStundeninhalte;
+    private String kuerzel;
     
     private int sollZeit;
     
@@ -42,14 +36,17 @@ public final class Personal {
     
     private int ersatzZeit;
     
-    //array of time[2] geht irgendwie nicht
-    private HashMap<Weekday,Time[]> wunschZeiten;
-    
     // schon einmal am tag gependelt true
     private boolean gependelt;
     
-    //lehrer true, p�dagoge false
+    //lehrer true, p�dagoge false
     private boolean lehrer;
+    
+    //integer referenziert zu stundeninhalt
+    private ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
+    
+    //array of time[2] geht irgendwie nicht
+    private HashMap<Weekday, int[]> wunschZeiten = new HashMap<Weekday,int[]>();
  
     /**
      * Gibt den Namen dieses Lehrers zurück.
@@ -61,10 +58,25 @@ public final class Personal {
     }
 
     /**
-     * Konstruktor f�r Personal.
+     * Konstruktor f�r Personal.
      *
      */
     public Personal(){
+    }
+    
+    /**
+     * Konstruktor f�r Personal.
+     *
+     */
+    public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte) {
+    	name = pName;
+    	kuerzel = pKuerzel;
+    	sollZeit = pSollZeit;
+    	istZeit = pIstZeit;
+    	ersatzZeit = pErsatzZeit;
+    	gependelt = pGependelt;
+    	lehrer = pLehrer;
+    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
     }
     
     /**
@@ -87,25 +99,25 @@ public final class Personal {
      * 
      * @return das Kürzel dieses LehrerIn
      */
-    public String getAcronym() {
-        return acronym;
+    public String getKuerzel() {
+        return kuerzel;
     }
 
     /**
      * Setzt das Kürzel dieser LehrerIn auf das übergebene Kürzel. Falls das Kürzel länger als
-     * {@linkplain Data#MAX_ACRONYM_LEN} Zeichen ist, wird es entsprechend gekürzt. Führende und folgende
+     * {@linkplain Data#MAX_kuerzel_LEN} Zeichen ist, wird es entsprechend gekürzt. Führende und folgende
      * Leerzeichen werden entfernt. Löst eine {@link IllegalArgumentException} aus, falls das Kürzel leer ist.
      * 
      * Die systemweite Eindeutigkeit des Kürzels wird hier NICHT geprüft!
      * 
-     * @param pAcronym
+     * @param pkuerzel
      *            das neue Kürzel dieser LehrerIn
      */
-    public void setAcronym(final String pAcronym) {
-        if (pAcronym == null || pAcronym.trim().isEmpty()) {
+    public void setKuerzel(final String pKuerzel) {
+        if (pKuerzel == null || pKuerzel.trim().isEmpty()) {
             throw new IllegalArgumentException("Kürzel der LehrerIn ist leer");
         }
-        acronym = pAcronym.trim().substring(0, Math.min(Data.MAX_ACRONYM_LEN, pAcronym.length()));
+        kuerzel = pKuerzel.trim().substring(0, Math.min(Data.MAX_KUERZEL_LEN, pKuerzel.length()));
     }
     
 //    public boolean arbeitetZuViel(){
@@ -124,7 +136,7 @@ public final class Personal {
     
     @Override
     public String toString() {
-        return String.format("Teacher [acronym=%s, name=%s, hpw=%.2f]", acronym, name, istZeit);
+        return String.format("Teacher [kuerzel=%s, name=%s, hpw=%.2f]", kuerzel, name, istZeit);
     }
 
     @Override
@@ -136,12 +148,12 @@ public final class Personal {
             return false;
         }
         final Personal that = (Personal) other;
-        return acronym.equals(that.acronym);
+        return kuerzel.equals(that.kuerzel);
     }
 
     @Override
     public int hashCode() {
-        return acronym.hashCode();
+        return kuerzel.hashCode();
     }
 
 	public int getErsatzZeit() {
@@ -174,19 +186,19 @@ public final class Personal {
 		istZeit = i;
 	}
 	
-	public ArrayList<Integer> getMoeglicheStundeninhalte() {
+	public ArrayList<String> getMoeglicheStundeninhalte() {
 		return moeglicheStundeninhalte;
 	}
 
-	public void setMoeglicheStundeninhalte(final ArrayList<Integer> pMoeglicheStundeninhalte) {
+	public void setMoeglicheStundeninhalte(final ArrayList<String> pMoeglicheStundeninhalte) {
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 	}
 
-	public HashMap<Weekday,Time[]> getWunschZeiten() {
+	public HashMap<Weekday,int[]> getWunschZeiten() {
 		return wunschZeiten;
 	}
 
-	public void setWunschZeiten(final HashMap<Weekday,Time[]> pWunschZeiten) {
+	public void setWunschZeiten(final HashMap<Weekday, int[]> pWunschZeiten) {
 		wunschZeiten = pWunschZeiten;
 	}
 
@@ -205,13 +217,4 @@ public final class Personal {
 	public void setLehrer(final boolean pLehrer) {
 		lehrer = pLehrer;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(final int pId) {
-		id = pId;
-	}
-
 }
