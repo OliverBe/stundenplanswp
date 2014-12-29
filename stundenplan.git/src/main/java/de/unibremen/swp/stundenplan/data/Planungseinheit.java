@@ -145,6 +145,10 @@ public class Planungseinheit implements Serializable{
 		endminute = pEndminute;
 	}
 	
+	/**
+	 *  Rechnet die Dauer des Planungseinheit aus
+	 * @return gib die Dauer der Planungseinheit in Minuten zurück
+	 */
 	public int duration(){
 		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
 	    return dur;
