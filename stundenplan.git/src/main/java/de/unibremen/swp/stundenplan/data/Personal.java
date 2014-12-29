@@ -120,19 +120,38 @@ public final class Personal {
         kuerzel = pKuerzel.trim().substring(0, Math.min(Data.MAX_KUERZEL_LEN, pKuerzel.length()));
     }
     
-//    public boolean arbeitetZuViel(){
-//    	int wochenStunden = hoursPerWeek.intValue();
-//    	int arbeitetStunden = arbeitsZeit.intValue();
-//    	if(wochenStunden < arbeitetStunden){
-//    		return true;
-//    	}
-//    	return false;
-//    }
+    /**
+     * istZeit wird in Minuten angegeben. Methode rechnet die Zeit in Stunden um.
+     * @return
+     * 		IstZeit in Stunden
+     */
+    public double berechneIstZeitInStunden(){
+	
+    	double ergebnis=0;
+	
+    	if(isLehrer()){
+    		ergebnis = istZeit/45;
+    		return ergebnis;
+    	}else{
+    		ergebnis = istZeit/60;
+    		return ergebnis;
+    	}
+	}
     
-//    public int kannNochSoVielArbeiten(){
-//    	int i = hoursPerWeek.intValue() - arbeitsZeit.intValue();
-//    	return i;
-//    }
+    /**
+     * Berechnet Sollzeit von Minuten in Stunden.
+     */
+    public double berechneSollZeitInStunden(){
+    	double ergebnis=0;
+    	
+    	if(isLehrer()){
+    		ergebnis = sollZeit/45;
+    		return ergebnis;
+    	}else{
+    		ergebnis = sollZeit/60;
+    		return ergebnis;
+    	}
+    }
     
     @Override
     public String toString() {
