@@ -15,18 +15,21 @@ public class Stundeninhalt {
      * Die eindeutige, von der unterliegenden Persistenzschicht automatisch erzeugte ID.
      */
     
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    
     private String name;
     
     private String kuerzel;
     
-    private int Regeldauer;
+    private int regeldauer;
     
     // 0 ist pause, 1 ist leicht, 2 ist schwer
     private int rythmusTyp;
 
+    public Stundeninhalt(final String pName, final String pKuerzel, final int pRegeldauer, final int pRythmusTyp){
+    	name=pName;
+    	kuerzel=pKuerzel;
+    	regeldauer=pRegeldauer;
+    	rythmusTyp=pRythmusTyp;
+    }
 	public String getName() {
 		return name;
 	}

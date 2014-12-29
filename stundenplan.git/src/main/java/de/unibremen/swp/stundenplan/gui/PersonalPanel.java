@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
@@ -18,54 +21,42 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.TableHeaderUI;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
+import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class PersonalPanel extends JPanel{
-	private String name;
-	private String acro;
-	private String time;
 
 	private Label lName = new Label("Name des Personals:");
-	private Label lAcro = new Label("Acronym:");
+	private Label lKuerz = new Label("Kuerzel:");
 	private Label lPrefTime = new Label("Zeitwunsch:");
-	private Label lBis = new Label("bis");
-	private Label lMo = new Label("Montag:");
-	private Label lDi = new Label("Dienstag:");
-	private Label lMi = new Label("Mittwoch:");
-	private Label lDo = new Label("Donnerstag:");
+
 	private Label lTime = new Label("Zeitverpflichtung in h:");
-	private Label lFr = new Label("Freitag:");
 
 	public TextField nameField = new TextField(15);
-	public TextField acroField = new TextField(5);
+	public TextField kuerzField = new TextField(5);
 	public TextField timeField= new TextField(5);
-	public TextField subjectsField= new TextField(5);
-	public TextField prefTimeFieldMoFrom= new TextField(5);
-	public TextField prefTimeFieldMoTo=new TextField(5);
-	public TextField prefTimeFieldDiFrom= new TextField(5);
-	public TextField prefTimeFieldDiTo=new TextField(5);
-	public TextField prefTimeFieldMiFrom= new TextField(5);
-	public TextField prefTimeFieldMiTo=new TextField(5);
-	public TextField prefTimeFieldDoFrom= new TextField(5);
-	public TextField prefTimeFieldDoTo=new TextField(5);
-	public TextField prefTimeFieldFrFrom= new TextField(5);
-	private Label lSubjects = new Label("Stundeninhalte:");
-	public TextField prefTimeFieldFrTo=new TextField(5);
+	private JLabel lSubjects = new JLabel("<html><body>Mögliche<br>Stundeninhalte :</body></html>");
 	
-	public JButton button = new JButton("Personal hinzufÃ¼gen");
+	public JButton button = new JButton("Personal hinzufuegen");
 	
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
@@ -123,101 +114,105 @@ public class PersonalPanel extends JPanel{
 
 		c.gridx=0;
 		c.gridy=1;
-		p.add(lAcro,c);
+		p.add(lKuerz,c);
 		c.gridx=1;
-		p.add(acroField,c);
+		p.add(kuerzField,c);
 			
 		c.gridx=0;
 		c.gridy=2;
 		p.add(lTime,c);
 		c.gridx=1;
 		p.add(timeField,c);
-		
-		
 		c.gridx=0;
 		c.gridy=3;
-		p.add(lPrefTime, c);
-		c.gridx=1;
-		p.add(lMo,c);
-		c.gridx=2;
-		p.add(prefTimeFieldMoFrom,c);
-		c.gridx=3;
-		p.add(lBis,c);
-		c.gridx=4;
-		p.add(prefTimeFieldMoTo,c);
+		p.add(lPrefTime,c);
+		
+		DefaultTableModel model = new DefaultTableModel();
+		JTable table = new JTable(model);
+		table.setColumnSelectionAllowed(false);
+
+		model.addColumn("Wochentag");
+		model.addColumn("Von (h)");
+		model.addColumn("Von (min)");
+		model.addColumn("Bis (h)");
+		model.addColumn("Bis (min)");
+		
+		String sh;
+		String sm;
+		String eh;
+		String em;
+		
+		if(Config.DAY_STARTTIME_HOUR<10){ 
+			sh="0"+Config.DAY_STARTTIME_HOUR;
+		}else{
+			sh=""+Config.DAY_STARTTIME_HOUR;
+		};		
+		if(Config.DAY_STARTTIME_MINUTE<10){ 
+			sm="0"+Config.DAY_STARTTIME_MINUTE;
+		}else{
+			sm=""+Config.DAY_STARTTIME_MINUTE;
+		};		
+		if(Config.DAY_ENDTIME_HOUR<10){ 
+			eh="0"+Config.DAY_ENDTIME_HOUR;
+		}else{
+			eh=""+Config.DAY_ENDTIME_HOUR;
+		};		
+		if(Config.DAY_ENDTIME_MINUTE<10){ 
+			em="0"+Config.DAY_ENDTIME_MINUTE;
+		}else{
+			em=""+Config.DAY_ENDTIME_MINUTE;
+		};		
+		
+		if(Config.MONDAY)model.addRow(new String[] {Config.MONDAY_STRING,sh,sm,eh,em});
+		if(Config.TUESDAY)model.addRow(new String[] {Config.TUESDAY_STRING,sh,sm,eh,em});
+		if(Config.WEDNESDAY)model.addRow(new String[] {Config.WEDNESDAY_STRING,sh,sm,eh,em});
+		if(Config.THURSDAY)model.addRow(new String[] {Config.THURSDAY_STRING,sh,sm,eh,em});
+		if(Config.FRIDAY)model.addRow(new String[] {Config.FRIDAY_STRING,sh,sm,eh,em});
+		if(Config.SATURDAY)model.addRow(new String[] {Config.SATURDAY_STRING,sh,sm,eh,em});
+		if(Config.SUNDAY)model.addRow(new String[] {Config.SUNDAY_STRING,sh,sm,eh,em});							
+				
 		c.gridy=4;
-		c.gridx=1;
-		p.add(lDi,c);
-		c.gridx=2;
-		p.add(prefTimeFieldDiFrom,c);
-		c.gridx=3;
-	//	p.add(lBis,c);
-		c.gridx=4;
-		p.add(prefTimeFieldDiTo,c);
+		c.gridwidth=5;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		p.add(table.getTableHeader(),c);
 		c.gridy=5;
-		c.gridx=1;
-		p.add(lMi,c);
-		c.gridx=2;
-		p.add(prefTimeFieldMiFrom,c);
-		c.gridx=3;
-	//	p.add(lBis,c);
-		c.gridx=4;
-		p.add(prefTimeFieldMiTo,c);
+		p.add(table,c);
+		
+		c.gridx=0;
 		c.gridy=6;
+		c.gridheight=2;
+		c.gridwidth=1;
+		lSubjects.setFont(new Font(nameField.getFont().getFontName(), Font.PLAIN, nameField.getFont().getSize()));
+		p.add(lSubjects, c);
+		c.gridheight=1;
 		c.gridx=1;
-		p.add(lDo,c);
-		c.gridx=2;
-		p.add(prefTimeFieldDoFrom,c);
-		c.gridx=3;
-	//	p.add(lBis,c);
-		c.gridx=4;
-		p.add(prefTimeFieldDoTo,c);
-		c.gridy=7;
-		c.gridx=1;
-		p.add(lFr,c);
-		c.gridx=2;
-		p.add(prefTimeFieldFrFrom,c);
-		c.gridx=3;
-	//	p.add(lBis,c);
-		c.gridx=4;
-		p.add(prefTimeFieldFrTo,c);
+		CheckBoxList checkList = new CheckBoxList();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+		
+//		for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalte()){
+//			boxes.add(new JCheckBox(s.getKuerzel()));
+//		};
+		boxes.add(new JCheckBox("Ma"));
+	
+	    checkList.setListData(boxes.toArray());
+		p.add(checkList,c);
 		
 		c.gridx=0;
 		c.gridy=8;
-		p.add(lSubjects, c);
-		c.gridx=1;
-		Label deutsch = new Label("Deutsch");
-		p.add(deutsch,c);
-		c.gridx=2;
-		Label mathe = new Label("Mathe");
-		p.add(mathe,c);
-		c.gridx=3;
-		Label musik=new Label("Musik");
-		p.add(musik,c);
-		
-		c.gridx=1;
-		c.gridy=9;
-		JCheckBox box1 = new JCheckBox();
-		p.add(box1,c);
-		c.gridx=2;
-		JCheckBox box2= new JCheckBox();
-		p.add(box2,c);
-		c.gridx=3;
-		JCheckBox box3= new JCheckBox();
-		p.add(box3,c);
-		
-		c.gridx=0;
-		c.gridy=11;
 		c.gridwidth=5;
 		c.fill=GridBagConstraints.HORIZONTAL;
 		p.add(button,c);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				Raumfunktion rf;
 				try {
 					listModel.clear();
 					if(!check(p)) throw new WrongInputException();
-					Personal pe = new Personal();
+					Personal pe = new Personal(
+							nameField.getText(),
+							kuerzField.getText(),
+							Integer.parseInt(timeField.getText()),
+							lehrerB.isSelected(),
+							new ArrayList<String>(checkList.getSelectedValuesList()));
 					PersonalManager.addPersonalToDb(pe);
 //					for (Personal pe : Data.getAllPersonal()){
 //						listModel.addElement(pe);
@@ -289,7 +284,12 @@ public class PersonalPanel extends JPanel{
 	
 	private boolean check(final JPanel p){
 		if(textFieldsEmpty(p)) return false;
-	//	if();
+		try{
+			Integer.parseInt(timeField.getText());
+		}catch(NumberFormatException e){
+			return false;
+		}
+		
 		return true;
 		
 	}

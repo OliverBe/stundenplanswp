@@ -75,7 +75,7 @@ public class RoomPanel extends JPanel{
 		p.add(new JComboBox(gebaeude),c);
 		c.gridx=0;
 		c.gridy=2;
-		p.add(new Label("Spezieller Raum fuer:"),c);
+		p.add(new Label("Spezieller Raum:"),c);
 		c.gridx=1;
 		CheckBoxList checkList = new CheckBoxList();
 	    JCheckBox[] boxes = {new JCheckBox("Musik"), new JCheckBox("Naturwissenschaften")};

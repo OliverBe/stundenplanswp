@@ -79,6 +79,14 @@ public final class Personal {
     	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
     }
     
+    public Personal(String pName, String pKuerzel, int pSollZeit, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte) {
+    	name = pName;
+    	kuerzel = pKuerzel;
+    	sollZeit = pSollZeit;
+    	lehrer = pLehrer;
+    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
+    }
+    
     /**
      * Setzt den Namen dieser LehrerIn auf den übergebenen Namen. Falls der Name länger als
      * {@linkplain Data#MAX_NORMAL_STRING_LEN} Zeichen ist, wird er entsprechend gekürzt. Führende und folgende
