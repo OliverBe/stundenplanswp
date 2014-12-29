@@ -324,9 +324,9 @@ public class Data {
 			sql = "SELECT * FROM Personal";
 			ResultSet rs = stmt.executeQuery(sql);
 		
-		while(rs.next()){
-			String kuerzel = rs.getString("kuerzel");
-			allPersonal.add(getPersonalByKuerzel(kuerzel));
+			while(rs.next()){
+				String kuerzel = rs.getString("kuerzel");
+				allPersonal.add(getPersonalByKuerzel(kuerzel));
 		}	
 		
 		}catch (SQLException e){

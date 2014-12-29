@@ -28,6 +28,8 @@ import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 import de.unibremen.swp.stundenplan.config.Config;
+import java.util.ArrayList;
+
 
 /**
  * Diese Utility-Klasse verwaltet die Tagespläne.
@@ -96,33 +98,14 @@ public final class TimetableManager {
 //        }
 //    }
 
-//    /**
-//     * Erzeugt für jeden Wochentag einen Tagesplan und fügt sie diesem Manager hinzu.
-//     * 
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-//    private static void fillDefaultDataForTeacher(final Teacher pTeacher) throws DatasetException {
-//
-//        for (final Weekday weekday : Weekday.values()) {
-//            final DayTable dayTable = createDayTableforTeacher(weekday,pTeacher);
-//            Data.addDayTable(dayTable);
-//        }
-//    }
-    
-//    /**
-//     * Erzeugt für jeden Wochentag einen Tagesplan und fügt sie diesem Manager hinzu.
-//     * 
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-//    private static void fillDefaultDataForSchoolclass(final Schoolclass pSchoolclass) throws DatasetException {
-//
-//        for (final Weekday weekday : Weekday.values()) {
-//            final DayTable dayTable = createDayTableForSchoolclass(weekday, pSchoolclass);
-//            Data.addDayTable(dayTable);
-//        }
-//    }
+    private static ArrayList<Weekday> givevaliddays(){
+    	final ArrayList<Weekday> schooldays = new ArrayList<Weekday>();
+    	for(final Weekday weekday : Weekday.values()){
+    		if(weekday.isSchoolday())schooldays.add(weekday);
+    	}
+    	return schooldays;
+    }
+
 //    /**
 //     * Erzeugt einen neuen Tagesplan für den angegebenen Wochentag und gibt ihn zurück.
 //     * 
@@ -132,69 +115,37 @@ public final class TimetableManager {
 //     * @throws DatasetException
 //     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
 //     */
-//    private static DayTable createDayTable(final Weekday weekday) throws DatasetException {
-//        final DayTable dayTable = new DayTable();
-//        dayTable.setWeekday(weekday);
-//        createTimeslotsForDayTable(dayTable);
-//        Data.addDayTable(dayTable);
-//        return dayTable;
-//    }
-//
-//    /**
-//     * Erzeugt einen neuen Tagesplan für den angegebenen Wochentag und gibt ihn zurück.
-//     * 
-//     * @param weekday
-//     *            der Wochentag des neuen Tagesplans
-//     * @return der neue Tagesplan
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-//    private static DayTable createDayTableforTeacher(final Weekday weekday, final Teacher pTeacher) throws DatasetException {
-//        final DayTable dayTable = new DayTable();
-//        dayTable.setWeekday(weekday);
-//        dayTable.setTeacher(pTeacher);
-//        createTimeslotsForDayTable(dayTable);
-//        Data.addDayTable(dayTable);
-//        return dayTable;
-//    }
-//    
-//    /**
-//     * Erzeugt einen neuen Tagesplan für den angegebenen Wochentag und gibt ihn zurück.
-//     * 
-//     * @param weekday
-//     *            der Wochentag des neuen Tagesplans
-//     * @return der neue Tagesplan
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-//    private static DayTable createDayTableForSchoolclass(final Weekday weekday, final Schoolclass pSchoolclass) throws DatasetException {
-//        final DayTable dayTable = new DayTable();
-//        dayTable.setWeekday(weekday);
-//        dayTable.setSchoolclass(pSchoolclass);
-//        createTimeslotsForDayTable(dayTable);
-//        Data.addDayTable(dayTable);
-//        return dayTable;
-//    }
-//    /**
-//     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
-//     * 
-//     * @param dayTable
-//     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
-//     */
-//    private static void createTimeslotsForDayTable(final DayTable dayTable) {
-//        final Calendar cal = Calendar.getInstance();
-//        cal.setTimeInMillis(0);
-//        cal.set(Calendar.HOUR, DayTable.STARTTIME_HOUR);
-//        cal.set(Calendar.MINUTE, DayTable.STARTTIME_MINUTE);
-//        for (int i = 0; i <= DayTable.LENGTH; i++) {
-//            final Timeslot timeslot = new Timeslot();
-//            dayTable.addTimeslot(timeslot);
-//            final Calendar newCal = Calendar.getInstance();
-//            newCal.setTimeInMillis(cal.getTimeInMillis());
-//            timeslot.setStartTime(newCal);
-//            cal.add(Calendar.MINUTE, Timeslot.LENGTH);
-//        }
-//    }
+    private static ArrayList<DayTable> createTimetable(){
+        final ArrayList<DayTable> dayTables = new ArrayList<DayTable>();
+        for(final Weekday weekday : givevaliddays()){
+        	dayTables.add(createTimeslots(weekday));
+        }
+        return dayTables;
+    }
+
+
+    /**
+     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * 
+     * @param dayTable
+     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     */
+    private static DayTable createTimeslots(Weekday pWeekday) {
+        final Calendar cal = Calendar.getInstance();
+        DayTable dayTable = new DayTable(pWeekday);
+        cal.setTimeInMillis(0);
+        cal.set(Calendar.HOUR, startTimeHour());
+        cal.set(Calendar.MINUTE, startTimeMinute());
+        for (int i = 0; i <= daytablelength(); i++) {
+            final Timeslot timeslot = new Timeslot(cal, pWeekday);
+            dayTable.addTimeslot(timeslot);
+            final Calendar newCal = Calendar.getInstance();
+            newCal.setTimeInMillis(cal.getTimeInMillis());
+            timeslot.setstartzeit(newCal);
+            cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+        }
+        return dayTable;
+   }
 //
 //    /**
 //     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
@@ -271,22 +222,26 @@ public final class TimetableManager {
 
     private static int startTimeMinute() {
 	// TODO Auto-generated method stub
-		return Config.DAY_STARTTIME_MINUTE;
+		return Config.getInt(Config.DAY_STARTTIME_MINUTE_STRING,
+	            Config.DAY_STARTTIME_MINUTE);
 	}
 
 	private static int startTimeHour() {
 		// TODO Auto-generated method stub
-		return Config.DAY_STARTTIME_HOUR;
+		return Config.getInt(Config.DAY_STARTTIME_HOUR_STRING,
+	            Config.DAY_STARTTIME_HOUR);
 	}
 
 	private static int endTimeMinute() {
 	// TODO Auto-generated method stub
-		return Config.DAY_ENDTIME_MINUTE;
+		return Config.getInt(Config.DAY_ENDTIME_MINUTE_STRING,
+	            Config.DAY_ENDTIME_MINUTE);
 	}
 
 	private static int endTimeHour() {
 		// TODO Auto-generated method stub
-		return Config.DAY_ENDTIME_HOUR;
+		return Config.getInt(Config.DAY_ENDTIME_HOUR_STRING,
+	            Config.DAY_ENDTIME_HOUR);
 	}
 	
 	/*
@@ -326,5 +281,80 @@ public final class TimetableManager {
 //    public static void updateTimeslot(final Timeslot pTimeslot) throws DatasetException {
 //        Data.updateTimeslot(pTimeslot);
 //    }
-
+	
+	///**
+	// * Repräsentiert einen Tagesplan eines Stundenplans an einem bestimmten Wochentag. Verwaltet eine Liste von
+	// * Zeiteinheiten. Jeder Tagesplan verwaltet innerhalb eines Stundenplans die gleiche Anzahl von Zeiteinheiten. Diese
+	// * Anzahl ist konfigurierbar und per Default auf {@linkplain Config#DAYTABLE_LENGTH_DEFAULT} festgelegt. Alle Tagespläne
+	// * beginnen zur gleichen konfigurierbaren Uhrzeit. Diese Startzeit ist per Default festgelegt auf die Stunde
+	// * {@linkplain Config#DAYTABLE_STARTTIME_HOUR_DEFAULT} und die Minute
+	// * {@linkplain Config#DAYTABLE_STARTTIME_MINUTE_DEFAULT}. Die Endzeit des Tagesplans ergibt sich dann aus der Startzeit
+	// * und der Anzahl der Zeiteinheiten.
+	// * 
+	// * @author F.Vidjaja
+	// * @version 0.1
+	// */
+	private static class DayTable {
+		
+	
+//	    /**
+//	     * Die Liste von Zeiteinheiten, aufsteigend sortiert nach ihren Anfangszeiten.
+//	     */
+	    private List<Timeslot> timeslots;
+	
+//	    /**
+//	     * Der Wochentag dieses Tagesplans.
+//	     */
+	    private Weekday weekday;
+	    
+	    
+	
+//	    /**
+//	     * Erzeugt einen neuen Tagesplan mit einer leeren Liste von Zeiteinheiten.
+//	     */
+	    public DayTable(final Weekday pWeekday) {
+	        timeslots = new ArrayList<>();
+	        weekday = pWeekday;
+	    }
+		    
+//	    /**
+//	     * Fügt die übergebene Zeiteinheit zu diesem Tagesplan hinzu. Löst eine {@link IllegalArgumentException} aus, falls
+//	     * die übergebene Zeiteinheit {@code null} ist
+//	     * 
+//	     * @param pTimeslot
+//	     *            die hinzuzufügende Zeiteinheit
+//	     */
+	    public void addTimeslot(final Timeslot pTimeslot) {
+	        if (pTimeslot == null) {
+	            throw new IllegalArgumentException("FIXME: configured exception string");
+	        }
+	        timeslots.add(pTimeslot);
+	    }
+	
+//	    /**
+//	     * Gibt den Wochentag dieses Tagesplans zurück.
+//	     * 
+//	     * @return den Wochentag dieses Tagesplans
+//	     */
+	    public Weekday getWeekday() {
+	        return weekday;
+	    }
+	
+//	    /**
+//	     * Gibt die Zeiteinheit am gegebenen Positionsindex zurück oder {@code null} falls ein ungültiger Positionsindex
+//	     * zurückgegeben wurde. Die erste Zeiteinheit des Tagesplans beginnt bei Index 0.
+//	     * 
+//	     * @param position
+//	     *            die Position der gesuchten Zeiteinheit
+//	     * @return die gesuchte Zeiteinheit oder {@code null}, falls eine ungültige Position übergeben wurde
+//	     */
+	    public Timeslot getTimeslot(final int position) {
+	        if (position >= 0 && position < timeslots.size()) {
+	            return timeslots.get(position);
+	        } else {
+	            return null;
+	        }
+	    }
+	}
+	
 }
