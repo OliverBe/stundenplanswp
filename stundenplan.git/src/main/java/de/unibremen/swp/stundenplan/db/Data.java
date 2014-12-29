@@ -6,13 +6,17 @@ import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.*;
 import de.unibremen.swp.stundenplan.data.*;
-
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
 	private static Connection c = null;
     private static Statement stmt = null;
     private static String sql;
+	
+	public static void main( String args[] ) {
+	    Statement stmt = null;
+	    String sql;
+	}
 	
     private Data() {}
     
@@ -283,6 +287,7 @@ public class Data {
 	
 	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
+   
 			sql = "SELECT * FROM Personal WHERE kuerzel = " + pKuerzel + ";";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
@@ -305,9 +310,10 @@ public class Data {
 		}
 		return null;
 	}
+
 	
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
-		try {
+		try{
 			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
 			sql = "SELECT * FROM Raumfunktion;";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -331,16 +337,7 @@ public class Data {
 			
 		}
 	}
-	
-	public static void close() {
-    	try {
-    		stmt.close();
-    		c.close();
-    	}catch (Exception e) {
-    		System.out.println("Error on closing.");
-    	}
-	}
-	
+		
 	public static void dbRaumLesen() {
 		try {
 			sql = "SELECT * FROM Raum;";
@@ -349,5 +346,14 @@ public class Data {
 				System.out.println("Name: " + rs.getString("name") + ", Gebäudennr: " + rs.getInt("gebaeudennr"));
 			}
 		}catch(SQLException e) {}
+	}
+	
+	public static void close() {
+		try {
+			stmt.close();
+			c.close();
+		}catch (Exception e) {
+			System.out.println("Error on closing.");
+		}
 	}
 }
