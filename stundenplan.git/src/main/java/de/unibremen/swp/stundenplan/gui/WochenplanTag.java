@@ -87,7 +87,7 @@ public class WochenplanTag extends JPanel {
 				String text2 = text.substring(1,3);
 				String text3 = text.substring(3, text.length());
 			}
-			String text = ""+i;
+			String text = ""+""+i;
 			String text2 = text.substring(0,2);
 			String text3 = text.substring(2, text.length());
 			
