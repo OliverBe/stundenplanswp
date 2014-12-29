@@ -58,7 +58,7 @@ public class Data {
 	    	//Raum
 	    	sql = "CREATE TABLE IF NOT EXISTS Raum "
 	    			+ "(name VARCHAR NOT NULL,"
-	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL "
+	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "gebaeudennr INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -295,7 +295,7 @@ public class Data {
 			String name = rs.getString("name");
 			String kuerzel = rs.getString("kuerzel");
 			int gebaeude = rs.getInt("gebaeude");
-			// TODO Liste mit Raumfunktionen per raum.addMoeglicheFunktion hinzufügen
+			// TODO Liste mit Raumfunktionen per raum.addMoeglicheFunktion hinzufï¿½gen
 			Room raum = new Room(name, kuerzel, gebaeude);
 			return raum;
 		}catch (SQLException e){
