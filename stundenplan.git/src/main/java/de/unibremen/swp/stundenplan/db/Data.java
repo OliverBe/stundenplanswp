@@ -11,9 +11,9 @@ import de.unibremen.swp.stundenplan.data.Personal;
 public class Data {
 	public final static int MAX_ACRONYM_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
+	public static Connection c = null;
 	
 	public static void main( String args[] ) {
-	    Connection c = null;
 	    Statement stmt = null;
 	    String sql;
 	    try {
@@ -98,10 +98,8 @@ public class Data {
 	 */
 	public static void addPersonal(final Personal person){
 		try {
-		Connection c = null;
 		Statement stmt = null;
 	    String sql;
-	    c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
 	    
 			stmt = c.createStatement();
 			sql = "INSERT INTO Personal VALUES("
@@ -131,10 +129,8 @@ public class Data {
 	public static Personal getPersonalByAcronym(final String pAcro){
 		
 		try {
-			Connection c = null;
 			Statement stmt = null;
 		    String sql;
-		    c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
 		    
 		    stmt = c.createStatement();
 		    sql = "SELECT * FROM Personal where kuerzel= "+pAcro;
