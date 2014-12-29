@@ -66,6 +66,17 @@ public class PersonalManager {
      * Gibt Liste mit allem Personal in der DB zurück. Leitet Anfrage an DB weiter.
      */
     public static ArrayList<Personal> getAllPersonalFromDB(){
-    	System.out.println()
+    	ArrayList<Personal> personal = Data.getAllPersonal();
+    	
+    	if(personal.size() == 0){
+    		System.out.println("No Personal in DB");
+    	}else{
+    	System.out.println("Personal in DB: ");
+    		for(int i=0; i<personal.size(); i++){
+    			System.out.println(personal.get(i));
+    		}
+    	}
+    	
+		return personal;
     }
 }
