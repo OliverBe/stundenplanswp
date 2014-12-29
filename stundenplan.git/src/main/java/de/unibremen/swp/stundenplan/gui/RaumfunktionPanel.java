@@ -41,11 +41,20 @@ public class RaumfunktionPanel extends JPanel {
 
 		public RaumfunktionPanel() {
 			setLayout(new GridBagLayout());
-			createAddPanel(new JPanel());
-			createListPanel(new JPanel());
+			c2.fill=GridBagConstraints.BOTH;
+			c2.anchor = GridBagConstraints.EAST;
+			c2.gridwidth = 1;
+			c2.gridheight = 1;
+			c2.gridx = 1;
+			c2.gridy = 1;
+			c2.weightx = 1.8;
+			c2.weighty = 1.0;
+			add(createAddPanel(new JPanel()),c2);
+			c2.gridy=2;
+			add(createListPanel(new JPanel()),c2);
 		}
 		
-		private void createAddPanel(final JPanel p){
+		private JPanel createAddPanel(final JPanel p){
 			p.setLayout(new GridBagLayout());
 			p.setBorder(BorderFactory
 					.createTitledBorder("Funktionen von Räumen "));
@@ -77,19 +86,12 @@ public class RaumfunktionPanel extends JPanel {
 						e.printStackTrace();
 					}
 				}
-			});
-			c2.fill=GridBagConstraints.BOTH;
-			c2.anchor = GridBagConstraints.EAST;
-			c2.gridwidth = 1;
-			c2.gridheight = 1;
-			c2.gridx = 1;
-			c2.gridy = 1;
-			c2.weightx = 1.8;
-			c2.weighty = 1.0;
-			add(p,c2);
+			});		
+			
+			return p;
 		}
 		
-		private void createListPanel(final JPanel p){
+		private JPanel createListPanel(final JPanel p){
 			p.setLayout(new GridBagLayout());
 			p.setBorder(BorderFactory.createTitledBorder("Existierende Raumfunktionen"));
 			
@@ -107,8 +109,7 @@ public class RaumfunktionPanel extends JPanel {
 			c.weighty = 1.0;
 			p.add(listScroller, c);
 			
-			c2.gridy=2;
-			add(p,c2);
+			return p;
 		}
 		
 		private boolean textFieldsEmpty(final JPanel p){

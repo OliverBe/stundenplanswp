@@ -46,7 +46,6 @@ public class DataPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	private JMenuBar menuBar = new JMenuBar();
 
 	private JMenuItem mP = new JMenuItem("Personal");
@@ -57,26 +56,10 @@ public class DataPanel extends JPanel {
 
 	private RaumfunktionPanel raumfunktionPanel = new RaumfunktionPanel();
 	private PersonalPanel personalPanel = new PersonalPanel();
-	
-	private AddNewPersonal addNewPersonal = new AddNewPersonal();
-	private AddNewStundeninhalt addNewStundeninhalt = new AddNewStundeninhalt();
-	private AddNewSchoolclass addNewSchoolclass = new AddNewSchoolclass();
-	private AddNewRoom addNewRoom = new AddNewRoom();
+	private SchoolclassPanel schoolclassPanel = new SchoolclassPanel();
+	private StundeninhaltPanel stundeninhaltPanel = new StundeninhaltPanel();
+	private RoomPanel roomPanel = new RoomPanel();
 
-	private static PersonalListModel personalListModel = new PersonalListModel();
-	private static SchoolclassListModel schoolclassListModel = new SchoolclassListModel();
-	private static StundeninhaltListModel stundeninhaltListModel = new StundeninhaltListModel();
-	private static RoomListModel roomListModel = new RoomListModel();
-	
-	private JList<String> personalList = new JList<String>(personalListModel);;
-	private JList<String> schoolclassList = new JList<String>(schoolclassListModel);
-	private JList<String> stundeninhaltList = new JList<String>(stundeninhaltListModel);
-	private JList<String> roomList = new JList<String>(roomListModel);
-
-	private JScrollPane personalListScroller = new JScrollPane(personalList);
-	private JScrollPane schoolclassListScroller = new JScrollPane(schoolclassList);
-	private JScrollPane stundeninhaltListScroller = new JScrollPane(stundeninhaltList);
-	private JScrollPane roomListScroller = new JScrollPane(roomList);
 
 	public DataPanel() {
 		initComponents();
@@ -124,6 +107,8 @@ public class DataPanel extends JPanel {
 				removeOld();
 				add(personalPanel, c);
 				
+				personalPanel.nameField.requestFocus();
+				
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(personalPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
@@ -141,20 +126,9 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewSchoolclass, c);
-
-				schoolclassList.setLayoutOrientation(JList.VERTICAL);
-				schoolclassList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-				schoolclassListScroller.setPreferredSize(new Dimension(250, 200));
-				// updatepersonalList();
-
-				c.gridy = 2;
-				schoolclassListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Schulklassen"));
-				add(schoolclassListScroller, c);
-				addSchoolclass(addNewSchoolclass.button);
+				add(schoolclassPanel, c);
 				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewSchoolclass);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(schoolclassPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
@@ -171,20 +145,9 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewStundeninhalt, c);
-
-				stundeninhaltList.setLayoutOrientation(JList.VERTICAL);
-				stundeninhaltList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-				stundeninhaltListScroller.setPreferredSize(new Dimension(250, 200));
-				// updatepersonalList();
-
-				c.gridy = 2;
-				stundeninhaltListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Faecher"));
-				add(stundeninhaltListScroller, c);
-				addStundeninhalt(addNewStundeninhalt.button);
+				add(stundeninhaltPanel, c);
 				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewStundeninhalt);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(stundeninhaltPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
@@ -201,20 +164,9 @@ public class DataPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				removeOld();
-				add(addNewRoom, c);
-
-				roomList.setLayoutOrientation(JList.VERTICAL);
-				roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-				roomListScroller.setPreferredSize(new Dimension(250, 200));
-				// updatepersonalList();
-
-				c.gridy = 2;
-				roomListScroller.setBorder(BorderFactory.createTitledBorder("Existierende Räume"));
-				add(roomListScroller, c);
-				addRoom(addNewRoom.button);
+				add(roomPanel, c);
 				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(addNewRoom);
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(roomPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});		
@@ -240,47 +192,11 @@ public class DataPanel extends JPanel {
 			});
 	}
 
-	private void addPersonal(JButton b) {
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				// updatepersonalList();
-			}
-		});
-	}
-
-	private void addSchoolclass(JButton b) {
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				//updateSchoolclassList();
-			}
-		});
-	}
-
-	private void addStundeninhalt(JButton b) {
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				//updatestundeninhaltList();
-			}
-		});
-	}
-	
-	private void addRoom(JButton b) {
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				// updateRoomList();
-			}
-		});
-	}
-
 	private void removeOld() {
 		remove(personalPanel);
-		remove(addNewStundeninhalt);
-		remove(addNewSchoolclass);
-		remove(addNewRoom);
-		remove(personalListScroller);
-		remove(stundeninhaltListScroller);
-		remove(schoolclassListScroller);
-		remove(roomListScroller);
+		remove(stundeninhaltPanel);
+		remove(schoolclassPanel);
+		remove(roomPanel);
 		remove(raumfunktionPanel);
 	}
 //
