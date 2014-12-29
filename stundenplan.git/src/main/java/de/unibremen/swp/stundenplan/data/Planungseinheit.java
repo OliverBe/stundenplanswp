@@ -31,7 +31,6 @@ public class Planungseinheit implements Serializable{
 	private int endminute;
 	
 	public Planungseinheit(){
-		
 	}
 	
 	public void addStundeninhalt (final Stundeninhalt pSI){
@@ -81,10 +80,54 @@ public class Planungseinheit implements Serializable{
 		}
 		return null;
 	}
-	
 	public HashMap<Personal, Time[]> getPersonal(){
 		return personal;
 	}
 	
-	public 
+	public Time[] getTimesofPersonal(final Personal pPerson){
+		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
+		return personal.get(pPerson);
+	}
+	
+	public boolean containsPersonal(final Personal pPerson){
+		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
+		if(personal.get(pPerson) != null){return true;}
+		return false;
+	}
+	
+	public int getStartHour(){
+		return starthour;
+	}
+	
+	public void setStarthour(final int pStarthour){
+		if(pStarthour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
+		starthour = pStarthour;
+	}
+	
+	public int getStartminute(){
+		return startminute;
+	}
+	
+	public void setStartminute(final int pStartminute){
+		if(pStartminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
+		startminute = pStartminute;
+	}
+	
+	public int getEndhour(){
+		return endhour;
+	}
+	
+	public void setEndhour(final int pEndhour){
+		if(pEndhour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
+		endhour = pEndhour;
+	}
+	
+	public int getEndminute(){
+		return endminute;
+	}
+	
+	public void setEndminute(final int pEndminute){
+		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
+		endminute = pEndminute;
+	}
 }
