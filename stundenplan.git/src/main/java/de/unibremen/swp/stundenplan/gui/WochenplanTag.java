@@ -1,4 +1,7 @@
 package de.unibremen.swp.stundenplan.gui;
+import de.unibremen.swp.stundenplan.*;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.db.Data;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -35,13 +40,22 @@ public class WochenplanTag extends JPanel {
 	public JTable table;
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
+	List<Personal> personalliste = new ArrayList<>();
+	public Personal p1 = new Personal("Testperson 1", "t1", 38, 38, 38, false, true, null);
+	public Personal p2 = new Personal("Testperson 2", "t2", 38, 38, 38, false, true, null);
+	public Personal p3 = new Personal("Testperson 3", "t3", 38, 38, 38, false, true, null);
+	public Personal p4 = new Personal("Testperson 4", "t4", 38, 38, 38, false, true, null);
 	
 	public WochenplanTag() {
 		init();
-		addColumns();
+		addData();
 	}
 	
 	public void init(){
+		personalliste.add(p1);
+		personalliste.add(p2);
+		personalliste.add(p3);
+		personalliste.add(p4);
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -110,9 +124,11 @@ public class WochenplanTag extends JPanel {
 		
 	}
 	
-	public void addColumns(){
-		for(String e: testeingaben){
-			model.addRow(new Object[] { e });
+	public void addData(){
+		for(Personal e: personalliste){
+
+			String nachname = e.getName();
+			model.addRow(new Object[] { nachname });
 		}
 	}
 
