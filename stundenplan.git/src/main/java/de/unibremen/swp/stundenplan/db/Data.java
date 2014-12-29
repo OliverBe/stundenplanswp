@@ -337,16 +337,7 @@ public class Data {
 			
 		}
 	}
-	
-	public static void close() {
-    	try {
-    		stmt.close();
-    		c.close();
-    	}catch (Exception e) {
-    		System.out.println("Error on closing.");
-    	}
-	}
-	
+		
 	public static void dbRaumLesen() {
 		try {
 			sql = "SELECT * FROM Raum;";
@@ -355,5 +346,14 @@ public class Data {
 				System.out.println("Name: " + rs.getString("name") + ", Gebäudennr: " + rs.getInt("gebaeudennr"));
 			}
 		}catch(SQLException e) {}
+	}
+	
+	public static void close() {
+		try {
+			stmt.close();
+			c.close();
+		}catch (Exception e) {
+			System.out.println("Error on closing.");
+		}
 	}
 }
