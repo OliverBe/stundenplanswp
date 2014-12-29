@@ -35,6 +35,8 @@ public class TimetableModel extends AbstractTableModel {
      * Die generierte serialVersionUID.
      */
     private static final long serialVersionUID = -903748217005098057L;
+    
+    
 
     /*
      * (non-Javadoc)

@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
 
 //Diese Klasse repr�sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
@@ -29,14 +30,15 @@ public class WochenplanTag extends JPanel {
 	
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
-	String[] columnNames = { "8:00 - 9:00", "9:00 - 10:00", "10:00- 11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00"};
-	String[][] rowData = { {"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""},{"","","","","","","","","",""}};
+	String[] testeingaben = {"Name 1","Name 2","Name 3","Name 4", "Name 5"};
+	String[][] rowData = { {"","","","","","AA","BB","","","",""}};
 	public JTable table;
 	public JLabel warning = new JLabel();
-
-	private DefaultListModel<String> pListe = new DefaultListModel<String>();
+	public DefaultTableModel model = new DefaultTableModel();
+	
 	public WochenplanTag() {
 		init();
+		addColumns();
 	}
 	
 	public void init(){
@@ -48,25 +50,30 @@ public class WochenplanTag extends JPanel {
 		c.weighty = 1.0;
 		c.gridx = 0;
 		c.gridy = 0;
-		JMenuBar menuBar;
-		JMenu menu;
-		menuBar = new JMenuBar();
-		table = new JTable(rowData, columnNames);
+		
+		table = new JTable(model);
+		model.addColumn("Personal");
+		model.addColumn("8:00");
+		model.addColumn("9:00");
+		model.addColumn("10:00");
+		model.addColumn("11:00");
+		model.addColumn("12:00");
+		model.addColumn("13:00");
+		model.addColumn("15:00");
+		model.addColumn("16:00");
+		model.addColumn("17:00");
+		model.addColumn("18:00");
 		table.setRowSelectionAllowed(true);
-		table.setRowHeight(50);
+		table.setRowHeight(30);
 		JScrollPane pane = new JScrollPane(table);
 
-		
-		menu = new JMenu("Personal");
-		menuBar.add(menu);
-		add(menuBar, c);
 		
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridwidth = 4;
 		c.gridy = 0;
 		c.gridx = 1;
-		pane.setPreferredSize(new Dimension(500, 350));
+		pane.setPreferredSize(new Dimension(1400, 700));
 		add(pane,c);
 		JButton pdf = new JButton("PDF");
 		JButton csv = new JButton("CSV");
@@ -101,6 +108,12 @@ public class WochenplanTag extends JPanel {
 		add(warning, c);
 		
 		
+	}
+	
+	public void addColumns(){
+		for(String e: testeingaben){
+			model.addRow(new Object[] { e });
+		}
 	}
 
 	

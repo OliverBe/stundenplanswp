@@ -25,6 +25,7 @@ import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
 /**
  * Hauptklasse für den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
  * und die GUI und zeigt dann das Hauptfenster an.
