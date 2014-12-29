@@ -319,9 +319,10 @@ public class Data {
 	 */
 	public static ArrayList<Personal> getAllPersonal() {
 		ArrayList<Personal> allPersonal = new ArrayList<>();
+		
 		try {
-		sql = "SELECT * FROM Personal";
-		ResultSet rs = stmt.executeQuery(sql);
+			sql = "SELECT * FROM Personal";
+			ResultSet rs = stmt.executeQuery(sql);
 		
 		while(rs.next()){
 			String kuerzel = rs.getString("kuerzel");
