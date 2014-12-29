@@ -244,16 +244,13 @@ public final class TimetableManager {
 	            Config.DAY_ENDTIME_HOUR);
 	}
 	
-	/*
-	 * errechnet die Anzahl der Timeslots die in dem Tag passt
-	 */
-	public static int daytablelength() {
+	public static int duration(final int pStarthour,final int pStartminute,final int pEndhour,final int pEndminute){
 		final Calendar starttime = Calendar.getInstance();
-		starttime.set(Calendar.HOUR_OF_DAY, startTimeHour());
-		starttime.set(Calendar.MINUTE, startTimeMinute());
+		starttime.set(Calendar.HOUR_OF_DAY, pStarthour);
+		starttime.set(Calendar.MINUTE, pStartminute);
 		final Calendar endtime = Calendar.getInstance();
-		endtime.set(Calendar.HOUR_OF_DAY, endTimeHour());
-		endtime.set(Calendar.MINUTE, endTimeMinute());
+		endtime.set(Calendar.HOUR_OF_DAY, pEndhour);
+		endtime.set(Calendar.MINUTE, pEndminute);
 		long milliSec1 = starttime.getTimeInMillis();
         long milliSec2 = endtime.getTimeInMillis();
         long timeDifInMilliSec;
@@ -266,7 +263,14 @@ public final class TimetableManager {
             timeDifInMilliSec = milliSec2 - milliSec1;
         }
         long timeDifMinutes = timeDifInMilliSec / (60 * 1000);
-        return (int) (timeDifMinutes/Timeslot.LENGTH);
+        return (int) timeDifMinutes;
+	}
+	/*
+	 * errechnet die Anzahl der Timeslots die in dem Tag passt
+	 */
+	public static int daytablelength() {
+		int dur = duration(startTimeHour(),startTimeMinute(),endTimeHour(),endTimeMinute());
+        return dur/Timeslot.LENGTH;
 	}
 
 //    /**
