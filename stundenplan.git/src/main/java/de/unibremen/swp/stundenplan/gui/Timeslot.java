@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
 
 /**
  * Entspricht einer Zeiteinheit. Eine Zeiteinheit ist einem Tagesplan zugeordnet und hat eine startzeit. Die Dauer einer
@@ -121,16 +122,32 @@ public final class Timeslot implements Serializable {
     	return stundeninhaltetext;
     }
     
+    public void setStundeninhalttext(final Planungseinheit pPE){
+    	stundeninhaltetext = pPE.stundenInhaltetoString();
+    }
+    
     public String getPersonaltext(){
     	return personaltext;
+    }
+
+    public void setPersonaltext(final Planungseinheit pPE){
+    	personaltext = pPE.personaltoString();
     }
     
     public String getRaeumetext(){
     	return raumtext;
     }
     
+    public void setRaumtext(final Planungseinheit pPE){
+    	stundeninhaltetext = pPE.roomstoString();
+    }
+    
     public String getKlassentext(){
     	return klassetext;
+    }
+    
+    public void setKlassentext(final Planungseinheit pPE){
+    	klassetext = pPE.schoolclassestoString();
     }
     
 }
