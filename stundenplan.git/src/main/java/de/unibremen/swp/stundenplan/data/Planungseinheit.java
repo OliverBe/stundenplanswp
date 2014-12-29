@@ -59,6 +59,42 @@ public class Planungseinheit implements Serializable{
 		return stundeninhalte;
 	}
 	
+	public String schoolclassestoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Schoolclass sc : schulklassen){
+			sb.append(sc.getName());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String roomstoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Room r : raeume){
+			sb.append(r.getKuerzel());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String personaltoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Personal p : personal.keySet()){
+			sb.append(p.getKuerzel());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String stundenInhaltetoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Stundeninhalt si : stundeninhalte){
+			sb.append(si.getKuerzel());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
 	public ArrayList<Schoolclass> getSchoolclasses(){
 	 return schulklassen;	
 	} 
@@ -145,6 +181,10 @@ public class Planungseinheit implements Serializable{
 		endminute = pEndminute;
 	}
 	
+	/**
+	 *  Rechnet die Dauer des Planungseinheit aus
+	 * @return gib die Dauer der Planungseinheit in Minuten zurück
+	 */
 	public int duration(){
 		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
 	    return dur;
