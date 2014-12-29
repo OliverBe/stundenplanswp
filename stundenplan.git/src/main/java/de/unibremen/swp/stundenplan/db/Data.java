@@ -16,6 +16,8 @@ public class Data {
 	public static void main( String args[] ) {
 	    Statement stmt = null;
 	    String sql;
+	}
+	
     private Data() {}
     
 	public static void start() {
@@ -285,25 +287,7 @@ public class Data {
 	
 	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
-		Statement stmt = null;
-	    String sql;
-	    
-			stmt = c.createStatement();
-			sql = "INSERT INTO Personal VALUES("
-					+person.getId()+","
-					+person.getName()+","
-					+person.getAcronym()+","
-					+person.getSollZeit()+","
-					+person.getIstZeit()+","
-					+person.getErsatzZeit()+","
-					+person.isGependelt()+","
-					+person.isLehrer();
-				stmt.executeUpdate(sql);
-    	
-	    }catch ( Exception e ) {
-	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	    	System.exit(0);
-	    }
+   
 			sql = "SELECT * FROM Personal WHERE kuerzel = " + pKuerzel + ";";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
@@ -326,34 +310,10 @@ public class Data {
 		}
 		return null;
 	}
+
 	
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
-		try {
-			Statement stmt = null;
-		    String sql;
-		    
-		    stmt = c.createStatement();
-		    sql = "SELECT * FROM Personal where kuerzel= "+pAcro;
-		    ResultSet result = stmt.executeQuery(sql);
-		    
-		    if(result.next()){
-			    Personal personal = new Personal();
-			    personal.setId(result.getInt(1));
-			    personal.setName(result.getString(2));
-			    personal.setAcronym(result.getString(3));
-			    personal.setSollZeit(result.getInt(4));
-			    personal.setIstZeit(result.getInt(5));
-			    personal.setErsatzZeit(result.getInt(6));
-			    personal.setGependelt(result.getBoolean(7));
-			    personal.setLehrer(result.getBoolean(8));
-			    
-			    return personal;
-		    }
-		    
-		}catch ( Exception e ) {
-	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	    	System.exit(0);
-	    }
+		try{
 			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
 			sql = "SELECT * FROM Raumfunktion;";
 			ResultSet rs = stmt.executeQuery(sql);
