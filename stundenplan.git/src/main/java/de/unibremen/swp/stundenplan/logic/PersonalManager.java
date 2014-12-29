@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import de.unibremen.swp.stundenplan.data.*;
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 /**
@@ -26,7 +27,7 @@ public class PersonalManager {
 	 */
 	public static void addPersonalToDb(final Personal personal){
 		System.out.println("adding Personal...");
-		Data.addPersonal(personal);
+		DataPersonal.addPersonal(personal);
 		System.out.println("added Personal: "+personal);
 	}
 	
@@ -39,7 +40,7 @@ public class PersonalManager {
      */
     public static Personal getPersonalByKuerzel(final String kuerz) {
     	System.out.println("Searching for Personal with acro: "+kuerz+"...");
-    	Personal p = Data.getPersonalByKuerzel(kuerz);
+    	Personal p = DataPersonal.getPersonalByKuerzel(kuerz);
     	if(p!=null){
     		System.out.println("Found: "+p);
     	}else{
@@ -56,7 +57,7 @@ public class PersonalManager {
     public static void deletePersonalFromDB(final String kuerz)	{
     	if(getPersonalByKuerzel(kuerz)!= null){
     		System.out.println("Deleting...");
-    		Data.deletePersonalByKuerzel(kuerz);
+    		DataPersonal.deletePersonalByKuerzel(kuerz);
     	}else{
     		System.out.println("Kuerzel "+kuerz+" not found.");
     	}
@@ -66,7 +67,7 @@ public class PersonalManager {
      * Gibt Liste mit allem Personal in der DB zurück. Leitet Anfrage an DB weiter.
      */
     public static ArrayList<Personal> getAllPersonalFromDB(){
-    	ArrayList<Personal> personal = Data.getAllPersonal();
+    	ArrayList<Personal> personal = DataPersonal.getAllPersonal();
     	
     	if(personal.size() == 0){
     		System.out.println("No Personal in DB");
