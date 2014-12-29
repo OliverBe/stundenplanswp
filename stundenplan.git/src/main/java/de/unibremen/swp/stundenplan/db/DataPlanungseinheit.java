@@ -19,25 +19,25 @@ public class DataPlanungseinheit {
 //			stmt.executeUpdate(sql);
 //			for(int kuerzel : planungseinheit.getStundeninhalte()) {
 //				sql = "INSERT INTO planungseinheit_Stundeninhalt "
-//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ "VALUES (" + planungseinheit.getId() + ",'"
 //						+ kuerzel + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int name : planungseinheit.getKlassen()) {
 //				sql = "INSERT INTO planungseinheit_Schulklasse "
-//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ "VALUES (" + planungseinheit.getId() + ",'"
 //						+ name + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int name : planungseinheit.getRaeume()) {
 //				sql = "INSERT INTO planungseinheit_Raum "
-//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ "VALUES (" + planungseinheit.getId() + ",'"
 //						+ name + "');";
 //				stmt.executeUpdate(sql);
 //			}
 //			for(int kuerzel : planungseinheit.getPersonal()) {
 //				sql = "INSERT INTO planungseinheit_Personal "
-//						+ "VAUES (" + planungseinheit.getId() + ",'"
+//						+ "VALUES (" + planungseinheit.getId() + ",'"
 //						+ kuerzel + "');";
 //				stmt.executeUpdate(sql);
 //			}
