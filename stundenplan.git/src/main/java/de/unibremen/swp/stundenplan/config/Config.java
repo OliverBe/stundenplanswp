@@ -88,13 +88,13 @@ public final class Config {
     /**
      * Der Schlüssel für den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
-    public static final String DAYT_STARTTIME_MINUTE_STRING = "startminute";
+    public static final String DAY_STARTTIME_MINUTE_STRING = "startminute";
     
     public static int DAY_ENDTIME_HOUR = 15;
     public static final String DAY_ENDTIME_HOUR_STRING = "endhour";
     
     public static int DAY_ENDTIME_MINUTE = 00;
-    public static final String DAYT_ENDTIME_MINUTE_STRING = "endminute";
+    public static final String DAY_ENDTIME_MINUTE_STRING = "endminute";
 
     /**
      * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
