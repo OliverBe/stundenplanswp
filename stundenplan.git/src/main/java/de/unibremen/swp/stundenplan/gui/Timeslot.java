@@ -75,6 +75,10 @@ public final class Timeslot implements Serializable {
 
     private Weekday wochentag;
     
+    private String stundeninhaltetext;
+    private String personaltext;
+    private String raumtext;
+    private String klassetext;
     /**
      * Erzeugt eine neue Zeiteinheit mit leeren Sammlungen für die zugeordneten LehrerInnen und Schulklassen.
      */
@@ -111,6 +115,22 @@ public final class Timeslot implements Serializable {
         final int hour = startzeit.get(Calendar.HOUR);
         final int minute = startzeit.get(Calendar.MINUTE);
         return String.format("%02d:%02d", hour, minute);
+    }
+    
+    public String getStundeninhalttext(){
+    	return stundeninhaltetext;
+    }
+    
+    public String getPersonaltext(){
+    	return personaltext;
+    }
+    
+    public String getRaeumetext(){
+    	return raumtext;
+    }
+    
+    public String getKlassentext(){
+    	return klassetext;
     }
     
 }
