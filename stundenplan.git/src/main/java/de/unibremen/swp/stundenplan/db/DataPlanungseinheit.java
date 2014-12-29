@@ -1,6 +1,9 @@
 package de.unibremen.swp.stundenplan.db;
 
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
 
 public class DataPlanungseinheit {
 

@@ -26,29 +26,58 @@ public class DataRaum {
 		}
 	}
 	
+	public static Room getRaumByName(String pName){
+		try	{
+			sql = "SELECT * FROM Raum WHERE name = " + pName;
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			String name = rs.getString("name");
+			int gebaeude = rs.getInt("gebaeude");
+			return new Room(name, gebaeude);
+		}catch (SQLException e){
+		}
+		return null;
+	}
+	
+	public static ArrayList<Room> getAllRaum() {
+		ArrayList<Room> allRaum = new ArrayList<Room>();
+		try {
+			sql = "SELECT * FROM Raum";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String name = rs.getString("name");
+				allRaum.add(getRaumByName(name));
+			}
+		} catch (SQLException e) {}
+		return allRaum;
+	}
+	
+	public static void deleteRaumByName(String pName) {
+		try {
+			sql = "DELETE FROM Raum WHERE name = " + pName;
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {}
+	}
+	
+	
 	public static void addRaumfunktion(Raumfunktion rf) {
 		try {
 			sql = "INSERT INTO Raumfunktion "
 					+ "VALUES ('" + rf.getName() + "');";
 			stmt.executeUpdate(sql);
-			System.out.println(rf.getName()+"add");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static Room getRoomByKuerzel(String pKuerzel){
+	public static Raumfunktion getRaumfunktionByName(String pName) {
 		try	{
-			sql = "SELECT * FROM Raum WHERE kuerzel = " +pKuerzel;
+			sql = "SELECT * FROM Raumfunktion WHERE name = " + pName;
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");
-			String kuerzel = rs.getString("kuerzel");
-			int gebaeude = rs.getInt("gebaeude");
-			// TODO Liste mit Raumfunktionen per raum.addMoeglicheFunktion hinzuf�gen
-			Room raum = new Room(name, kuerzel, gebaeude);
-			return raum;
-		}catch (SQLException e){
+			return new Raumfunktion(name);
+		}catch (Exception e){
 		}
 		return null;
 	}
@@ -56,11 +85,10 @@ public class DataRaum {
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
 		try{
 			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
-			sql = "SELECT * FROM Raumfunktion;";
+			sql = "SELECT * FROM Raumfunktion";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String name = rs.getString("name");
-				System.out.println(name);
 				rfs.add(new Raumfunktion(name));
 			}
 			return rfs;
@@ -77,15 +105,5 @@ public class DataRaum {
 		}catch(SQLException e) {
 			
 		}
-	}
-		
-	public static void dbRaumLesen() {
-		try {
-			sql = "SELECT * FROM Raum;";
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next()) {
-				System.out.println("Name: " + rs.getString("name") + ", Gebäudennr: " + rs.getInt("gebaeudennr"));
-			}
-		}catch(SQLException e) {}
 	}
 }

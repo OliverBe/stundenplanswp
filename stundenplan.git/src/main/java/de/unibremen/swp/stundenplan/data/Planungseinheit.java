@@ -15,7 +15,11 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 @Entity
 public class Planungseinheit implements Serializable{
 	
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
     private long id;
 	
 	//lehrer, time[2] (anfangs,endzeit)
@@ -71,7 +75,7 @@ public class Planungseinheit implements Serializable{
 	public String roomstoString(){
 		StringBuilder sb = new StringBuilder();
 		for(Room r : raeume){
-			sb.append(r.getKuerzel());
+			sb.append(r.getName());
 			sb.append(" ,");
 		}
 		return sb.toString();

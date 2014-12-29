@@ -1,25 +1,14 @@
 package de.unibremen.swp.stundenplan.db;
 
-import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.*;
-import de.unibremen.swp.stundenplan.data.*;
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
 	private static Connection c = null;
     private static Statement stmt = null;
     private static String sql;
-	
-	public static void main( String args[] ) {
-	    Statement stmt = null;
-	    String sql;
-	}
-	
-    private Data() {}
     
 	public static void start() {
 	    try {
@@ -52,13 +41,12 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS Schulklasse "
 	    			+ "(name VARCHAR PRIMARY KEY NOT NULL, "
 	    			+ "jahrgang INT NOT NULL, "
-	    			+ "klassenraumId INT NOT NULL)";
+	    			+ "klassenraumName INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Raum
 	    	sql = "CREATE TABLE IF NOT EXISTS Raum "
-	    			+ "(name VARCHAR NOT NULL,"
-	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL, "
+	    			+ "(name VARCHAR PRIMARY KEY NOT NULL,"
 	    			+ "gebaeudennr INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -116,14 +104,14 @@ public class Data {
 	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
-	    	//ArrayList von Raumfunktion(Stundeninhalt)
+	    	//ArrayList von Raum(Stundeninhalt) Raumfunktion
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
-//	    			+ "(raum_name VARCHAR NOT NULL, "
-//	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "(name VARCHAR NOT NULL)";
-//	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
-//	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
-//	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
+	    			+ "(raum_name VARCHAR, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "name VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)
@@ -165,7 +153,6 @@ public class Data {
 	    	System.out.println("Tables created.");
 	    }catch ( Exception e ) {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	    	System.exit(0);
 	    }
 	}
 		
