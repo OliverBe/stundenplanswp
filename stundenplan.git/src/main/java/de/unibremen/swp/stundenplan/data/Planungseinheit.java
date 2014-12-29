@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
+
 @Entity
 public class Planungseinheit implements Serializable{
 	
@@ -141,5 +143,10 @@ public class Planungseinheit implements Serializable{
 	public void setEndminute(final int pEndminute){
 		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
 		endminute = pEndminute;
+	}
+	
+	public int duration(){
+		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
+	    return dur;
 	}
 }
