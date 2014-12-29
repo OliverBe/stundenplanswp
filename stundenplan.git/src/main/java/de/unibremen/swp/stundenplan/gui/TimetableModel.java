@@ -103,8 +103,8 @@ public class TimetableModel extends AbstractTableModel {
                 /*
                  * Exception wurde schon protokolliert.
                  */
-                return null;
-            }
+//                return null;
+//            }
             return "";
         }
     }
