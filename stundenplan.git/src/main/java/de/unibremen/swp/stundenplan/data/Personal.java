@@ -20,7 +20,7 @@ import de.unibremen.swp.stundenplan.db.Data;
 
 public final class Personal {
     /**
-     * Der Name dieser LehrerIn.
+     * Der Name dieser Person.
      */
     private String name;
 
