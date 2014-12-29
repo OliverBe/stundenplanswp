@@ -139,17 +139,20 @@ public class Data {
 		    stmt = c.createStatement();
 		    sql = "SELECT * FROM Personal where kuerzel= "+pAcro;
 		    ResultSet result = stmt.executeQuery(sql);
-		    Personal personal = new Personal();
-		    personal.setId(result.getInt(1));
-		    personal.setName(result.getString(2));
-		    personal.setAcronym(result.getString(3));
-		    personal.setSollZeit(result.getInt(4));
-		    personal.setIstZeit(result.getInt(5));
-		    personal.setErsatzZeit(result.getInt(6));
-		    personal.setGependelt(result.getBoolean(7));
-		    personal.setLehrer(result.getBoolean(8));
 		    
-		    return personal;
+		    if(result.next()){
+			    Personal personal = new Personal();
+			    personal.setId(result.getInt(1));
+			    personal.setName(result.getString(2));
+			    personal.setAcronym(result.getString(3));
+			    personal.setSollZeit(result.getInt(4));
+			    personal.setIstZeit(result.getInt(5));
+			    personal.setErsatzZeit(result.getInt(6));
+			    personal.setGependelt(result.getBoolean(7));
+			    personal.setLehrer(result.getBoolean(8));
+			    
+			    return personal;
+		    }
 		    
 		}catch ( Exception e ) {
 	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
