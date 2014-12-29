@@ -57,7 +57,8 @@ public class Data {
 	    	
 	    	//Raum
 	    	sql = "CREATE TABLE IF NOT EXISTS Raum "
-	    			+ "(name VARCHAR PRIMARY KEY NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL,"
+	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL "
 	    			+ "gebaeudennr INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -286,6 +287,22 @@ public class Data {
 		}
 	}
 	
+	public static Room getRoomByKuerzel(String pKuerzel){
+		try	{
+			sql = "SELECT * FROM Raum WHERE kuerzel = " +pKuerzel;
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			String name = rs.getString("name");
+			String kuerzel = rs.getString("kuerzel");
+			int gebaeude = rs.getInt("gebaeude");
+			// TODO Liste mit Raumfunktionen per raum.addMoeglicheFunktion hinzufügen
+			Room raum = new Room(name, kuerzel, gebaeude);
+			return raum;
+		}catch (SQLException e){
+		}
+		return null;
+	}
+	
 	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
    
@@ -325,8 +342,8 @@ public class Data {
 			ResultSet rs = stmt.executeQuery(sql);
 		
 			while(rs.next()){
-				String kuerzel = rs.getString("kuerzel");
-				allPersonal.add(getPersonalByKuerzel(kuerzel));
+			String kuerzel = rs.getString("kuerzel");
+			allPersonal.add(getPersonalByKuerzel(kuerzel));
 		}	
 		
 		}catch (SQLException e){
