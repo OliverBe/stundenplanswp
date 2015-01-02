@@ -12,7 +12,7 @@ public class DataStundeninhalt {
 	private static Statement stmt = null;
 	private static String sql;
 	
-	public void addStundeninhalt(Stundeninhalt stundeninhalt) {
+	public static void addStundeninhalt(Stundeninhalt stundeninhalt) {
 		try {
 			sql = "INSERT INTO Stundeninhalt "
 					+ "VALUES ('" + stundeninhalt.getName() + "','"
@@ -40,7 +40,7 @@ public class DataStundeninhalt {
 		return null;
 	}
 	
-	public static ArrayList<Stundeninhalt> getAllStundeninhalt() {
+	public static ArrayList<Stundeninhalt> getAllStundeninhalte() {
 		ArrayList<Stundeninhalt> allStundeninhalt = new ArrayList<Stundeninhalt>();
 			try {
 			sql = "SELECT * FROM Stundeninhalt";

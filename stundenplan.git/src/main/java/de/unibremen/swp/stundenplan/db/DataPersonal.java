@@ -31,7 +31,7 @@ public class DataPersonal {
 						+ "VALUES (" + personal.getKuerzel() + "," + kuerzel
 						+ ");";
 			}
-			for (Entry<Weekday, int[]> entry : personal.getWunschZeiten()
+			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten()
 					.entrySet()) {
 				sql = "INSERT INTO Zeitwunsch " + "VALUES ("
 						+ entry.getKey().getOrdinal() + ","

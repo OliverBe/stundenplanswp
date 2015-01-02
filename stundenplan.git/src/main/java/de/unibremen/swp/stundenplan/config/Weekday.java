@@ -27,37 +27,37 @@ public enum Weekday {
     /**
      * Der Wochentag Montag.
      */
-    MONDAY("Montag", 0, true),
+    MONDAY("Montag", 0, Config.MONDAY),
 
     /**
      * Der Wochentag Dienstag.
      */
-    TUESDAY("Dienstag", 1, true),
+    TUESDAY("Dienstag", 1, Config.TUESDAY),
 
     /**
      * Der Wochentag Mittwoch.
      */
-    WEDNESDAY("Mittwoch", 2, true),
+    WEDNESDAY("Mittwoch", 2, Config.WEDNESDAY),
 
     /**
      * Der Wochentag Donnerstag.
      */
-    THURSDAY("Donnerstag", 3, true),
+    THURSDAY("Donnerstag", 3, Config.THURSDAY),
 
     /**
      * Der Wochentag Freitag.
      */
-    FRIDAY("Freitag", 4, true),
+    FRIDAY("Freitag", 4, Config.FRIDAY),
     
     /**
      * Der Wochentag Samstag.
      */
-    SATURDAY("Samstag", 5, false),
+    SATURDAY("Samstag", 5, Config.SATURDAY),
     
     /**
      * Der Wochentag Sonntag.
      */
-    SUNDAY("Sonntag", 6, false);
+    SUNDAY("Sonntag", 6, Config.SUNDAY);
 
     /**
      * Der Anzeigename dieses Wochentages.
