@@ -7,7 +7,7 @@ public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
 	private static Connection c = null;
-    private static Statement stmt = null;
+    protected static Statement stmt = null;
     private static String sql;
     
 	public static void start() {
@@ -20,8 +20,8 @@ public class Data {
 	    	
 	    	//Personal
 	    	sql = "CREATE TABLE IF NOT EXISTS Personal "
-	    			+ "(name VARCHAR NOT NULL, "
-	    			+ "kuerzel VARCHAR PRIMARY KEY NOT NULL, "
+	    			+ "(name VARCHAR(" + MAX_NORMAL_STRING_LEN + ") NOT NULL, "
+	    			+ "kuerzel VARCHAR(" + MAX_KUERZEL_LEN + ") NOT NULL, "
 	    			+ "sollZeit INT NOT NULL, "
 	    			+ "istZeit INT NOT NULL, "
 	    			+ "ersatzZeit INT NOT NULL, "

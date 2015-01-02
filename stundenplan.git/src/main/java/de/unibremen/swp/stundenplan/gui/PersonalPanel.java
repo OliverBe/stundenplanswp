@@ -59,7 +59,7 @@ public class PersonalPanel extends JPanel {
 	public TextField kuerzField = new TextField(5);
 	public TextField timeField = new TextField(5);
 	private JLabel lSubjects = new JLabel(
-			"<html><body>Mögliche<br>Stundeninhalte :</body></html>");
+			"<html><body>Mï¿½gliche<br>Stundeninhalte :</body></html>");
 
 	public JButton button = new JButton("Personal hinzufuegen");
 
@@ -104,7 +104,7 @@ public class PersonalPanel extends JPanel {
 		c.gridx = 1;
 		p.add(nameField, c);
 		c.gridx = 2;
-		JRadioButton lehrerB = new JRadioButton("Lehrer");
+		final JRadioButton lehrerB = new JRadioButton("Lehrer");
 		lehrerB.setSelected(true);
 		JRadioButton paedagogeB = new JRadioButton("Paedagoge");
 		ButtonGroup group = new ButtonGroup();
@@ -131,7 +131,7 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 3;
 		p.add(lPrefTime, c);
 
-		DefaultTableModel model = new DefaultTableModel();
+		final DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 
@@ -171,7 +171,7 @@ public class PersonalPanel extends JPanel {
 		}
 		;
 
-		ArrayList<Weekday> wds = new ArrayList<Weekday>();
+		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
 
 		if (Config.MONDAY) {
 			model.addRow(new String[] { Config.MONDAY_STRING, sh, sm, eh, em });
@@ -218,7 +218,7 @@ public class PersonalPanel extends JPanel {
 		p.add(lSubjects, c);
 		c.gridheight = 1;
 		c.gridx = 1;
-		CheckBoxList checkList = new CheckBoxList();
+		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
 		// for(Stundeninhalt s :
