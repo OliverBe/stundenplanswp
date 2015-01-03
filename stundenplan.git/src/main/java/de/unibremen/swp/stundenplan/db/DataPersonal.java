@@ -13,7 +13,6 @@ public class DataPersonal {
 
 	private static Statement stmt = Data.stmt;
 	private static String sql;
-	private static ArrayList<Personal> allPersonal = new ArrayList<Personal>();
 
 	private DataPersonal() {
 	}
@@ -89,17 +88,20 @@ public class DataPersonal {
 	 */
 	public static ArrayList<Personal> getAllPersonal() {
 		try {
-			allPersonal.clear();
+			ArrayList<Personal> allPersonal = new ArrayList<Personal>();
 			sql = "SELECT * FROM Personal";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String kuerzel = rs.getString("kuerzel");
 				allPersonal.add(getPersonalByKuerzel(kuerzel));
-				System.out.println(getPersonalByKuerzel(kuerzel));
+				System.out.println("GETALL - " + getPersonalByKuerzel(kuerzel));
 			}
-		} catch (SQLException e) {}
-		if(allPersonal.isEmpty()) allPersonal.add(new Personal("Max Mustermann", "MMM", 20, 0, 0, false, false, null));
-		return allPersonal;
+			return allPersonal;
+		} catch (SQLException e) {
+			System.out.println("-- SQLEXCEPTION --");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static void deletePersonalByKuerzel(String pKuerzel) {

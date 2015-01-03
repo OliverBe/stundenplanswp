@@ -110,12 +110,12 @@ public class Data {
 	    	
 	    	//ArrayList von Raum(Stundeninhalt) Raumfunktion
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
-	    			+ "(raum_name VARCHAR, "
-	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "name VARCHAR NOT NULL, "
-	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
-	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
-	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
+//	    			+ "(raum_name VARCHAR, "
+//	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "(name VARCHAR NOT NULL)";
+//	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+//	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+//	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)

@@ -59,7 +59,8 @@ public class DataStundeninhalt {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalte_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM moegliche_Stundeninhalte_Raum WHERE kuerzel = '"
+			sql = "DELETE FROM moegliche_Stundeninhalte_Raum WHERE kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
 		} catch (SQLException e) {}
 	}
 }

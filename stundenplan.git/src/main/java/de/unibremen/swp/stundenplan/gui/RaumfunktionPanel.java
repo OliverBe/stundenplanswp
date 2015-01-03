@@ -75,7 +75,7 @@ public class RaumfunktionPanel extends JPanel {
 					Raumfunktion rf;
 					try {
 						listModel.clear();
-						if(textFieldsEmpty(p)) throw new InvalidNameException();
+//						if(textFieldsEmpty(p)) throw new InvalidNameException();
 						rf = new Raumfunktion(tf.getText());
 						DataRaum.addRaumfunktion(rf);
 						for (Raumfunktion r : DataRaum.getAllRaumfunktion()){

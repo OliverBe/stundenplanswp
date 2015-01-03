@@ -93,7 +93,7 @@ public class DataRaum {
 			}
 			return rfs;
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
