@@ -94,11 +94,10 @@ public class DataPersonal {
 			while (rs.next()) {
 				String kuerzel = rs.getString("kuerzel");
 				allPersonal.add(getPersonalByKuerzel(kuerzel));
-				System.out.println("GETALL - " + getPersonalByKuerzel(kuerzel));
+				System.out.println("Personal - Kuerzel: " + kuerzel);
 			}
 			return allPersonal;
-		} catch (SQLException e) {
-			System.out.println("-- SQLEXCEPTION --");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
