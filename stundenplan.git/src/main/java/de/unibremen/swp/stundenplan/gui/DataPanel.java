@@ -54,11 +54,11 @@ public class DataPanel extends JPanel {
 	private JMenuItem mR = new JMenuItem("Raeume");
 	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
 
-	private RaumfunktionPanel raumfunktionPanel = new RaumfunktionPanel();
-	private PersonalPanel personalPanel = new PersonalPanel();
-	private SchoolclassPanel schoolclassPanel = new SchoolclassPanel();
-	private StundeninhaltPanel stundeninhaltPanel = new StundeninhaltPanel();
-	private RoomPanel roomPanel = new RoomPanel();
+	private RaumfunktionPanel raumfunktionPanel;
+	private PersonalPanel personalPanel;
+	private SchoolclassPanel schoolclassPanel;
+	private StundeninhaltPanel stundeninhaltPanel;
+	private RoomPanel roomPanel;
 
 
 	public DataPanel() {
@@ -96,6 +96,7 @@ public class DataPanel extends JPanel {
 		// klick auf mP
 		mP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				personalPanel = new PersonalPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -117,6 +118,7 @@ public class DataPanel extends JPanel {
 		// klick auf mS
 		mS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				schoolclassPanel= new SchoolclassPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -136,6 +138,7 @@ public class DataPanel extends JPanel {
 		// klick auf mF
 		mF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				stundeninhaltPanel= new StundeninhaltPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -155,6 +158,7 @@ public class DataPanel extends JPanel {
 		// klick auf mR
 		mR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				roomPanel= new RoomPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -175,6 +179,7 @@ public class DataPanel extends JPanel {
 	// klick auf mRF
 			mRF.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					raumfunktionPanel= new RaumfunktionPanel();
 					c.fill = GridBagConstraints.BOTH;
 					c.anchor = GridBagConstraints.EAST;
 					c.gridwidth = 1;
@@ -193,11 +198,11 @@ public class DataPanel extends JPanel {
 	}
 
 	private void removeOld() {
-		remove(personalPanel);
-		remove(stundeninhaltPanel);
-		remove(schoolclassPanel);
-		remove(roomPanel);
-		remove(raumfunktionPanel);
+		if(personalPanel !=null) remove(personalPanel);
+		if(stundeninhaltPanel !=null) remove(stundeninhaltPanel);
+		if(schoolclassPanel !=null) remove(schoolclassPanel);
+		if(roomPanel !=null) remove(roomPanel);
+		if(raumfunktionPanel !=null) remove(raumfunktionPanel);
 	}
 //
 //	public static void updatepersonalList() {

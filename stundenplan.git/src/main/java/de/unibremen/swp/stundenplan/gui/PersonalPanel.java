@@ -240,8 +240,7 @@ public class PersonalPanel extends JPanel {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				try {
-					listModel.clear();
-
+					
 					if (!check(p))
 						throw new WrongInputException();
 					HashMap<Weekday, int[]> wunsch = new HashMap<Weekday, int[]>();
@@ -266,9 +265,11 @@ public class PersonalPanel extends JPanel {
 							lehrerB.isSelected(), stunden, wunsch);
 					PersonalManager.addPersonalToDb(pe);
 					
-					 for (Personal per : DataPersonal.getAllPersonal()){
-						 listModel.addElement(per);
-					 }
+					
+					for (Personal per : DataPersonal.getAllPersonal()){
+						listModel.addElement(per);
+					}
+					
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -296,9 +297,12 @@ public class PersonalPanel extends JPanel {
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 
+		listModel.clear();
+		
 		if(DataPersonal.getAllPersonal() != null) {
 			for (Personal per : DataPersonal.getAllPersonal()){
 				listModel.addElement(per);
+				System.out.println("Liste + "+per);
 			}
 		}
 		
@@ -360,7 +364,9 @@ public class PersonalPanel extends JPanel {
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Personal hinzufuegen");
+		JButton button3 = new JButton("Abbrechen");
 
+		c=new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		c.insets = new Insets(1, 1, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
@@ -548,6 +554,19 @@ public class PersonalPanel extends JPanel {
 				} catch (WrongInputException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		c.gridwidth=2;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		add(button3,c);
+		
+		//abbrechen 
+		
+		button3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//	
 			}
 		});
 		return p;
