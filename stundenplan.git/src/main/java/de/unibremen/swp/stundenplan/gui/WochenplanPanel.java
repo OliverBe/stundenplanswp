@@ -12,12 +12,12 @@ import javax.swing.JTabbedPane;
 public class WochenplanPanel extends JPanel {
 
 	public JTabbedPane tabPane = new JTabbedPane();
-	private WochenplanTag montag = new WochenplanTag();
-	private WochenplanTag dienstag = new WochenplanTag();
-	private WochenplanTag mittwoch = new WochenplanTag();
-	private WochenplanTag donnerstag = new WochenplanTag();
-	private WochenplanTag freitag = new WochenplanTag();
-	private WochenplanTag samstag = new WochenplanTag();
+	private WochenplanTag montag = new WochenplanTag("Montag");
+	private WochenplanTag dienstag = new WochenplanTag("Dienstag");
+	private WochenplanTag mittwoch = new WochenplanTag("Mittwoch");
+	private WochenplanTag donnerstag = new WochenplanTag("Donnerstag");
+	private WochenplanTag freitag = new WochenplanTag("Freitag");
+	private WochenplanTag samstag = new WochenplanTag("Samstag");
 	
 	
 	public WochenplanPanel(){

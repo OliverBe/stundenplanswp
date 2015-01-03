@@ -1,50 +1,46 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import de.unibremen.swp.stundenplan.*;
-import de.unibremen.swp.stundenplan.config.Config;
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.db.Data;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
 
 //Diese Klasse repr�sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
 
+	private String tag;
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
-	String[] testeingaben = { "Name 1", "Name 2", "Name 3", "Name 4", "Name 5" };
-	String[][] rowData = { { "", "", "", "", "", "AA", "BB", "", "", "", "" } };
 	public JTable table;
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
 	List<Personal> personalliste = new ArrayList<>();
-	public Personal p1 = new Personal("Testperson 1", "t1", 38, 38, 38, false,
+	public Personal p1 = new Personal("Testname", "t1", 38, 38, 38, false,
 			true, null);
 	public Personal p2 = new Personal("Testperson 2", "t2", 38, 38, 38, false,
 			true, null);
@@ -53,16 +49,22 @@ public class WochenplanTag extends JPanel {
 	public Personal p4 = new Personal("Testperson 4", "t4", 38, 38, 38, false,
 			true, null);
 
-	public WochenplanTag() {
+	public Planungseinheit e1 = new Planungseinheit();
+	public Planungseinheit e2 = new Planungseinheit();
+	public Room r1 = new Room("MZH 1100", 1);
+	public Schoolclass s1 = new Schoolclass("K1",5, r1);
+	public Stundeninhalt fach = new Stundeninhalt("Mathe","Ma",90,0);
+	
+	List<Planungseinheit> einheitsliste = new ArrayList<>();
+	public WochenplanTag(final String pTag) {
+		tag = pTag;
 		init();
+		setTestPlanungs();
 		addData();
+		generateTime();
 	}
 
 	public void init() {
-		personalliste.add(p1);
-		personalliste.add(p2);
-		personalliste.add(p3);
-		personalliste.add(p4);
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -73,7 +75,6 @@ public class WochenplanTag extends JPanel {
 		c.gridy = 0;
 
 		table = new JTable(model);
-
 		model.addColumn("Personal");
 		model.addColumn(Config.DAY_STARTTIME_HOUR + ":00");
 		for (int i = (Config.DAY_STARTTIME_HOUR * 100); i <= (Config.DAY_ENDTIME_HOUR * 100); i += Config.TIMESLOT_LENGTH) {
@@ -87,8 +88,9 @@ public class WochenplanTag extends JPanel {
 
 			String ausgabe = text2 + ":" + text3;
 			model.addColumn(ausgabe);
-
+			
 		}
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(50);
 		TableColumn column = table.getColumnModel().getColumn(0);
@@ -140,13 +142,72 @@ public class WochenplanTag extends JPanel {
 	}
 
 	public void addData() {
-		for (Personal e : personalliste) {
+		try{
+		for (Personal e : DataPersonal.getAllPersonal()) {
 
 			String nachname = e.getName();
 			model.addRow(new Object[] { nachname });
+			
 		}
+		}catch(Exception e){
+			System.out.println("Kein Personal in der Datenbank vorhanden");
+		}
+		
 	}
 
+	public void generateTime(){
+		for(Planungseinheit p: einheitsliste){
+			String PersonalName ="";
+			int starthour;
+			int startminute;
+			int endMinute;
+			int endhour;
+		for(int i = 0; i<model.getRowCount();i++){
+			String tablePersoName  = (String) model.getValueAt(i, 0);
+			Set<Personal> h = p.getPersonal().keySet();
+			System.out.print("Test2");
+			System.out.println("tablePersoName: "+tablePersoName);
+			System.out.print("PersonalName: "+PersonalName);
+			if(tablePersoName.equals(PersonalName)){
+				
+				starthour = p.getStartHour();
+				startminute = p.getStartminute();
+				endMinute = p.getEndminute();
+				endhour = p.getEndhour();
+				int ersteZeit = (int)model.getValueAt(i, starthour);
+				int letzteZeit = (int)model.getValueAt(i, endhour);
+				model.setValueAt(Color.BLUE, ersteZeit, i);
+			}
+			
+		}
+			
+			
+			
+					
+		}
+	}
+	public void deleteAllRows(){
+		
+	 for(int i=0;i<model.getRowCount();i++){
+		 model.removeRow(i);
+	 }
+	}
+	
+	public void refresh(){
+		deleteAllRows();
+		addData();
+	}
+	
+	public void setTestPlanungs(){
+		e1.addPersonal(p1,new int[]{1,2,3});
+		e1.setStarthour(7);
+		e1.setEndhour(10);
+		e1.setWeekday(Weekday.MONDAY);
+		e1.addRoom(r1);
+		e1.addSchulklassen(s1);
+		e1.addStundeninhalt(fach);
+		einheitsliste.add(e1);
+	}
 	private void buttonOkay(JButton b) {
 		b.addActionListener(new ActionListener() {
 			@Override
