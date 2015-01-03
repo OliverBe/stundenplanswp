@@ -15,9 +15,11 @@
  */
 package de.unibremen.swp.stundenplan.logic;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
@@ -28,6 +30,7 @@ import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 import de.unibremen.swp.stundenplan.config.Config;
+
 import java.util.ArrayList;
 
 
@@ -133,7 +136,7 @@ public final class TimetableManager {
         final Calendar cal = Calendar.getInstance();
         DayTable dayTable = new DayTable(pWeekday);
         cal.setTimeInMillis(0);
-        cal.set(Calendar.HOUR, startTimeHour());
+        cal.set(Calendar.HOUR_OF_DAY, startTimeHour());
         cal.set(Calendar.MINUTE, startTimeMinute());
         for (int i = 0; i <= daytablelength(); i++) {
             final Timeslot timeslot = new Timeslot(cal, pWeekday);
@@ -145,49 +148,101 @@ public final class TimetableManager {
         }
         return dayTable;
    }
+    
+    private static boolean sametimeofday(Calendar cal1, Calendar cal2){
+ 	   boolean sametime = cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
+                cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE);
+ 	   return sametime;
+    } 
 
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * erzeugt eine Tagestabelle für eine Liste von Planungseinheiten
+     * @param pPE Liste von Planungseinheiten
+     * @param pWeekday den Tag für die Tabelle
+     * @return gibt eine DayTable zurück
+     */
+    private static DayTable createTimeslotsForPES(ArrayList<Planungseinheit> pPE,Weekday pWeekday){
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(0);
+        cal.set(Calendar.HOUR_OF_DAY, startTimeHour());
+        cal.set(Calendar.MINUTE, startTimeMinute());
+        DayTable dayTable = new DayTable(pWeekday);
+        ArrayList<Planungseinheit> pE = pPE;
+        for(Planungseinheit p: pE){
+        	final Calendar pecal = Calendar.getInstance();
+            cal.setTimeInMillis(0);
+            cal.set(Calendar.HOUR_OF_DAY, p.getStartHour());
+            cal.set(Calendar.MINUTE, p.getStartminute());
+        	while(!sametimeofday(cal, pecal)){
+        		Timeslot t = new Timeslot(pWeekday);
+        		dayTable.addTimeslot(t);
+        		final Calendar newCal = Calendar.getInstance();
+        		newCal.setTimeInMillis(cal.getTimeInMillis());
+                t.setstartzeit(newCal);
+                cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+            }
+        	dayTable.addTimeslot(planungsEinheitToTimeslot(p));
+        }
+        if(dayTable.slotslength()<daytablelength()){
+        	dayTable.addTimeslot(filltoEnd(dayTable));
+        }
+        return dayTable;
+    
+    }
+    /**
+     * Erzeugt Zeiteinheiten für den gegebenen Tag und Person.
      * 
      * @param dayTable
      *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
-        final Calendar cal = Calendar.getInstance();
-        DayTable dayTable = new DayTable(pWeekday);
         ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
-        cal.setTimeInMillis(0);
-        cal.set(Calendar.HOUR, startTimeHour());
-        cal.set(Calendar.MINUTE, startTimeMinute());
+        DayTable dayTable = createTimeslotsForPES(pE, pWeekday);
         return dayTable;
-   }
+    }
     
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * füll eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
+     * @param pdt Tagesplan
+     * @return Liste mit restlichen leeren Timeslots
+     */
+    private static ArrayList<Timeslot> filltoEnd(DayTable pdt) {
+		ArrayList<Timeslot> timeslot = new ArrayList<Timeslot>();
+		int index = pdt.slotslength();
+		final Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY, startTimeHour());
+        time.set(Calendar.MINUTE, startTimeMinute());
+        for(;index< daytablelength(); index++){
+			time.add(Calendar.MINUTE, index*Timeslot.LENGTH);
+			Timeslot t = new Timeslot(pdt.getWeekday());
+			final Calendar newtime = Calendar.getInstance();
+			newtime.setTimeInMillis(time.getTimeInMillis());
+			t.setstartzeit(time);
+		}
+    	return timeslot;
+	}
+
+	/**
+     * Erzeugt Zeiteinheiten für den gegebenen Tag und Schulklasse.
      * 
      * @param dayTable
      *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForSchoolclass(Weekday pWeekday, Schoolclass pSC) {
-        final Calendar cal = Calendar.getInstance();
-        DayTable dayTable = new DayTable(pWeekday);
-        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pWeekday, pSC);
-        cal.setTimeInMillis(0);
-        cal.set(Calendar.HOUR, startTimeHour());
-        cal.set(Calendar.MINUTE, startTimeMinute());
+    	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pWeekday, pSC);
+        DayTable dayTable = createTimeslotsForPES(pE, pWeekday);
         return dayTable;
-   }
+        }
     
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * Erzeugt Zeiteinheiten für den gegebenen Tag und Raum.
      * 
      * @param dayTable
      *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForRoom(Weekday pWeekday,Room pRoom) {
-        DayTable dayTable = new DayTable(pWeekday);
-        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForRoombyWeekday(pWeekday, pRoom);
-        
+    	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForRoombyWeekday(pWeekday, pRoom);
+        DayTable dayTable = createTimeslotsForPES(pE, pWeekday);
         return dayTable;
    }
     
@@ -197,7 +252,7 @@ public final class TimetableManager {
     	timeslotcount = timeslotcount/Timeslot.LENGTH;
     	final Calendar cal = Calendar.getInstance();
     	cal.setTimeInMillis(0);
-        cal.set(Calendar.HOUR, pPE.getStartHour());
+        cal.set(Calendar.HOUR_OF_DAY, pPE.getStartHour());
         cal.set(Calendar.MINUTE, pPE.getStartminute());
         for(int i = 0 ; i<timeslotcount; i++){
     		Timeslot t = new Timeslot(pPE.getWeekday());
@@ -209,28 +264,46 @@ public final class TimetableManager {
         }
         return timeslots;
     }
-//
-//    /**
-//     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
-//     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
-//     * 
-//     * @param weekday
-//     *            der Wochentag der gesuchten Zeiteinheit
-//     * @param position
-//     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-//     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
-//     * @throws DatasetException
-//     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
-//     *             inkonsistent ist
-//     */
-//    public static Timeslot getTimeslotAt(final Weekday weekday, final int position) throws DatasetException {
-//        DayTable dayTable;
-//        dayTable = Data.getDayTableForWeekday(weekday);
-//        if (dayTable == null) {
-//            return null;
-//        }
-//        return dayTable.getTimeslot(position);
-//    }
+    
+    
+    /**
+     * testet Planungseinheit in timeslot Konversion
+     */
+    public static void peConversiontest(){
+    	Planungseinheit pe = new Planungseinheit(); 
+    	pe.setStarthour(8);
+    	pe.setStartminute(0);
+    	pe.setEndhour(8);
+    	pe.setEndminute(30);
+    	ArrayList<Timeslot> tp = planungsEinheitToTimeslot(pe);
+    	System.out.println(tp.size());
+    	System.out.println(tp.get(0).getTimeDisplay());
+    	System.out.println(tp.get(1).getTimeDisplay());
+    	System.out.println(tp.get(2).getTimeDisplay());
+     }
+    
+
+    /**
+     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
+     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
+     * 
+     * @param weekday
+     *            der Wochentag der gesuchten Zeiteinheit
+     * @param position
+     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
+     * @throws DatasetException
+     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
+     *             inkonsistent ist
+     */
+    public static Timeslot getTimeslotAt(final Weekday weekday, final int position) throws DatasetException {
+        DayTable dayTable;
+        dayTable = createTimeslots(weekday);
+        if (dayTable == null) {
+            return null;
+        }
+        return dayTable.getTimeslot(position);
+    }
     
     
     /**
@@ -333,6 +406,10 @@ public final class TimetableManager {
 	 */
 	public static int daytablelength() {
 		int dur = duration(startTimeHour(),startTimeMinute(),endTimeHour(),endTimeMinute());
+        System.out.println(startTimeHour());
+        System.out.println(startTimeMinute());
+        System.out.println(endTimeHour());
+        System.out.println(endHour());
         return dur/Timeslot.LENGTH;
 	}
 
@@ -419,6 +496,10 @@ public final class TimetableManager {
 //	     */
 	    public Weekday getWeekday() {
 	        return weekday;
+	    }
+	    
+	    public int slotslength(){
+	    	return timeslots.size();
 	    }
 	
 //	    /**

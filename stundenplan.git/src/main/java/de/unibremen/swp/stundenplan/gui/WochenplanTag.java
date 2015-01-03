@@ -107,37 +107,7 @@ public class WochenplanTag extends JPanel {
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		pane.setPreferredSize(new Dimension(1400, 700));
 		add(pane, c);
-		JButton pdf = new JButton("PDF");
-		JButton csv = new JButton("CSV");
-		JButton text = new JButton("Text");
-
-		c.fill = GridBagConstraints.LAST_LINE_END;
-		c.insets = new Insets(5, 5, 5, 5);
-		c.gridx = 1;
-		c.gridy = 2;
-		c.gridwidth = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.anchor = GridBagConstraints.LINE_START;
-		add(new JLabel("Exportieren als:"), c);
-		c.gridx = 2;
-		add(pdf, c);
-		c.gridx = 3;
-		add(csv, c);
-		c.gridx = 4;
-		add(text, c);
-
-		buttonOkay(pdf);
-		buttonOkay(csv);
-		buttonOkay(text);
-
-		warning.setText("Warnungsfeld: Keine Probleme");
-		warning.setBackground(Color.GREEN);
-		warning.setOpaque(true);
-		c.gridy = 3;
-		c.gridx = 1;
-		c.gridwidth = 4;
-		add(warning, c);
+		
 
 	}
 
@@ -154,7 +124,6 @@ public class WochenplanTag extends JPanel {
 		}
 		
 	}
-
 	public void generateTime(){
 		for(Planungseinheit p: einheitsliste){
 			String PersonalName ="";
@@ -164,7 +133,7 @@ public class WochenplanTag extends JPanel {
 			int endhour;
 		for(int i = 0; i<model.getRowCount();i++){
 			String tablePersoName  = (String) model.getValueAt(i, 0);
-			Set<Personal> h = p.getPersonal().keySet();
+
 			System.out.print("Test2");
 			System.out.println("tablePersoName: "+tablePersoName);
 			System.out.print("PersonalName: "+PersonalName);
@@ -216,5 +185,6 @@ public class WochenplanTag extends JPanel {
 			}
 		});
 	}
+
 
 }
