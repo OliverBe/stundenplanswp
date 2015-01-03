@@ -90,6 +90,7 @@ public class DataPersonal {
 	 */
 	public static ArrayList<Personal> getAllPersonal() {
 		try {
+			allPersonal.clear();
 			sql = "SELECT * FROM Personal";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
