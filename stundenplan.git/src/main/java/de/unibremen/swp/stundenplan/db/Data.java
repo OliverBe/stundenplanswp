@@ -33,8 +33,10 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS Planungseinheit "
 	    			+ "(id INT PRIMARY KEY NOT NULL, "
 	    			+ "weekday INT NOT NULL, "
-	    			+ "startTimeslot INT NOT NULL, "
-	    			+ "endTimeslot INT NOT NULL)";
+	    			+ "startHour INT NOT NULL, "
+	    			+ "startMin INT NOT NULL, "
+	    			+ "endHour INT NOT NULL, "
+	    			+ "endMin INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Schulklasse
@@ -62,8 +64,10 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS Zeitwunsch "
 	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
 	    			+ "weekday INT NOT NULL, "
-	    			+ "startZeit INT NOT NULL, "
-	    			+ "endZeit INT NOT NULL, "
+	    			+ "startHour INT NOT NULL, "
+	    			+ "startMin INT NOT NULL, "
+	    			+ "endHour INT NOT NULL, "
+	    			+ "endMin INT NOT NULL, "
 	    			+ "PRIMARY KEY (personal_kuerzel, weekday)"
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);

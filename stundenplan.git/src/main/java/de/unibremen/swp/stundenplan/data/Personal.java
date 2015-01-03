@@ -64,7 +64,16 @@ public final class Personal {
     	ersatzZeit = pErsatzZeit;
     	gependelt = pGependelt;
     	lehrer = pLehrer;
-    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
+    }
+    
+    public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer) {
+    	name = pName;
+    	kuerzel = pKuerzel;
+    	sollZeit = pSollZeit;
+    	istZeit = pIstZeit;
+    	ersatzZeit = pErsatzZeit;
+    	gependelt = pGependelt;
+    	lehrer = pLehrer;
     }
     
     public Personal(String pName, String pKuerzel, int pSollZeit, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte, HashMap<Weekday,int[]> pWunschzeiten) {
