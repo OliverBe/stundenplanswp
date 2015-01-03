@@ -19,6 +19,9 @@ public class DataPersonal {
 
 	public static void addPersonal(Personal personal) {
 		try {
+			for(Personal pers : getAllPersonal()) {
+				if(pers.getKuerzel().equals(personal.getKuerzel())) throw new SQLException();
+			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
 					+ "', '" + personal.getKuerzel() + "', "
 					+ personal.getSollZeit() + ", 0, 0, "
@@ -108,7 +111,6 @@ public class DataPersonal {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-//			sql = ""
 		} catch (SQLException e) {}
 	}
 }
