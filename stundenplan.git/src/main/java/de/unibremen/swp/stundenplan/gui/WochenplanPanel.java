@@ -9,15 +9,17 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import de.unibremen.swp.stundenplan.config.Weekday;
+
 public class WochenplanPanel extends JPanel {
 
 	public JTabbedPane tabPane = new JTabbedPane();
-	private WochenplanTag montag = new WochenplanTag("Montag");
-	private WochenplanTag dienstag = new WochenplanTag("Dienstag");
-	private WochenplanTag mittwoch = new WochenplanTag("Mittwoch");
-	private WochenplanTag donnerstag = new WochenplanTag("Donnerstag");
-	private WochenplanTag freitag = new WochenplanTag("Freitag");
-	private WochenplanTag samstag = new WochenplanTag("Samstag");
+	private WochenplanTag montag = new WochenplanTag(Weekday.MONDAY);
+	private WochenplanTag dienstag = new WochenplanTag(Weekday.TUESDAY);
+	private WochenplanTag mittwoch = new WochenplanTag(Weekday.WEDNESDAY);
+	private WochenplanTag donnerstag = new WochenplanTag(Weekday.THURSDAY);
+	private WochenplanTag freitag = new WochenplanTag(Weekday.FRIDAY);
+	private WochenplanTag samstag = new WochenplanTag(Weekday.SATURDAY);
 	
 	
 	public WochenplanPanel(){

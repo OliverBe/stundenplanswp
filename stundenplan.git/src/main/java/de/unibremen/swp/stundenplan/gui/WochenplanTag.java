@@ -33,7 +33,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 //Diese Klasse repr�sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
 
-	private String tag;
+	Weekday day;
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
 	public JTable table;
@@ -52,12 +52,13 @@ public class WochenplanTag extends JPanel {
 	public Planungseinheit e1 = new Planungseinheit();
 	public Planungseinheit e2 = new Planungseinheit();
 	public Room r1 = new Room("MZH 1100", 1);
-	public Schoolclass s1 = new Schoolclass("K1",5, r1);
-	public Stundeninhalt fach = new Stundeninhalt("Mathe","Ma",90,0);
-	
+	public Schoolclass s1 = new Schoolclass("K1", 5, r1);
+	public Stundeninhalt fach = new Stundeninhalt("Mathe", "Ma", 90, 0);
+
 	List<Planungseinheit> einheitsliste = new ArrayList<>();
-	public WochenplanTag(final String pTag) {
-		tag = pTag;
+
+	public WochenplanTag(final Weekday pDay) {
+		day =pDay;
 		init();
 		setTestPlanungs();
 		addData();
@@ -88,7 +89,7 @@ public class WochenplanTag extends JPanel {
 
 			String ausgabe = text2 + ":" + text3;
 			model.addColumn(ausgabe);
-			
+
 		}
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowSelectionAllowed(true);
@@ -107,68 +108,65 @@ public class WochenplanTag extends JPanel {
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		pane.setPreferredSize(new Dimension(1400, 700));
 		add(pane, c);
-		
 
 	}
 
 	public void addData() {
-		try{
-		for (Personal e : DataPersonal.getAllPersonal()) {
+		try {
+			for (Personal e : DataPersonal.getAllPersonal()) {
 
-			String nachname = e.getName();
-			model.addRow(new Object[] { nachname });
-			
-		}
-		}catch(Exception e){
+				String nachname = e.getName();
+				model.addRow(new Object[] { nachname });
+
+			}
+		} catch (Exception e) {
 			System.out.println("Kein Personal in der Datenbank vorhanden");
 		}
-		
+
 	}
-	public void generateTime(){
-		for(Planungseinheit p: einheitsliste){
-			String PersonalName ="";
+
+	public void generateTime() {
+		for (Planungseinheit p : einheitsliste) {
+			String PersonalName;
 			int starthour;
 			int startminute;
 			int endMinute;
 			int endhour;
-		for(int i = 0; i<model.getRowCount();i++){
-			String tablePersoName  = (String) model.getValueAt(i, 0);
-
-			System.out.print("Test2");
-			System.out.println("tablePersoName: "+tablePersoName);
-			System.out.print("PersonalName: "+PersonalName);
-			if(tablePersoName.equals(PersonalName)){
-				
-				starthour = p.getStartHour();
-				startminute = p.getStartminute();
-				endMinute = p.getEndminute();
-				endhour = p.getEndhour();
-				int ersteZeit = (int)model.getValueAt(i, starthour);
-				int letzteZeit = (int)model.getValueAt(i, endhour);
-				model.setValueAt(Color.BLUE, ersteZeit, i);
-			}
-			
-		}
-			
-			
-			
+			for (int i = 0; i < model.getRowCount(); i++) {
+				String tablePersoName = (String) model.getValueAt(i, 0);
+				PersonalName = p.getPersonalbyIndex(0).getName();
+				if (tablePersoName.equals(PersonalName)) {
 					
+					if (p.getWeekday().getOrdinal() == day.getOrdinal()) {
+						System.out.println("Test3");
+						starthour = p.getStartHour();
+						startminute = p.getStartminute();
+						endMinute = p.getEndminute();
+						endhour = p.getEndhour();
+						model.setValueAt(Color.BLUE, i, starthour);
+					}
+
+				}
+
+			}
+
 		}
 	}
-	public void deleteAllRows(){
-		
-	 for(int i=0;i<model.getRowCount();i++){
-		 model.removeRow(i);
-	 }
+
+	public void deleteAllRows() {
+
+		for (int i = 0; i < model.getRowCount(); i++) {
+			model.removeRow(i);
+		}
 	}
-	
-	public void refresh(){
+
+	public void refresh() {
 		deleteAllRows();
 		addData();
 	}
-	
-	public void setTestPlanungs(){
-		e1.addPersonal(p1,new int[]{1,2,3});
+
+	public void setTestPlanungs() {
+		e1.addPersonal(p1, new int[] { 1, 2, 3 });
 		e1.setStarthour(7);
 		e1.setEndhour(10);
 		e1.setWeekday(Weekday.MONDAY);
@@ -177,6 +175,7 @@ public class WochenplanTag extends JPanel {
 		e1.addStundeninhalt(fach);
 		einheitsliste.add(e1);
 	}
+
 	private void buttonOkay(JButton b) {
 		b.addActionListener(new ActionListener() {
 			@Override
@@ -185,6 +184,5 @@ public class WochenplanTag extends JPanel {
 			}
 		});
 	}
-
 
 }
