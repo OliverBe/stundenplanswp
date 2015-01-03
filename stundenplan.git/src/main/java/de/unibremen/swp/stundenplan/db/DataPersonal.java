@@ -25,6 +25,7 @@ public class DataPersonal {
 					+ (personal.isGependelt() ? 1:0) + ", "
 					+ (personal.isLehrer() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
+			System.out.println("NEW - Kuerzel: " + personal.getKuerzel());
 			for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
 				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
 						+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
@@ -99,9 +100,15 @@ public class DataPersonal {
 		try {
 			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE kuerzel = '" + pKuerzel + "';";
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM Zeitwunsch WHERE kuerzel = '" + pKuerzel + "';";
+			sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+//			sql = ""
 		} catch (SQLException e) {}
 	}
 }
