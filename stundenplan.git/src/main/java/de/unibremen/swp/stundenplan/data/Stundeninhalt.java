@@ -43,4 +43,8 @@ public class Stundeninhalt {
 	public int getRhythmustyp() {
 		return rhythmusTyp;
 	}
+	@Override
+    public String toString() {
+        return String.format("Stundeninhalt [Kuerzel=%s, Titel=%s, Regeldauer=%d]", kuerzel, name, regeldauer);
+    }
 }
