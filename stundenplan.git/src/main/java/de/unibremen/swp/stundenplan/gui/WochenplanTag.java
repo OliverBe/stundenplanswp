@@ -58,7 +58,7 @@ public class WochenplanTag extends JPanel {
 		addData();
 	}
 
-	public void init(){
+	public void init() {
 		personalliste.add(p1);
 		personalliste.add(p2);
 		personalliste.add(p3);
@@ -71,70 +71,64 @@ public class WochenplanTag extends JPanel {
 		c.weighty = 1.0;
 		c.gridx = 0;
 		c.gridy = 0;
-		
+
 		table = new JTable(model);
-		
+
 		model.addColumn("Personal");
-		model.addColumn(Config.DAY_STARTTIME_HOUR+":00");
-		for(int i = (Config.DAY_STARTTIME_HOUR*100); i <=(Config.DAY_ENDTIME_HOUR*100); i+= Config.TIMESLOT_LENGTH){
-			if(i == 60){
-			 i = 0;
+		model.addColumn(Config.DAY_STARTTIME_HOUR + ":00");
+		for (int i = (Config.DAY_STARTTIME_HOUR * 100); i <= (Config.DAY_ENDTIME_HOUR * 100); i += Config.TIMESLOT_LENGTH) {
+			if (i == 60) {
+				i = 0;
 			}
-			int laenge = Integer.toString(i).length();
-			System.out.print(laenge);
-			if(laenge == 3){
-				String text = ""+i;
-				String text2 = text.substring(1,3);
-				String text3 = text.substring(3, text.length());
-			}
-			String text = ""+""+i;
-			String text2 = text.substring(0,2);
-			String text3 = text.substring(2, text.length());
-			
-			String ausgabe = text2 +":"+text3;
+
+			String text = "" + i;
+			String text2 = text.substring(0, text.length() / 2);
+			String text3 = text.substring((text.length() - 2), text.length());
+
+			String ausgabe = text2 + ":" + text3;
 			model.addColumn(ausgabe);
-			
+
 		}
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(50);
 		TableColumn column = table.getColumnModel().getColumn(0);
-		 column.setPreferredWidth(100);
+		column.setPreferredWidth(100);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JScrollPane pane = new JScrollPane(table);
-		
+
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridwidth = 4;
 		c.gridy = 0;
 		c.gridx = 1;
-		
+
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		pane.setPreferredSize(new Dimension(1400, 700));
-		add(pane,c);
+		add(pane, c);
 		JButton pdf = new JButton("PDF");
 		JButton csv = new JButton("CSV");
 		JButton text = new JButton("Text");
 
 		c.fill = GridBagConstraints.LAST_LINE_END;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 		c.gridx = 1;
 		c.gridy = 2;
 		c.gridwidth = 1;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.LINE_START;
-		add(new JLabel("Exportieren als:"),c);
+		add(new JLabel("Exportieren als:"), c);
 		c.gridx = 2;
-		add(pdf,c);
+		add(pdf, c);
 		c.gridx = 3;
-		add(csv,c);
+		add(csv, c);
 		c.gridx = 4;
-		add(text,c);	
-		
+		add(text, c);
+
 		buttonOkay(pdf);
 		buttonOkay(csv);
 		buttonOkay(text);
-		
+
 		warning.setText("Warnungsfeld: Keine Probleme");
 		warning.setBackground(Color.GREEN);
 		warning.setOpaque(true);
@@ -142,8 +136,7 @@ public class WochenplanTag extends JPanel {
 		c.gridx = 1;
 		c.gridwidth = 4;
 		add(warning, c);
-		
-		
+
 	}
 
 	public void addData() {

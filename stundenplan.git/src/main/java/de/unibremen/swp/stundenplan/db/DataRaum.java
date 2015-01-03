@@ -28,7 +28,7 @@ public class DataRaum {
 	
 	public static Room getRaumByName(String pName){
 		try	{
-			sql = "SELECT * FROM Raum WHERE name = " + pName;
+			sql = "SELECT * FROM Raum WHERE name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");

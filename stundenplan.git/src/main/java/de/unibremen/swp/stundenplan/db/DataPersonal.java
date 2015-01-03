@@ -49,23 +49,26 @@ public class DataPersonal {
 		try {
 			sql = "SELECT * FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			String name = rs.getString("name");
-			int sollZeit = rs.getInt("sollZeit");
-			int istZeit = rs.getInt("istZeit");
-			int ersatzZeit = rs.getInt("ersatzZeit");
-			boolean schonGependelt = rs.getBoolean("schonGependelt");
-			boolean lehrer = rs.getBoolean("lehrer");
-			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
-					+ pKuerzel + "';";
-			rs = stmt.executeQuery(sql);
-			ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
-			while (rs.next()) {
-				moeglicheStundeninhalte.add(rs
-						.getString("stundeninhalt_kuerzel"));
+			if(rs.next()) {
+				String name = rs.getString("name");
+				int sollZeit = rs.getInt("sollZeit");
+				int istZeit = rs.getInt("istZeit");
+				int ersatzZeit = rs.getInt("ersatzZeit");
+				boolean schonGependelt = rs.getBoolean("schonGependelt");
+				boolean lehrer = rs.getBoolean("lehrer");
+				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
+						+ pKuerzel + "';";
+				rs = stmt.executeQuery(sql);
+				ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
+				while (rs.next()) {
+					moeglicheStundeninhalte.add(rs
+							.getString("stundeninhalt_kuerzel"));
+				}
+				return new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit,
+						schonGependelt, lehrer, moeglicheStundeninhalte);
+			}else {
+				return null;
 			}
-			return new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit,
-					schonGependelt, lehrer, moeglicheStundeninhalte);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -87,6 +90,7 @@ public class DataPersonal {
 				allPersonal.add(getPersonalByKuerzel(kuerzel));
 			}
 		} catch (SQLException e) {}
+		if(allPersonal.isEmpty()) allPersonal.add(new Personal("Max Mustermann", "MMM", 20, 0, 0, false, false, null));
 		return allPersonal;
 	}
 
