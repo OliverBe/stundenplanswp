@@ -14,6 +14,11 @@ public class DataStundeninhalt {
 	
 	public static void addStundeninhalt(Stundeninhalt stundeninhalt) {
 		try {
+			for(Stundeninhalt si : getAllStundeninhalte()) {
+				if(si.getKuerzel().equals(stundeninhalt.getKuerzel())){ 
+					throw new SQLException("DOPPELT");
+				}
+			}
 			sql = "INSERT INTO Stundeninhalt "
 					+ "VALUES ('" + stundeninhalt.getName() + "','"
 					+ stundeninhalt.getKuerzel() + "',"
@@ -42,14 +47,19 @@ public class DataStundeninhalt {
 	
 	public static ArrayList<Stundeninhalt> getAllStundeninhalte() {
 		ArrayList<Stundeninhalt> allStundeninhalt = new ArrayList<Stundeninhalt>();
-			try {
+		try {
 			sql = "SELECT * FROM Stundeninhalt";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				String name = rs.getString("name");
 				String kuerzel = rs.getString("kuerzel");
-				allStundeninhalt.add(getStundeninhaltByKuerzel(kuerzel));
+				int regeldauer = rs.getInt("regeldauer");
+				int rhythmustyp = rs.getInt("rhythmustyp");
+				allStundeninhalt.add(new Stundeninhalt(name, kuerzel, regeldauer, rhythmustyp));
 			}
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return allStundeninhalt;
 	}
 	

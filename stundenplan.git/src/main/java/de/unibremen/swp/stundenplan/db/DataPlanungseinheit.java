@@ -57,5 +57,12 @@ public class DataPlanungseinheit {
 		}
 	}
 	
-	
+	public void deletePlanungseinheitById(int id) {
+		try {
+			sql = "DELETE FROM Planungseinheit ";
+			stmt.executeUpdate(sql);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

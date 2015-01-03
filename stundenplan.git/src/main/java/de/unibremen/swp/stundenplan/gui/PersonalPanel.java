@@ -221,11 +221,9 @@ public class PersonalPanel extends JPanel {
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
-		// for(Stundeninhalt s :
-		// StundeninhaltManager.getAllStundeninhalteFromDB()){
-		// boxes.add(new JCheckBox(s.getKuerzel()));
-		// };
-		boxes.add(new JCheckBox("Ma"));
+		 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+			 boxes.add(new JCheckBox(s.getKuerzel()));
+		 };
 
 		checkList.setListData(boxes.toArray());
 		p.add(checkList, c);
