@@ -22,6 +22,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -59,15 +60,15 @@ public class PersonalPanel extends JPanel {
 	public TextField kuerzField = new TextField(5);
 	public TextField timeField = new TextField(5);
 	private JLabel lSubjects = new JLabel(
-			"<html><body>M�gliche<br>Stundeninhalte :</body></html>");
+			"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 
 	public JButton button = new JButton("Personal hinzufuegen");
 
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
 
-	private static DefaultListModel listModel = new DefaultListModel();
-	private JList<String> list = new JList<String>(listModel);
+	private static DefaultListModel<Personal> listModel = new DefaultListModel();
+	private JList<Personal> list = new JList<Personal>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 
 	/**
@@ -76,7 +77,6 @@ public class PersonalPanel extends JPanel {
 	private static final long serialVersionUID = 1219589162309740553L;
 
 	public PersonalPanel() {
-		setLayout(new GridBagLayout());
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -242,19 +242,15 @@ public class PersonalPanel extends JPanel {
 				try {
 					listModel.clear();
 
-					Weekday Mo = Weekday.MONDAY;
-
 					if (!check(p))
 						throw new WrongInputException();
 					HashMap<Weekday, int[]> wunsch = new HashMap<Weekday, int[]>();
 
-					System.out.println(Integer.parseInt((String) model.getValueAt(0,1))+"");
 					for (int i = 0; i < wds.size(); i++) {
-//						int[] arr = {Integer.parseInt((String) model.getValueAt(0,i+1)),
-//								Integer.parseInt((String) model.getValueAt(1,i+1)),
-//								Integer.parseInt((String) model.getValueAt(2,i+1)),
-//								Integer.parseInt((String) model.getValueAt(3,i+1)), };
-						int[] arr = {1,2,3,4};
+						int[] arr = {Integer.parseInt((String) model.getValueAt(i,1)),
+								Integer.parseInt((String) model.getValueAt(i,2)),
+								Integer.parseInt((String) model.getValueAt(i,3)),
+								Integer.parseInt((String) model.getValueAt(i,4))};
 					
 						wunsch.put(wds.get(i), arr);
 					};
@@ -268,16 +264,8 @@ public class PersonalPanel extends JPanel {
 					Personal pe = new Personal(nameField.getText(), kuerzField
 							.getText(), Integer.parseInt(timeField.getText()),
 							lehrerB.isSelected(), stunden, wunsch);
-
-					System.out.println(pe.toString());
-					
-					System.out.println(pe.getErsatzZeit() + ","
-							+ pe.getIstZeit() + "," + pe.getKuerzel() + ","
-							+ pe.getName() + "," + pe.getSollZeit() + ","
-							+ pe.getMoeglicheStundeninhalte() + ","
-							+ pe.getWunschzeiten() + "," + pe.isGependelt()
-							+ "," + pe.isLehrer());
 					PersonalManager.addPersonalToDb(pe);
+					
 					 for (Personal per : DataPersonal.getAllPersonal()){
 						 listModel.addElement(per);
 					 }
@@ -308,11 +296,15 @@ public class PersonalPanel extends JPanel {
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 
+//		for (Personal per : DataPersonal.getAllPersonal()){
+//			listModel.addElement(per);
+//		 }
+		
+		Personal pers1 = new Personal();
+		listModel.addElement(pers1);
+		
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
-				System.out.println("selected " + list.getSelectedValue() + " "
-						+ list.getSelectedIndex() + " "
-						+ list.getComponentCount());
 				final DataPopup pop = new DataPopup(list, listModel);
 				setComponentPopupMenu(pop);
 				list.addMouseListener(new MouseAdapter() {
@@ -330,7 +322,10 @@ public class PersonalPanel extends JPanel {
 						// addNewpersonal.acroField.setText(t.getAcronym());
 						// addNewpersonal.timeField.setText((String)t.getHoursPerWeek().toString());
 						// addNewpersonal.setVisible(true);
-						EditPersonalFrame editPersonal = new EditPersonalFrame();
+						JFrame editPersonal = new JFrame("Personal editieren");
+			//			Personal pers = PersonalManager.getPersonalByKuerzel(list.getSelectedValue());
+						editPersonal.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						editPersonal.pack();
 						editPersonal.setVisible(true);
 						// Personal p =
 						// listModel.getPersonalAt(list.getSelectedIndex());
@@ -346,6 +341,211 @@ public class PersonalPanel extends JPanel {
 						deleteD.setVisible(true);
 					}
 				});
+			}
+		});
+		return p;
+	}
+	
+	private JPanel createEditPanel(final JPanel p, final Personal pe) {
+		
+		Label lName2 = new Label("Name des Personals:");
+		Label lKuerz2 = new Label("Kuerzel:");
+		Label lPrefTime2 = new Label("Zeitwunsch:");
+		Label lTime2 = new Label("Zeitverpflichtung in h:");
+		TextField nameField2 = new TextField(15);
+		TextField kuerzField2 = new TextField(5);
+		TextField timeField2 = new TextField(5);
+		JLabel lSubjects2 = new JLabel(
+				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
+		JButton button2 = new JButton("Personal hinzufuegen");
+
+		p.setLayout(new GridBagLayout());
+		c.insets = new Insets(1, 1, 1, 1);
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 0;
+		p.add(lName2, c);
+		c.gridx = 1;
+		p.add(nameField2, c);
+	//	nameField2.setText(pe.getName());
+		
+		c.gridx = 2;
+		final JRadioButton lehrerB2 = new JRadioButton("Lehrer");
+		JRadioButton paedagogeB2 = new JRadioButton("Paedagoge");
+		if(pe.isLehrer()){
+			lehrerB2.setSelected(true);
+		}else{
+			paedagogeB2.setSelected(true);
+		}
+		ButtonGroup group2 = new ButtonGroup();
+		group2.add(lehrerB2);
+		group2.add(paedagogeB2);
+		p.add(lehrerB2, c);
+		c.gridx = 3;
+		p.add(new Label("oder"));
+		c.gridx = 4;
+		p.add(paedagogeB2, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		p.add(lKuerz2, c);
+		c.gridx = 1;
+		p.add(kuerzField2, c);
+	//	kuerzField2.setText(pe.getKuerzel());
+
+		c.gridx = 0;
+		c.gridy = 2;
+		p.add(lTime2, c);
+		c.gridx = 1;
+		p.add(timeField2, c);
+	//	timeField.setText(pe.getSollZeit()+"");
+		
+		c.gridx = 0;
+		c.gridy = 3;
+		p.add(lPrefTime2, c);
+
+		final DefaultTableModel model = new DefaultTableModel();
+		JTable table = new JTable(model);
+		table.setColumnSelectionAllowed(false);
+
+		model.addColumn("Wochentag");
+		model.addColumn("Von (h)");
+		model.addColumn("Von (min)");
+		model.addColumn("Bis (h)");
+		model.addColumn("Bis (min)");
+
+		String sh;
+		String sm;
+		String eh;
+		String em;
+
+		if (Config.DAY_STARTTIME_HOUR < 10) {
+			sh = "0" + Config.DAY_STARTTIME_HOUR;
+		} else {
+			sh = "" + Config.DAY_STARTTIME_HOUR;
+		}
+		;
+		if (Config.DAY_STARTTIME_MINUTE < 10) {
+			sm = "0" + Config.DAY_STARTTIME_MINUTE;
+		} else {
+			sm = "" + Config.DAY_STARTTIME_MINUTE;
+		}
+		;
+		if (Config.DAY_ENDTIME_HOUR < 10) {
+			eh = "0" + Config.DAY_ENDTIME_HOUR;
+		} else {
+			eh = "" + Config.DAY_ENDTIME_HOUR;
+		}
+		;
+		if (Config.DAY_ENDTIME_MINUTE < 10) {
+			em = "0" + Config.DAY_ENDTIME_MINUTE;
+		} else {
+			em = "" + Config.DAY_ENDTIME_MINUTE;
+		}
+		;
+
+		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
+
+		if (Config.MONDAY) {
+			model.addRow(new String[] { Config.MONDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.MONDAY);
+		}
+		if (Config.TUESDAY) {
+			model.addRow(new String[] { Config.TUESDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.TUESDAY);
+		}
+		if (Config.WEDNESDAY) {
+			model.addRow(new String[] { Config.WEDNESDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.WEDNESDAY);
+		}
+		if (Config.THURSDAY) {
+			model.addRow(new String[] { Config.THURSDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.THURSDAY);
+		}
+		if (Config.FRIDAY) {
+			model.addRow(new String[] { Config.FRIDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.FRIDAY);
+		}
+		if (Config.SATURDAY) {
+			model.addRow(new String[] { Config.SATURDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.SATURDAY);
+		}
+		if (Config.SUNDAY) {
+			model.addRow(new String[] { Config.SUNDAY_STRING, sh, sm, eh, em });
+			wds.add(Weekday.SUNDAY);
+		}
+
+		c.gridy = 4;
+		c.gridwidth = 5;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(table.getTableHeader(), c);
+		c.gridy = 5;
+		p.add(table, c);
+
+		c.gridx = 0;
+		c.gridy = 6;
+		c.gridheight = 2;
+		c.gridwidth = 1;
+		lSubjects2.setFont(new Font(nameField.getFont().getFontName(),
+				Font.PLAIN, nameField.getFont().getSize()));
+		p.add(lSubjects2, c);
+		c.gridheight = 1;
+		c.gridx = 1;
+		final CheckBoxList checkList = new CheckBoxList();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+
+		// for(Stundeninhalt s :
+		// StundeninhaltManager.getAllStundeninhalteFromDB()){
+		// boxes.add(new JCheckBox(s.getKuerzel()));
+		// };
+		boxes.add(new JCheckBox("Ma"));
+
+		checkList.setListData(boxes.toArray());
+		p.add(checkList, c);
+		
+		c.gridx = 0;
+		c.gridy = 8;
+		c.gridwidth = 5;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(button2, c);
+
+		// add Button
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					listModel.clear();
+
+					if (!check(p))
+						throw new WrongInputException();
+					HashMap<Weekday, int[]> wunsch = new HashMap<Weekday, int[]>();
+
+					for (int i = 0; i < wds.size(); i++) {
+						int[] arr = {Integer.parseInt((String) model.getValueAt(i,1)),
+								Integer.parseInt((String) model.getValueAt(i,2)),
+								Integer.parseInt((String) model.getValueAt(i,3)),
+								Integer.parseInt((String) model.getValueAt(i,4))};
+					
+						wunsch.put(wds.get(i), arr);
+					};
+
+					ArrayList<String> stunden = new ArrayList<String>();
+					for(int i=0; i<checkList.getSelectedValuesList().size();i++){
+						JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
+						stunden.add(cb.getText());
+					}
+					
+					Personal pe = new Personal(nameField.getText(), kuerzField
+							.getText(), Integer.parseInt(timeField.getText()),
+							lehrerB2.isSelected(), stunden, wunsch);
+					PersonalManager.addPersonalToDb(pe);
+					
+					 for (Personal per : DataPersonal.getAllPersonal()){
+						 listModel.addElement(per);
+					 }
+
+				} catch (WrongInputException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		return p;
