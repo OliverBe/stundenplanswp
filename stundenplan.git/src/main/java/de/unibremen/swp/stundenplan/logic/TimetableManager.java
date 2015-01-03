@@ -159,7 +159,6 @@ public final class TimetableManager {
         cal.setTimeInMillis(0);
         cal.set(Calendar.HOUR, startTimeHour());
         cal.set(Calendar.MINUTE, startTimeMinute());
-        
         return dayTable;
    }
     
