@@ -62,47 +62,8 @@ public void init(){
 		JScrollPane pane = new JScrollPane(table);
 		add(pane,c);
 		
-		JButton pdf = new JButton("PDF");
-		JButton csv = new JButton("CSV");
-		JButton text = new JButton("Text");
 		
-		c.insets = new Insets(5,5,5,5);
-		c.fill = GridBagConstraints.CENTER;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		add(new JLabel("Exportieren als:"),c);
-		c.gridx = 1;
-		add(pdf,c);
-		c.gridx = 2;
-		add(csv,c);
-		c.gridx = 3;
-		add(text,c);	
-		
-		buttonOkay(pdf);
-		buttonOkay(csv);
-		buttonOkay(text);
-		
-		warning.setText("Warnungsfeld: Keine Probleme");
-		warning.setBackground(Color.GREEN);
-		warning.setOpaque(true);
-		c.gridy = 2;
-		c.gridx = 0;
-		c.gridwidth = 4;
-		
-		add(warning, c);
 		
 }
-
-private void buttonOkay(JButton b) {
-	b.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			chooser.showSaveDialog(f);
-		}
-	});
-}	
+	
 }

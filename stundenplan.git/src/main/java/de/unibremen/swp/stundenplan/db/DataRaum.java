@@ -56,6 +56,10 @@ public class DataRaum {
 		try {
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Raumfunktion WHERE raum_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Raum WHERE name = '" + pName + "';";
+			stmt.executeUpdate(sql);
 		} catch (SQLException e) {}
 	}
 	
