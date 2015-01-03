@@ -7,6 +7,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -21,28 +25,27 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class BedarfPanel extends JPanel{
 	
-	private Label lName = new Label("Name des Raumes: ");
-	private Label lPos = new Label("In welchem Gebäude: ");
+	private Label lName = new Label("Jahrgang: ");
+	private Label lSti = new Label("Stundeninhalt: ");
+	private Label lBed = new Label("Bedarf in Stunden: ");
 
-	public TextField nameField = new TextField(5);
+	public TextField bedField = new TextField(3);
+	public Integer[] jahrgang = {1,2,3,4};
 	
-	public String name;
-	
-	public JButton button = new JButton("Raum Hinzufuegen");
+	public JButton button = new JButton("Bedarf hinzufuegen");
 	
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
-	
-	private int x=1;
 	
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
 	private JList<String> list = new JList<String>(listModel);
@@ -59,41 +62,73 @@ public class BedarfPanel extends JPanel{
 		c2.weightx = 1.8;
 		c2.weighty = 1.0;
 		add(createAddPanel(new JPanel()),c2);
+		c2.gridy=2;
+		add(createListPanel(new JPanel()),c2);
 	}
 	
 	private JPanel createAddPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
-		p.setBorder(BorderFactory.createTitledBorder("Neuen Raum hinzufuegen"));
+		p.setBorder(BorderFactory.createTitledBorder("Bedarf an Stundeninhalten pro Jahrgang"));
 		c.insets=new Insets(1,1,1,1);
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx=0;
 		c.gridy=0;
-		c.fill = GridBagConstraints.BOTH;
-		
-		
-		final DefaultTableModel model = new DefaultTableModel();
-		JTable table = new JTable(model);
-		table.setColumnSelectionAllowed(false);
-		
-		model.addColumn("Jahrgang");
-		model.addColumn("Stundeninhalt");
-		model.addColumn("Stunden (h)");
-		
-		table.getColumnModel().getColumn(1).setPreferredWidth(300);
-		table.getTableHeader().setReorderingAllowed(false);
-		
-		for(Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()){
-			model.addRow(new String[] {""+1, s+"", ""+0});
-		}
-		
+		p.add(lName,c);
+		c.gridx=1;
+		p.add(new JComboBox(jahrgang),c);   
+	    c.gridx=0;
 		c.gridy=1;
-		p.add(table.getTableHeader(), c);
+	    p.add(lSti,c);
+	    c.gridx=1;
+	    final CheckBoxList checkList = new CheckBoxList();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+
+		 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+			 boxes.add(new JCheckBox(s.getKuerzel()));
+		 };
+
+		checkList.setListData(boxes.toArray());
+		p.add(checkList, c);
+		c.gridx=0;
 		c.gridy=2;
-		p.add(table,c);
+		p.add(lBed,c);
+		c.gridx=1;
+		p.add(bedField,c);
+	    c.gridx=0;
 	    c.gridy=3;
-		p.add(button,c);    
+	    c.gridwidth=2;
+	    c.fill=GridBagConstraints.HORIZONTAL;
+		p.add(button,c);   
+		
+		//add
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//addSTudnenbedarf
+			}
+		});		
 		return p;
 		
+	}
+
+	private JPanel createListPanel(final JPanel p) {
+		p.setLayout(new GridBagLayout());
+		p.setBorder(BorderFactory.createTitledBorder("Existierender Bedarf"));
+		
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listScroller.setPreferredSize(new Dimension(250, 200));
+
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.EAST;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 1.8;
+		c.weighty = 1.0;
+		p.add(listScroller, c);
+		
+		return p;
 	}
 	
 	private boolean textFieldsEmpty(final JPanel p){
