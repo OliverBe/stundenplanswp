@@ -100,7 +100,12 @@ public final class TimetableManager {
 //            Data.addDayTable(dayTable);
 //        }
 //    }
-
+    
+    public static Weekday[] validdays(){
+       Weekday[] w = new Weekday[givevaliddays().size()];
+       return givevaliddays().toArray(w);
+    }
+    
     private static ArrayList<Weekday> givevaliddays(){
     	final ArrayList<Weekday> schooldays = new ArrayList<Weekday>();
     	for(final Weekday weekday : Weekday.values()){

@@ -65,7 +65,7 @@ public class TimetableModel extends AbstractTableModel {
      */
     @Override
     public int getColumnCount() {
-        return Weekday.values().length + 1;
+        return TimetableManager.validdays().length+1;
     }
 
     /*
@@ -112,7 +112,7 @@ public class TimetableModel extends AbstractTableModel {
             return TimetableManager.getTimeframeDisplay(row);
         } else {
             try {
-            	return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row);
+            	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row);
                 //return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row, owner);
             } catch (DatasetException e) {
                 /*
