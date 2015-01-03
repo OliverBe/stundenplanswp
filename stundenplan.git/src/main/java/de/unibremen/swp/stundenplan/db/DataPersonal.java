@@ -90,7 +90,8 @@ public class DataPersonal {
 				allPersonal.add(getPersonalByKuerzel(kuerzel));
 			}
 		} catch (SQLException e) {}
-		return allPersonal.isEmpty() ? null:allPersonal;
+		if(allPersonal.isEmpty()) allPersonal.add(new Personal("Max Mustermann", "MMM", 20, 0, 0, false, false, null));
+		return allPersonal;
 	}
 
 	public static void deletePersonalByKuerzel(String pKuerzel) {
