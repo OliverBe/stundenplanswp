@@ -100,10 +100,10 @@ public class StundeninhaltPanel extends JPanel {
 		c.gridy = 3;
 		p.add(lPause, c);
 		c.gridx = 1;
-		JRadioButton pauseB = new JRadioButton("Pause");
+		final JRadioButton pauseB = new JRadioButton("Pause");
 		pauseB.setSelected(true);
-		JRadioButton leichtB = new JRadioButton("Leicht");
-		JRadioButton schwerB = new JRadioButton("Schwer");
+		final JRadioButton leichtB = new JRadioButton("Leicht");
+		final JRadioButton schwerB = new JRadioButton("Schwer");
 		ButtonGroup group = new ButtonGroup();
 		group.add(pauseB);
 		group.add(leichtB);
