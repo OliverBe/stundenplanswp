@@ -1,9 +1,9 @@
 package de.unibremen.swp.stundenplan.data;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
@@ -148,6 +148,12 @@ public class Planungseinheit implements Serializable{
 			}
 		}
 		return null;
+	}
+	
+	public Personal getPersonalbyIndex(final int pIndex){
+		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
+		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
+		return pl.get(pIndex);
 	}
 	
 	public int[] getTimesofPersonal(final Personal pPerson){

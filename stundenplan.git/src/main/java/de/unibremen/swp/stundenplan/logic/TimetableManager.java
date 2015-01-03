@@ -282,28 +282,28 @@ public final class TimetableManager {
     	System.out.println(tp.get(2).getTimeDisplay());
      }
     
-//
-//    /**
-//     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
-//     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
-//     * 
-//     * @param weekday
-//     *            der Wochentag der gesuchten Zeiteinheit
-//     * @param position
-//     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-//     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
-//     * @throws DatasetException
-//     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
-//     *             inkonsistent ist
-//     */
-//    public static Timeslot getTimeslotAt(final Weekday weekday, final int position) throws DatasetException {
-//        DayTable dayTable;
-//        dayTable = Data.getDayTableForWeekday(weekday);
-//        if (dayTable == null) {
-//            return null;
-//        }
-//        return dayTable.getTimeslot(position);
-//    }
+
+    /**
+     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
+     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
+     * 
+     * @param weekday
+     *            der Wochentag der gesuchten Zeiteinheit
+     * @param position
+     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
+     * @throws DatasetException
+     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
+     *             inkonsistent ist
+     */
+    public static Timeslot getTimeslotAt(final Weekday weekday, final int position) throws DatasetException {
+        DayTable dayTable;
+        dayTable = createTimeslots(weekday);
+        if (dayTable == null) {
+            return null;
+        }
+        return dayTable.getTimeslot(position);
+    }
     
     
     /**
@@ -406,6 +406,10 @@ public final class TimetableManager {
 	 */
 	public static int daytablelength() {
 		int dur = duration(startTimeHour(),startTimeMinute(),endTimeHour(),endTimeMinute());
+        System.out.println(startTimeHour());
+        System.out.println(startTimeMinute());
+        System.out.println(endTimeHour());
+        System.out.println(endHour());
         return dur/Timeslot.LENGTH;
 	}
 
