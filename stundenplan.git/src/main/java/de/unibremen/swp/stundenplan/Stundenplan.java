@@ -44,6 +44,7 @@ public final class Stundenplan {
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
+    	Data.start();
     	final MainFrame mainFrame= new MainFrame();
     	try {
 			Config.init(null);
@@ -51,7 +52,6 @@ public final class Stundenplan {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	Data.start();
     }
     
     /**

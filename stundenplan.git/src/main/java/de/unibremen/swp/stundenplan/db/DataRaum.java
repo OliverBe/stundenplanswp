@@ -10,7 +10,7 @@ import de.unibremen.swp.stundenplan.data.Room;
 
 public class DataRaum {
 	
-	private static Statement stmt = null;
+	private static Statement stmt = Data.stmt;
 	private static String sql;
 	
 	private DataRaum() {}
@@ -54,7 +54,7 @@ public class DataRaum {
 	
 	public static void deleteRaumByName(String pName) {
 		try {
-			sql = "DELETE FROM Raum WHERE name = " + pName;
+			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {}
 	}
@@ -72,7 +72,7 @@ public class DataRaum {
 	
 	public static Raumfunktion getRaumfunktionByName(String pName) {
 		try	{
-			sql = "SELECT * FROM Raumfunktion WHERE name = " + pName;
+			sql = "SELECT * FROM Raumfunktion WHERE name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");
@@ -100,7 +100,7 @@ public class DataRaum {
 	
 	public static void deleteRaumfunktionByName(String name) {
 		try {
-			sql = "DELETE FROM Raumfunktion WHERE name = " + name;
+			sql = "DELETE FROM Raumfunktion WHERE name = '" + name + "';";
 			stmt.executeUpdate(sql);
 		}catch(SQLException e) {
 			

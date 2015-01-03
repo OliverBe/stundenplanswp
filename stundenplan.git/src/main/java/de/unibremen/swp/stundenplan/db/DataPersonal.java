@@ -96,8 +96,11 @@ public class DataPersonal {
 
 	public static void deletePersonalByKuerzel(String pKuerzel) {
 		try {
-			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "'";
+			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Zeitwunsch WHERE kuerzel = '" + pKuerzel + "';";
 		} catch (SQLException e) {}
 	}
 }
