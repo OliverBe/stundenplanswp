@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 
@@ -69,6 +70,7 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				allPlanungseinheit.add(new Planungseinheit(id, Weekday.MONDAY, startHour, startMin, endHour, endMin));
 			}
 //			for(Personal p : allPersonal) {
 //				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"

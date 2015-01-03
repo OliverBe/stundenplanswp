@@ -26,14 +26,23 @@ public class Planungseinheit implements Serializable{
 	
 	private ArrayList<String> schulklassen = new ArrayList<String>();
 
-	private int starthour;
-	private int startminute;
-	private int endhour;
-	private int endminute;
+	private int startHour;
+	private int startMin;
+	private int endHour;
+	private int endMin;
 	
 	private Weekday day;
 	
 	public Planungseinheit(){
+	}
+	
+	public Planungseinheit(int pId, Weekday pDay, int pStartHour, int pStartMin, int pEndHour, int pEndMin) {
+		id = pId;
+		day = pDay;
+		startHour = pStartHour;
+		startMin = pStartMin;
+		endHour = pEndHour;
+		endMin = pEndMin;
 	}
 	
 	public void setWeekday(Weekday pWeekday){
@@ -172,39 +181,39 @@ public class Planungseinheit implements Serializable{
 	}
 	
 	public int getStartHour(){
-		return starthour;
+		return startHour;
 	}
 	
 	public void setStarthour(final int pStarthour){
 		if(pStarthour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		starthour = pStarthour;
+		startHour = pStarthour;
 	}
 	
 	public int getStartminute(){
-		return startminute;
+		return startMin;
 	}
 	
 	public void setStartminute(final int pStartminute){
 		if(pStartminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		startminute = pStartminute;
+		startMin = pStartminute;
 	}
 	
 	public int getEndhour(){
-		return endhour;
+		return endHour;
 	}
 	
 	public void setEndhour(final int pEndhour){
 		if(pEndhour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		endhour = pEndhour;
+		endHour = pEndhour;
 	}
 	
 	public int getEndminute(){
-		return endminute;
+		return endMin;
 	}
 	
 	public void setEndminute(final int pEndminute){
 		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		endminute = pEndminute;
+		endMin = pEndminute;
 	}
 	
 	/**
@@ -212,7 +221,7 @@ public class Planungseinheit implements Serializable{
 	 * @return gib die Dauer der Planungseinheit in Minuten zurück
 	 */
 	public int duration(){
-		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
+		int dur = TimetableManager.duration(startHour, startMin, endHour, endMin);
 	    return dur;
 	}
 }
