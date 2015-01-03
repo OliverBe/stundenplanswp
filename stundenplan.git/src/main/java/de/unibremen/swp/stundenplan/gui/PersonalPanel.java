@@ -266,11 +266,11 @@ public class PersonalPanel extends JPanel {
 					
 					PersonalManager.addPersonalToDb(pe);
 					
-					System.out.println("DB");
+					System.out.println("--- DB ---");
 				//	listModel.clear();
 					for (Personal per : DataPersonal.getAllPersonal()){
-						System.out.println("Vor clear Personal : "+ per);
-						// listModel.addElement(per);
+						System.out.println("DB Personal : "+ per);
+						listModel.addElement(per);
 					}					
 
 				} catch (WrongInputException e) {
