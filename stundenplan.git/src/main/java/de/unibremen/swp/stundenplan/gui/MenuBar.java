@@ -12,6 +12,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import de.unibremen.swp.stundenplan.config.ExportPDF;
+
 public class MenuBar extends JMenuBar{
 
 	 // JFileChooser-Objekt erstellen
@@ -74,17 +76,9 @@ public class MenuBar extends JMenuBar{
 		item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ae) {
-				chooser.showSaveDialog(f);
+				ExportPDF.createPDF();
 			}
 		});
 	}
 	
-	private void printClick(JMenuItem item) {
-		item.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent ae) {
-				// printansicht
-			}
-		});
-	}
 }
