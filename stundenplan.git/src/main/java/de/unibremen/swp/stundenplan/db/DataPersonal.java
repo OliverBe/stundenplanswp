@@ -42,8 +42,10 @@ public class DataPersonal {
 				sql = "INSERT INTO Zeitwunsch " + "VALUES ('" 
 						+ personal.getKuerzel() + "',"
 						+ entry.getKey().getOrdinal() + ","
-						+ entry.getValue()[0] + "," + entry.getValue()[1]
-						+ ");";
+						+ entry.getValue()[0] + ","
+						+ entry.getValue()[1] + ","
+						+ entry.getValue()[2] + ","
+						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 			}
 		} catch (SQLException e) {
@@ -62,16 +64,16 @@ public class DataPersonal {
 				int ersatzZeit = rs.getInt("ersatzZeit");
 				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");
+				Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit,schonGependelt, lehrer);
 				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
 						+ pKuerzel + "';";
 				rs = stmt.executeQuery(sql);
 				ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
 				while (rs.next()) {
-					moeglicheStundeninhalte.add(rs
-							.getString("stundeninhalt_kuerzel"));
+					moeglicheStundeninhalte.add(rs.getString("stundeninhalt_kuerzel"));
 				}
-				return new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit,
-						schonGependelt, lehrer, moeglicheStundeninhalte);
+				p.setMoeglicheStundeninhalte(moeglicheStundeninhalte);
+				return p;
 			}else {
 				return null;
 			}
@@ -99,16 +101,19 @@ public class DataPersonal {
 				int ersatzZeit = rs.getInt("ersatzZeit");
 				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");
-				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer, null));
+				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer));
 			}
-//			for(Personal p : allPersonal) {
-//				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
-//						+ p.getKuerzel() + "';";
-//				rs = stmt.executeQuery(sql);
-//				while(rs.next()) {
-//					p.getMoeglicheStundeninhalte().add(rs.getString("stundeninhalt_kuerzel"));
-//				}
-//			}
+			for(Personal p : allPersonal) {
+				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
+						+ p.getKuerzel() + "';";
+				rs = stmt.executeQuery(sql);
+				ArrayList<String> sk = new ArrayList<String>();
+				while(rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					sk.add(stundeninhalt_kuerzel);
+				}
+				p.setMoeglicheStundeninhalte(sk);
+			}
 			return allPersonal;
 		} catch (SQLException e) {
 			e.printStackTrace();
