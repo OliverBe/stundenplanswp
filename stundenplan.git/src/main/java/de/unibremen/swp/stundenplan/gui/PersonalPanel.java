@@ -402,7 +402,7 @@ public class PersonalPanel extends JPanel {
 		p.add(lTime2, c);
 		c.gridx = 1;
 		p.add(timeField2, c);
-		timeField.setText(pe.getSollZeit()+"");
+		timeField2.setText(pe.getSollZeit()+"");
 		
 		c.gridx = 0;
 		c.gridy = 3;
@@ -449,10 +449,12 @@ public class PersonalPanel extends JPanel {
 		;
 
 		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
-
+		int i=0;
 		if (Config.MONDAY) {
-			model.addRow(new String[] { Config.MONDAY_STRING, sh, sm, eh, em });
+			int arr[] = pe.getWunschzeiten().get(i);
+			model.addRow(new String[] { Config.MONDAY_STRING, arr[0]+"", arr[1]+"", arr[2]+"", arr[3]+""});
 			wds.add(Weekday.MONDAY);
+			i++;
 		}
 		if (Config.TUESDAY) {
 			model.addRow(new String[] { Config.TUESDAY_STRING, sh, sm, eh, em });
