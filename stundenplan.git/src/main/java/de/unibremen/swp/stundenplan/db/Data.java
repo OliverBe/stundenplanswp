@@ -112,8 +112,7 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
 //	    			+ "(raum_name VARCHAR, "
 //	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "(name VARCHAR NOT NULL)";
-//	    			+ "PRIMARY KEY (raum_name, stundeninhalt_kuerzel), "
+	    			+ "(name VARCHAR PRIMARY KEY NOT NULL)";
 //	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
 //	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
