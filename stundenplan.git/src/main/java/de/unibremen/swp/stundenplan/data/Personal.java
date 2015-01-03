@@ -122,7 +122,7 @@ public final class Personal {
     
     @Override
     public String toString() {
-        return String.format("Personal [kuerzel=%s, name=%s, istZeit=%d]", kuerzel, name, istZeit);
+        return String.format("Personal [kuerzel=%s, name=%s, sollZeit=%d]", kuerzel, name, sollZeit);
     }
 
     @Override
