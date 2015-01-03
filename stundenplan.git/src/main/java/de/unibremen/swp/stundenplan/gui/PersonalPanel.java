@@ -266,10 +266,8 @@ public class PersonalPanel extends JPanel {
 					
 					PersonalManager.addPersonalToDb(pe);
 					
-					System.out.println("--- DB ---");
 					listModel.clear();
 					for (Personal per : PersonalManager.getAllPersonalFromDB()){
-						System.out.println("DB Personal : "+ per);
 						listModel.addElement(per);
 					}					
 
@@ -304,12 +302,8 @@ public class PersonalPanel extends JPanel {
 		if(DataPersonal.getAllPersonal() != null) {
 			for (Personal per : DataPersonal.getAllPersonal()){
 				listModel.addElement(per);
-				System.out.println("Liste + "+per);
 			}
 		}
-		
-		Personal pers1 = new Personal();
-		listModel.addElement(pers1);
 		
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
