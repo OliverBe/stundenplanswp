@@ -9,32 +9,20 @@ import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
-import de.unibremen.swp.stundenplan.config.Weekday;
-import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
-import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class StundeninhaltPanel extends JPanel {
 
@@ -52,8 +40,8 @@ public class StundeninhaltPanel extends JPanel {
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
 
-	private static DefaultListModel listModel = new DefaultListModel();
-	private JList<String> list = new JList<String>(listModel);
+	private static DefaultListModel<Stundeninhalt> listModel = new DefaultListModel<Stundeninhalt>();
+	private JList<Stundeninhalt> list = new JList<Stundeninhalt>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 
 	public StundeninhaltPanel() {
@@ -170,6 +158,8 @@ public class StundeninhaltPanel extends JPanel {
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 		
+		
+		listModel.clear();
 		for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
 			listModel.addElement(sti);
 		}
