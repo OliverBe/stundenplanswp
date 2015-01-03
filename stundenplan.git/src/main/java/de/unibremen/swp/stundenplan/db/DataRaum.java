@@ -90,6 +90,7 @@ public class DataRaum {
 			while(rs.next()) {
 				String name = rs.getString("name");
 				rfs.add(new Raumfunktion(name));
+				System.out.println("RAUMFUNKTION - Name: " + name);
 			}
 			return rfs;
 		}catch(Exception e) {
