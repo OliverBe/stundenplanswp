@@ -15,8 +15,11 @@
  */
 package de.unibremen.swp.stundenplan.gui;
 
+import java.io.IOException;
+
 import javax.swing.table.AbstractTableModel;
 
+import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
@@ -41,6 +44,12 @@ public class TimetableModel extends AbstractTableModel {
     public TimetableModel() {
     	super();
     	owner = null;
+    	try {
+ 			Config.init(null);
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
     }
     
     public TimetableModel(Object pOwner) {
