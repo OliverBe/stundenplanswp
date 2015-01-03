@@ -22,31 +22,30 @@ public class DataPersonal {
 		try {
 			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(personal.getKuerzel())){ 
-					throw new IllegalArgumentException();
-				}else{
-					sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
-							+ "', '" + personal.getKuerzel() + "', "
-							+ personal.getSollZeit() + ", 0, 0, "
-							+ (personal.isGependelt() ? 1:0) + ", "
-							+ (personal.isLehrer() ? 1:0) + ");";
-					stmt.executeUpdate(sql);
-					System.out.println("NEW - Kuerzel: " + personal.getKuerzel());
-					for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
-						sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
-								+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
-								+ "');";
-						stmt.executeUpdate(sql);
-					}
-					for (Entry<Weekday, int[]> entry : personal.getWunschzeiten()
-							.entrySet()) {
-						sql = "INSERT INTO Zeitwunsch " + "VALUES ('" 
-								+ personal.getKuerzel() + "',"
-								+ entry.getKey().getOrdinal() + ","
-								+ entry.getValue()[0] + "," + entry.getValue()[1]
-								+ ");";
-						stmt.executeUpdate(sql);
-					}
+					throw new SQLException("DOPPELT");
 				}
+			}
+			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
+					+ "', '" + personal.getKuerzel() + "', "
+					+ personal.getSollZeit() + ", 0, 0, "
+					+ (personal.isGependelt() ? 1:0) + ", "
+					+ (personal.isLehrer() ? 1:0) + ");";
+			stmt.executeUpdate(sql);
+			System.out.println("NEW - Kuerzel: " + personal.getKuerzel());
+			for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
+				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
+						+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
+						+ "');";
+				stmt.executeUpdate(sql);
+			}
+			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten()
+					.entrySet()) {
+				sql = "INSERT INTO Zeitwunsch " + "VALUES ('" 
+						+ personal.getKuerzel() + "',"
+						+ entry.getKey().getOrdinal() + ","
+						+ entry.getValue()[0] + "," + entry.getValue()[1]
+						+ ");";
+				stmt.executeUpdate(sql);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
