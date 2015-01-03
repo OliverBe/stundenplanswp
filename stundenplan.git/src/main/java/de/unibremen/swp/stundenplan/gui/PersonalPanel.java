@@ -263,13 +263,15 @@ public class PersonalPanel extends JPanel {
 					Personal pe = new Personal(nameField.getText(), kuerzField
 							.getText(), Integer.parseInt(timeField.getText()),
 							lehrerB.isSelected(), stunden, wunsch);
+					
 					PersonalManager.addPersonalToDb(pe);
 					
-					
+					System.out.println("DB");
+				//	listModel.clear();
 					for (Personal per : DataPersonal.getAllPersonal()){
-						listModel.addElement(per);
-					}
-					
+						System.out.println("Vor clear Personal : "+ per);
+						// listModel.addElement(per);
+					}					
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
