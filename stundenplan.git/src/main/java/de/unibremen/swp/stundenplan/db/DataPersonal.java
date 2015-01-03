@@ -104,12 +104,13 @@ public class DataPersonal {
 //			for(Personal p : allPersonal) {
 //				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
 //						+ p.getKuerzel() + "';";
-//				ResultSet rt = stmt.executeQuery(sql);
-//				rt.next();
-//				p.getMoeglicheStundeninhalte().add(rt.getString("stundeninhalt_kuerzel"));
+//				rs = stmt.executeQuery(sql);
+//				while(rs.next()) {
+//					p.getMoeglicheStundeninhalte().add(rs.getString("stundeninhalt_kuerzel"));
+//				}
 //			}
 			return allPersonal;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
