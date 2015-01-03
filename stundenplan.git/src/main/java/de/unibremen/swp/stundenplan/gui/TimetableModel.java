@@ -97,15 +97,14 @@ public class TimetableModel extends AbstractTableModel {
         if (col == 0) {
             return TimetableManager.getTimeframeDisplay(row);
         } else {
-//            try {
-//                return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row);
-//            } catch (DatasetException e) {
+            try {
+                return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row, owner);
+            } catch (DatasetException e) {
                 /*
                  * Exception wurde schon protokolliert.
                  */
-//                return null;
-//            }
-            return "";
+                return null;
+            }
         }
     }
 
