@@ -267,8 +267,8 @@ public class PersonalPanel extends JPanel {
 					PersonalManager.addPersonalToDb(pe);
 					
 					System.out.println("--- DB ---");
-				//	listModel.clear();
-					for (Personal per : DataPersonal.getAllPersonal()){
+					listModel.clear();
+					for (Personal per : PersonalManager.getAllPersonalFromDB()){
 						System.out.println("DB Personal : "+ per);
 						listModel.addElement(per);
 					}					
@@ -377,7 +377,7 @@ public class PersonalPanel extends JPanel {
 		p.add(lName2, c);
 		c.gridx = 1;
 		p.add(nameField2, c);
-	//	nameField2.setText(pe.getName());
+		nameField2.setText(pe.getName());
 		
 		c.gridx = 2;
 		final JRadioButton lehrerB2 = new JRadioButton("Lehrer");
@@ -401,14 +401,14 @@ public class PersonalPanel extends JPanel {
 		p.add(lKuerz2, c);
 		c.gridx = 1;
 		p.add(kuerzField2, c);
-	//	kuerzField2.setText(pe.getKuerzel());
+		kuerzField2.setText(pe.getKuerzel());
 
 		c.gridx = 0;
 		c.gridy = 2;
 		p.add(lTime2, c);
 		c.gridx = 1;
 		p.add(timeField2, c);
-	//	timeField.setText(pe.getSollZeit()+"");
+		timeField.setText(pe.getSollZeit()+"");
 		
 		c.gridx = 0;
 		c.gridy = 3;
@@ -519,7 +519,7 @@ public class PersonalPanel extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button2, c);
 
-		// add Button
+		// edit Button
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				try {
