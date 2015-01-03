@@ -40,17 +40,12 @@ public final class Schoolclass extends Jahrgang implements Serializable {
     private static final long serialVersionUID = 3137139574206115533L;
 
     /**
-     * Die eindeutige, von der unterliegenden Persistenzschicht automatisch erzeugte ID.
-     */
-    
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    /**
      * Der Name dieser Schulklasse.
      */
     @Id
     private String name;
+    
+    private int jahrgang;
     
     private Room klassenraum;
     
@@ -61,8 +56,17 @@ public final class Schoolclass extends Jahrgang implements Serializable {
     
     private ArrayList<Planungseinheit> planungseinheiten;
     
+    public Schoolclass() {
+    	
+    }
 
-    /**
+    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum) {
+		name = pName;
+		jahrgang = pJahrgang;
+		klassenraum = pKlassenraum;
+	}
+
+	/**
      * Gibt den Namen dieser Schulklasse zurück.
      * 
      * @return den Namen dieser Schulklasse
@@ -79,5 +83,17 @@ public final class Schoolclass extends Jahrgang implements Serializable {
      */
     public void setName(final String pName) {
         name = pName;
+    }
+    
+    public int getJahrgang() {
+    	return jahrgang;
+    }
+    
+    public Room getKlassenraum() {
+    	return klassenraum;
+    }
+    
+    public ArrayList<Personal> getKlassenlehrer() {
+    	return klassenlehrer;
     }
 }

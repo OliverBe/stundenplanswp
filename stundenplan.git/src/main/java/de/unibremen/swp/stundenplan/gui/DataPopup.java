@@ -28,7 +28,7 @@ public class DataPopup extends JPopupMenu{
 	JMenuItem edit = new JMenuItem("Edit");
 	JMenuItem delete = new JMenuItem("Delete");
 	
-	public DataPopup(final JList<String> pList, final DefaultListModel pModel){
+	public DataPopup(final JList pList, final DefaultListModel pModel){
 		list=pList;
 		model=pModel;
 		init();

@@ -26,13 +26,14 @@ import javax.swing.SwingUtilities;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.db.DataRaum;
 
 public class RaumfunktionPanel extends JPanel {
 		private Label lTime = new Label("Name der Funktion");
 		private JTextField tf = new JTextField(20);
 		private GridBagConstraints c = new GridBagConstraints();
 		private GridBagConstraints c2 = new GridBagConstraints();
-		private JButton button = new JButton("Funktion hinzufügen");
+		private JButton button = new JButton("Funktion hinzufï¿½gen");
 
 
 		private static DefaultListModel listModel = new DefaultListModel();
@@ -57,7 +58,7 @@ public class RaumfunktionPanel extends JPanel {
 		private JPanel createAddPanel(final JPanel p){
 			p.setLayout(new GridBagLayout());
 			p.setBorder(BorderFactory
-					.createTitledBorder("Funktionen von Räumen "));
+					.createTitledBorder("Funktionen von Rï¿½umen "));
 			c.insets = new Insets(1, 1, 1, 1);
 			c.gridx = 0;
 			c.gridy = 0;
@@ -76,13 +77,13 @@ public class RaumfunktionPanel extends JPanel {
 						listModel.clear();
 						if(textFieldsEmpty(p)) throw new InvalidNameException();
 						rf = new Raumfunktion(tf.getText());
-						Data.addRaumfunktion(rf);
-						for (Raumfunktion r : Data.getAllRaumfunktion()){
+						DataRaum.addRaumfunktion(rf);
+						for (Raumfunktion r : DataRaum.getAllRaumfunktion()){
 							listModel.addElement(r);
 						}
 						
 					} catch (InvalidNameException e) {
-						System.out.println("ERROR beim Hinzufügen");
+						System.out.println("ERROR beim Hinzufï¿½gen");
 						e.printStackTrace();
 					}
 				}

@@ -10,10 +10,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
+
 @Entity
 public class Planungseinheit implements Serializable{
 	
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
     private long id;
 	
 	//lehrer, time[2] (anfangs,endzeit)
@@ -57,6 +63,42 @@ public class Planungseinheit implements Serializable{
 		return stundeninhalte;
 	}
 	
+	public String schoolclassestoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Schoolclass sc : schulklassen){
+			sb.append(sc.getName());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String roomstoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Room r : raeume){
+			sb.append(r.getName());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String personaltoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Personal p : personal.keySet()){
+			sb.append(p.getKuerzel());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
+	public String stundenInhaltetoString(){
+		StringBuilder sb = new StringBuilder();
+		for(Stundeninhalt si : stundeninhalte){
+			sb.append(si.getKuerzel());
+			sb.append(" ,");
+		}
+		return sb.toString();
+	}
+	
 	public ArrayList<Schoolclass> getSchoolclasses(){
 	 return schulklassen;	
 	} 
@@ -64,7 +106,7 @@ public class Planungseinheit implements Serializable{
 	public Schoolclass getSchoolclassByName(final String pName){
 		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
 		for(Schoolclass s : schulklassen){
-			if(s.getName()==pName)return s;
+			if(s.getName().equals(pName))return s;
 		}
 		return null;
 	}
@@ -76,12 +118,24 @@ public class Planungseinheit implements Serializable{
 	public Room getRoomByName(final String pName){
 		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
 		for(Room r : raeume){
-			if(r.getName()==pName)return r;
+			if(r.getName().equals(pName))return r;
 		}
 		return null;
 	}
 	public HashMap<Personal, Time[]> getPersonal(){
 		return personal;
+	}
+	/*
+	 * gibt Personal fuer eine Name oder Kuerzel zurück.
+	 */
+	public Personal getPersonalbyName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(Personal p: personal.keySet()){
+			if(p.getKuerzel().equals(pName) || p.getName().equals(pName)){
+				return p;
+			}
+		}
+		return null;
 	}
 	
 	public Time[] getTimesofPersonal(final Personal pPerson){
@@ -129,5 +183,14 @@ public class Planungseinheit implements Serializable{
 	public void setEndminute(final int pEndminute){
 		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
 		endminute = pEndminute;
+	}
+	
+	/**
+	 *  Rechnet die Dauer des Planungseinheit aus
+	 * @return gib die Dauer der Planungseinheit in Minuten zurück
+	 */
+	public int duration(){
+		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
+	    return dur;
 	}
 }

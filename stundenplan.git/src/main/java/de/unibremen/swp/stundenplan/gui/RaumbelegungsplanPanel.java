@@ -39,7 +39,6 @@ public class RaumbelegungsplanPanel extends JPanel {
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
 
-	private static SchoolclassListModel schoolclassListModel = new SchoolclassListModel();
 	private JTable table;
 	
 	public JLabel warning = new JLabel();

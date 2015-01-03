@@ -35,7 +35,6 @@ public class StundenplanPanel extends JPanel {
 
 	public DataPanel data = new DataPanel();
 
-	private static SchoolclassListModel schoolclassListModel = new SchoolclassListModel();
 	private JTable table;
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;

@@ -1,26 +1,14 @@
 package de.unibremen.swp.stundenplan.data;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 
 public final class Personal {
     /**
-     * Der Name dieser LehrerIn.
+     * Der Name dieser Person.
      */
     private String name;
 
@@ -46,7 +34,7 @@ public final class Personal {
     private ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
     
     //array of time[2] geht irgendwie nicht
-    private HashMap<Weekday, int[]> wunschZeiten = new HashMap<Weekday,int[]>();
+    private HashMap<Weekday, int[]> wunschzeiten = new HashMap<Weekday,int[]>();
  
     /**
      * Gibt den Namen dieses Lehrers zurück.
@@ -76,6 +64,18 @@ public final class Personal {
     	ersatzZeit = pErsatzZeit;
     	gependelt = pGependelt;
     	lehrer = pLehrer;
+    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
+    }
+    
+    public Personal(String pName, String pKuerzel, int pSollZeit, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte, HashMap<Weekday,int[]> pWunschzeiten) {
+    	name = pName;
+    	kuerzel = pKuerzel;
+    	sollZeit = pSollZeit;
+    	istZeit=0;
+    	ersatzZeit=0;
+    	gependelt=false;
+    	lehrer = pLehrer;
+    	wunschzeiten=pWunschzeiten;
     	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
     }
     
@@ -120,23 +120,9 @@ public final class Personal {
         kuerzel = pKuerzel.trim().substring(0, Math.min(Data.MAX_KUERZEL_LEN, pKuerzel.length()));
     }
     
-//    public boolean arbeitetZuViel(){
-//    	int wochenStunden = hoursPerWeek.intValue();
-//    	int arbeitetStunden = arbeitsZeit.intValue();
-//    	if(wochenStunden < arbeitetStunden){
-//    		return true;
-//    	}
-//    	return false;
-//    }
-    
-//    public int kannNochSoVielArbeiten(){
-//    	int i = hoursPerWeek.intValue() - arbeitsZeit.intValue();
-//    	return i;
-//    }
-    
     @Override
     public String toString() {
-        return String.format("Teacher [kuerzel=%s, name=%s, hpw=%.2f]", kuerzel, name, istZeit);
+        return String.format("Personal [kuerzel=%s, name=%s, istZeit=%d]", kuerzel, name, istZeit);
     }
 
     @Override
@@ -194,12 +180,12 @@ public final class Personal {
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 	}
 
-	public HashMap<Weekday,int[]> getWunschZeiten() {
-		return wunschZeiten;
+	public HashMap<Weekday,int[]> getWunschzeiten() {
+		return wunschzeiten;
 	}
 
-	public void setWunschZeiten(final HashMap<Weekday, int[]> pWunschZeiten) {
-		wunschZeiten = pWunschZeiten;
+	public void setWunschZeiten(final HashMap<Weekday, int[]> pWunschzeiten) {
+		wunschzeiten = pWunschzeiten;
 	}
 
 	public boolean isGependelt() {

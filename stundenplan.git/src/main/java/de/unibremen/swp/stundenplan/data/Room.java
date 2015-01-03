@@ -18,12 +18,15 @@ public final class Room implements Serializable {
 
     private String name;
     
-    private String kuerzel;
-    
     private int gebaeude;
     
     private ArrayList<String> moeglicheFunktionen; 
 
+    public Room(String pName, int pGebaeude){
+    	name = pName;
+    	gebaeude = pGebaeude;
+    }
+    
     /**
      * Gibt den Namen dieses Raumes zurück.
      * 
@@ -51,14 +54,6 @@ public final class Room implements Serializable {
 		id = pId;
 	}
 
-	public String getKuerzel() {
-		return kuerzel;
-	}
-
-	public void setKuerzel(final String pKuerzel) {
-		kuerzel = pKuerzel;
-	}
-
 	public int getGebaeude() {
 		return gebaeude;
 	}
@@ -73,5 +68,9 @@ public final class Room implements Serializable {
 
 	public void setMoeglicheFunktionen(final ArrayList<String> pMoeglicheFunktionen) {
 		moeglicheFunktionen = pMoeglicheFunktionen;
+	}
+	
+	public void addMoeglicheFunktionen(final String funktion){
+		moeglicheFunktionen.add(funktion);
 	}
 }
