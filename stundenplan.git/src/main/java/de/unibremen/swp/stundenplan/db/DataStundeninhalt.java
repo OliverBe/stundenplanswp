@@ -9,7 +9,7 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 public class DataStundeninhalt {
 
-	private static Statement stmt = null;
+	private static Statement stmt = Data.stmt;
 	private static String sql;
 	
 	public static void addStundeninhalt(Stundeninhalt stundeninhalt) {
@@ -27,7 +27,7 @@ public class DataStundeninhalt {
 	
 	public static Stundeninhalt getStundeninhaltByKuerzel(String pKuerzel) {
 		try {
-			sql = "SELECT * FROM Stundeninhalt WHERE kuerzel = " + pKuerzel + ";";
+			sql = "SELECT * FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");
@@ -55,8 +55,9 @@ public class DataStundeninhalt {
 	
 	public static void deleteStundeninhaltByKuerzel(String pKuerzel) {
 		try {
-			sql = "DELETE FROM Schulklasse WHERE kuerzel = " + pKuerzel;
+			sql = "DELETE FROM Schulklasse WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE kuerzel = '" + pKuerzel + "';";
 		} catch (SQLException e) {}
 	}
 }

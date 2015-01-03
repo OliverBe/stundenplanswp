@@ -10,7 +10,7 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 
 public class DataSchulklasse {
 
-	private static Statement stmt = null;
+	private static Statement stmt = Data.stmt;
 	private static String sql;
 
 	private DataSchulklasse() {
@@ -36,7 +36,7 @@ public class DataSchulklasse {
 	
 	public static Schoolclass getSchulklasseByName(String pName) {
 		try {
-			sql = "SELECT * FROM Schulklasse WHERE name = " + pName + ";";
+			sql = "SELECT * FROM Schulklasse WHERE name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");
@@ -65,7 +65,9 @@ public class DataSchulklasse {
 	
 	public static void deleteSchulklasseByName(String pName) {
 		try {
-			sql = "DELETE FROM Schulklasse WHERE name = " + pName;
+			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM klassenlehrer WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {}
 	}

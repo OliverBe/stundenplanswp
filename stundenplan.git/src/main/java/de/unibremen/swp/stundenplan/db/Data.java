@@ -81,6 +81,10 @@ public class Data {
 	    	sql = "CREATE TABLE IF NOT EXISTS planungseinheit_Personal "
 	    			+ "(planungseinheit_id INT NOT NULL, "
 	    			+ "personal_kuerzel VARCHAR NOT NULL, "
+	    			+ "startZeitHour INT NOT NULL, "
+	    			+ "startZeitMin INT NOT NULL, "
+	    			+ "endZeitHour INT NOT NULL, "
+	    			+ "endZeitMin INT NOT NULL, "
 	    			+ "PRIMARY KEY (planungseinheit_id, personal_kuerzel), "
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id)"
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";

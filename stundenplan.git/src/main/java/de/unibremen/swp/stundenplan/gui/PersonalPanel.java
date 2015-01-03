@@ -296,9 +296,11 @@ public class PersonalPanel extends JPanel {
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 
-//		for (Personal per : DataPersonal.getAllPersonal()){
-//			listModel.addElement(per);
-//		 }
+		if(DataPersonal.getAllPersonal() != null) {
+			for (Personal per : DataPersonal.getAllPersonal()){
+				listModel.addElement(per);
+			}
+		}
 		
 		Personal pers1 = new Personal();
 		listModel.addElement(pers1);
