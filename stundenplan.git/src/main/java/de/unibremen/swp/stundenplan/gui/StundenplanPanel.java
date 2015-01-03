@@ -81,7 +81,9 @@ public class StundenplanPanel extends JPanel {
 				" Uhrzeiten", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"
 		};
 		String [][] rowData ={ {"8-9","","","","",""}, {"9-10","","","","",""}, {"10-11","","","","",""}, {"11-12","","","","",""}, {"12-13","","","","",""}, {"13-14","","","","",""},{"14-15","","","","",""},{"16-17","","","","",""}, {"17-18","","","","",""}};
-		table = new JTable(rowData, columnNames);
+		table = new JTable (new TimetableModel()); 
+		//table = new JTable(rowData, columnNames);
+		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(40);
 		c.fill = GridBagConstraints.BOTH;

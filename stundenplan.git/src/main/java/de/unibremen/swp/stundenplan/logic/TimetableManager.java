@@ -409,7 +409,7 @@ public final class TimetableManager {
         System.out.println(startTimeHour());
         System.out.println(startTimeMinute());
         System.out.println(endTimeHour());
-        System.out.println(endHour());
+        System.out.println(endTimeMinute());
         return dur/Timeslot.LENGTH;
 	}
 

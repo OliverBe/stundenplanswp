@@ -76,10 +76,10 @@ public final class Timeslot implements Serializable {
 
     private Weekday wochentag;
     
-    private String stundeninhaltetext;
-    private String personaltext;
-    private String raumtext;
-    private String klassetext;
+    private String stundeninhaltetext = "";
+    private String personaltext = "";
+    private String raumtext = "";
+    private String klassetext = "";
     
     /**
      * Erzeugt eine neue Zeiteinheit.
@@ -157,5 +157,6 @@ public final class Timeslot implements Serializable {
     public void setKlassentext(final Planungseinheit pPE){
     	klassetext = pPE.schoolclassestoString();
     }
+    
     
 }
