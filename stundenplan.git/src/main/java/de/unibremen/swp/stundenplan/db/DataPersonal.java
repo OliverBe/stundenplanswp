@@ -92,10 +92,22 @@ public class DataPersonal {
 			sql = "SELECT * FROM Personal";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				String name = rs.getString("name");
 				String kuerzel = rs.getString("kuerzel");
-				allPersonal.add(getPersonalByKuerzel(kuerzel));
-				System.out.println("Personal - Kuerzel: " + kuerzel);
+				int sollZeit = rs.getInt("sollZeit");
+				int istZeit = rs.getInt("istZeit");
+				int ersatzZeit = rs.getInt("ersatzZeit");
+				boolean schonGependelt = rs.getBoolean("schonGependelt");
+				boolean lehrer = rs.getBoolean("lehrer");
+				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer, null));
 			}
+//			for(Personal p : allPersonal) {
+//				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
+//						+ p.getKuerzel() + "';";
+//				ResultSet rt = stmt.executeQuery(sql);
+//				rt.next();
+//				p.getMoeglicheStundeninhalte().add(rt.getString("stundeninhalt_kuerzel"));
+//			}
 			return allPersonal;
 		} catch (Exception e) {
 			e.printStackTrace();
