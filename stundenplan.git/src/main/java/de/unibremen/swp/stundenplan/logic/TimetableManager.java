@@ -123,7 +123,6 @@ public final class TimetableManager {
         return dayTables;
     }
 
-
     /**
      * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
      * 
@@ -144,6 +143,52 @@ public final class TimetableManager {
             timeslot.setstartzeit(newCal);
             cal.add(Calendar.MINUTE, Timeslot.LENGTH);
         }
+        return dayTable;
+   }
+
+    /**
+     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * 
+     * @param dayTable
+     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     */
+    private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
+        final Calendar cal = Calendar.getInstance();
+        DayTable dayTable = new DayTable(pWeekday);
+        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
+        cal.setTimeInMillis(0);
+        cal.set(Calendar.HOUR, startTimeHour());
+        cal.set(Calendar.MINUTE, startTimeMinute());
+        
+        return dayTable;
+   }
+    
+    /**
+     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * 
+     * @param dayTable
+     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     */
+    private static DayTable createTimeslotsForSchoolclass(Weekday pWeekday, Schoolclass pSC) {
+        final Calendar cal = Calendar.getInstance();
+        DayTable dayTable = new DayTable(pWeekday);
+        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pWeekday, pSC);
+        cal.setTimeInMillis(0);
+        cal.set(Calendar.HOUR, startTimeHour());
+        cal.set(Calendar.MINUTE, startTimeMinute());
+        return dayTable;
+   }
+    
+    /**
+     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * 
+     * @param dayTable
+     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     */
+    private static DayTable createTimeslotsForRoom(Weekday pWeekday,Room pRoom) {
+        DayTable dayTable = new DayTable(pWeekday);
+        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForRoombyWeekday(pWeekday, pRoom);
+        
         return dayTable;
    }
     
@@ -204,12 +249,12 @@ public final class TimetableManager {
      */
     public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
         DayTable dayTable;
-        if(clazz instanceof Personal) {
- //       	dayTable = Data.getDayTableForWeekday(weekday, (Teacher) clazz);
-        }else if(clazz instanceof Schoolclass) {
- //       	dayTable = Data.getDayTableForWeekday(weekday, (Schoolclass) clazz);
+        if(clazz instanceof Personal){
+        	dayTable = createTimeslotsForPersonal(weekday, (Personal)clazz);
+        }else if(clazz instanceof Schoolclass){
+        	dayTable = createTimeslotsForSchoolclass(weekday, (Schoolclass)clazz);
         }else if(clazz instanceof Room){
- //			dayTable =
+        	dayTable = createTimeslotsForRoom(weekday, (Room)clazz);
         }else{ 	
         	return null;
         }
@@ -353,7 +398,21 @@ public final class TimetableManager {
 	        }
 	        timeslots.add(pTimeslot);
 	    }
-	
+
+//	    /**
+//	     * Fügt die übergebene Zeiteinheit zu diesem Tagesplan hinzu. Löst eine {@link IllegalArgumentException} aus, falls
+//	     * die übergebene Zeiteinheit {@code null} ist
+//	     * 
+//	     * @param pTimeslot
+//	     *            die hinzuzufügende Zeiteinheit
+//	     */
+	    public void addTimeslot(final ArrayList<Timeslot> pTimeslots) {
+	        if (pTimeslots == null || pTimeslots.size() == 0) {
+	            throw new IllegalArgumentException("FIXME: configured exception string");
+	        }
+	        timeslots.addAll(pTimeslots);
+	    }
+	    
 //	    /**
 //	     * Gibt den Wochentag dieses Tagesplans zurück.
 //	     * 
