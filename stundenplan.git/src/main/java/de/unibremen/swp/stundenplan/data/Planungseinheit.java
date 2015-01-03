@@ -18,7 +18,7 @@ public class Planungseinheit implements Serializable{
     private int id;
 	
 	//lehrer, time[2] (anfangs,endzeit)
-	private HashMap<Personal, int[]> personal; 
+	private HashMap<Personal, int[]> personal = new HashMap<Personal, int[]>(); 
 	
 	private ArrayList<String> stundeninhalte = new ArrayList<String>();
 	
@@ -133,8 +133,12 @@ public class Planungseinheit implements Serializable{
 //		return null;
 //	}
 	
-	public HashMap<Personal, int[]> getPersonal(){
+	public HashMap<Personal, int[]> getPersonalMap(){
 		return personal;
+	}
+	
+	public ArrayList<Personal> getPersonal(){
+		return new ArrayList<Personal>(personal.keySet());
 	}
 	
 	/*
