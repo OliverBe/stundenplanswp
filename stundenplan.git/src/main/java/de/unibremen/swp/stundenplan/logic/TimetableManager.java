@@ -146,6 +146,25 @@ public final class TimetableManager {
         }
         return dayTable;
    }
+    
+    private static ArrayList<Timeslot> planungsEinheitToTimeslot(final Planungseinheit pPE){
+    	ArrayList<Timeslot> timeslots = new ArrayList<Timeslot>();
+    	int timeslotcount = duration(pPE.getStartHour(), pPE.getStartminute(), pPE.getEndhour(), pPE.getEndminute());
+    	timeslotcount = timeslotcount/Timeslot.LENGTH;
+    	final Calendar cal = Calendar.getInstance();
+    	cal.setTimeInMillis(0);
+        cal.set(Calendar.HOUR, pPE.getStartHour());
+        cal.set(Calendar.MINUTE, pPE.getStartminute());
+        for(int i = 0 ; i<timeslotcount; i++){
+    		Timeslot t = new Timeslot(pPE.getWeekday());
+    		timeslots.add(t);
+    		final Calendar newCal = Calendar.getInstance();
+    		newCal.setTimeInMillis(cal.getTimeInMillis());
+            t.setstartzeit(newCal);
+            cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+        }
+        return timeslots;
+    }
 //
 //    /**
 //     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
@@ -170,33 +189,33 @@ public final class TimetableManager {
 //    }
     
     
-//    /**
-//     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
-//     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
-//     * 
-//     * @param weekday
-//     *            der Wochentag der gesuchten Zeiteinheit
-//     * @param position
-//     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-//     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
-//     * @throws DatasetException
-//     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
-//     *             inkonsistent ist
-//     */
-//    public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
-//        DayTable dayTable;
-//        if(clazz instanceof Teacher) {
-//        	dayTable = Data.getDayTableForWeekday(weekday, (Teacher) clazz);
-//        }else if(clazz instanceof Schoolclass) {
-//        	dayTable = Data.getDayTableForWeekday(weekday, (Schoolclass) clazz);
-//        }else {
-//        	dayTable = null;
-//        }
-//        if (dayTable == null) {
-//            return null;
-//        }
-//        return dayTable.getTimeslot(position);
-//    }
+    /**
+     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
+     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
+     * 
+     * @param weekday
+     *            der Wochentag der gesuchten Zeiteinheit
+     * @param position
+     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
+     * @throws DatasetException
+     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
+     *             inkonsistent ist
+     */
+    public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
+        DayTable dayTable;
+        if(clazz instanceof Personal) {
+ //       	dayTable = Data.getDayTableForWeekday(weekday, (Teacher) clazz);
+        }else if(clazz instanceof Schoolclass) {
+ //       	dayTable = Data.getDayTableForWeekday(weekday, (Schoolclass) clazz);
+        }else if(clazz instanceof Room){
+ //			dayTable =
+        }else{ 	
+        	return null;
+        }
+       	
+        return dayTable.getTimeslot(position);
+    }
 
     /**
      * Gibt eine Zeichenkette zur Anzeige in der UI für die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit

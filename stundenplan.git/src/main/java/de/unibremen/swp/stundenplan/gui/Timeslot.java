@@ -80,11 +80,19 @@ public final class Timeslot implements Serializable {
     private String personaltext;
     private String raumtext;
     private String klassetext;
+    
     /**
-     * Erzeugt eine neue Zeiteinheit mit leeren Sammlungen für die zugeordneten LehrerInnen und Schulklassen.
+     * Erzeugt eine neue Zeiteinheit.
      */
     public Timeslot(Calendar pStart, Weekday pWeekday) {
     	startzeit = pStart;
+    	wochentag = pWeekday;
+    }
+    
+    /**
+     * Erzeugt eine neue Zeiteinheit.
+     */
+    public Timeslot(Weekday pWeekday) {
     	wochentag = pWeekday;
     }
 

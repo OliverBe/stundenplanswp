@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 @Entity
@@ -36,7 +37,18 @@ public class Planungseinheit implements Serializable{
 	private int endhour;
 	private int endminute;
 	
+	private Weekday day;
+	
 	public Planungseinheit(){
+	}
+	
+	public void setWeekday(Weekday pWeekday){
+		if(pWeekday== null){new IllegalArgumentException("Argument must be not null");}
+		day = pWeekday;
+	}
+	
+	public Weekday getWeekday(){
+		return day;
 	}
 	
 	public void addStundeninhalt (final Stundeninhalt pSI){
