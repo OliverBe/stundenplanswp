@@ -67,7 +67,11 @@ public class DataSchulklasse {
 		try {
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM klassenlehrer WHERE name = '" + pName + "';";
+			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {}
 	}

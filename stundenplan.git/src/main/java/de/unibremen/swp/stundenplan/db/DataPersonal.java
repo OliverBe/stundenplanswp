@@ -13,6 +13,7 @@ public class DataPersonal {
 
 	private static Statement stmt = Data.stmt;
 	private static String sql;
+	private static ArrayList<Personal> allPersonal = new ArrayList<Personal>();
 
 	private DataPersonal() {
 	}
@@ -88,7 +89,6 @@ public class DataPersonal {
 	 * @return Liste mit allem Personal das sich in der DB befindet.
 	 */
 	public static ArrayList<Personal> getAllPersonal() {
-		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
 		try {
 			sql = "SELECT * FROM Personal";
 			ResultSet rs = stmt.executeQuery(sql);
