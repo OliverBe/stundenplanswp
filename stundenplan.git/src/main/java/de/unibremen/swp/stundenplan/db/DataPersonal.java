@@ -21,7 +21,7 @@ public class DataPersonal {
 	public static void addPersonal(Personal personal) {
 		try {
 			for(Personal pers : getAllPersonal()) {
-				if(pers.getKuerzel()==personal.getKuerzel()){ 
+				if(pers.getKuerzel().equals(personal.getKuerzel())){ 
 					throw new IllegalArgumentException();
 				}else{
 					sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
