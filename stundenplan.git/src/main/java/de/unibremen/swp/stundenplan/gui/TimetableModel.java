@@ -15,8 +15,11 @@
  */
 package de.unibremen.swp.stundenplan.gui;
 
+import java.io.IOException;
+
 import javax.swing.table.AbstractTableModel;
 
+import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
@@ -41,6 +44,12 @@ public class TimetableModel extends AbstractTableModel {
     public TimetableModel() {
     	super();
     	owner = null;
+    	try {
+ 			Config.init(null);
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
     }
     
     public TimetableModel(Object pOwner) {
@@ -56,7 +65,7 @@ public class TimetableModel extends AbstractTableModel {
      */
     @Override
     public int getColumnCount() {
-        return Weekday.values().length + 1;
+        return TimetableManager.validdays().length+1;
     }
 
     /*
@@ -103,7 +112,7 @@ public class TimetableModel extends AbstractTableModel {
             return TimetableManager.getTimeframeDisplay(row);
         } else {
             try {
-            	return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row);
+            	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row);
                 //return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row, owner);
             } catch (DatasetException e) {
                 /*
