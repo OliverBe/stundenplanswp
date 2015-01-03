@@ -134,6 +134,7 @@ public class PersonalPanel extends JPanel {
 		final DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
+		table.getTableHeader().setReorderingAllowed(false);
 
 		model.addColumn("Wochentag");
 		model.addColumn("Von (h)");
