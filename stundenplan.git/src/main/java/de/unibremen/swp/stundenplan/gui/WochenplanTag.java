@@ -62,7 +62,7 @@ public class WochenplanTag extends JPanel {
 		init();
 		setTestPlanungs();
 		addData();
-		generateTime();
+		//generateTime();
 	}
 
 	public void init() {
@@ -91,6 +91,7 @@ public class WochenplanTag extends JPanel {
 			model.addColumn(ausgabe);
 
 		}
+
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(50);
@@ -127,22 +128,41 @@ public class WochenplanTag extends JPanel {
 
 	public void generateTime() {
 		for (Planungseinheit p : einheitsliste) {
-			String PersonalName;
+			ArrayList<Personal> personaliste = new ArrayList<>();
+			personaliste = p.getPersonal();
+			String personalName;
 			int starthour;
 			int startminute;
-			int endMinute;
+			int endminute;
 			int endhour;
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
-				PersonalName = p.getPersonalbyIndex(0).getName();
-				if (tablePersoName.equals(PersonalName)
+				System.out.println("Test");
+				personalName = personaliste.get(1).getName();
+				System.out.println("Test2");
+				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
 					starthour = p.getStartHour();
 					startminute = p.getStartminute();
-					endMinute = p.getEndminute();
+					endminute = p.getEndminute();
 					endhour = p.getEndhour();
-					model.setValueAt(Color.BLUE, i, starthour);
+					String ausgabe ="<html><body><center>"+p.getStundeninhalte().get(0)+" "+ p.getSchoolclasses().get(0)+"<br>"
+							+ p.getRooms().get(0)+"<br>"
+							+ starthour + ":" + startminute + "-" + endhour
+							+ ":" + endminute+"</center></body></html>";
+
+					for(int j = 1;j<model.getColumnCount();j++){
+						String zeit = model.getColumnName(j);
+						String[] zeiten = zeit.split(":");
+						int stunde = Integer.parseInt(zeiten[0]);
+						int minute = Integer.parseInt(zeiten[1]);
+						if(starthour>=stunde&&minute>=startminute){
+							model.setValueAt(ausgabe, i, j);
+						}
+					}
+					
+					
 
 				}
 
@@ -165,6 +185,7 @@ public class WochenplanTag extends JPanel {
 
 	public void setTestPlanungs() {
 		e1.addPersonal(p1, new int[] { 1, 2, 3 });
+		e1.addPersonal(p2, new int[]{1,2,3});
 		e1.setStarthour(7);
 		e1.setEndhour(10);
 		e1.setWeekday(Weekday.MONDAY);
