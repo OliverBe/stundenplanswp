@@ -105,7 +105,7 @@ public class DataSchulklasse {
 			boolean inDB;
 			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
 				inDB = false;
-				for(Jahrgang j : getAllJahrgangbedarf()) {
+				for(Jahrgang j : getAllJahrgang()) {
 					if(jahrgang.getJahrgang() == j.getJahrgang()) {
 						for(Entry<String, Integer> entryDB : j.getStundenbedarf().entrySet()) {
 							if(entry.getKey().equals(entryDB.getKey())) {
@@ -123,15 +123,16 @@ public class DataSchulklasse {
 					stmt.executeUpdate(sql);
 				}
 			}
+			System.out.println("DB - Jahrgang " + jahrgang.getJahrgang() + " added");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static ArrayList<Jahrgang> getAllJahrgangbedarf() {
+	public static ArrayList<Jahrgang> getAllJahrgang() {
 		ArrayList<Jahrgang> allJahrgangbedarf = new ArrayList<Jahrgang>();
 		try {
-			sql = "SELECT * FROM Jahrgang_Stundenbedarf";
+			sql = "SELECT * FROM Jahrgang_Stundenbedarf ORDER BY jahrgang ASC";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				int jahrgang = rs.getInt("jahrgang");
