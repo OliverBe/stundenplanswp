@@ -110,16 +110,16 @@ public class BedarfPanel extends JPanel{
 					try {
 						if(textFieldsEmpty(p)) throw new WrongInputException();
 						System.out.println("Jahrgang: "+cb1.getSelectedItem()+ " Stundeninhalt: "+((Stundeninhalt)cb2.getSelectedItem()).getKuerzel()+" Stunden: "+bedField.getText());
-						Jahrgang j = DataSchulklasse.getAllJahrgang().get((int) cb1.getSelectedItem());
+//						Jahrgang j = DataSchulklasse.getAllJahrgang().get((int) cb1.getSelectedItem());
 						HashMap<String, Integer> hm = new HashMap<String,Integer>();
 						hm.put(cb2.getSelectedItem().toString(),Integer.parseInt(bedField.getText()));				
-						j.setStundenbedarf(hm);
-						DataSchulklasse.addJahrgang(j);
+//						j.setStundenbedarf(hm);
+						DataSchulklasse.addJahrgang(new Jahrgang((int) cb1.getSelectedItem(),hm));
 						
 						listModel.clear();
 						for(Jahrgang ja : DataSchulklasse.getAllJahrgang()){
 							for(Entry<String, Integer> entry : ja.getStundenbedarf().entrySet()) {
-								
+								listModel.addElement("Jahrgang: "+ja.getJahrgang()+", "+entry.getKey()+", Bedarf (h)"+entry.getValue());
 							}
 						};
 						
