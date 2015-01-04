@@ -85,7 +85,7 @@ public class StundenplanPanel extends JPanel {
 		//table = new JTable(rowData, columnNames);
 		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
 		table.setRowSelectionAllowed(true);
-		table.setRowHeight(40);
+		table.setRowHeight(75);
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;

@@ -139,18 +139,7 @@ public final class TimetableManager {
      */
     private static DayTable createTimeslots(Weekday pWeekday) {
         final Calendar cal = Calendar.getInstance();
-        DayTable dayTable = new DayTable(pWeekday);
-        cal.setTimeInMillis(0);
-        cal.set(Calendar.HOUR_OF_DAY, startTimeHour());
-        cal.set(Calendar.MINUTE, startTimeMinute());
-        for (int i = 0; i <= daytablelength(); i++) {
-            final Timeslot timeslot = new Timeslot(cal, pWeekday);
-            dayTable.addTimeslot(timeslot);
-            final Calendar newCal = Calendar.getInstance();
-            newCal.setTimeInMillis(cal.getTimeInMillis());
-            timeslot.setstartzeit(newCal);
-            cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
-        }
+        DayTable dayTable = createTimeslotsForPES(PlanungseinheitManager.demomethod(pWeekday), pWeekday);
         return dayTable;
    }
     
@@ -175,9 +164,9 @@ public final class TimetableManager {
         ArrayList<Planungseinheit> pE = pPE;
         for(Planungseinheit p: pE){
         	final Calendar pecal = Calendar.getInstance();
-            cal.setTimeInMillis(0);
-            cal.set(Calendar.HOUR_OF_DAY, p.getStartHour());
-            cal.set(Calendar.MINUTE, p.getStartminute());
+            pecal.setTimeInMillis(0);
+            pecal.set(Calendar.HOUR_OF_DAY, p.getStartHour());
+            pecal.set(Calendar.MINUTE, p.getStartminute());
         	while(!sametimeofday(cal, pecal)){
         		Timeslot t = new Timeslot(pWeekday);
         		dayTable.addTimeslot(t);
@@ -186,11 +175,16 @@ public final class TimetableManager {
                 t.setstartzeit(newCal);
                 cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
             }
-        	dayTable.addTimeslot(planungsEinheitToTimeslot(p));
+        	ArrayList<Timeslot> ts = planungsEinheitToTimeslot(p);
+        	dayTable.addTimeslot(ts);
+            cal.add(Calendar.MINUTE, Timeslot.timeslotlength()*ts.size());
         }
+        System.out.println(dayTable.slotslength());
+        System.out.println(daytablelength());
         if(dayTable.slotslength()<daytablelength()){
-        	dayTable.addTimeslot(filltoEnd(dayTable));
+        	dayTable.addTimeslot(filltoEnd(dayTable, cal));
         }
+        System.out.println(dayTable.timeslots.size());
         return dayTable;
     
     }
@@ -211,19 +205,20 @@ public final class TimetableManager {
      * @param pdt Tagesplan
      * @return Liste mit restlichen leeren Timeslots
      */
-    private static ArrayList<Timeslot> filltoEnd(DayTable pdt) {
+    private static ArrayList<Timeslot> filltoEnd(DayTable pdt, Calendar cal) {
 		ArrayList<Timeslot> timeslot = new ArrayList<Timeslot>();
 		int index = pdt.slotslength();
 		final Calendar time = Calendar.getInstance();
-        time.set(Calendar.HOUR_OF_DAY, startTimeHour());
-        time.set(Calendar.MINUTE, startTimeMinute());
+		time.setTimeInMillis(cal.getTimeInMillis());
         for(;index< daytablelength(); index++){
-			time.add(Calendar.MINUTE, index*Timeslot.timeslotlength());
 			Timeslot t = new Timeslot(pdt.getWeekday());
 			final Calendar newtime = Calendar.getInstance();
 			newtime.setTimeInMillis(time.getTimeInMillis());
-			t.setstartzeit(time);
+			t.setstartzeit(newtime);
+			timeslot.add(t);
+			time.add(Calendar.MINUTE, Timeslot.timeslotlength());			
 		}
+        System.out.println(timeslot.size());
     	return timeslot;
 	}
 
@@ -261,6 +256,10 @@ public final class TimetableManager {
         cal.set(Calendar.MINUTE, pPE.getStartminute());
         for(int i = 0 ; i<timeslotcount; i++){
     		Timeslot t = new Timeslot(pPE.getWeekday());
+    		t.setKlassentext(pPE);
+    		t.setPersonaltext(pPE);
+    		t.setRaumtext(pPE);
+    		t.setStundeninhalttext(pPE);
     		timeslots.add(t);
     		final Calendar newCal = Calendar.getInstance();
     		newCal.setTimeInMillis(cal.getTimeInMillis());
@@ -268,6 +267,15 @@ public final class TimetableManager {
             cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
         }
         return timeslots;
+    }
+    
+    public static void peTest(){
+    	DayTable tp = createTimeslotsForPES(PlanungseinheitManager.demomethod(Weekday.values()[0]), Weekday.values()[0]);
+    	System.out.println(tp.timeslots.size());
+    	for(int i = 0; i<daytablelength();i++){
+    		Timeslot t = tp.getTimeslot(i);
+    		System.out.println("Test"+t.getTimeDisplay());
+    	}
     }
     
     
@@ -411,10 +419,10 @@ public final class TimetableManager {
 	 */
 	public static int daytablelength() {
 		int dur = duration(startTimeHour(),startTimeMinute(),endTimeHour(),endTimeMinute());
-        System.out.println(startTimeHour());
-        System.out.println(startTimeMinute());
-        System.out.println(endTimeHour());
-        System.out.println(endTimeMinute());
+//        System.out.println(startTimeHour());
+//        System.out.println(startTimeMinute());
+//        System.out.println(endTimeHour());
+//        System.out.println(endTimeMinute());
         return dur/Timeslot.timeslotlength();
 	}
 

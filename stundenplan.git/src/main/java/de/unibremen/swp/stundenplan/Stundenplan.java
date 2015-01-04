@@ -66,5 +66,6 @@ public final class Stundenplan {
      */
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
+            TimetableManager.peTest();
     }
 }
