@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -106,15 +107,21 @@ public class BedarfPanel extends JPanel{
 		//add
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if(textFieldsEmpty(p))
 					try {
 						if(textFieldsEmpty(p)) throw new WrongInputException();
-						Jahrgang j = DataSchulklasse.getAllJahrgang().get(Integer.parseInt(bedField.getText()));
+						System.out.println("Jahrgang: "+cb1.getSelectedItem()+ " Stundeninhalt: "+((Stundeninhalt)cb2.getSelectedItem()).getKuerzel()+" Stunden: "+bedField.getText());
+						Jahrgang j = DataSchulklasse.getAllJahrgang().get((int) cb1.getSelectedItem());
 						HashMap<String, Integer> hm = new HashMap<String,Integer>();
-						hm.put(cb2.getSelectedItem().toString(),cb1.getSelectedIndex());				
+						hm.put(cb2.getSelectedItem().toString(),Integer.parseInt(bedField.getText()));				
 						j.setStundenbedarf(hm);
 						DataSchulklasse.addJahrgang(j);
 						
+						listModel.clear();
+						for(Jahrgang ja : DataSchulklasse.getAllJahrgang()){
+							for(Entry<String, Integer> entry : ja.getStundenbedarf().entrySet()) {
+								
+							}
+						};
 						
 					} catch (WrongInputException e) {
 						e.printStackTrace();
