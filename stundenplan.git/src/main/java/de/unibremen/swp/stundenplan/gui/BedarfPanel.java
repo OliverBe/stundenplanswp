@@ -27,8 +27,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -38,9 +41,12 @@ public class BedarfPanel extends JPanel{
 	private Label lName = new Label("Jahrgang: ");
 	private Label lSti = new Label("Stundeninhalt: ");
 	private Label lBed = new Label("Bedarf in Stunden: ");
+	
+	JComboBox cb1;
+	JComboBox cb2;
 
 	public TextField bedField = new TextField(3);
-	public Integer[] jahrgang = {1,2,3,4};
+	public Integer[] jahrgaenge = {1,2,3,4};
 	
 	public JButton button = new JButton("Bedarf hinzufuegen");
 	
@@ -75,35 +81,44 @@ public class BedarfPanel extends JPanel{
 		c.gridy=0;
 		p.add(lName,c);
 		c.gridx=1;
-		p.add(new JComboBox(jahrgang),c);   
+		cb1=new JComboBox(jahrgaenge);
+		p.add(cb1,c);   
+		c.gridx=2;
+		c.weightx=0;
+		p.add(lBed,c);
+		c.gridx=3;
+		p.add(bedField,c);
+		c.weightx=0;
 	    c.gridx=0;
 		c.gridy=1;
 	    p.add(lSti,c);
 	    c.gridx=1;
-	    final CheckBoxList checkList = new CheckBoxList();
-		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
-
-		 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
-			 boxes.add(new JCheckBox(s.getKuerzel()));
-		 };
-
-		checkList.setListData(boxes.toArray());
-		p.add(checkList, c);
+	    c.gridwidth=3;
+	    ArrayList<Stundeninhalt> si=DataStundeninhalt.getAllStundeninhalte();
+	    cb2=new JComboBox(si.toArray());
+	    p.add(cb2,c);
 		c.gridx=0;
-		c.gridy=2;
-		p.add(lBed,c);
-		c.gridx=1;
-		p.add(bedField,c);
-	    c.gridx=0;
-	    c.gridy=3;
-	    c.gridwidth=2;
+	    c.gridy=2;
+	    c.gridwidth=4;
 	    c.fill=GridBagConstraints.HORIZONTAL;
 		p.add(button,c);   
 		
 		//add
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//addSTudnenbedarf
+				if(textFieldsEmpty(p))
+					try {
+						if(textFieldsEmpty(p)) throw new WrongInputException();
+						Jahrgang j = DataSchulklasse.getAllJahrgang().get(Integer.parseInt(bedField.getText()));
+						HashMap<String, Integer> hm = new HashMap<String,Integer>();
+						hm.put(cb2.getSelectedItem().toString(),cb1.getSelectedIndex());				
+						j.setStundenbedarf(hm);
+						DataSchulklasse.addJahrgang(j);
+						
+						
+					} catch (WrongInputException e) {
+						e.printStackTrace();
+					}
 			}
 		});		
 		return p;

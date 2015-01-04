@@ -49,7 +49,9 @@ public class WrongInputException extends Exception {
     
     public WrongInputException() {
         super();
-        MainFrame.getWarning().setText("Eine ihrer Angaben ist nicht zulässig.");
+        MainFrame.getWarning().setText("Eine ihrer Angaben ist nicht zulässig. "
+        		+ "Haben Sie vielleicht einen Buchstaben zu viel geschrieben "
+        		+ "oder eine Zeile leer gelassen?");
         MainFrame.getWarning().setColor(new Color (255, 0, 0));
     }
 
