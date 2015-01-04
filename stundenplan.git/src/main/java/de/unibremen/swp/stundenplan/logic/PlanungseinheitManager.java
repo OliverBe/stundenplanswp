@@ -157,7 +157,7 @@ public final class PlanungseinheitManager {
 			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
 			p2.addStundeninhalt(s2);
 			p2.setStarthour(10);
-			p2.setStartminute(45);
+			p2.setStartminute(30);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
 		} else if (pWeekday.getOrdinal() == 2) {
