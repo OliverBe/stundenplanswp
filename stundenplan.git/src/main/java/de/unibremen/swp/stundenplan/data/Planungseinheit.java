@@ -3,9 +3,11 @@ package de.unibremen.swp.stundenplan.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class Planungseinheit implements Serializable{
@@ -17,8 +19,8 @@ public class Planungseinheit implements Serializable{
 
     private int id;
 	
-	//lehrer, time[2] (anfangs,endzeit)
-	private HashMap<Personal, int[]> personal = new HashMap<Personal, int[]>(); 
+	//lehrerkuerzel, time[2] (anfangs,endzeit)
+	private HashMap<String, int[]> personal = new HashMap<String, int[]>(); 
 	
 	private ArrayList<String> stundeninhalte = new ArrayList<String>();
 	
@@ -71,7 +73,7 @@ public class Planungseinheit implements Serializable{
 	
 	public void addPersonal (final Personal pPerson, final int[] pZeiten){
 		if(pZeiten== null){new IllegalArgumentException("Argument must be not null");}
-		personal.put(pPerson, pZeiten);
+		personal.put(pPerson.getKuerzel(), pZeiten);
 	}
 	
 	public ArrayList<String> getStundeninhalte(){
@@ -98,8 +100,8 @@ public class Planungseinheit implements Serializable{
 	
 	public String personaltoString(){
 		StringBuilder sb = new StringBuilder();
-		for(Personal p : personal.keySet()){
-			sb.append(p.getKuerzel());
+		for(String kuerzel : personal.keySet()){
+			sb.append(kuerzel);
 			sb.append(" ,");
 		}
 		return sb.toString();
@@ -122,52 +124,56 @@ public class Planungseinheit implements Serializable{
 	 return schulklassen;	
 	} 
 	
-//	public Schoolclass getSchoolclassByName(final String pName){
-//		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-//		for(String s : schulklassen){
-//			if(s.getName().equals(pName))return s;
-//		}
-//		return null;
-//	}
+	public Schoolclass getSchoolclassByName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String name : schulklassen){
+			if(name.equals(pName)) return DataSchulklasse.getSchulklasseByName(name);
+		}
+		return null;
+	}
 	
 	public ArrayList<String> getRooms(){
 		return raeume;
 	}
 	
-//	public Room getRoomByName(final String pName){
-//		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-//		for(Room r : raeume){
-//			if(r.getName().equals(pName))return r;
-//		}
-//		return null;
-//	}
+	public Room getRoomByName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String name : raeume){
+			if(name.equals(pName)) return DataRaum.getRaumByName(name);
+		}
+		return null;
+	}
 	
-	public HashMap<Personal, int[]> getPersonalMap(){
+	public HashMap<String, int[]> getPersonalMap(){
 		return personal;
 	}
 	
 	public ArrayList<Personal> getPersonal(){
-		return new ArrayList<Personal>(personal.keySet());
+		ArrayList<Personal> personalArray = new ArrayList<Personal>();
+		for(String kuerzel : personal.keySet()) {
+			personalArray.add(DataPersonal.getPersonalByKuerzel(kuerzel));
+		}
+		return personalArray;
 	}
 	
 	/*
 	 * gibt Personal fuer eine Name oder Kuerzel zurück.
 	 */
-	public Personal getPersonalbyName(final String pName){
-		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-		for(Personal p: personal.keySet()){
-			if(p.getKuerzel().equals(pName) || p.getName().equals(pName)){
-				return p;
+	public Personal getPersonalbyKuerzel(final String pKuerzel){
+		if(pKuerzel == null || pKuerzel.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String kuerzel : personal.keySet()){
+			if(kuerzel.equals(pKuerzel)){
+				return DataPersonal.getPersonalByKuerzel(kuerzel);
 			}
 		}
 		return null;
 	}
 	
-	public Personal getPersonalbyIndex(final int pIndex){
-		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
-		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
-		return pl.get(pIndex);
-	}
+//	public Personal getPersonalbyIndex(final int pIndex){
+//		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
+//		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
+//		return pl.get(pIndex);
+//	}
 	
 	public int[] getTimesofPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
