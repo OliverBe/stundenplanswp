@@ -14,14 +14,13 @@ public class DataPersonal {
 	private static Statement stmt = Data.stmt;
 	private static String sql;
 
-	private DataPersonal() {
-	}
+	private DataPersonal() {}
 
 	public static void addPersonal(Personal personal) {
 		try {
 			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(personal.getKuerzel())){ 
-					throw new SQLException("DOPPELT");
+					throw new SQLException("DB - ERROR Personal already in Database");
 				}
 			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
@@ -30,15 +29,13 @@ public class DataPersonal {
 					+ (personal.isGependelt() ? 1:0) + ", "
 					+ (personal.isLehrer() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
-			System.out.println("NEW - Kuerzel: " + personal.getKuerzel());
 			for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
 				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
 						+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
 						+ "');";
 				stmt.executeUpdate(sql);
 			}
-			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten()
-					.entrySet()) {
+			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten().entrySet()) {
 				sql = "INSERT INTO Zeitwunsch " + "VALUES ('" 
 						+ personal.getKuerzel() + "',"
 						+ entry.getKey().getOrdinal() + ","
@@ -133,6 +130,26 @@ public class DataPersonal {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void editPersonal(String pKuerzel, Personal newPersonal) {
+		try {
+			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE planungseinheit_Personal SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE klassenlehrer SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			addPersonal(newPersonal);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

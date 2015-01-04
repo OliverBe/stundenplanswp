@@ -49,10 +49,10 @@ public final class Schoolclass extends Jahrgang implements Serializable {
     
     private Room klassenraum;
     
-    private ArrayList<Personal> klassenlehrer;
+    private ArrayList<String> klassenlehrer;
     
     //falls die klasse einen speziellen bedarf hat
-    private HashMap<Integer,Stundeninhalt> stundenBedarf;
+    private HashMap<String, Integer> stundenbedarf;
     
     private ArrayList<Planungseinheit> planungseinheiten;
     
@@ -89,11 +89,23 @@ public final class Schoolclass extends Jahrgang implements Serializable {
     	return jahrgang;
     }
     
+    public void setJahrgang(int pJahrgang) {
+    	jahrgang = pJahrgang;
+    }
+    
     public Room getKlassenraum() {
     	return klassenraum;
     }
     
-    public ArrayList<Personal> getKlassenlehrer() {
+    public void setKlassenraum(Room pKlassenraum) {
+    	klassenraum = pKlassenraum;
+    }
+    
+    public ArrayList<String> getKlassenlehrer() {
     	return klassenlehrer;
+    }
+    
+    public void setKlassenlehrer(ArrayList<String> pKlassenlehrer) {
+    	klassenlehrer = pKlassenlehrer;
     }
 }

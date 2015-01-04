@@ -14,7 +14,7 @@ public class Data {
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
 	    	c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
-		    System.out.println("Opened database successfully");
+		    System.out.println("DB - Opened database successfully");
 		    
 	    	stmt = c.createStatement();
 	    	
@@ -157,9 +157,9 @@ public class Data {
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
-	    	System.out.println("Tables created.");
+	    	System.out.println("DB - Tables created");
 	    }catch ( Exception e ) {
-	    	System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	    	System.out.println("DB - ERROR on creating tables");
 	    }
 	}
 		
@@ -168,7 +168,7 @@ public class Data {
 			stmt.close();
 			c.close();
 		}catch (Exception e) {
-			System.out.println("Error on closing.");
+			System.out.println("DB - ERROR on closing Database");
 		}
 	}
 }
