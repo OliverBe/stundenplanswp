@@ -169,11 +169,14 @@ public class Planungseinheit implements Serializable{
 		return null;
 	}
 	
-//	public Personal getPersonalbyIndex(final int pIndex){
-//		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
-//		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
-//		return pl.get(pIndex);
-//	}
+	public Personal getPersonalbyIndex(final int pIndex){
+		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
+		ArrayList<Personal> pl = new ArrayList<Personal>();
+		for(String kuerzel : personal.keySet()){
+			pl.add(DataPersonal.getPersonalByKuerzel(kuerzel));
+		}
+		return pl.get(pIndex);
+	}
 	
 	public int[] getTimesofPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}

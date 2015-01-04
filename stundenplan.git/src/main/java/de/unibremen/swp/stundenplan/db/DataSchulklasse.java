@@ -96,6 +96,10 @@ public class DataSchulklasse {
 		
 	}
 	
+	public static void addStundenbedarf() {
+		
+	}
+	
 	public static void addJahrgangStundenbedarf(Jahrgang jahrgang) {
 		try {
 			boolean inDB;
@@ -106,6 +110,7 @@ public class DataSchulklasse {
 						for(Entry<String, Integer> entryDB : j.getStundenbedarf().entrySet()) {
 							if(entry.getKey().equals(entryDB.getKey())) {
 								inDB = true;
+								System.out.println("DB - JahrgangStundenbedarf already in Database");
 							}
 						}
 					}
