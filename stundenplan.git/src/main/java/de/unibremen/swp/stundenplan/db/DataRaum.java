@@ -17,6 +17,11 @@ public class DataRaum {
 
 	public static void addRaum(Room raum) {
 		try {
+			for(Room rm : getAllRaum()) {
+				if(rm.getName().equals(raum.getName())){ 
+					throw new SQLException("DB - ERROR Raum already in Database");
+				}
+			}
 			sql = "INSERT INTO Raum "
 					+ "VALUES ('" + raum.getName() + "',"
 					+ raum.getGebaeude() + ");";
@@ -35,6 +40,7 @@ public class DataRaum {
 			int gebaeude = rs.getInt("gebaeude");
 			return new Room(name, gebaeude);
 		}catch (SQLException e){
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -46,9 +52,12 @@ public class DataRaum {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
-				allRaum.add(getRaumByName(name));
+				int gebaeude = rs.getInt("gebaeude");
+				allRaum.add(new Room(name, gebaeude));
 			}
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return allRaum;
 	}
 	
@@ -56,13 +65,28 @@ public class DataRaum {
 		try {
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM Raumfunktion WHERE raum_name = '" + pName + "';";
+//			sql = "DELETE FROM Raumfunktion WHERE raum_name = '" + pName + "';";
+//			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM planungseinheit_Raum WHERE name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
+	public static void editRaum(String pName, Room newRaum) {
+		try {
+			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+//			sql = "UPDATE Raumfunktion SET raum_name = '" + newRaum.getName() + "' WHERE raum_name = '" + pName + "';";
+//			stmt.executeUpdate(sql);
+			sql = "UPDATE planungseinheit_Raum SET raum_name = '" + newRaum.getName() + "' WHERE raum_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			addRaum(newRaum);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void addRaumfunktion(Raumfunktion rf) {
 		try {
@@ -82,6 +106,7 @@ public class DataRaum {
 			String name = rs.getString("name");
 			return new Raumfunktion(name);
 		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -94,7 +119,6 @@ public class DataRaum {
 			while(rs.next()) {
 				String name = rs.getString("name");
 				rfs.add(new Raumfunktion(name));
-				System.out.println("RAUMFUNKTION - Name: " + name);
 			}
 			return rfs;
 		}catch(Exception e) {

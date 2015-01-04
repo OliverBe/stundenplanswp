@@ -12,11 +12,13 @@ public class DataStundeninhalt {
 	private static Statement stmt = Data.stmt;
 	private static String sql;
 	
+	private DataStundeninhalt() {}
+	
 	public static void addStundeninhalt(Stundeninhalt stundeninhalt) {
 		try {
 			for(Stundeninhalt si : getAllStundeninhalte()) {
 				if(si.getKuerzel().equals(stundeninhalt.getKuerzel())){ 
-					throw new SQLException("DOPPELT");
+					throw new SQLException("DB - ERROR Stundeninhalt already in Database");
 				}
 			}
 			sql = "INSERT INTO Stundeninhalt "
@@ -77,6 +79,28 @@ public class DataStundeninhalt {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {
+		try {
+			sql = "DELETE FROM Schulklasse WHERE kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE moegliche_Stundeninhalte_Personal SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalte_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE Raumfunktion SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE stundenbedarf SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE planungseinheit_Stundeninhalt SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE Jahrgang_Stundenbedarf SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			addStundeninhalt(newStundeninhalt);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
