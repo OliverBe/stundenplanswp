@@ -150,6 +150,7 @@ public final class Config {
         }
         try {
             propertiesConfig = new PropertiesConfiguration(configPath);
+            
         } catch (ConfigurationException e) {
             createNewConfig();
             LOGGER.warn("Exception while creating new configuration object!", e);
@@ -200,5 +201,22 @@ public final class Config {
      */
     public static int getInt(final String pKey, final int pDefaultValue) {
         return propertiesConfig.getInt(pKey, pDefaultValue);
+    }
+    
+    public static void setIntValue(final String pKey, final int pValue){
+    	if((pKey == null || pKey.length() == 0))throw new IllegalArgumentException("There must be a key");
+    	if(pKey.equals(TIMESLOT_LENGTH_STRING) && pValue <= 0)throw new IllegalArgumentException("Value of timeslot must be greater than zero");
+    	propertiesConfig.setProperty(pKey, pValue);
+    	try {
+			propertiesConfig.save();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println("saved");
+    }
+    
+    public static void setStringValue(final String pKey, final String pValue){
+    	propertiesConfig.addProperty(pKey, pValue);
     }
 }

@@ -149,7 +149,7 @@ public final class TimetableManager {
             final Calendar newCal = Calendar.getInstance();
             newCal.setTimeInMillis(cal.getTimeInMillis());
             timeslot.setstartzeit(newCal);
-            cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+            cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
         }
         return dayTable;
    }
@@ -184,7 +184,7 @@ public final class TimetableManager {
         		final Calendar newCal = Calendar.getInstance();
         		newCal.setTimeInMillis(cal.getTimeInMillis());
                 t.setstartzeit(newCal);
-                cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+                cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
             }
         	dayTable.addTimeslot(planungsEinheitToTimeslot(p));
         }
@@ -218,7 +218,7 @@ public final class TimetableManager {
         time.set(Calendar.HOUR_OF_DAY, startTimeHour());
         time.set(Calendar.MINUTE, startTimeMinute());
         for(;index< daytablelength(); index++){
-			time.add(Calendar.MINUTE, index*Timeslot.LENGTH);
+			time.add(Calendar.MINUTE, index*Timeslot.timeslotlength());
 			Timeslot t = new Timeslot(pdt.getWeekday());
 			final Calendar newtime = Calendar.getInstance();
 			newtime.setTimeInMillis(time.getTimeInMillis());
@@ -254,7 +254,7 @@ public final class TimetableManager {
     private static ArrayList<Timeslot> planungsEinheitToTimeslot(final Planungseinheit pPE){
     	ArrayList<Timeslot> timeslots = new ArrayList<Timeslot>();
     	int timeslotcount = duration(pPE.getStartHour(), pPE.getStartminute(), pPE.getEndhour(), pPE.getEndminute());
-    	timeslotcount = timeslotcount/Timeslot.LENGTH;
+    	timeslotcount = timeslotcount/Timeslot.timeslotlength();
     	final Calendar cal = Calendar.getInstance();
     	cal.setTimeInMillis(0);
         cal.set(Calendar.HOUR_OF_DAY, pPE.getStartHour());
@@ -265,7 +265,7 @@ public final class TimetableManager {
     		final Calendar newCal = Calendar.getInstance();
     		newCal.setTimeInMillis(cal.getTimeInMillis());
             t.setstartzeit(newCal);
-            cal.add(Calendar.MINUTE, Timeslot.LENGTH);
+            cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
         }
         return timeslots;
     }
@@ -354,9 +354,9 @@ public final class TimetableManager {
         final Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, startTimeHour());
         time.set(Calendar.MINUTE, startTimeMinute());
-        time.add(Calendar.MINUTE, Timeslot.LENGTH * position);
+        time.add(Calendar.MINUTE, Timeslot.timeslotlength() * position);
         String display = String.format("%02d:%02d - ", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
-        time.add(Calendar.MINUTE, Timeslot.LENGTH);
+        time.add(Calendar.MINUTE, Timeslot.timeslotlength());
         display += String.format("%02d:%02d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
         return display;
     }
@@ -415,7 +415,7 @@ public final class TimetableManager {
         System.out.println(startTimeMinute());
         System.out.println(endTimeHour());
         System.out.println(endTimeMinute());
-        return dur/Timeslot.LENGTH;
+        return dur/Timeslot.timeslotlength();
 	}
 
 //    /**

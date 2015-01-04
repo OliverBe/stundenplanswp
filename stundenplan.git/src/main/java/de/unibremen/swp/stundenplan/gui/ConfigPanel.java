@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
@@ -64,7 +65,12 @@ public class ConfigPanel extends JPanel {
 	}
 
 	public void init() {
-
+		try {
+			Config.init(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
@@ -232,6 +238,7 @@ public class ConfigPanel extends JPanel {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					Config.TIMESLOT_LENGTH = Integer.parseInt(tf.getText());
+					Config.setIntValue(Config.TIMESLOT_LENGTH_STRING, Integer.parseInt(tf.getText())) ;
 					System.out.println(Config.TIMESLOT_LENGTH);
 				}
 			});
@@ -272,7 +279,7 @@ public class ConfigPanel extends JPanel {
 
 	public class WeekdayConfig extends JPanel {
 		private Label lTime = new Label(
-				"Wählen sie die Wochentage des Stundenplans");
+				"Wï¿½hlen sie die Wochentage des Stundenplans");
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
 		private JComboBox jcb = new JComboBox();
@@ -333,7 +340,7 @@ public class ConfigPanel extends JPanel {
 
 	public class DaylengthConfig extends JPanel {
 		private Label lTime = new Label(
-				"Wählen sie die Länge eines Wochentages");
+				"Wï¿½hlen sie die Lï¿½nge eines Wochentages");
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
 		private JTextField start = new JTextField(5);
@@ -342,7 +349,7 @@ public class ConfigPanel extends JPanel {
 		public DaylengthConfig() {
 			setLayout(new GridBagLayout());
 			setBorder(BorderFactory
-					.createTitledBorder("Länge der Wochentages"));
+					.createTitledBorder("Lï¿½nge der Wochentages"));
 			c.insets = new Insets(1, 1, 1, 1);
 			c.gridx = 0;
 			c.gridy = 0;
@@ -394,9 +401,13 @@ public class ConfigPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					try {
 						Config.DAY_STARTTIME_HOUR=Integer.parseInt(start.getText(0,2));
+						Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING, Integer.parseInt(start.getText(0,2)));
 						Config.DAY_STARTTIME_MINUTE=Integer.parseInt(start.getText(3,2));
+						Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING, Integer.parseInt(start.getText(3,2)));
 						Config.DAY_ENDTIME_HOUR=Integer.parseInt(start.getText(0,2));
+						Config.setIntValue(Config.DAY_ENDTIME_HOUR_STRING, Integer.parseInt(end.getText(0,2)));
 						Config.DAY_ENDTIME_MINUTE=Integer.parseInt(start.getText(3,2));
+						Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING, Integer.parseInt(end.getText(3,2)));
 					} catch (NumberFormatException | BadLocationException e) {
 						System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 					}
@@ -407,7 +418,7 @@ public class ConfigPanel extends JPanel {
 
 	public class BedarfStundenConfig extends JPanel {
 		private Label lTime = new Label(
-				"Wählen sie die Wochentage des Stundenplans");
+				"Wï¿½hlen sie die Wochentage des Stundenplans");
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
 

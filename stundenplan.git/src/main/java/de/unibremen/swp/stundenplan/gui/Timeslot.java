@@ -158,5 +158,9 @@ public final class Timeslot implements Serializable {
     	klassetext = pPE.schoolclassestoString();
     }
     
+    public static int timeslotlength(){
+    	return Config.getInt(Config.TIMESLOT_LENGTH_STRING,
+                Config.TIMESLOT_LENGTH);
+    }
     
 }
