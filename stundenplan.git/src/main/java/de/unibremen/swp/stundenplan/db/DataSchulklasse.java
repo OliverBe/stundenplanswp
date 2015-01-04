@@ -100,7 +100,7 @@ public class DataSchulklasse {
 		
 	}
 	
-	public static void addJahrgangStundenbedarf(Jahrgang jahrgang) {
+	public static void addJahrgang(Jahrgang jahrgang) {
 		try {
 			boolean inDB;
 			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
