@@ -52,13 +52,10 @@ public class ConfigPanel extends JPanel {
 	private JMenuItem mBI = new JMenuItem("Back-Up Intervall");
 	private JMenuItem mWD = new JMenuItem("Zu verplanende Wochentage");
 	private JMenuItem mDL = new JMenuItem("Dauer eines Wochentags");
-	private JMenuItem mBS = new JMenuItem(
-			"Bedarf an Stundeninhalten fuer die Klassen");
 	private JPanel plnConfig = new PlanungsEinheitConfig();
 	private JPanel bkpConfig = new BackUpConfig();
 	private JPanel wdConfig = new WeekdayConfig();
 	private JPanel dlConfig = new DaylengthConfig();
-	private JPanel bsConfig = new BedarfStundenConfig();
 
 	public ConfigPanel() {
 		init();
@@ -97,13 +94,11 @@ public class ConfigPanel extends JPanel {
 		mBI.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mWD.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mDL.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mBS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
 		menuBar.add(mP);
 		menuBar.add(mBI);
 		menuBar.add(mWD);
 		menuBar.add(mDL);
-		menuBar.add(mBS);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
@@ -182,25 +177,6 @@ public class ConfigPanel extends JPanel {
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
-
-		// klick auf mBS
-		mBS.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
-				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
-				removeOld();
-				add(bsConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(bsConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
-			}
-		});
 	}
 
 	private void removeOld() {
@@ -208,7 +184,6 @@ public class ConfigPanel extends JPanel {
 		remove(bkpConfig);
 		remove(wdConfig);
 		remove(dlConfig);
-		remove(bsConfig);
 	}
 
 	public class PlanungsEinheitConfig extends JPanel {

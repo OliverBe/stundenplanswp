@@ -3,9 +3,11 @@ package de.unibremen.swp.stundenplan.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class Planungseinheit implements Serializable{
@@ -17,8 +19,8 @@ public class Planungseinheit implements Serializable{
 
     private int id;
 	
-	//lehrer, time[2] (anfangs,endzeit)
-	private HashMap<Personal, int[]> personal = new HashMap<Personal, int[]>(); 
+	//lehrerkuerzel, time[2] (anfangs,endzeit)
+	private HashMap<String, int[]> personal = new HashMap<String, int[]>(); 
 	
 	private ArrayList<String> stundeninhalte = new ArrayList<String>();
 	
@@ -26,14 +28,23 @@ public class Planungseinheit implements Serializable{
 	
 	private ArrayList<String> schulklassen = new ArrayList<String>();
 
-	private int starthour;
-	private int startminute;
-	private int endhour;
-	private int endminute;
+	private int startHour;
+	private int startMin;
+	private int endHour;
+	private int endMin;
 	
 	private Weekday day;
 	
 	public Planungseinheit(){
+	}
+	
+	public Planungseinheit(int pId, Weekday pDay, int pStartHour, int pStartMin, int pEndHour, int pEndMin) {
+		id = pId;
+		day = pDay;
+		startHour = pStartHour;
+		startMin = pStartMin;
+		endHour = pEndHour;
+		endMin = pEndMin;
 	}
 	
 	public void setWeekday(Weekday pWeekday){
@@ -62,7 +73,7 @@ public class Planungseinheit implements Serializable{
 	
 	public void addPersonal (final Personal pPerson, final int[] pZeiten){
 		if(pZeiten== null){new IllegalArgumentException("Argument must be not null");}
-		personal.put(pPerson, pZeiten);
+		personal.put(pPerson.getKuerzel(), pZeiten);
 	}
 	
 	public ArrayList<String> getStundeninhalte(){
@@ -89,8 +100,8 @@ public class Planungseinheit implements Serializable{
 	
 	public String personaltoString(){
 		StringBuilder sb = new StringBuilder();
-		for(Personal p : personal.keySet()){
-			sb.append(p.getKuerzel());
+		for(String kuerzel : personal.keySet()){
+			sb.append(kuerzel);
 			sb.append(" ,");
 		}
 		return sb.toString();
@@ -113,52 +124,56 @@ public class Planungseinheit implements Serializable{
 	 return schulklassen;	
 	} 
 	
-//	public Schoolclass getSchoolclassByName(final String pName){
-//		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-//		for(String s : schulklassen){
-//			if(s.getName().equals(pName))return s;
-//		}
-//		return null;
-//	}
+	public Schoolclass getSchoolclassByName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String name : schulklassen){
+			if(name.equals(pName)) return DataSchulklasse.getSchulklasseByName(name);
+		}
+		return null;
+	}
 	
 	public ArrayList<String> getRooms(){
 		return raeume;
 	}
 	
-//	public Room getRoomByName(final String pName){
-//		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-//		for(Room r : raeume){
-//			if(r.getName().equals(pName))return r;
-//		}
-//		return null;
-//	}
+	public Room getRoomByName(final String pName){
+		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String name : raeume){
+			if(name.equals(pName)) return DataRaum.getRaumByName(name);
+		}
+		return null;
+	}
 	
-	public HashMap<Personal, int[]> getPersonalMap(){
+	public HashMap<String, int[]> getPersonalMap(){
 		return personal;
 	}
 	
 	public ArrayList<Personal> getPersonal(){
-		return new ArrayList<Personal>(personal.keySet());
+		ArrayList<Personal> personalArray = new ArrayList<Personal>();
+		for(String kuerzel : personal.keySet()) {
+			personalArray.add(DataPersonal.getPersonalByKuerzel(kuerzel));
+		}
+		return personalArray;
 	}
 	
 	/*
 	 * gibt Personal fuer eine Name oder Kuerzel zurück.
 	 */
-	public Personal getPersonalbyName(final String pName){
-		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
-		for(Personal p: personal.keySet()){
-			if(p.getKuerzel().equals(pName) || p.getName().equals(pName)){
-				return p;
+	public Personal getPersonalbyKuerzel(final String pKuerzel){
+		if(pKuerzel == null || pKuerzel.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		for(String kuerzel : personal.keySet()){
+			if(kuerzel.equals(pKuerzel)){
+				return DataPersonal.getPersonalByKuerzel(kuerzel);
 			}
 		}
 		return null;
 	}
 	
-	public Personal getPersonalbyIndex(final int pIndex){
-		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
-		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
-		return pl.get(pIndex);
-	}
+//	public Personal getPersonalbyIndex(final int pIndex){
+//		if(pIndex < 0){new IllegalArgumentException("Argument must not be less than zero");}
+//		ArrayList<Personal> pl = new ArrayList<Personal>(personal.keySet());
+//		return pl.get(pIndex);
+//	}
 	
 	public int[] getTimesofPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
@@ -172,39 +187,39 @@ public class Planungseinheit implements Serializable{
 	}
 	
 	public int getStartHour(){
-		return starthour;
+		return startHour;
 	}
 	
 	public void setStarthour(final int pStarthour){
 		if(pStarthour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		starthour = pStarthour;
+		startHour = pStarthour;
 	}
 	
 	public int getStartminute(){
-		return startminute;
+		return startMin;
 	}
 	
 	public void setStartminute(final int pStartminute){
 		if(pStartminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		startminute = pStartminute;
+		startMin = pStartminute;
 	}
 	
 	public int getEndhour(){
-		return endhour;
+		return endHour;
 	}
 	
 	public void setEndhour(final int pEndhour){
 		if(pEndhour < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		endhour = pEndhour;
+		endHour = pEndhour;
 	}
 	
 	public int getEndminute(){
-		return endminute;
+		return endMin;
 	}
 	
 	public void setEndminute(final int pEndminute){
 		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
-		endminute = pEndminute;
+		endMin = pEndminute;
 	}
 	
 	/**
@@ -212,7 +227,7 @@ public class Planungseinheit implements Serializable{
 	 * @return gib die Dauer der Planungseinheit in Minuten zurück
 	 */
 	public int duration(){
-		int dur = TimetableManager.duration(starthour, startminute, endhour, endminute);
+		int dur = TimetableManager.duration(startHour, startMin, endHour, endMin);
 	    return dur;
 	}
 }

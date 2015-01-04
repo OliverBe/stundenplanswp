@@ -58,7 +58,7 @@ public class WochenplanTag extends JPanel {
 	List<Planungseinheit> einheitsliste = new ArrayList<>();
 
 	public WochenplanTag(final Weekday pDay) {
-		day =pDay;
+		day = pDay;
 		init();
 		setTestPlanungs();
 		addData();
@@ -135,16 +135,14 @@ public class WochenplanTag extends JPanel {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
 				PersonalName = p.getPersonalbyIndex(0).getName();
-				if (tablePersoName.equals(PersonalName)) {
-					
-					if (p.getWeekday().getOrdinal() == day.getOrdinal()) {
-						System.out.println("Test3");
-						starthour = p.getStartHour();
-						startminute = p.getStartminute();
-						endMinute = p.getEndminute();
-						endhour = p.getEndhour();
-						model.setValueAt(Color.BLUE, i, starthour);
-					}
+				if (tablePersoName.equals(PersonalName)
+						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
+
+					starthour = p.getStartHour();
+					startminute = p.getStartminute();
+					endMinute = p.getEndminute();
+					endhour = p.getEndhour();
+					model.setValueAt(Color.BLUE, i, starthour);
 
 				}
 

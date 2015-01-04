@@ -53,13 +53,14 @@ public class DataPanel extends JPanel {
 	private JMenuItem mF = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
 	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
+	private JMenuItem mB = new JMenuItem("Bedarf an Stundeninhalten");
 
 	private RaumfunktionPanel raumfunktionPanel;
 	private PersonalPanel personalPanel;
 	private SchoolclassPanel schoolclassPanel;
 	private StundeninhaltPanel stundeninhaltPanel;
 	private RoomPanel roomPanel;
-
+	private BedarfPanel bedarfPanel;
 
 	public DataPanel() {
 		initComponents();
@@ -69,7 +70,7 @@ public class DataPanel extends JPanel {
 
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
-		 c.insets=new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.WEST;
@@ -84,12 +85,14 @@ public class DataPanel extends JPanel {
 		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mR.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mRF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		
+		mB.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+
 		menuBar.add(mP);
 		menuBar.add(mS);
 		menuBar.add(mF);
 		menuBar.add(mR);
 		menuBar.add(mRF);
+		menuBar.add(mB);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
@@ -107,18 +110,19 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				removeOld();
 				add(personalPanel, c);
-				
+
 				personalPanel.nameField.requestFocus();
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(personalPanel);
+
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(personalPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
-		});	
+		});
 
 		// klick auf mS
 		mS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				schoolclassPanel= new SchoolclassPanel();
+				schoolclassPanel = new SchoolclassPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -129,8 +133,9 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				removeOld();
 				add(schoolclassPanel, c);
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(schoolclassPanel);
+
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(schoolclassPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
@@ -138,7 +143,7 @@ public class DataPanel extends JPanel {
 		// klick auf mF
 		mF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				stundeninhaltPanel= new StundeninhaltPanel();
+				stundeninhaltPanel = new StundeninhaltPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -149,8 +154,9 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				removeOld();
 				add(stundeninhaltPanel, c);
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(stundeninhaltPanel);
+
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		});
@@ -158,7 +164,7 @@ public class DataPanel extends JPanel {
 		// klick auf mR
 		mR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				roomPanel= new RoomPanel();
+				roomPanel = new RoomPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
 				c.gridwidth = 1;
@@ -169,75 +175,104 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				removeOld();
 				add(roomPanel, c);
-				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(roomPanel);
+
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(roomPanel);
 				SwingUtilities.updateComponentTreeUI(frame);
 			}
-		});		
-	
-	
-	// klick auf mRF
-			mRF.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					raumfunktionPanel= new RaumfunktionPanel();
-					c.fill = GridBagConstraints.BOTH;
-					c.anchor = GridBagConstraints.EAST;
-					c.gridwidth = 1;
-					c.gridheight = 1;
-					c.gridx = 1;
-					c.gridy = 1;
-					c.weightx = 1.8;
-					c.weighty = 1.0;
-					removeOld();
-					add(raumfunktionPanel, c);
-					JFrame frame = (JFrame) SwingUtilities
-							.getWindowAncestor(raumfunktionPanel);
-					SwingUtilities.updateComponentTreeUI(frame);
-				}
-			});
+		});
+
+		// klick auf mRF
+		mRF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				raumfunktionPanel = new RaumfunktionPanel();
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.EAST;
+				c.gridwidth = 1;
+				c.gridheight = 1;
+				c.gridx = 1;
+				c.gridy = 1;
+				c.weightx = 1.8;
+				c.weighty = 1.0;
+				removeOld();
+				add(raumfunktionPanel, c);
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(raumfunktionPanel);
+				SwingUtilities.updateComponentTreeUI(frame);
+			}
+		});
+		
+		// klick auf mB
+		mB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				bedarfPanel = new BedarfPanel();
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.EAST;
+				c.gridwidth = 1;
+				c.gridheight = 1;
+				c.gridx = 1;
+				c.gridy = 1;
+				c.weightx = 1.8;
+				c.weighty = 1.0;
+				removeOld();
+				add(bedarfPanel, c);
+				JFrame frame = (JFrame) SwingUtilities
+						.getWindowAncestor(bedarfPanel);
+				SwingUtilities.updateComponentTreeUI(frame);
+			}
+		});
 	}
 
 	private void removeOld() {
-		if(personalPanel !=null) remove(personalPanel);
-		if(stundeninhaltPanel !=null) remove(stundeninhaltPanel);
-		if(schoolclassPanel !=null) remove(schoolclassPanel);
-		if(roomPanel !=null) remove(roomPanel);
-		if(raumfunktionPanel !=null) remove(raumfunktionPanel);
+		if (personalPanel != null)
+			remove(personalPanel);
+		if (stundeninhaltPanel != null)
+			remove(stundeninhaltPanel);
+		if (schoolclassPanel != null)
+			remove(schoolclassPanel);
+		if (roomPanel != null)
+			remove(roomPanel);
+		if (raumfunktionPanel != null)
+			remove(raumfunktionPanel);
+		if (bedarfPanel != null)
+			remove(bedarfPanel);
 	}
-//
-//	public static void updatepersonalList() {
-//        try {
-//			Collection<personal> personals = personalManager.getAllpersonals();
-//			personalListModel.clear();
-//            for (final personal personal : personals) {
-//            	personalListModel.addpersonal(personal);
-//            }
-//		} catch (DatasetException e1) {
-//			e1.printStackTrace();
-//		}
-//	}
-//	
-//	public static void updateSchoolclassList() {
-//        try {
-//			Collection<Schoolclass> schoolclasses = SchoolclassManager.getAllSchoolclasses();
-//			schoolclassListModel.clear();
-//            for (final Schoolclass schoolclass : schoolclasses) {
-//            	schoolclassListModel.addSchoolclass(schoolclass);
-//            }
-//		} catch (DatasetException e1) {
-//			e1.printStackTrace();
-//		}
-//	}
-//
-//	public static void updatestundeninhaltList() {
-//        try {
-//		Collection<stundeninhalt> stundeninhalts = stundeninhaltManager.getAllstundeninhalts();
-//			stundeninhaltListModel.clear();
-//            for (final stundeninhalt stundeninhalt : stundeninhalts) {
-//            	stundeninhaltListModel.addstundeninhalt(stundeninhalt);
-//            }
-//		} catch (DatasetException e1) {
-//			e1.printStackTrace();
-//		}
-//	}
+	//
+	// public static void updatepersonalList() {
+	// try {
+	// Collection<personal> personals = personalManager.getAllpersonals();
+	// personalListModel.clear();
+	// for (final personal personal : personals) {
+	// personalListModel.addpersonal(personal);
+	// }
+	// } catch (DatasetException e1) {
+	// e1.printStackTrace();
+	// }
+	// }
+	//
+	// public static void updateSchoolclassList() {
+	// try {
+	// Collection<Schoolclass> schoolclasses =
+	// SchoolclassManager.getAllSchoolclasses();
+	// schoolclassListModel.clear();
+	// for (final Schoolclass schoolclass : schoolclasses) {
+	// schoolclassListModel.addSchoolclass(schoolclass);
+	// }
+	// } catch (DatasetException e1) {
+	// e1.printStackTrace();
+	// }
+	// }
+	//
+	// public static void updatestundeninhaltList() {
+	// try {
+	// Collection<stundeninhalt> stundeninhalts =
+	// stundeninhaltManager.getAllstundeninhalts();
+	// stundeninhaltListModel.clear();
+	// for (final stundeninhalt stundeninhalt : stundeninhalts) {
+	// stundeninhaltListModel.addstundeninhalt(stundeninhalt);
+	// }
+	// } catch (DatasetException e1) {
+	// e1.printStackTrace();
+	// }
+	// }
 }
