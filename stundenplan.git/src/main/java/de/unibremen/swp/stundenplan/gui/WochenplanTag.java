@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import de.unibremen.swp.stundenplan.*;
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
@@ -39,8 +40,7 @@ public class WochenplanTag extends JPanel {
 	public JTable table;
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
-	List<Personal> personalliste = new ArrayList<>();
-	public Personal p1 = new Personal("Testname", "t1", 38, 38, 38, false,
+	public Personal p1 = new Personal("Testperson 1", "TP1", 35, 35, 35, false,
 			true, null);
 	public Personal p2 = new Personal("Testperson 2", "t2", 38, 38, 38, false,
 			true, null);
@@ -55,14 +55,14 @@ public class WochenplanTag extends JPanel {
 	public Schoolclass s1 = new Schoolclass("K1", 5, r1);
 	public Stundeninhalt fach = new Stundeninhalt("Mathe", "Ma", 90, 0);
 
-	List<Planungseinheit> einheitsliste = new ArrayList<>();
+	public List<Planungseinheit> einheitsliste = new ArrayList<>();
 
 	public WochenplanTag(final Weekday pDay) {
 		day = pDay;
 		init();
 		setTestPlanungs();
 		addData();
-		//generateTime();
+		generateTime();
 	}
 
 	public void init() {
@@ -77,13 +77,14 @@ public class WochenplanTag extends JPanel {
 
 		table = new JTable(model);
 		model.addColumn("Personal");
-		model.addColumn(Config.DAY_STARTTIME_HOUR + ":00");
-		for (int i = (Config.DAY_STARTTIME_HOUR * 100); i <= (Config.DAY_ENDTIME_HOUR * 100); i += Config.TIMESLOT_LENGTH) {
-			if (i == 60) {
-				i = 0;
-			}
+		for (int i = (Config.DAY_STARTTIME_HOUR * 100); i <= (Config.DAY_ENDTIME_HOUR * 100); i += 10) {
 
 			String text = "" + i;
+			String c1 = "" + text.charAt(text.length() - 2);
+			int zahl = Integer.parseInt(c1);
+			if (zahl == 5) {
+				i += 40;
+			}
 			String text2 = text.substring(0, text.length() / 2);
 			String text3 = text.substring((text.length() - 2), text.length());
 
@@ -112,6 +113,10 @@ public class WochenplanTag extends JPanel {
 
 	}
 
+	/**
+	 * Diese Methode füllt die Reihen der ersten Spalte der Tabelle mit den Vor und Nachnamen 
+	 * des gesamten Personals.
+	 */
 	public void addData() {
 		try {
 			for (Personal e : DataPersonal.getAllPersonal()) {
@@ -128,18 +133,15 @@ public class WochenplanTag extends JPanel {
 
 	public void generateTime() {
 		for (Planungseinheit p : einheitsliste) {
-			ArrayList<Personal> personaliste = new ArrayList<>();
-			personaliste = p.getPersonal();
-			String personalName;
+			List<Personal> ppliste = new ArrayList<>();
+			ppliste = p.getPersonal();
 			int starthour;
 			int startminute;
 			int endminute;
 			int endhour;
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
-				System.out.println("Test");
-				personalName = personaliste.get(1).getName();
-				System.out.println("Test2");
+				String personalName = ppliste.get(0).getName();
 				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
@@ -147,22 +149,23 @@ public class WochenplanTag extends JPanel {
 					startminute = p.getStartminute();
 					endminute = p.getEndminute();
 					endhour = p.getEndhour();
-					String ausgabe ="<html><body><center>"+p.getStundeninhalte().get(0)+" "+ p.getSchoolclasses().get(0)+"<br>"
-							+ p.getRooms().get(0)+"<br>"
-							+ starthour + ":" + startminute + "-" + endhour
-							+ ":" + endminute+"</center></body></html>";
+					String ausgabe = "<html><body><center>"
+							+ p.getStundeninhalte().get(0) + " "
+							+ p.getSchoolclasses().get(0) + "<br>"
+							+ p.getRooms().get(0) + "<br>" + starthour + ":"
+							+ startminute + "-" + endhour + ":" + endminute
+							+ "</center></body></html>";
 
-					for(int j = 1;j<model.getColumnCount();j++){
+					for (int j = 1; j < model.getColumnCount(); j++) {
 						String zeit = model.getColumnName(j);
 						String[] zeiten = zeit.split(":");
 						int stunde = Integer.parseInt(zeiten[0]);
 						int minute = Integer.parseInt(zeiten[1]);
-						if(starthour>=stunde&&minute>=startminute){
+						if (starthour <= stunde && minute >= startminute) {
+							//Endzeit noch implementieren.
 							model.setValueAt(ausgabe, i, j);
 						}
 					}
-					
-					
 
 				}
 
@@ -184,9 +187,10 @@ public class WochenplanTag extends JPanel {
 	}
 
 	public void setTestPlanungs() {
-		e1.addPersonal(p1, new int[] { 1, 2, 3 });
-		e1.addPersonal(p2, new int[]{1,2,3});
-		e1.setStarthour(7);
+		e1.addPersonal(DataPersonal.getPersonalByKuerzel("TP1"), new int[] { 1,
+				2, 3 });
+		e1.addPersonal(p2, new int[] { 1, 2, 3 });
+		e1.setStarthour(8);
 		e1.setEndhour(10);
 		e1.setWeekday(Weekday.MONDAY);
 		e1.addRoom(r1);
