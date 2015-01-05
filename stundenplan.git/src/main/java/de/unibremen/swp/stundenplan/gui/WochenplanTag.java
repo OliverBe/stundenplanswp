@@ -60,7 +60,7 @@ public class WochenplanTag extends JPanel {
 	public WochenplanTag(final Weekday pDay) {
 		day = pDay;
 		init();
-		setTestPlanungs();
+	//	setTestPlanungs();
 		addData();
 		generateTime();
 	}
@@ -186,18 +186,18 @@ public class WochenplanTag extends JPanel {
 		addData();
 	}
 
-	public void setTestPlanungs() {
-		e1.addPersonal(DataPersonal.getPersonalByKuerzel("TP1"), new int[] { 1,
-				2, 3 });
-		e1.addPersonal(p2, new int[] { 1, 2, 3 });
-		e1.setStarthour(8);
-		e1.setEndhour(10);
-		e1.setWeekday(Weekday.MONDAY);
-		e1.addRoom(r1);
-		e1.addSchulklassen(s1);
-		e1.addStundeninhalt(fach);
-		einheitsliste.add(e1);
-	}
+//	public void setTestPlanungs() {
+//		e1.addPersonal(DataPersonal.getPersonalByKuerzel("TP1"), new int[] { 1,
+//				2, 3 });
+//		e1.addPersonal(p2, new int[] { 1, 2, 3 });
+//		e1.setStarthour(8);
+//		e1.setEndhour(10);
+//		e1.setWeekday(Weekday.MONDAY);
+//		e1.addRoom(r1);
+//		e1.addSchulklassen(s1);
+//		e1.addStundeninhalt(fach);
+//		einheitsliste.add(e1);
+//	}
 
 	private void buttonOkay(JButton b) {
 		b.addActionListener(new ActionListener() {

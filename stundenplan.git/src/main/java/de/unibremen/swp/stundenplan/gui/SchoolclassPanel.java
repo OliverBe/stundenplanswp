@@ -2,11 +2,16 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -14,22 +19,38 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+
+import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class SchoolclassPanel extends JPanel{
 	
 	private Label jahr = new Label("Jahrgang: ");
 	private Label bez = new Label("Zusatzbezeichner: ");
 
-	public TextField bezField = new TextField(5);
+	public JTextField bezField = new JTextField(5);
+	private JLabel pflicht = new JLabel("<html><body>Bedarf an Stundeninhalten :</body></html>");
 	
-	public String name;
+	private JComboBox jcb;
 	public Integer[] jahrgang = {1,2,3,4};
 	
 	public JButton button = new JButton("Klasse hinzufuegen");
@@ -40,8 +61,8 @@ public class SchoolclassPanel extends JPanel{
 	
 	private int x=1;
 	
-	private static DefaultListModel listModel = new DefaultListModel();
-	private JList<String> list = new JList<String>(listModel);
+	private static DefaultListModel<Schoolclass> listModel = new DefaultListModel<Schoolclass>();
+	private JList<Schoolclass> list = new JList<Schoolclass>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 	
 	public SchoolclassPanel() {
@@ -75,26 +96,32 @@ public class SchoolclassPanel extends JPanel{
 		p.add(bez,c);
 		c.gridx=1;
 	    p.add(bezField,c);
-	    c.gridx=0;
-	    c.gridy=2;
-		p.add(new Label("Klassenraum:"),c);
-		c.gridx=1;
-		String[] raeume = {"32","24","23423"};
-		p.add(new JComboBox(raeume),c);
 		c.gridx=0;
-		c.gridy=3;
+		c.gridy=2;
 		p.add(new Label("Klassenteam:"),c);
 		c.gridx=1;
-	    CheckBoxList checkList = new CheckBoxList();
-	    checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	    JCheckBox[] boxes = {new JCheckBox("VID"), new JCheckBox("KND")};
-	    checkList.setListData(boxes);
-		p.add(checkList,c);
+		final CheckBoxList checkList = new CheckBoxList();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+		 for(Personal per : DataPersonal.getAllPersonal()){
+			 boxes.add(new JCheckBox(per.getKuerzel()));
+		 };
+		checkList.setListData(boxes.toArray());
+		p.add(checkList, c);
+		c.gridx=0;
+	    c.gridy=3;
+		p.add(new Label("Klassenraum:"),c);
+		c.gridx=1;
+		
+		ArrayList<Room> ro=DataRaum.getAllRaum();
+	    jcb=new JComboBox(ro.toArray());
+		p.add(jcb,c);
 	    c.gridx=0;
 	    c.gridy=4;
 	    c.gridwidth=2;
 	    c.fill=GridBagConstraints.HORIZONTAL;
-	    p.add(new Label("Stunden pro Woche"),c);
+	    p.add(pflicht,c);
+	    pflicht.setFont(new Font(bezField.getFont().getFontName(),
+				Font.PLAIN, bezField.getFont().getSize()));
 	    DefaultTableModel model = new DefaultTableModel();
 	    String[] array={"English 5h","Mathe 5h"};
 	    model.addColumn("MyColumnHeader",array);
@@ -111,6 +138,26 @@ public class SchoolclassPanel extends JPanel{
 	    c.gridy=6;
 	    c.gridx=0;
 		p.add(button,c);   
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					if (textFieldsEmpty(p))
+						throw new WrongInputException();
+					
+					
+					
+			//		DataSchulklasse.addSchulklasse(schulklasse);
+					
+					listModel.clear();
+					for (Schoolclass sc : DataSchulklasse.getAllSchulklasse()){
+						listModel.addElement(sc);
+					}					
+
+				} catch (WrongInputException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		return p;
 		
 	}

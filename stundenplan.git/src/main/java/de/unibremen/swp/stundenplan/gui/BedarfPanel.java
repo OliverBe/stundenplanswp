@@ -109,7 +109,7 @@ public class BedarfPanel extends JPanel{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 					try {
-						if(textFieldsEmpty(p)) throw new WrongInputException();
+						if(!check(p)) throw new WrongInputException();
 						System.out.println("Jahrgang: "+cb1.getSelectedItem()+ " Stundeninhalt: "+((Stundeninhalt)cb2.getSelectedItem()).getKuerzel()+" Stunden: "+bedField.getText());
 //						Jahrgang j = DataSchulklasse.getAllJahrgang().get((int) cb1.getSelectedItem());
 						HashMap<String, Integer> hm = new HashMap<String,Integer>();
@@ -140,6 +140,13 @@ public class BedarfPanel extends JPanel{
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listScroller.setPreferredSize(new Dimension(250, 200));
+		
+		listModel.clear();
+		for(Jahrgang ja : DataSchulklasse.getAllJahrgang()){
+			for(Entry<String, Integer> entry : ja.getStundenbedarf().entrySet()) {
+				listModel.addElement("Jahrgang: "+ja.getJahrgang()+", Stundeninhalt: "+entry.getKey()+", Bedarf: "+entry.getValue()+" Stunden");
+			}
+		};
 
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.EAST;
@@ -152,6 +159,17 @@ public class BedarfPanel extends JPanel{
 		p.add(listScroller, c);
 		
 		return p;
+	}
+	
+	private boolean check(final JPanel p) {
+		if (textFieldsEmpty(p))
+			return false;
+		try {
+			Integer.parseInt(bedField.getText());
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean textFieldsEmpty(final JPanel p){

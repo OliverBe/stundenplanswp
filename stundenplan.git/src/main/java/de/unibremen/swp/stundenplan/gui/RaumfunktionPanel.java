@@ -74,10 +74,11 @@ public class RaumfunktionPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					Raumfunktion rf;
 					try {
-						listModel.clear();
 //						if(textFieldsEmpty(p)) throw new InvalidNameException();
 						rf = new Raumfunktion(tf.getText());
 						DataRaum.addRaumfunktion(rf);
+						
+						listModel.clear();
 						for (Raumfunktion r : DataRaum.getAllRaumfunktion()){
 							listModel.addElement(r);
 						}
@@ -100,6 +101,11 @@ public class RaumfunktionPanel extends JPanel {
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			listScroller.setPreferredSize(new Dimension(250, 200));
 
+			listModel.clear();
+			for (Raumfunktion r : DataRaum.getAllRaumfunktion()){
+				listModel.addElement(r);
+			}
+			
 			c.fill = GridBagConstraints.BOTH;
 			c.anchor = GridBagConstraints.EAST;
 			c.gridwidth = 1;

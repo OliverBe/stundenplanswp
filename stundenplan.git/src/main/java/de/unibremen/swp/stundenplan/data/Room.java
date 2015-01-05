@@ -22,6 +22,12 @@ public final class Room implements Serializable {
     
     private ArrayList<String> moeglicheFunktionen; 
 
+    public Room(String pName, int pGebaeude, ArrayList<String> pMoeglicheFunktionen){
+    	name = pName;
+    	gebaeude = pGebaeude;
+    	moeglicheFunktionen = pMoeglicheFunktionen;
+    }
+   
     public Room(String pName, int pGebaeude){
     	name = pName;
     	gebaeude = pGebaeude;
@@ -73,4 +79,9 @@ public final class Room implements Serializable {
 	public void addMoeglicheFunktionen(final String funktion){
 		moeglicheFunktionen.add(funktion);
 	}
+	
+	@Override
+    public String toString() {
+        return String.format("[ID=%d, Name=%s, Gebaeude=%d]"+ id , name, gebaeude);
+    }
 }

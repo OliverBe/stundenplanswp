@@ -7,6 +7,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -22,14 +26,23 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
+
 public class RoomPanel extends JPanel{
 	
 	private Label lName = new Label("Name des Raumes: ");
-	private Label lPos = new Label("In welchem Gebäude: ");
+	private Label lPos = new Label("In welchem Gebaeude: ");
 
-	public TextField nameField = new TextField(5);
-	
-	public String name;
+	private TextField nameField = new TextField(5);
+	private JComboBox jcb;
 	
 	public JButton button = new JButton("Raum Hinzufuegen");
 	
@@ -38,8 +51,8 @@ public class RoomPanel extends JPanel{
 	
 	private int x=1;
 	
-	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
-	private JList<String> list = new JList<String>(listModel);
+	private static DefaultListModel<Room> listModel = new DefaultListModel<Room>();
+	private JList<Room> list = new JList<Room>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 	
 	public RoomPanel() {
@@ -72,20 +85,50 @@ public class RoomPanel extends JPanel{
 	    p.add(lPos,c);
 	    c.gridx=1;
 	    Integer[] gebaeude = {1,2};
-		p.add(new JComboBox(gebaeude),c);
+	    jcb=new JComboBox(gebaeude);
+		p.add(jcb,c);
 		c.gridx=0;
 		c.gridy=2;
 		p.add(new Label("Spezieller Raum:"),c);
 		c.gridx=1;
-		CheckBoxList checkList = new CheckBoxList();
-	    JCheckBox[] boxes = {new JCheckBox("Musik"), new JCheckBox("Naturwissenschaften")};
-	    checkList.setListData(boxes);
-		p.add(checkList,c);
+		final CheckBoxList checkList = new CheckBoxList();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+		 for(Raumfunktion rf : DataRaum.getAllRaumfunktion()){
+			 boxes.add(new JCheckBox(rf.getName()));
+		 };
+		checkList.setListData(boxes.toArray());
+		p.add(checkList, c);
 	    c.gridx=0;
 	    c.gridy=3;
 	    c.gridwidth=2;
 	    c.fill=GridBagConstraints.HORIZONTAL;
 		p.add(button,c);    
+		
+		//add
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {		
+					if (textFieldsEmpty(p))
+						throw new WrongInputException();
+					
+					ArrayList<String> rf = new ArrayList<String>();
+					for(int i=0; i<checkList.getSelectedValuesList().size();i++){
+						JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
+						rf.add(cb.getText());
+					}
+					
+					DataRaum.addRaum(new Room(nameField.getText(),jcb.getSelectedIndex(),rf));
+					
+					listModel.clear();
+					for (Room r : DataRaum.getAllRaum()){
+						listModel.addElement(r);
+					}					
+
+				} catch (WrongInputException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		return p;
 		
 	}

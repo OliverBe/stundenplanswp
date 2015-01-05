@@ -70,6 +70,8 @@ public class PersonalPanel extends JPanel {
 	private static DefaultListModel<Personal> listModel = new DefaultListModel();
 	private JList<Personal> list = new JList<Personal>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
+	
+	final DefaultTableModel model = new DefaultTableModel();
 
 	/**
 	 * 
@@ -131,7 +133,6 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 3;
 		p.add(lPrefTime, c);
 
-		final DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -253,15 +254,15 @@ public class PersonalPanel extends JPanel {
 						wunsch.put(wds.get(i), arr);
 					};
 
-					ArrayList<String> stunden = new ArrayList<String>();
+					ArrayList<String> stdi = new ArrayList<String>();
 					for(int i=0; i<checkList.getSelectedValuesList().size();i++){
 						JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
-						stunden.add(cb.getText());
+						stdi.add(cb.getText());
 					}
 					
 					Personal pe = new Personal(nameField.getText(), kuerzField
 							.getText(), Integer.parseInt(timeField.getText()),
-							lehrerB.isSelected(), stunden, wunsch);
+							lehrerB.isSelected(), stdi, wunsch);
 					
 					PersonalManager.addPersonalToDb(pe);
 					
@@ -499,10 +500,10 @@ public class PersonalPanel extends JPanel {
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
-		// for(Stundeninhalt s :
-		// StundeninhaltManager.getAllStundeninhalteFromDB()){
-		// boxes.add(new JCheckBox(s.getKuerzel()));
-		// };
+		 for(Stundeninhalt s :
+		 StundeninhaltManager.getAllStundeninhalteFromDB()){
+		 boxes.add(new JCheckBox(s.getKuerzel()));
+		 };
 		boxes.add(new JCheckBox("Ma"));
 
 		checkList.setListData(boxes.toArray());
@@ -574,12 +575,17 @@ public class PersonalPanel extends JPanel {
 			return false;
 		try {
 			Integer.parseInt(timeField.getText());
+			for (int i = 0; i < model.getRowCount(); i++) {
+				Integer.parseInt((String) model.getValueAt(i,1));
+				Integer.parseInt((String) model.getValueAt(i,2));
+				Integer.parseInt((String) model.getValueAt(i,3));
+				Integer.parseInt((String) model.getValueAt(i,4));
+			};
 		} catch (NumberFormatException e) {
 			return false;
 		}
 
 		return true;
-
 	}
 
 	private boolean textFieldsEmpty(final JPanel p) {
