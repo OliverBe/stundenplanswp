@@ -37,7 +37,7 @@ public class DataRaum {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			String name = rs.getString("name");
-			int gebaeude = rs.getInt("gebaeude");
+			int gebaeude = rs.getInt("gebaeudennr");
 			return new Room(name, gebaeude);
 		}catch (SQLException e){
 			e.printStackTrace();
@@ -52,7 +52,7 @@ public class DataRaum {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
-				int gebaeude = rs.getInt("gebaeude");
+				int gebaeude = rs.getInt("gebaeudennr");
 				allRaum.add(new Room(name, gebaeude));
 			}
 		} catch (SQLException e) {
