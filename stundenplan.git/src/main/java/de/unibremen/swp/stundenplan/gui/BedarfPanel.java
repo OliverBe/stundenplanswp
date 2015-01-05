@@ -88,6 +88,7 @@ public class BedarfPanel extends JPanel{
 		c.weightx=0;
 		p.add(lBed,c);
 		c.gridx=3;
+		c.fill=GridBagConstraints.HORIZONTAL;
 		p.add(bedField,c);
 		c.weightx=0;
 	    c.gridx=0;
@@ -112,14 +113,14 @@ public class BedarfPanel extends JPanel{
 						System.out.println("Jahrgang: "+cb1.getSelectedItem()+ " Stundeninhalt: "+((Stundeninhalt)cb2.getSelectedItem()).getKuerzel()+" Stunden: "+bedField.getText());
 //						Jahrgang j = DataSchulklasse.getAllJahrgang().get((int) cb1.getSelectedItem());
 						HashMap<String, Integer> hm = new HashMap<String,Integer>();
-						hm.put(cb2.getSelectedItem().toString(),Integer.parseInt(bedField.getText()));				
+						hm.put(((Stundeninhalt)cb2.getSelectedItem()).getKuerzel(),Integer.parseInt(bedField.getText()));				
 //						j.setStundenbedarf(hm);
 						DataSchulklasse.addJahrgang(new Jahrgang((int) cb1.getSelectedItem(),hm));
 						
 						listModel.clear();
 						for(Jahrgang ja : DataSchulklasse.getAllJahrgang()){
 							for(Entry<String, Integer> entry : ja.getStundenbedarf().entrySet()) {
-								listModel.addElement("Jahrgang: "+ja.getJahrgang()+", "+entry.getKey()+", Bedarf (h)"+entry.getValue());
+								listModel.addElement("Jahrgang: "+ja.getJahrgang()+", Stundeninhalt: "+entry.getKey()+", Bedarf: "+entry.getValue()+" Stunden");
 							}
 						};
 						

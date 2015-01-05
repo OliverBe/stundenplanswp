@@ -99,6 +99,7 @@ public class DataPanel extends JPanel {
 		// klick auf mP
 		mP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				personalPanel = new PersonalPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -108,7 +109,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(personalPanel, c);
 
 				personalPanel.nameField.requestFocus();
@@ -122,6 +122,7 @@ public class DataPanel extends JPanel {
 		// klick auf mS
 		mS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				schoolclassPanel = new SchoolclassPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -131,7 +132,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(schoolclassPanel, c);
 
 				JFrame frame = (JFrame) SwingUtilities
@@ -143,6 +143,7 @@ public class DataPanel extends JPanel {
 		// klick auf mF
 		mF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				stundeninhaltPanel = new StundeninhaltPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -152,7 +153,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(stundeninhaltPanel, c);
 
 				JFrame frame = (JFrame) SwingUtilities
@@ -164,6 +164,7 @@ public class DataPanel extends JPanel {
 		// klick auf mR
 		mR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				roomPanel = new RoomPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -173,7 +174,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(roomPanel, c);
 
 				JFrame frame = (JFrame) SwingUtilities
@@ -185,6 +185,7 @@ public class DataPanel extends JPanel {
 		// klick auf mRF
 		mRF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				raumfunktionPanel = new RaumfunktionPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -194,7 +195,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(raumfunktionPanel, c);
 				JFrame frame = (JFrame) SwingUtilities
 						.getWindowAncestor(raumfunktionPanel);
@@ -205,6 +205,7 @@ public class DataPanel extends JPanel {
 		// klick auf mB
 		mB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				removeOld();
 				bedarfPanel = new BedarfPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
@@ -214,7 +215,6 @@ public class DataPanel extends JPanel {
 				c.gridy = 1;
 				c.weightx = 1.8;
 				c.weighty = 1.0;
-				removeOld();
 				add(bedarfPanel, c);
 				JFrame frame = (JFrame) SwingUtilities
 						.getWindowAncestor(bedarfPanel);
