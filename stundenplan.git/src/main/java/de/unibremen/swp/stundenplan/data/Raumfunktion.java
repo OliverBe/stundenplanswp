@@ -1,22 +1,21 @@
 package de.unibremen.swp.stundenplan.data;
 
-import javax.naming.InvalidNameException;
+import java.util.ArrayList;
 
 public class Raumfunktion {
+	
 	private String name;
+	
+	//kuerzel von Stundeninhalten
+	private ArrayList<String> stundeninhalte;
 
 	public Raumfunktion(){
 		name="Gamecuberaum";
 	}
 	
-	public Raumfunktion(final String pName){
-		if(pName==null || pName=="" )
-			try {
-				if(pName==null || pName=="" ) throw new InvalidNameException();
-			} catch (InvalidNameException e) {
-				e.printStackTrace();
-			}
+	public Raumfunktion(final String pName, final ArrayList<String> pStundeninhalte){
 		name=pName;
+		stundeninhalte=pStundeninhalte;
 	}
 	
 	public String getName() {
@@ -24,12 +23,7 @@ public class Raumfunktion {
 	}
 
 	public void setName(String pName) {
-		if(pName==null)
-			try {
-				if(pName==null) throw new InvalidNameException();
-			} catch (InvalidNameException e) {
-				e.printStackTrace();
-			}
+		name=pName;
 	}
 	
 	@Override

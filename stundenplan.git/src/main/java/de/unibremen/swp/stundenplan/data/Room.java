@@ -20,6 +20,7 @@ public final class Room implements Serializable {
     
     private int gebaeude;
     
+    //name der rf
     private ArrayList<String> moeglicheFunktionen; 
 
     public Room(String pName, int pGebaeude, ArrayList<String> pMoeglicheFunktionen){
