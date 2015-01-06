@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
@@ -76,8 +77,8 @@ public class DataPersonal {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -111,11 +112,26 @@ public class DataPersonal {
 				}
 				p.setMoeglicheStundeninhalte(sk);
 			}
+			for(Personal p : allPersonal) {
+				sql = "SELECT * FROM Zeitwunsch WHERE personal_kuerzel = '"
+						+ p.getKuerzel() + "';";
+				rs = stmt.executeQuery(sql);
+				HashMap<Weekday, int[]> zeitwunsch = new HashMap<Weekday, int[]>();
+				while(rs.next()) {
+					int weekday = rs.getInt("weekday");
+					int[] zeiten = new int[4];
+					zeiten[0] = rs.getInt("startHour");
+					zeiten[1] = rs.getInt("startMin");
+					zeiten[2] = rs.getInt("endHour");
+					zeiten[3] = rs.getInt("endMin");
+					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
+				}
+			}
 			return allPersonal;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public static void deletePersonalByKuerzel(String pKuerzel) {
