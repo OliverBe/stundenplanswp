@@ -60,6 +60,14 @@ public class Data {
 	    			+ "rhythmustyp INT NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
+	    	//Raumfunktion
+	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
+	    			+ "(name VARCHAR NOT NULL, "
+	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (name, stundeninhalt_kuerzel), "
+	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Personal(kuerzel))";
+	    	stmt.executeUpdate(sql);
+	    	
 	    	//Map von Personal
 	    	sql = "CREATE TABLE IF NOT EXISTS Zeitwunsch "
 	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
@@ -68,7 +76,7 @@ public class Data {
 	    			+ "startMin INT NOT NULL, "
 	    			+ "endHour INT NOT NULL, "
 	    			+ "endMin INT NOT NULL, "
-	    			+ "PRIMARY KEY (personal_kuerzel, weekday)"
+	    			+ "PRIMARY KEY (personal_kuerzel, weekday), "
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -90,7 +98,7 @@ public class Data {
 	    			+ "endZeitHour INT NOT NULL, "
 	    			+ "endZeitMin INT NOT NULL, "
 	    			+ "PRIMARY KEY (planungseinheit_id, personal_kuerzel), "
-	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id)"
+	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
 	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -112,13 +120,13 @@ public class Data {
 	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
 	    	stmt.executeUpdate(sql);
 	    	
-	    	//ArrayList von Raum(Stundeninhalt) Raumfunktion
-	    	sql = "CREATE TABLE IF NOT EXISTS Raumfunktion "
-//	    			+ "(raum_name VARCHAR, "
-//	    			+ "stundeninhalt_kuerzel VARCHAR NOT NULL, "
-	    			+ "(name VARCHAR PRIMARY KEY NOT NULL)";
-//	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
-//	    			+ "FOREIGN KEY (stundeninhalt_kuerzel) REFERENCES Stundeninhalt(kuerzel))";
+	    	//ArrayList von Raum(Raumfunktion)
+	    	sql = "CREATE TABLE IF NOT EXISTS raum_Raumfunktion "
+	    			+ "(raum_name VARCHAR NOT NULL, "
+	    			+ "raumfunktion_name VARCHAR NOT NULL, "
+	    			+ "PRIMARY KEY (raum_name, raumfunktion_name), "
+	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name), "
+	    			+ "FOREIGN KEY (raumfunktion_name) REFERENCES Raumfunktion(name))";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//ArrayList von Schulklasse(Stundeninhalt)
