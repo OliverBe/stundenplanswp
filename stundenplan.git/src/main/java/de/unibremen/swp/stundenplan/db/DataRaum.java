@@ -130,7 +130,7 @@ public class DataRaum {
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String name = rs.getString("name");
-				rfs.add(new Raumfunktion(name, null));
+				rfs.add(new Raumfunktion(name, new ArrayList<String>()));
 			}
 			for(int i=0;i<rfs.size();i++) {
 				sql = "SELECT * FROM Raumfunktion WHERE name = '" + rfs.get(i).getName() + "';";
@@ -143,8 +143,8 @@ public class DataRaum {
 			return rfs;
 		}catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	public static void deleteRaumfunktionByName(String name) {
