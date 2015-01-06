@@ -15,7 +15,7 @@ public class Raumfunktion {
 	
 	public Raumfunktion(final String pName, final ArrayList<String> pStundeninhalte){
 		name=pName;
-		stundeninhalte=pStundeninhalte;
+		setStundeninhalte(pStundeninhalte);
 	}
 	
 	public String getName() {
@@ -30,5 +30,13 @@ public class Raumfunktion {
     public String toString() {
         return String.format(name);
     }
+
+	public ArrayList<String> getStundeninhalte() {
+		return stundeninhalte;
+	}
+
+	public void setStundeninhalte(ArrayList<String> pStundeninhalte) {
+		stundeninhalte = pStundeninhalte;
+	}
 	
 }
