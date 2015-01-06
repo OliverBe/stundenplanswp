@@ -9,8 +9,13 @@ public class Raumfunktion {
 		name="Gamecuberaum";
 	}
 	
-	public Raumfunktion(final String pName) throws InvalidNameException{
-		if(pName==null || pName=="" ) throw new InvalidNameException();
+	public Raumfunktion(final String pName){
+		if(pName==null || pName=="" )
+			try {
+				if(pName==null || pName=="" ) throw new InvalidNameException();
+			} catch (InvalidNameException e) {
+				e.printStackTrace();
+			}
 		name=pName;
 	}
 	
@@ -18,8 +23,13 @@ public class Raumfunktion {
 		return name;
 	}
 
-	public void setName(String pName) throws InvalidNameException {
-		if(pName==null) throw new InvalidNameException();
+	public void setName(String pName) {
+		if(pName==null)
+			try {
+				if(pName==null) throw new InvalidNameException();
+			} catch (InvalidNameException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	@Override

@@ -318,22 +318,10 @@ public class PersonalPanel extends JPanel {
 				});
 				pop.edit.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						// personal t =
-						// personalListModel.getpersonalAt(personalList.getSelectedIndex());
-						// addNewpersonal.nameField.setText(t.getName());
-						// addNewpersonal.acroField.setText(t.getAcronym());
-						// addNewpersonal.timeField.setText((String)t.getHoursPerWeek().toString());
-						// addNewpersonal.setVisible(true);
-						JFrame editPersonal = new JFrame("Personal editieren");
-			//			Personal pers = PersonalManager.getPersonalByKuerzel(list.getSelectedValue());
-						editPersonal.add(createEditPanel(new JPanel(),list.getSelectedValue()));
-						editPersonal.pack();
-						editPersonal.setVisible(true);
-						// Personal p =
-						// listModel.getPersonalAt(list.getSelectedIndex());
-						// editPersonal.nameField.setText(p.getName());
-						// editPersonal.acroField.setText(p.getKuerzel());
-						// editPersonal.timeField.setText((String)p.getHoursPerWeek().toString());
+						JFrame edit = new JFrame("Personal editieren");
+						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.pack();
+						edit.setVisible(true);
 					}
 				});
 				pop.delete.addActionListener(new ActionListener() {
@@ -588,13 +576,16 @@ public class PersonalPanel extends JPanel {
 		return true;
 	}
 
-	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
-		for (Component c : p.getComponents()) {
-			if (c instanceof TextField) {
+	private boolean textFieldsEmpty(final JPanel p){
+		boolean b=true;
+		for(Component c : p.getComponents()){
+			if(c instanceof TextField){
 				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if(!tf.getText().isEmpty()) b=false;
+			}
+			if(c instanceof JTextField ){
+				JTextField tf = (JTextField) c;
+				if(!tf.getText().isEmpty()) b=false;
 			}
 		}
 		return b;

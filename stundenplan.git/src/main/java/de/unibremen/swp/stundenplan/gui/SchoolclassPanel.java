@@ -190,6 +190,10 @@ public class SchoolclassPanel extends JPanel{
 				TextField tf = (TextField) c;
 				if(!tf.getText().isEmpty()) b=false;
 			}
+			if(c instanceof JTextField ){
+				JTextField tf = (JTextField) c;
+				if(!tf.getText().isEmpty()) b=false;
+			}
 		}
 		return b;
 	}

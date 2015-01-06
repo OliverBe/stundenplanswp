@@ -9,6 +9,8 @@ import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
@@ -23,10 +25,14 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 
 public class RaumfunktionPanel extends JPanel {
 		private Label lTime = new Label("Name der Funktion");
@@ -74,8 +80,8 @@ public class RaumfunktionPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					Raumfunktion rf;
 					try {
-//						if(textFieldsEmpty(p)) throw new InvalidNameException();
-						rf = new Raumfunktion(tf.getText());
+						if(textFieldsEmpty(p)) throw new WrongInputException();
+						rf=new Raumfunktion(tf.getText());
 						DataRaum.addRaumfunktion(rf);
 						
 						listModel.clear();
@@ -83,7 +89,7 @@ public class RaumfunktionPanel extends JPanel {
 							listModel.addElement(r);
 						}
 						
-					} catch (InvalidNameException e) {
+					} catch (WrongInputException e) {
 						System.out.println("ERROR beim Hinzufuegen");
 						e.printStackTrace();
 					}
@@ -116,6 +122,88 @@ public class RaumfunktionPanel extends JPanel {
 			c.weighty = 1.0;
 			p.add(listScroller, c);
 			
+			list.addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent event) {
+					final DataPopup pop = new DataPopup(list, listModel);
+					setComponentPopupMenu(pop);
+					list.addMouseListener(new MouseAdapter() {
+						public void mouseClicked(MouseEvent e) {
+							if (e.isMetaDown()) {
+								pop.show(list, e.getX(), e.getY());
+							}
+						}
+					});
+					pop.edit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							JFrame edit = new JFrame("Raumfunktion editieren");
+							edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+							edit.pack();
+							edit.setVisible(true);
+						}
+					});
+					pop.delete.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							DeleteDialogue deleteD = new DeleteDialogue();
+							deleteD.setVisible(true);
+						}
+					});
+				}
+			});
+			
+			return p;
+		}
+		
+		private JPanel createEditPanel(final JPanel p, final Raumfunktion rf){
+			Label lTime2 = new Label("Name der Funktion");
+			JTextField tf2 = new JTextField(20);
+			JButton button2 = new JButton("Funktion editieren");
+			JButton button3 = new JButton("Abbrechen");
+			
+			p.setLayout(new GridBagLayout());
+			p.setBorder(BorderFactory
+					.createTitledBorder("Funktionen von Raeumen "));
+			c.insets = new Insets(1, 1, 1, 1);
+			c.gridx = 0;
+			c.gridy = 0;
+			p.add(lTime2, c);
+			c.gridx = 1;
+			p.add(tf2, c);
+			tf2.setText(rf.getName());
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = 3;
+			c.gridx = 0;
+			c.gridy = 1;
+			p.add(button2, c);
+			//edit 
+			button2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					Raumfunktion rf;
+					try {
+						if(textFieldsEmpty(p)) throw new WrongInputException();
+						rf=new Raumfunktion(tf.getText());
+			//			DataRaum.editRaumfunktion(rf);
+						
+						listModel.clear();
+						for (Raumfunktion r : DataRaum.getAllRaumfunktion()){
+							listModel.addElement(r);
+						}
+						
+					} catch (WrongInputException e) {
+						System.out.println("ERROR beim Editieren");
+						e.printStackTrace();
+					}
+				}
+			});		
+			c.gridx = 1;
+			p.add(button3, c);
+
+			// abbruch Button
+			button3.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					((JFrame) p.getParent()).dispose();
+				}
+			});
 			return p;
 		}
 		
@@ -124,6 +212,10 @@ public class RaumfunktionPanel extends JPanel {
 			for(Component c : p.getComponents()){
 				if(c instanceof TextField){
 					TextField tf = (TextField) c;
+					if(!tf.getText().isEmpty()) b=false;
+				}
+				if(c instanceof JTextField ){
+					JTextField tf = (JTextField) c;
 					if(!tf.getText().isEmpty()) b=false;
 				}
 			}

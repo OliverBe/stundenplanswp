@@ -9,6 +9,8 @@ import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -23,8 +25,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
@@ -158,6 +163,40 @@ public class BedarfPanel extends JPanel{
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 		
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				final DataPopup pop = new DataPopup(list, listModel);
+				setComponentPopupMenu(pop);
+				list.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						if (e.isMetaDown()) {
+							pop.show(list, e.getX(), e.getY());
+						}
+					}
+				});
+				pop.edit.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						JFrame edit = new JFrame("Bedarf editieren");
+		//				edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.pack();
+						edit.setVisible(true);
+					}
+				});
+				pop.delete.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						DeleteDialogue deleteD = new DeleteDialogue();
+						deleteD.setVisible(true);
+					}
+				});
+			}
+		});
+		
+		return p;
+	}
+	
+	private JPanel createEditPanel(final JPanel p, final Jahrgang j){
+		
 		return p;
 	}
 	
@@ -177,6 +216,10 @@ public class BedarfPanel extends JPanel{
 		for(Component c : p.getComponents()){
 			if(c instanceof TextField){
 				TextField tf = (TextField) c;
+				if(!tf.getText().isEmpty()) b=false;
+			}
+			if(c instanceof JTextField ){
+				JTextField tf = (JTextField) c;
 				if(!tf.getText().isEmpty()) b=false;
 			}
 		}

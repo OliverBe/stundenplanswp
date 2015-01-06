@@ -82,6 +82,6 @@ public final class Room implements Serializable {
 	
 	@Override
     public String toString() {
-        return String.format("[ID=%d, Name=%s, Gebaeude=%d]"+ id , name, gebaeude);
+        return String.format("Name=%s, Gebaeude=%d", name, gebaeude);
     }
 }

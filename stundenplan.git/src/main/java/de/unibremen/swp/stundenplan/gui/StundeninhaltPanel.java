@@ -9,17 +9,24 @@ import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
@@ -163,7 +170,110 @@ public class StundeninhaltPanel extends JPanel {
 		for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
 			listModel.addElement(sti);
 		}
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				final DataPopup pop = new DataPopup(list, listModel);
+				setComponentPopupMenu(pop);
+				list.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						if (e.isMetaDown()) {
+							pop.show(list, e.getX(), e.getY());
+						}
+					}
+				});
+				pop.edit.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						JFrame edit = new JFrame("Bedarf editieren");
+						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.pack();
+						edit.setVisible(true);
+					}
+				});
+				pop.delete.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						DeleteDialogue deleteD = new DeleteDialogue();
+						deleteD.setVisible(true);
+					}
+				});
+			}
+		});
 
+		return p;
+	}
+	
+	private JPanel createEditPanel(final JPanel p, final Stundeninhalt si){
+		Label lName2 = new Label("Titel der Aktivitaet:");
+		Label lKuerzel2 = new Label("Kuerzel:");
+		Label ltime2 = new Label("Regeldauer in min:");
+		Label lPause2 = new Label("rythmischer Typ:");
+
+		TextField nameField2 = new TextField(15);
+		TextField kuerzField2 = new TextField(5);
+		TextField timeField2 = new TextField(5);
+
+		JButton button2 = new JButton("Speichern");
+		JButton button3 = new JButton("Abbrechen");
+		
+		p.setLayout(new GridBagLayout());
+		p.setBorder(BorderFactory
+				.createTitledBorder("Stundeninhalt editieren"));
+		c.insets = new Insets(1, 1, 1, 1);
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 0;
+		p.add(lName2, c);
+		c.gridx = 1;
+		p.add(nameField2, c);
+		nameField2.setText(si.getName());
+
+		c.gridx = 0;
+		c.gridy = 1;
+		p.add(lKuerzel2, c);
+		c.gridx = 1;
+		p.add(kuerzField2, c);
+		kuerzField2.setText(si.getKuerzel());
+
+		c.gridx = 0;
+		c.gridy = 2;
+		p.add(ltime2, c);
+		c.gridx = 1;
+		p.add(timeField2, c);
+		timeField2.setText(si.getRegeldauer()+"");
+
+		c.gridx = 0;
+		c.gridy = 3;
+		p.add(lPause2, c);
+		c.gridx = 1;
+		final JRadioButton pauseB2 = new JRadioButton("Pause");
+		final JRadioButton leichtB2 = new JRadioButton("Leicht");
+		final JRadioButton schwerB2 = new JRadioButton("Schwer");
+		switch (si.getRhythmustyp()) {
+        case 1:  pauseB2.setSelected(true);
+                 break;
+        case 2:  leichtB2.setSelected(true);
+                 break;
+        case 3:  schwerB2.setSelected(true);
+                 break;
+		}
+		ButtonGroup group2 = new ButtonGroup();
+		group2.add(pauseB2);
+		group2.add(leichtB2);
+		group2.add(schwerB2);
+		p.add(pauseB2, c);
+		c.gridy = 4;
+		p.add(leichtB2, c);
+		c.gridy = 5;
+		p.add(schwerB2, c);
+
+		c.gridx = 0;
+		c.gridy = 6;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(button2, c);
+		// edit Button
+		
 		return p;
 	}
 
@@ -180,13 +290,16 @@ public class StundeninhaltPanel extends JPanel {
 
 	}
 
-	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
-		for (Component c : p.getComponents()) {
-			if (c instanceof TextField) {
+	private boolean textFieldsEmpty(final JPanel p){
+		boolean b=true;
+		for(Component c : p.getComponents()){
+			if(c instanceof TextField){
 				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if(!tf.getText().isEmpty()) b=false;
+			}
+			if(c instanceof JTextField ){
+				JTextField tf = (JTextField) c;
+				if(!tf.getText().isEmpty()) b=false;
 			}
 		}
 		return b;
