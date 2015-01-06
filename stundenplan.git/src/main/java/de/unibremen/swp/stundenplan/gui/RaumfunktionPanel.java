@@ -11,11 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -30,12 +32,15 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class RaumfunktionPanel extends JPanel {
-		private Label lTime = new Label("Name der Funktion");
+		private Label lName = new Label("Name der Funktion");
+		private Label lStdi = new Label("Mögliche Stundeninhalte");
 		private JTextField tf = new JTextField(20);
 		private GridBagConstraints c = new GridBagConstraints();
 		private GridBagConstraints c2 = new GridBagConstraints();
@@ -66,22 +71,45 @@ public class RaumfunktionPanel extends JPanel {
 			p.setBorder(BorderFactory
 					.createTitledBorder("Funktionen von Raeumen "));
 			c.insets = new Insets(1, 1, 1, 1);
+			c.anchor=GridBagConstraints.WEST;
 			c.gridx = 0;
 			c.gridy = 0;
-			p.add(lTime, c);
+			p.add(lName, c);
 			c.gridx = 1;
 			p.add(tf, c);
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridwidth = 3;
 			c.gridx = 0;
-			c.gridy = 1;
+			c.gridy = 1;		
+			p.add(lStdi, c);
+			
+			c.gridx=1;
+			final CheckBoxList checkList = new CheckBoxList();
+			ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+
+			 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+				 boxes.add(new JCheckBox(s.getKuerzel()));
+			 };
+
+			checkList.setListData(boxes.toArray());
+			p.add(checkList, c);
+			
+			c.gridx=0;
+			c.gridy=2;
+			c.gridwidth=2;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			p.add(button, c);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					Raumfunktion rf;
 					try {
 						if(textFieldsEmpty(p)) throw new WrongInputException();
-						rf=new Raumfunktion(tf.getText());
+						
+						ArrayList<String> stdi = new ArrayList<String>();
+						for(int i=0; i<checkList.getSelectedValuesList().size();i++){
+							JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
+							stdi.add(cb.getText());
+						}
+						
+						rf=new Raumfunktion(tf.getText(),stdi);
 						DataRaum.addRaumfunktion(rf);
 						
 						listModel.clear();
@@ -174,15 +202,34 @@ public class RaumfunktionPanel extends JPanel {
 			c.gridwidth = 3;
 			c.gridx = 0;
 			c.gridy = 1;
+			
+			final CheckBoxList checkList = new CheckBoxList();
+			ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+
+			 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+				 boxes.add(new JCheckBox(s.getKuerzel()));
+			 };
+
+			checkList.setListData(boxes.toArray());
+			p.add(checkList, c);
+			
+			c.gridy=2;
 			p.add(button2, c);
 			//edit 
 			button2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					Raumfunktion rf;
+					Raumfunktion rf2;
 					try {
 						if(textFieldsEmpty(p)) throw new WrongInputException();
-						rf=new Raumfunktion(tf.getText());
-			//			DataRaum.editRaumfunktion(rf);
+						
+						ArrayList<String> stdi = new ArrayList<String>();
+						for(int i=0; i<checkList.getSelectedValuesList().size();i++){
+							JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
+							stdi.add(cb.getText());
+						}
+						
+						rf2=new Raumfunktion(tf2.getText(),stdi);
+						DataRaum.editRaumfunktion(rf.getName(),rf2);
 						
 						listModel.clear();
 						for (Raumfunktion r : DataRaum.getAllRaumfunktion()){

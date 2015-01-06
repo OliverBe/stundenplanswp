@@ -44,6 +44,7 @@ public class MainFrame extends JFrame{
 	
 	private void initComponents(){
 		     
+		//TODO bei click sollen sich die anderen closen, bzw der eine öffnen
         tabpane.addTab("Daten", dataPanel);
         tabpane.addTab("StundenplÃ¤ne", paneStundenplan);
         tabpane.addTab("Lehreransicht", paneLehrer);

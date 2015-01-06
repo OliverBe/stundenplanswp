@@ -49,10 +49,10 @@ public class DataPanel extends JPanel {
 	private JMenuBar menuBar = new JMenuBar();
 
 	private JMenuItem mP = new JMenuItem("Personal");
-	private JMenuItem mS = new JMenuItem("Klassen");
-	private JMenuItem mF = new JMenuItem("Stundeninhalte");
+	private JMenuItem mS = new JMenuItem("Schulklassen");
+	private JMenuItem mStdi = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
-	private JMenuItem mRF = new JMenuItem("Raumfunktionen");
+	private JMenuItem mRf = new JMenuItem("Raumfunktionen");
 	private JMenuItem mB = new JMenuItem("Bedarf an Stundeninhalten");
 
 	private RaumfunktionPanel raumfunktionPanel;
@@ -82,17 +82,17 @@ public class DataPanel extends JPanel {
 		c.gridy = 1;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mR.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		mRF.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mRf.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mB.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
+		menuBar.add(mStdi);
+		menuBar.add(mB);
+		menuBar.add(mRf);
+		menuBar.add(mR);
 		menuBar.add(mP);
 		menuBar.add(mS);
-		menuBar.add(mF);
-		menuBar.add(mR);
-		menuBar.add(mRF);
-		menuBar.add(mB);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
@@ -140,8 +140,8 @@ public class DataPanel extends JPanel {
 			}
 		});
 
-		// klick auf mF
-		mF.addActionListener(new ActionListener() {
+		// klick auf mStdi
+		mStdi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				removeOld();
 				stundeninhaltPanel = new StundeninhaltPanel();
@@ -183,7 +183,7 @@ public class DataPanel extends JPanel {
 		});
 
 		// klick auf mRF
-		mRF.addActionListener(new ActionListener() {
+		mRf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				removeOld();
 				raumfunktionPanel = new RaumfunktionPanel();
