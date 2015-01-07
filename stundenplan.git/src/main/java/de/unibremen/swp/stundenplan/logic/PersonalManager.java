@@ -113,4 +113,23 @@ public class PersonalManager {
     	
 		return personal;
     }
+    
+    /**
+     * Gibt Liste mit allen Kürzeln des Personals zurück.
+     */
+    public static ArrayList<String> getAllKuerzel(){
+    	ArrayList<String> acros = DataPersonal.getAllAcronymsFromPersonal();
+  
+    	if(acros.size() == 0){
+    		System.out.println("No Personal in DB");
+    	}else{
+    	System.out.println("Personal in DB: ");
+    		for(int i=0; i<acros.size(); i++){
+    			System.out.println(acros.get(i));
+    		}
+    	}
+    	
+		return acros;
+    }
+   
 }

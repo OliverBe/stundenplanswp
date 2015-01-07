@@ -139,6 +139,23 @@ public class DataPersonal {
 		}
 	}
 
+	public static ArrayList<String> getAllAcronymsFromPersonal(){
+		try{ 
+			sql = "SELECT kuerzel FROM Personal";
+			ResultSet rs = stmt.executeQuery(sql);
+			ArrayList<String> kuerzels = new ArrayList<>();
+			while(rs.next()){
+				kuerzels.add(rs.getString("kuerzel"));
+			}
+			
+			return kuerzels;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static void deletePersonalByKuerzel(String pKuerzel) {
 		try {
 			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
