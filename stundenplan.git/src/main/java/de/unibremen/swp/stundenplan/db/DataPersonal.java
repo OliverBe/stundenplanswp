@@ -48,7 +48,7 @@ public class DataPersonal {
 				stmt.executeUpdate(sql);
 			}
 			
-			StundenplanPanel.updateLists();
+			StundenplanPanel.updateLists(); 
 			
 			
 		} catch (SQLException e) {

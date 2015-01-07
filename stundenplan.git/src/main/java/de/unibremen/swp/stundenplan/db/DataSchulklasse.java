@@ -36,7 +36,7 @@ public class DataSchulklasse {
 						+ klassenlehrer + "');";
 				stmt.executeUpdate(sql);
 			}
-			StundenplanPanel.updateLists();
+			StundenplanPanel.updateLists(); 
 			
 		}catch (SQLException e) {
 			e.printStackTrace();

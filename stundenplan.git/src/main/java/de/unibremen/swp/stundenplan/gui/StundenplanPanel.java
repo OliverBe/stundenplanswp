@@ -31,13 +31,15 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 
 	public DataPanel data = new DataPanel();
 
-	private JTable table;
+	
 	private JFrame f;
 	private int eventX;
 	private int eventY;
 
 	private int eventXX;
 	private int eventYY;
+	
+	private static JTable table;
 	
 	private static JMenuBar menuBar = new JMenuBar();
 	private static DefaultListModel pList;
@@ -76,11 +78,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		menuBar.setLayout(new GridLayout(0,1));
 		add(menuBar, c);
 
-		table = new JTable (new TimetableModel()); 
-		//table = new JTable(rowData, columnNames);
-		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
-		table.setRowSelectionAllowed(true);
-		table.setRowHeight(75);
+		table = new StundenplanTable().getTable();
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
