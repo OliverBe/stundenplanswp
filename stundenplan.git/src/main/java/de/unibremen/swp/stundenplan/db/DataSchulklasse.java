@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
 public class DataSchulklasse {
 
@@ -35,6 +36,8 @@ public class DataSchulklasse {
 						+ klassenlehrer + "');";
 				stmt.executeUpdate(sql);
 			}
+			StundenplanPanel.updateLists();
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

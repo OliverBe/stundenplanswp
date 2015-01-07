@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
 public class DataPersonal {
 
@@ -46,6 +47,10 @@ public class DataPersonal {
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 			}
+			
+			StundenplanPanel.updateLists();
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -1,42 +1,37 @@
 package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-public class StundenplanPanel extends JPanel {
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+
+public class StundenplanPanel extends JPanel implements ActionListener {
 
 	public DataPanel data = new DataPanel();
 
 	private JTable table;
-	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
 	private int eventX;
 	private int eventY;
@@ -44,12 +39,23 @@ public class StundenplanPanel extends JPanel {
 	private int eventXX;
 	private int eventYY;
 	
+	private static JMenuBar menuBar = new JMenuBar();
+	private static DefaultListModel pList;
+	private static DefaultListModel sList;
+	private static JList personalList;
+	private static JList schoolclassList;
+	private static JLabel label1 =new JLabel("Lehrer");
+	private static JLabel label2 =new JLabel("Klassen");
+	
+	private static JButton show = new JButton("Anzeigen");
+	
 	public JLabel warning = new JLabel();
 	
 	JPopupMenu popmen = new JPopupMenu();
 	
 	public StundenplanPanel(){
 		init();
+		show.addActionListener(this);
 	}
 	
 	public void init(){
@@ -63,24 +69,13 @@ public class StundenplanPanel extends JPanel {
 		c.gridx=0;
 		c.gridy=0;
 		
-		JMenuBar menuBar;
-		JMenu menu;
 		
-		menuBar = new JMenuBar();
-
-		menu = new JMenu("Lehrer");
-		menuBar.add(menu);
-		
-		menu = new JMenu("Klasse");
-		menuBar.add(menu);
+	
+		updateLists();
 		
 		menuBar.setLayout(new GridLayout(0,1));
 		add(menuBar, c);
 
-		String[] columnNames = {
-				" Uhrzeiten", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"
-		};
-		String [][] rowData ={ {"8-9","","","","",""}, {"9-10","","","","",""}, {"10-11","","","","",""}, {"11-12","","","","",""}, {"12-13","","","","",""}, {"13-14","","","","",""},{"14-15","","","","",""},{"16-17","","","","",""}, {"17-18","","","","",""}};
 		table = new JTable (new TimetableModel()); 
 		//table = new JTable(rowData, columnNames);
 		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
@@ -241,5 +236,50 @@ public class StundenplanPanel extends JPanel {
     	}
     }
 	
+	public static void updateLists() {
+		Personal[] personalListe = new Personal[DataPersonal.getAllPersonal().size()];
+		Schoolclass[] schoolclassListe = new Schoolclass[DataSchulklasse.getAllSchulklasse().size()];
+		pList = new DefaultListModel();
+		sList = new DefaultListModel();
+		
+		for(int i=0; i < DataPersonal.getAllPersonal().size(); i++) {
+			personalListe[i] = DataPersonal.getAllPersonal().get(i);
+
+			pList.addElement(personalListe[i]);
+		}
+		
+		for(int i=0; i < DataSchulklasse.getAllSchulklasse().size(); i++) {
+			schoolclassListe[i] = DataSchulklasse.getAllSchulklasse().get(i);
+
+			sList.addElement(schoolclassListe[i]);
+		}
+		
+		
+		personalList = new JList(pList);
+		schoolclassList = new JList(sList);
+		
+		menuBar.removeAll();
+		menuBar.add(label1);
+		menuBar.add(personalList);
+		menuBar.add(label2);
+		menuBar.add(schoolclassList);
+		menuBar.add(show);
+		
+	}
 	
+	public void actionPerformed(ActionEvent ae) {
+		if(ae.getSource() == show){
+			if(!personalList.isSelectionEmpty()) {
+				Personal p = (Personal) personalList.getSelectedValue();
+				System.out.println(p.getKuerzel());
+				
+				
+			} else if (!schoolclassList.isSelectionEmpty()) {             
+				Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
+				System.out.println(s.getName());
+				
+			}
+			
+        }
+	}
 }
