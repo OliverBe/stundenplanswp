@@ -6,56 +6,86 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 public class DeleteDialogue extends JFrame {
 	
 	private JPanel panel = new JPanel();
-	public JButton okButton = new JButton("OK");
-	public JButton noButton = new JButton("Abbrechen");	
+	public JButton okButton = new JButton("Ja");
+	public JButton noButton = new JButton("Nein");	
 	private GridBagConstraints c = new GridBagConstraints();	
-	public DeleteDialogue(){
+	private Object o;
 		
-	super("Person löschen");	
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	add(panel);
-	setSize(400,100);
-	setLocation(100,300);
-	
-	panel.setLayout(new GridBagLayout());
-	c.insets=new Insets(1,1,1,1);
-	c.anchor=GridBagConstraints.WEST;
-	c.gridx=0;
-	c.gridy=0;
-	JLabel loeschen = new JLabel("Diese Person wirklich löschen?");
-	panel.add(loeschen,c);
-	
-	c.gridx=0;
-	c.gridy=1;
-	c.gridwidth=2;
-	c.fill=GridBagConstraints.HORIZONTAL;
-	panel.add(okButton,c);
-	
-	c.gridx=2;
-	c.gridy=1;
-	c.gridwidth=2;
-	c.fill=GridBagConstraints.HORIZONTAL;
-	panel.add(noButton,c);
-	buttonOkay(okButton);
-	buttonOkay(noButton);
-
-
-}
-
-private void buttonOkay(JButton b) {
-	b.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			dispose();	
-		}
-	});
-}	
+	public DeleteDialogue(final Object pO){
+		super("Löschen");
+		o=pO;
+		init();
+		pack();
+	}
+	private void init(){
+		panel.setLayout(new GridBagLayout());
+		panel.setBorder(BorderFactory.createTitledBorder("Loeschen"));
+		c.insets=new Insets(20,5,1,1);
+		c.anchor=GridBagConstraints.WEST;
+		c.gridx=0;
+		c.gridy=0;
+		JLabel loeschen = new JLabel("Möchten Sie wirklich loeschen?");
+		panel.add(loeschen,c);
+		
+		c.gridx=0;
+		c.gridy=1;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(okButton,c);
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				if(o instanceof Raumfunktion) {
+					DataRaum.deleteRaumfunktionByName(((Raumfunktion) o).getName());
+					RaumfunktionPanel.updateList();
+				}
+				if(o instanceof Stundeninhalt) {
+					DataStundeninhalt.deleteStundeninhaltByKuerzel(((Stundeninhalt) o).getKuerzel());
+					StundeninhaltPanel.updateList();
+				}
+				if(o instanceof Schoolclass) {
+					DataSchulklasse.deleteSchulklasseByName(((Schoolclass) o).getName());
+					SchoolclassPanel.updateList();
+				}
+				if(o instanceof Room) {
+					DataRaum.deleteRaumByName(((Room) o).getName());
+					RoomPanel.updateList();
+				}
+				if(o instanceof Personal) {
+					DataPersonal.deletePersonalByKuerzel(((Personal) o).getKuerzel());
+					PersonalPanel.updateList();
+				}
+				dispose();	
+			}
+		});		
+		c.gridx=1;
+		panel.add(noButton,c);
+		noButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});	
+		
+		add(panel);
+	}		
 }

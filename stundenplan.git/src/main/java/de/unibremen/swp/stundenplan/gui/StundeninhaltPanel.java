@@ -23,11 +23,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 
@@ -114,6 +117,7 @@ public class StundeninhaltPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button, c);
+		
 		// add Button
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -132,10 +136,7 @@ public class StundeninhaltPanel extends JPanel {
 
 					DataStundeninhalt.addStundeninhalt(si);
 
-					listModel.clear();
-					for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
-						listModel.addElement(sti);
-					}
+					updateList();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -163,13 +164,9 @@ public class StundeninhaltPanel extends JPanel {
 		c.gridy = 1;
 		c.weightx = 1.8;
 		c.weighty = 1.0;
-		p.add(listScroller, c);
+		p.add(listScroller, c);	
 		
-		
-		listModel.clear();
-		for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
-			listModel.addElement(sti);
-		}
+		updateList();	
 		
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
@@ -193,7 +190,7 @@ public class StundeninhaltPanel extends JPanel {
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue();
+						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
 						deleteD.setVisible(true);
 					}
 				});
@@ -204,6 +201,8 @@ public class StundeninhaltPanel extends JPanel {
 	}
 	
 	private JPanel createEditPanel(final JPanel p, final Stundeninhalt si){
+		System.out.println("Rythm"+ si.getRhythmustyp());
+		
 		Label lName2 = new Label("Titel der Aktivitaet:");
 		Label lKuerzel2 = new Label("Kuerzel:");
 		Label ltime2 = new Label("Regeldauer in min:");
@@ -250,11 +249,11 @@ public class StundeninhaltPanel extends JPanel {
 		final JRadioButton leichtB2 = new JRadioButton("Leicht");
 		final JRadioButton schwerB2 = new JRadioButton("Schwer");
 		switch (si.getRhythmustyp()) {
-        case 1:  pauseB2.setSelected(true);
+        case 0:  pauseB2.setSelected(true);
                  break;
-        case 2:  leichtB2.setSelected(true);
+        case 1:  leichtB2.setSelected(true);
                  break;
-        case 3:  schwerB2.setSelected(true);
+        case 2:  schwerB2.setSelected(true);
                  break;
 		}
 		ButtonGroup group2 = new ButtonGroup();
@@ -272,7 +271,39 @@ public class StundeninhaltPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button2, c);
+		
 		// edit Button
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					int rythm=0;
+					if (!check(p))
+						throw new WrongInputException();
+					if(pauseB2.isSelected()) rythm=0;
+					if(leichtB2.isSelected()) rythm=1;
+					if(schwerB2.isSelected()) rythm=2;
+					
+					Stundeninhalt si = new Stundeninhalt(nameField2.getText(), 
+							kuerzField2.getText(), 
+							Integer.parseInt(timeField2.getText()),
+							rythm);
+
+					DataStundeninhalt.addStundeninhalt(si);
+
+					updateList();
+
+				} catch (WrongInputException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		button3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+				topFrame.dispose();
+			}
+		});
 		
 		return p;
 	}
@@ -303,6 +334,13 @@ public class StundeninhaltPanel extends JPanel {
 			}
 		}
 		return b;
+	}
+
+	public static void updateList(){
+		listModel.clear();
+		for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
+			listModel.addElement(sti);
+		}
 	}
 
 }

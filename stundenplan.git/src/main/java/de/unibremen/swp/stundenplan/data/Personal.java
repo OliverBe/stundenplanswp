@@ -12,14 +12,12 @@ public final class Personal {
      */
     private String name;
 
-    /**
-     * Das Kürzel dieser LehrerIn. Ein Kürzel muss systemweit eindeutig sein.
-     */
+    //primary
     private String kuerzel;
     
     private int sollZeit;
     
-    // au die richtige berechnung achten!
+    // auf die richtige berechnung achten!
     private int istZeit;
     
     private int ersatzZeit;

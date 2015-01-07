@@ -45,6 +45,6 @@ public class Stundeninhalt {
 	}
 	@Override
     public String toString() {
-        return String.format("Stundeninhalt [%s, %s, %d]", name, kuerzel, regeldauer);
+        return String.format("%s, %s, %d", name, kuerzel, regeldauer);
     }
 }

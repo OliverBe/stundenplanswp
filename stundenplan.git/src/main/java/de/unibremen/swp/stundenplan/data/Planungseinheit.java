@@ -10,12 +10,7 @@ import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
-public class Planungseinheit implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Planungseinheit{
 
     private int id;
 	

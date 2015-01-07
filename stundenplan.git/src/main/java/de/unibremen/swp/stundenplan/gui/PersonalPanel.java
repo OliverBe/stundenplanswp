@@ -266,10 +266,7 @@ public class PersonalPanel extends JPanel {
 					
 					PersonalManager.addPersonalToDb(pe);
 					
-					listModel.clear();
-					for (Personal per : PersonalManager.getAllPersonalFromDB()){
-						listModel.addElement(per);
-					}					
+					updateList();					
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -297,13 +294,7 @@ public class PersonalPanel extends JPanel {
 		c.weighty = 1.0;
 		p.add(listScroller, c);
 
-		listModel.clear();
-		
-		if(DataPersonal.getAllPersonal() != null) {
-			for (Personal per : DataPersonal.getAllPersonal()){
-				listModel.addElement(per);
-			}
-		}
+		updateList();
 		
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
@@ -327,7 +318,7 @@ public class PersonalPanel extends JPanel {
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue();
+						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
 						deleteD.setVisible(true);
 					}
 				});
@@ -533,9 +524,7 @@ public class PersonalPanel extends JPanel {
 							lehrerB2.isSelected(), stunden, wunsch);
 					PersonalManager.addPersonalToDb(pe);
 					
-					 for (Personal per : DataPersonal.getAllPersonal()){
-						 listModel.addElement(per);
-					 }
+					 updateList();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -589,5 +578,12 @@ public class PersonalPanel extends JPanel {
 			}
 		}
 		return b;
+	}
+
+	public static void updateList() {
+		listModel.clear();
+		for (Personal per : DataPersonal.getAllPersonal()){
+			 listModel.addElement(per);
+		 }
 	}
 }

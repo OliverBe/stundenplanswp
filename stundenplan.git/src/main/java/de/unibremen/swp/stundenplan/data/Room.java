@@ -9,11 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public final class Room implements Serializable {
 
-    private static final long serialVersionUID = 3137139574206115533L;
-
+public final class Room{
     private int id;
 
     private String name;

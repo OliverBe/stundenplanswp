@@ -133,10 +133,7 @@ public class RoomPanel extends JPanel {
 					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
 							.getSelectedItem(), rf));
 
-					listModel.clear();
-					for (Room r : DataRaum.getAllRaum()) {
-						listModel.addElement(r);
-					}
+					updateList();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -154,10 +151,7 @@ public class RoomPanel extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listScroller.setPreferredSize(new Dimension(250, 200));
 
-		listModel.clear();
-		for (Room r : DataRaum.getAllRaum()) {
-			listModel.addElement(r);
-		}
+		updateList();
 
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.EAST;
@@ -191,7 +185,7 @@ public class RoomPanel extends JPanel {
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue();
+						DeleteDialogue deleteD = new DeleteDialogue(list.getModel());
 						deleteD.setVisible(true);
 					}
 				});
@@ -266,10 +260,7 @@ public class RoomPanel extends JPanel {
 					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
 							.getSelectedItem(), rf));
 
-					listModel.clear();
-					for (Room r : DataRaum.getAllRaum()) {
-						listModel.addElement(r);
-					}
+					updateList();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -303,6 +294,13 @@ public class RoomPanel extends JPanel {
 			}
 		}
 		return b;
+	}
+
+	public static void updateList() {
+		listModel.clear();
+		for (Room r : DataRaum.getAllRaum()) {
+			listModel.addElement(r);
+		}
 	}
 
 }

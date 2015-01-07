@@ -31,18 +31,12 @@ import javax.persistence.Id;
  * @author D. Lüdemann
  * @version 0.1
  */
-@Entity
-public final class Schoolclass extends Jahrgang implements Serializable {
-
-    /**
-     * Die eineindeutige ID für Serialisierung.
-     */
-    private static final long serialVersionUID = 3137139574206115533L;
+public final class Schoolclass extends Jahrgang{
 
     /**
      * Der Name dieser Schulklasse.
      */
-    @Id
+    //primary
     private String name;
     
     private int jahrgang;

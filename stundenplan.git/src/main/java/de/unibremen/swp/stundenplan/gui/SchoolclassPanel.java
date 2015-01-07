@@ -146,12 +146,9 @@ public class SchoolclassPanel extends JPanel{
 					
 					
 					
-			//		DataSchulklasse.addSchulklasse(schulklasse);
+				//	DataSchulklasse.addSchulklasse(schulklasse);
 					
-					listModel.clear();
-					for (Schoolclass sc : DataSchulklasse.getAllSchulklasse()){
-						listModel.addElement(sc);
-					}					
+					updateList();				
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -196,6 +193,13 @@ public class SchoolclassPanel extends JPanel{
 			}
 		}
 		return b;
+	}
+
+	public static void updateList() {
+		listModel.clear();
+		for (Schoolclass sc : DataSchulklasse.getAllSchulklasse()){
+			listModel.addElement(sc);
+		}	
 	}
 
 }

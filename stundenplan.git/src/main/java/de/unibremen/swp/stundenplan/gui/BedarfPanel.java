@@ -185,8 +185,8 @@ public class BedarfPanel extends JPanel{
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue();
-						deleteD.setVisible(true);
+				//		DeleteDialogue deleteD = new DeleteDialogue();
+				//		deleteD.setVisible(true);
 					}
 				});
 			}

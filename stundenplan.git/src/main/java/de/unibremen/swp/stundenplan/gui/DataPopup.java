@@ -37,10 +37,5 @@ public class DataPopup extends JPopupMenu{
 	private void init(){
 		add(edit);
 		add(delete);
-	}
-	
-	public Personal getPersonal() {
-		return p;	
-	};
-	
+	}	
 }
