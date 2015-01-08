@@ -57,10 +57,8 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Ersatzzeit");
 
 		ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
-		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
-				.getAllPlanungseinheit();
-		ArrayList<Personal> allPersonal = PersonalManager
-				.getAllPersonalFromDB();
+		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
+		ArrayList<Personal> allPersonal = PersonalManager.getAllPersonalFromDB();
 		HashMap<String, Integer> acroUndStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
@@ -81,8 +79,7 @@ public class LehreransichtPanel extends JPanel {
 					// sonst stimmt die Anzahl der Stunden nicht mehr
 					ArrayList<String> siKuerzelInPe = pe.getStundeninhalte();
 					for (String s : siKuerzelInPe) {
-						acroUndStunden.put(s,
-								acroUndStunden.get(s) + pe.duration());
+						acroUndStunden.put(s, acroUndStunden.get(s) + pe.duration());
 					}
 				}
 			}
@@ -93,11 +90,9 @@ public class LehreransichtPanel extends JPanel {
 
 					// Unterscheidung von Lehrer und Pädagoge
 					if (p.isLehrer()) {
-						reihe.add(Integer.toString(acroUndStundenPerso.get(s
-								.getKuerzel()) / 45));
+						reihe.add(Integer.toString(acroUndStundenPerso.get(s.getKuerzel()) / 45));
 					} else {
-						reihe.add(Integer.toString(acroUndStundenPerso.get(s
-								.getKuerzel()) / 60));
+						reihe.add(Integer.toString(acroUndStundenPerso.get(s.getKuerzel()) / 60));
 					}
 				}
 				model.addRow(new Object[] { reihe.toArray() });
