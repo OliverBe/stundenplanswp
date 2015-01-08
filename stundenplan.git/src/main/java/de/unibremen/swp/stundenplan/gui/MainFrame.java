@@ -25,7 +25,7 @@ public class MainFrame extends JFrame{
 	private JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
 	
 	private DataPanel dataPanel = new DataPanel();
-//    private StundenplanPanel paneStundenplan = new StundenplanPanel();
+	private StundenplanPanel paneStundenplan = new StundenplanPanel();
     private JPanel paneLehrer = new LehreransichtPanel(); 
     private JPanel paneRaeume = new RaumbelegungsplanPanel();
     private JPanel paneConfig = new ConfigPanel();
@@ -46,7 +46,7 @@ public class MainFrame extends JFrame{
 		     
 		//TODO bei click sollen sich die anderen closen, bzw der eine �ffnen
         tabpane.addTab("Daten", dataPanel);
-//        tabpane.addTab("Stundenpläne", paneStundenplan);
+        tabpane.addTab("Stundenpläne", paneStundenplan);
         tabpane.addTab("Lehreransicht", paneLehrer);
         tabpane.addTab("Raumbelegungsplan", paneRaeume);
         tabpane.addTab("Wochenplan",paneWochen);
