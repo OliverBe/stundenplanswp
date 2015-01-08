@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,7 +20,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
@@ -48,71 +51,62 @@ public class LehreransichtPanel extends JPanel {
 		c.gridy = 0;
 		c.gridwidth = 4;
 
-		// String[] columnNames = { "Kuerzel", "Wochenstunden", "Ersatzzeit",
-		// "Deu", "E", "MA", "SU/BGU", "KU" };
-		// String [][] rowData
-		// ={{"BER -4","28","3B 6","3B 2 \n 2C 1","-","-","1A/2C 2",""}
-		// , {"BM -28","28","","","","","",""}
-		// };
-		// ArrayList<Personal> allPerso =
-		// PersonalManager.getAllPersonalFromDB();
-		//
-		// if (allPerso.size() > 0) {
-		// ArrayList<ArrayList<String>> listOfLists = new ArrayList<>();
-		//
-		// for (int i = 0; i < allPerso.size(); i++) {
-		//
-		// }
-		//
-		// String[][] rowData = new String[0][];
-		//
-		// // table = new JTable(rowData, columnNames);
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model);
 		model.addColumn("Kuerzel");
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
+
 		ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
-		int columnSize = 3 + si.size();
+		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
+				.getAllPlanungseinheit();
+		ArrayList<Personal> allPersonal = PersonalManager
+				.getAllPersonalFromDB();
+		HashMap<String, Integer> acroUndStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
 			model.addColumn(s.getKuerzel());
+			acroUndStunden.put(s.getKuerzel(), 0);
 		}
 
-		ArrayList<String> kuerzel = PersonalManager.getAllKuerzel();
-		for (String s : kuerzel) {
-			model.addRow(new String[] { s });
-		}
-		
-		ArrayList<Personal> perso = PersonalManager.getAllPersonalFromDB();
-		for (Personal p : perso){
-			//TODO hier müssen noch die Informationen zu Stundeninhalten rein
-			model.addRow(new Object[] { p.getKuerzel(), p.getSollZeit(), "- "+p.getErsatzZeit()});
-		}
-		
+		for (Personal p : allPersonal) {
+			HashMap<String, Integer> acroUndStundenPerso = acroUndStunden;
+			ArrayList<String> reihe = new ArrayList<>();
+			reihe.add(p.getKuerzel());
+			reihe.add(Integer.toString(p.getSollZeit()));
+			reihe.add("- " + Integer.toString(p.getErsatzZeit()));
+			for (Planungseinheit pe : planungseinheiten) {
+				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
+					// TODO checken, ob die Reihenfolge bei der HashMap gleich
+					// bleibt,
+					// sonst stimmt die Anzahl der Stunden nicht mehr
+					ArrayList<String> siKuerzelInPe = pe.getStundeninhalte();
+					for (String s : siKuerzelInPe) {
+						acroUndStunden.put(s,
+								acroUndStunden.get(s) + pe.duration());
+					}
+				}
+			}
+			for (Stundeninhalt s : si) {
+				if (acroUndStundenPerso.get(s.getKuerzel()) == 0) {
+					reihe.add("");
+				} else {
 
+					// Unterscheidung von Lehrer und Pädagoge
+					if (p.isLehrer()) {
+						reihe.add(Integer.toString(acroUndStundenPerso.get(s
+								.getKuerzel()) / 45));
+					} else {
+						reihe.add(Integer.toString(acroUndStundenPerso.get(s
+								.getKuerzel()) / 60));
+					}
+				}
+				model.addRow(new Object[] { reihe.toArray() });
+			}
+		}
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(40);
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
-
-	}
-	
-	/**
-	 * Parst einen int-Parameter in die gewünschte Form der Lehreransicht. Wenn eine 0 (Null) übergeben wird,
-	 * soll im Lehrplan ein leerer String stehen.
-	 * @param i int, das geparst werden soll
-	 * @return
-	 * 		das int als String oder leere Zeichenkette
-	 */
-	public String parseForPanel(int i){
-		String s = "";
-		StringBuilder sb = new StringBuilder(s);
-		if(i == 0){
-			return s;
-		}else{
-			sb.append(i);
-			return sb.toString();
-		}
 	}
 }

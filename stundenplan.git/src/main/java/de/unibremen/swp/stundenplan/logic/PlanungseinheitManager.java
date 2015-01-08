@@ -12,6 +12,7 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 
 public final class PlanungseinheitManager {
 
@@ -271,6 +272,14 @@ public final class PlanungseinheitManager {
 	public boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
 		return true;
+	}
+	
+	/**
+	 * Gibt alle Planungseinheiten in der DB als ArrayList zurück
+	 */
+	public static ArrayList<Planungseinheit> getAllPlanungseinheitFromDB(){
+		System.out.println("Getting all Planungseinheiten from DB...");
+		return DataPlanungseinheit.getAllPlanungseinheit();
 	}
 
 }
