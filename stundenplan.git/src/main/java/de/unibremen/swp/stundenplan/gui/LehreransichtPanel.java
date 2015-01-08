@@ -15,8 +15,10 @@ import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
@@ -57,17 +59,20 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Ersatzzeit");
 
 		ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
-		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
-		ArrayList<Personal> allPersonal = PersonalManager.getAllPersonalFromDB();
-		HashMap<String, Integer> acroUndStunden = new HashMap<>();
+		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
+				.getAllPlanungseinheit();
+		ArrayList<Personal> allPersonal = PersonalManager
+				.getAllPersonalFromDB();
+		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
 			model.addColumn(s.getKuerzel());
-			acroUndStunden.put(s.getKuerzel(), 0);
+			HashMap<String, Integer> hash = new HashMap<>();
+			inhaltKlasseStunden.put(s.getKuerzel(), hash);
 		}
 
 		for (Personal p : allPersonal) {
-			HashMap<String, Integer> acroUndStundenPerso = acroUndStunden;
+			HashMap<String, HashMap<String, Integer>> inhaltKlasseStundenPerso = inhaltKlasseStunden;
 			ArrayList<String> reihe = new ArrayList<>();
 			reihe.add(p.getKuerzel());
 			reihe.add(Integer.toString(p.getSollZeit()));
@@ -77,25 +82,39 @@ public class LehreransichtPanel extends JPanel {
 					// TODO checken, ob die Reihenfolge bei der HashMap gleich
 					// bleibt,
 					// sonst stimmt die Anzahl der Stunden nicht mehr
-					ArrayList<String> siKuerzelInPe = pe.getStundeninhalte();
-					for (String s : siKuerzelInPe) {
-						acroUndStunden.put(s, acroUndStunden.get(s) + pe.duration());
+					ArrayList<String> inhalteInPlanungseinheit = pe.getStundeninhalte();
+					ArrayList<String> klassenInPlanungseinheit = pe.getSchoolclasses();
+
+					for (String s : inhalteInPlanungseinheit) {
+
+						for (String k : klassenInPlanungseinheit) {
+							HashMap<String, Integer> neuHash = inhaltKlasseStundenPerso.get(s);
+							neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k)+ pe.duration());
+							inhaltKlasseStundenPerso.put(s, neuHash);
+						}
 					}
 				}
 			}
 			for (Stundeninhalt s : si) {
-				if (acroUndStundenPerso.get(s.getKuerzel()) == 0) {
-					reihe.add("");
-				} else {
+				ArrayList<Schoolclass> klassen = DataSchulklasse
+						.getAllSchulklasse();
+				for (Schoolclass k : klassen) {
 
-					// Unterscheidung von Lehrer und Pädagoge
-					if (p.isLehrer()) {
-						reihe.add(Integer.toString(acroUndStundenPerso.get(s.getKuerzel()) / 45));
+					if (inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
+						reihe.add("-");
 					} else {
-						reihe.add(Integer.toString(acroUndStundenPerso.get(s.getKuerzel()) / 60));
+
+						// Unterscheidung von Lehrer und Pädagoge
+						if (p.isLehrer()) {
+							reihe.add(k.getName()+ " "+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(
+													k.getName()) / 45));
+						} else {
+							reihe.add(k.getName()+ ":  "+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(
+													k.getName()) / 60));
+						}
 					}
+					model.addRow(new Object[] { reihe.toArray() });
 				}
-				model.addRow(new Object[] { reihe.toArray() });
 			}
 		}
 		table.setRowSelectionAllowed(true);
