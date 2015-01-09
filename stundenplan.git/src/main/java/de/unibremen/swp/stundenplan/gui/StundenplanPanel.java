@@ -31,51 +31,48 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 
 	public DataPanel data = new DataPanel();
 
-	
 	private JFrame f;
 	private int eventX;
 	private int eventY;
 
 	private int eventXX;
 	private int eventYY;
-	
+
 	private static JTable table;
-	
+
 	private static JMenuBar menuBar = new JMenuBar();
 	private static DefaultListModel pList;
 	private static DefaultListModel sList;
 	private static JList personalList;
 	private static JList schoolclassList;
-	private static JLabel label1 =new JLabel("Lehrer");
-	private static JLabel label2 =new JLabel("Klassen");
-	
+	private static JLabel label1 = new JLabel("Lehrer");
+	private static JLabel label2 = new JLabel("Klassen");
+
 	private static JButton show = new JButton("Anzeigen");
-	
+
 	public JLabel warning = new JLabel();
-	
+
 	JPopupMenu popmen = new JPopupMenu();
-	
-	public StundenplanPanel(){
+
+	public StundenplanPanel() {
 		init();
 		show.addActionListener(this);
 	}
-	
-	public void init(){
-		
+
+	public void init() {
+
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.weightx = 0.0;
 		c.weighty = 1.0;
-		c.gridx=0;
-		c.gridy=0;
-		
-		
-	
+		c.gridx = 0;
+		c.gridy = 0;
+
 		updateLists();
-		
-		menuBar.setLayout(new GridLayout(0,1));
+
+		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
 		table = new StundenplanTable().getTable();
@@ -86,119 +83,119 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		c.gridwidth = 4;
 		c.gridy = 0;
 		JScrollPane pane = new JScrollPane(table);
-		add(pane,c);
-		
-		
-		
-		
+		add(pane, c);
+
 		table.addMouseListener(new MouseAdapter() {
-	        public void mousePressed(MouseEvent evt) {
-	        	eventX = evt.getXOnScreen();
-	        	eventY = evt.getYOnScreen();
-	        	eventXX = evt.getX();
-	        	eventYY = evt.getY();
-	           
-	        	if (SwingUtilities.isRightMouseButton(evt)) {
-	            	final int row = table.rowAtPoint(evt.getPoint());
-	                final int col = table.columnAtPoint(evt.getPoint());
-	              createPopup(row, col);
-	            }
-	        }
-	    });
-		
-        
-    }
-		
+			public void mousePressed(MouseEvent evt) {
+				eventX = evt.getXOnScreen();
+				eventY = evt.getYOnScreen();
+				eventXX = evt.getX();
+				eventYY = evt.getY();
 
-	
-	
-	
-	
-	 /**
-     * Erzeugt ein Popup zum hinzuf�gen, editieren und l�schen von Lehrern F�chern und Klassen
-     * 
-     * @param row
-     *            Die Zeile.
-     * @param col
-     *            Die Spalte.
-     * @return das neue Popup-Menu
-     */
-    protected JPopupMenu createPopup(final int row, final int col) {
-    	
-    	if( popmen.isVisible()) {
-    		return popmen;
-    	} else {
-    	popmen = new JPopupMenu();
-        final JMenuItem menu1 = new JMenuItem("Neue Planungseinheit");
-        final JMenuItem menu2 = new JMenuItem("Planungseinheit bearbeiten");
-        
-        menu1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                popmen.setVisible(false);
-            }
-        });
-        menu2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-            	popmen.setVisible(false);	
-            }
-        });
-        popmen.add(menu1);
-        popmen.add(menu2);
+				if (SwingUtilities.isLeftMouseButton(evt)) {
 
-        popmen.setLocation(eventX, eventY);
-        popmen.setVisible(true);
-        return popmen;
-    	}
-    }
-	
+					popmen.setVisible(false);
+				}
+
+				if (SwingUtilities.isRightMouseButton(evt)) {
+
+					final int row = table.rowAtPoint(evt.getPoint());
+					final int col = table.columnAtPoint(evt.getPoint());
+					createPopup(row, col);
+				}
+			}
+		});
+
+	}
+
+	/**
+	 * Erzeugt ein Popup zum hinzuf�gen, editieren und l�schen von Lehrern
+	 * F�chern und Klassen
+	 * 
+	 * @param row
+	 *            Die Zeile.
+	 * @param col
+	 *            Die Spalte.
+	 * @return das neue Popup-Menu
+	 */
+	protected JPopupMenu createPopup(final int row, final int col) {
+
+		if (popmen.isVisible()) {
+			popmen.setVisible(false);
+		}
+		popmen = new JPopupMenu();
+		final JMenuItem menu1 = new JMenuItem("Neue Planungseinheit");
+		final JMenuItem menu2 = new JMenuItem("Planungseinheit bearbeiten");
+
+		menu1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				popmen.setVisible(false);
+			}
+		});
+		menu2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				popmen.setVisible(false);
+			}
+		});
+		popmen.add(menu1);
+		popmen.add(menu2);
+
+		popmen.setLocation(eventX, eventY);
+		popmen.setVisible(true);
+		return popmen;
+
+	}
+
 	public static void updateLists() {
-		Personal[] personalListe = new Personal[DataPersonal.getAllPersonal().size()];
-		Schoolclass[] schoolclassListe = new Schoolclass[DataSchulklasse.getAllSchulklasse().size()];
+		Personal[] personalListe = new Personal[DataPersonal.getAllPersonal()
+				.size()];
+		Schoolclass[] schoolclassListe = new Schoolclass[DataSchulklasse
+				.getAllSchulklasse().size()];
 		pList = new DefaultListModel();
 		sList = new DefaultListModel();
-		
-		for(int i=0; i < DataPersonal.getAllPersonal().size(); i++) {
+
+		for (int i = 0; i < DataPersonal.getAllPersonal().size(); i++) {
 			personalListe[i] = DataPersonal.getAllPersonal().get(i);
 
 			pList.addElement(personalListe[i]);
 		}
-		
-		for(int i=0; i < DataSchulklasse.getAllSchulklasse().size(); i++) {
+
+		for (int i = 0; i < DataSchulklasse.getAllSchulklasse().size(); i++) {
 			schoolclassListe[i] = DataSchulklasse.getAllSchulklasse().get(i);
 
 			sList.addElement(schoolclassListe[i]);
 		}
-		
-		
+
 		personalList = new JList(pList);
 		schoolclassList = new JList(sList);
-		
+
 		menuBar.removeAll();
 		menuBar.add(label1);
 		menuBar.add(personalList);
 		menuBar.add(label2);
 		menuBar.add(schoolclassList);
 		menuBar.add(show);
-		
+
 	}
-	
+
 	public void actionPerformed(ActionEvent ae) {
-		if(ae.getSource() == show){
-			if(!personalList.isSelectionEmpty()) {
+		if (ae.getSource() == show) {
+			if (!personalList.isSelectionEmpty()) {
 				Personal p = (Personal) personalList.getSelectedValue();
 				System.out.println(p.getKuerzel());
 				table.setModel(new TimetableModel(p));
-				
-				
-			} else if (!schoolclassList.isSelectionEmpty()) {             
-				Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
+
+			} else if (!schoolclassList.isSelectionEmpty()) {
+				Schoolclass s = (Schoolclass) schoolclassList
+						.getSelectedValue();
 				System.out.println(s.getName());
 				table.setModel(new TimetableModel(s));
-				
+
 			}
-			
-        }
+
+		}
+
 	}
 }
