@@ -161,11 +161,12 @@ public final class TimetableManager {
         cal.set(Calendar.HOUR_OF_DAY, startTimeHour());
         cal.set(Calendar.MINUTE, startTimeMinute());
         DayTable dayTable = new DayTable(pWeekday);
-        ArrayList<Planungseinheit> pE = pPE;
-        if(pE.size() == 0 ){
+        if(pPE.size() == 0 ){
         	dayTable.addTimeslot(filltoEnd(dayTable, cal));
+        	System.out.println("nothing");
         	return dayTable;
         }
+        ArrayList<Planungseinheit> pE = pPE;
         for(Planungseinheit p: pE){
         	final Calendar pecal = Calendar.getInstance();
             pecal.setTimeInMillis(0);
@@ -188,7 +189,6 @@ public final class TimetableManager {
         if(dayTable.slotslength()<daytablelength()){
         	dayTable.addTimeslot(filltoEnd(dayTable, cal));
         }
-        System.out.println(dayTable.timeslots.size());
         return dayTable;
     
     }
@@ -222,7 +222,7 @@ public final class TimetableManager {
 			timeslot.add(t);
 			time.add(Calendar.MINUTE, Timeslot.timeslotlength());			
 		}
-        System.out.println(timeslot.size());
+        System.out.println("rest"+timeslot.size());
     	return timeslot;
 	}
 
