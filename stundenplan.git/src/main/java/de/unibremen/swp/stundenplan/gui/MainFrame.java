@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MainFrame extends JFrame {
 
@@ -57,21 +60,30 @@ public class MainFrame extends JFrame {
 		setJMenuBar(menu);
 		add(tabpane);
 		add(paneWarning, BorderLayout.SOUTH);
+		
+		tabpane.addChangeListener(new ChangeListener()
+	    {
+	      public void stateChanged(ChangeEvent e)
+	      {
+	        checkSelectedTab();
+	      }
+	    });
 	};
+	
+	/**
+	 * Checkt das ausgewählte Tab. Je nach Klasse des Tabs, führt es Updatemethoden
+	 * o.Ä. aus.
+	 */
+	public void checkSelectedTab(){
+		Component c = tabpane.getSelectedComponent();
+		if(c instanceof LehreransichtPanel){
+			paneLehrer.removeAll();
+			paneLehrer.init();
+			System.out.println("josososososo");
+		};
+	}
 
 	public static WarningPanel getWarning() {
 		return paneWarning;
-	}
-	
-	public void updateLehrerPanel(){
-		JButton btnExample = new JButton("press me");
-        btnExample.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent actionEvent) {
-                paneLehrer.removeAll();
-                paneLehrer.init();
-            }
-           
-        });
-        tabpane.setComponentAt(2, btnExample);
 	}
 }

@@ -26,6 +26,7 @@ public class MenuBar extends JMenuBar{
 	private JMenuItem neww = new JMenuItem("Neue Datei");
 	private JMenuItem open = new JMenuItem("Öffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
+	private JMenuItem export = new JMenuItem("Exportieren");
 	
 	private JFileChooser chooser = new JFileChooser();
 	
@@ -33,6 +34,7 @@ public class MenuBar extends JMenuBar{
 	
 	public MenuBar(final JFrame frame) {
 		f=frame;
+
 		initComponents();
 	}
 	
@@ -41,17 +43,20 @@ public class MenuBar extends JMenuBar{
 		data.add(neww);
 		data.add(open);
 		data.add(save);
+		data.add(export);
 		add(data);
 		
 		newClick(neww);
 		openClick(open);
 		saveClick(save);
+		exportClick(export);
+		
 		
 		//Shortcuts
 		neww.setAccelerator(KeyStroke.getKeyStroke( 'N', InputEvent.CTRL_DOWN_MASK ));
 		open.setAccelerator(KeyStroke.getKeyStroke( 'O', InputEvent.CTRL_DOWN_MASK ));
 		save.setAccelerator(KeyStroke.getKeyStroke( 'S', InputEvent.CTRL_DOWN_MASK ));
-		
+		export.setAccelerator(KeyStroke.getKeyStroke( 'E', InputEvent.CTRL_DOWN_MASK ));
 	}
 	
 	private void newClick(JMenuItem item) {
@@ -73,6 +78,15 @@ public class MenuBar extends JMenuBar{
 	}
 	
 	private void saveClick(JMenuItem item) {
+		item.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent ae) {
+				
+			}
+		});
+	}
+	
+	private void exportClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ae) {

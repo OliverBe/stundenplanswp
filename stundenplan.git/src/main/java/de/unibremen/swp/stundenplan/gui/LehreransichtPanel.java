@@ -78,7 +78,12 @@ public class LehreransichtPanel extends JPanel {
 			ArrayList<String> reihe = new ArrayList<>();
 			reihe.add(p.getKuerzel());
 			reihe.add(Integer.toString(p.getSollZeit()));
-			reihe.add("- " + Integer.toString(p.getErsatzZeit()));
+			if (p.getErsatzZeit() == 0) {
+				reihe.add("-");
+			} else {
+				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
+			}
+			if (planungseinheiten.size() == 0) model.addRow(reihe.toArray());
 			for (Planungseinheit pe : planungseinheiten) {
 				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
 					// TODO checken, ob die Reihenfolge bei der HashMap gleich
@@ -90,16 +95,16 @@ public class LehreransichtPanel extends JPanel {
 					for (String s : inhalteInPlanungseinheit) {
 
 						for (String k : klassenInPlanungseinheit) {
-							HashMap<String, Integer> neuHash = inhaltKlasseStundenPerso.get(s);
-							neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k)+ pe.duration());
+							HashMap<String, Integer> neuHash = inhaltKlasseStundenPerso
+									.get(s);
+							neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
 							inhaltKlasseStundenPerso.put(s, neuHash);
 						}
 					}
 				}
 			}
 			for (Stundeninhalt s : si) {
-				ArrayList<Schoolclass> klassen = DataSchulklasse
-						.getAllSchulklasse();
+				ArrayList<Schoolclass> klassen = DataSchulklasse.getAllSchulklasse();
 				for (Schoolclass k : klassen) {
 
 					if (inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
@@ -108,14 +113,16 @@ public class LehreransichtPanel extends JPanel {
 
 						// Unterscheidung von Lehrer und Pädagoge
 						if (p.isLehrer()) {
-							reihe.add(k.getName()+ " "+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(
-													k.getName()) / 45));
+							reihe.add(k.getName()
+									+ ": "
+									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 45));
 						} else {
-							reihe.add(k.getName()+ ":  "+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(
-													k.getName()) / 60));
+							reihe.add(k.getName()
+									+ ":  "
+									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 60));
 						}
 					}
-					model.addRow(new Object[] { reihe.toArray() });
+					model.addRow(reihe.toArray());
 				}
 			}
 		}
