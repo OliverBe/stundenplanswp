@@ -15,6 +15,7 @@ import de.unibremen.swp.stundenplan.exceptions.DatasetException;
  * 
  */
 public class PersonalManager {
+	
 
 	private PersonalManager(){
 	
