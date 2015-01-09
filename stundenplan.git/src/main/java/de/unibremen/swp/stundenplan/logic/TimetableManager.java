@@ -162,6 +162,10 @@ public final class TimetableManager {
         cal.set(Calendar.MINUTE, startTimeMinute());
         DayTable dayTable = new DayTable(pWeekday);
         ArrayList<Planungseinheit> pE = pPE;
+        if(pE.size() == 0 ){
+        	dayTable.addTimeslot(filltoEnd(dayTable, cal));
+        	return dayTable;
+        }
         for(Planungseinheit p: pE){
         	final Calendar pecal = Calendar.getInstance();
             pecal.setTimeInMillis(0);
