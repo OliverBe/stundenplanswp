@@ -1,0 +1,28 @@
+package de.unibremen.swp.stundenplan.command;
+
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
+
+public class DeletePersonalFromDB implements Command {
+
+	private Personal personal;
+	
+	public DeletePersonalFromDB(){		
+	}
+	
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+	}
+	
+	public void execute(String kuerz){
+		personal = PersonalManager.getPersonalByKuerzel(kuerz);
+		PersonalManager.deletePersonalFromDB(kuerz);
+	}
+
+	@Override
+	public void undo() {
+		PersonalManager.addPersonalToDb(personal);
+	}
+
+}
