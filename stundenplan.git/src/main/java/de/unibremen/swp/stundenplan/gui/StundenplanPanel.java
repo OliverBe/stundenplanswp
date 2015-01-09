@@ -129,105 +129,24 @@ public class StundenplanPanel extends JPanel implements ActionListener {
     		return popmen;
     	} else {
     	popmen = new JPopupMenu();
-        final JMenuItem menu1 = new JMenuItem("Fach hinzuf�gen");
-        final JMenuItem menu2 = new JMenuItem("Fach editieren");
-        final JMenuItem menu3 = new JMenuItem("Fach entfernen");
-        final JMenuItem menu4 = new JMenuItem("Lehrer hinzuf�gen");
-        final JMenuItem menu5 = new JMenuItem("Lehrer editieren");
-        final JMenuItem menu6 = new JMenuItem("Lehrer entfernen");
-        final JMenuItem menu7 = new JMenuItem("Klasse hinzuf�gen");
-        final JMenuItem menu8 = new JMenuItem("Klasse editieren");
-        final JMenuItem menu9 = new JMenuItem("Klasse entfernen");
-        
+        final JMenuItem menu1 = new JMenuItem("Neue Planungseinheit");
+        final JMenuItem menu2 = new JMenuItem("Planungseinheit bearbeiten");
         
         menu1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-            KlassenPopupDialog r = new KlassenPopupDialog();
-            
-            String msg = (String) table.getValueAt(row, col);
-            msg = msg + r.doEingabe();
-            table.setValueAt(msg, row, col);
-            popmen.setVisible(false);
+                popmen.setVisible(false);
             }
         });
         menu2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-            	
+            	popmen.setVisible(false);	
             }
-        });
-        menu3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-            	String msg = "";
-                table.setValueAt(msg, row, col);
-                popmen.setVisible(false);
-            }
-        });
-        menu4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-            	KlassenPopupDialog r = new KlassenPopupDialog();
-                
-                String msg = (String) table.getValueAt(row, col);
-                msg = msg + r.doEingabe();
-                table.setValueAt(msg, row, col);
-                popmen.setVisible(false);
-            }
-        });
-        menu5.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(final ActionEvent event) {
-        		
-        	}          
-        });
-        
-        menu6.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(final ActionEvent event) {
-        		String msg = "";
-                table.setValueAt(msg, row, col);
-                popmen.setVisible(false);
-        	}          
-        });
-        
-        menu7.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(final ActionEvent event) {
-        		KlassenPopupDialog r = new KlassenPopupDialog();
-                
-                String msg = (String) table.getValueAt(row, col);
-                msg = msg + r.doEingabe();
-                table.setValueAt(msg, row, col);
-                popmen.setVisible(false);
-        	}          
-        });
-        
-        menu8.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(final ActionEvent event) {
-        		
-        	}          
-        });
-        
-        menu9.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(final ActionEvent event) {
-        		String msg = "";
-                table.setValueAt(msg, row, col);
-                popmen.setVisible(false);
-        	}          
         });
         popmen.add(menu1);
         popmen.add(menu2);
-        popmen.add(menu3);
-        popmen.add(menu4);
-        popmen.add(menu5);
-        popmen.add(menu6);
-        popmen.add(menu7);
-        popmen.add(menu8);
-        popmen.add(menu9);
+
         popmen.setLocation(eventX, eventY);
         popmen.setVisible(true);
         return popmen;
