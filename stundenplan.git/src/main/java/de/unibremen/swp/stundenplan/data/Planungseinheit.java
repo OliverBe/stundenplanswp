@@ -120,11 +120,16 @@ public class Planungseinheit{
 	} 
 	
 	public Schoolclass getSchoolclassByName(final String pName){
-		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		if(pName == null || pName.length()<= 0){throw new IllegalArgumentException("Argument must not be null or empty String");}
 		for(String name : schulklassen){
 			if(name.equals(pName)) return DataSchulklasse.getSchulklasseByName(name);
 		}
 		return null;
+	}
+	
+	public boolean containsClass(Schoolclass pSC){
+		if(pSC == null){throw new IllegalArgumentException("Argument must not be null");}
+		return schulklassen.contains(pSC);
 	}
 	
 	public ArrayList<String> getRooms(){
@@ -132,11 +137,16 @@ public class Planungseinheit{
 	}
 	
 	public Room getRoomByName(final String pName){
-		if(pName == null || pName.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
+		if(pName == null || pName.length()<= 0){throw new IllegalArgumentException("Argument must not be null or empty String");}
 		for(String name : raeume){
 			if(name.equals(pName)) return DataRaum.getRaumByName(name);
 		}
 		return null;
+	}
+	
+	public boolean containsRoom(Room pRoom){
+		if(pRoom == null){throw new IllegalArgumentException("Argument must not be null or empty String");}
+		return raeume.contains(pRoom);
 	}
 	
 	public HashMap<String, int[]> getPersonalMap(){
@@ -181,6 +191,12 @@ public class Planungseinheit{
 	public boolean containsPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
 		if(personal.get(pPerson) != null){return true;}
+		return false;
+	}
+	
+	public boolean isWeekday(Weekday pWeekday){
+		if(pWeekday == null){new IllegalArgumentException("Argument must not be null");}
+		if(day.getOrdinal()== pWeekday.getOrdinal()){return true;}
 		return false;
 	}
 	
