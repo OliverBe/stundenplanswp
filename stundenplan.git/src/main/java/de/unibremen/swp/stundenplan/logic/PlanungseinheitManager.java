@@ -13,6 +13,7 @@ import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
 
@@ -87,7 +88,25 @@ public final class PlanungseinheitManager {
 		order(pes);
 		return pes;
 	}
-
+	
+	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
+    	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zurück.
+    	ArrayList<Planungseinheit> pes;
+    	if(pOwner instanceof Personal){
+    		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex], (Personal)pOwner);
+    	}else if(pOwner instanceof Room){
+    		pes = getPEForRoombyWeekday(TimetableManager.validdays()[pDayIndex], (Room)pOwner);
+    	}else if(pOwner instanceof Schoolclass){
+    		pes = getPEForSchoolclassbyWeekday(TimetableManager.validdays()[pDayIndex], (Schoolclass)pOwner);
+    	}else{
+    		return null;
+    	}
+    	for(Planungseinheit p : pes){
+    		
+    	}
+    	return null;
+    }
+	
 	public static void order(List<Planungseinheit> pPE) {
 		Collections.sort(pPE, new Comparator<Planungseinheit>() {
 			@Override
@@ -293,7 +312,7 @@ public final class PlanungseinheitManager {
 	 * @return
 	 */
 	public static boolean checkPEandTime(final Planungseinheit p1,
-			final Planungseinheit p2) {
+			final int startHour, final int startMinute) {
 		return true;
 	}
 	

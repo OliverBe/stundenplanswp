@@ -273,6 +273,8 @@ public final class TimetableManager {
         return timeslots;
     }
     
+    
+    
     public static void peTest(){
     	DayTable tp = createTimeslotsForPES(PlanungseinheitManager.demomethod(Weekday.values()[0]), Weekday.values()[0]);
     	System.out.println(tp.timeslots.size());
