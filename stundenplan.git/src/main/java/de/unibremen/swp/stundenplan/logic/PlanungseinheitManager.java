@@ -32,7 +32,11 @@ public final class PlanungseinheitManager {
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		// hier muss die Liste geholt werden
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsPersonal(pPerson) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
 		order(pes);
 		return pes;
 	}
@@ -51,7 +55,11 @@ public final class PlanungseinheitManager {
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
-		// hier muss die Liste geholt werden
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsClass(pSchoolclass) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
 		order(pes);
 		return pes;
 	}
@@ -71,6 +79,11 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
 		// hier muss die Liste geholt werden
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsRoom(pRoom) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
 		order(pes);
 		return pes;
 	}
@@ -269,13 +282,23 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return
 	 */
-	public boolean checktwoPEs(final Planungseinheit p1,
+	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
 		return true;
 	}
 	
 	/**
-	 * Gibt alle Planungseinheiten in der DB als ArrayList zur�ck
+	 * TO-DO prüft ob Zeitpunkt sich  mit PE überschneidet im selben Tag.
+	 * 
+	 * @return
+	 */
+	public static boolean checkPEandTime(final Planungseinheit p1,
+			final Planungseinheit p2) {
+		return true;
+	}
+	
+	/**
+	 * Gibt alle Planungseinheiten in der DB als ArrayList zurueck
 	 */
 	public static ArrayList<Planungseinheit> getAllPlanungseinheitFromDB(){
 		System.out.println("Getting all Planungseinheiten from DB...");
