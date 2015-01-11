@@ -99,7 +99,9 @@ public class RoomPanel extends JPanel {
 		p.add(jcb, c);
 		c.gridx = 0;
 		c.gridy = 2;
+		c.anchor = GridBagConstraints.NORTHWEST;
 		p.add(new Label("Spezieller Raum:"), c);
+		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 1;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
