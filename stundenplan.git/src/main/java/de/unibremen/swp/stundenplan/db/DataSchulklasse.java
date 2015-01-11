@@ -191,9 +191,11 @@ public class DataSchulklasse {
 			for(int i=0;i<allJahrgangbedarf.size();i++) {
 				sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + allJahrgangbedarf.get(i).getJahrgang() + ";";
 				rs = stmt.executeQuery(sql);
-				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
-				int bedarf = rs.getInt("bedarf");
-				allJahrgangbedarf.get(i).getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+				while (rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					int bedarf = rs.getInt("bedarf");
+					allJahrgangbedarf.get(i).getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+				}
 			}
 			return allJahrgangbedarf;
 		} catch (SQLException e) {
