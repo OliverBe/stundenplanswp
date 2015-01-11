@@ -15,11 +15,13 @@ public class CommandHistory {
 	}
 	
 	public static Command getLast(){
-		if(commands.size() > 0) return commands.get(commands.size() - 1);		
+		if(commands.size() > 0) return commands.get(commands.size() - 1);
+		
+		System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		return null;
 	}
 	
 	public static void deleteLast(){
-		commands.remove(commands.get(commands.size()-1));	
+		commands.remove(CommandHistory.getLast());	
 	}
 }

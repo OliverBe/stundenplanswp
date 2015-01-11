@@ -1,6 +1,7 @@
 package de.unibremen.swp.stundenplan.command;
 
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class DeletePersonalFromDB implements Command {
@@ -17,12 +18,14 @@ public class DeletePersonalFromDB implements Command {
 	
 	public void execute(String kuerz){
 		personal = PersonalManager.getPersonalByKuerzel(kuerz);
-		PersonalManager.deletePersonalFromDB(kuerz);
+		DataPersonal.deletePersonalByKuerzel(kuerz);
+		CommandHistory.addCommand(this);
 	}
 
 	@Override
 	public void undo() {
 		PersonalManager.addPersonalToDb(personal);
+		CommandHistory.deleteLast();
 	}
 
 }

@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import de.unibremen.swp.stundenplan.command.AddPersonalToDB;
+import de.unibremen.swp.stundenplan.command.DeletePersonalFromDB;
 import de.unibremen.swp.stundenplan.data.*;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
@@ -61,7 +63,8 @@ public class PersonalManager {
 	 */
 	public static void addPersonalToDb(final Personal personal){
 		System.out.println("adding Personal...");
-		DataPersonal.addPersonal(personal);
+		AddPersonalToDB addPerso = new AddPersonalToDB();
+		addPerso.execute(personal);
 		System.out.println("added Personal: "+personal);
 	}
 	
@@ -90,8 +93,9 @@ public class PersonalManager {
      */
     public static void deletePersonalFromDB(final String kuerz)	{
     	if(getPersonalByKuerzel(kuerz)!= null){
-    		System.out.println("Deleting...");
-    		DataPersonal.deletePersonalByKuerzel(kuerz);
+    		System.out.println("Deleting Personal from DB...");
+    		DeletePersonalFromDB deletePerso = new DeletePersonalFromDB();
+    		deletePerso.execute(kuerz);
     	}else{
     		System.out.println("Kuerzel "+kuerz+" not found.");
     	}
