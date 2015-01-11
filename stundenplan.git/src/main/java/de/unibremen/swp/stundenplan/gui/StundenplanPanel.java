@@ -26,6 +26,7 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class StundenplanPanel extends JPanel implements ActionListener {
 
@@ -149,8 +150,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	}
 
 	public static void updateLists() {
-		Personal[] personalListe = new Personal[DataPersonal.getAllPersonal()
-				.size()];
+		Personal[] personalListe = new Personal[PersonalManager.getAllPersonalFromDB().size()];
 		Schoolclass[] schoolclassListe = new Schoolclass[DataSchulklasse
 				.getAllSchulklasse().size()];
 		pList = new DefaultListModel();
