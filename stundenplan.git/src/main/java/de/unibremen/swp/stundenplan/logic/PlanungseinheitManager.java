@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
+import de.unibremen.swp.stundenplan.command.AddPlanungseinheitToDB;
+import de.unibremen.swp.stundenplan.command.DeletePlanungseinheitFromDB;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
@@ -18,6 +20,20 @@ import de.unibremen.swp.stundenplan.gui.Timeslot;
 public final class PlanungseinheitManager {
 
 	private PlanungseinheitManager() {
+	}
+	
+	public void addPlanungseinheitToDB(Planungseinheit pl){
+		System.out.println("Adding Planungseinheit ["+pl.getId()+"] to DB...");
+		AddPlanungseinheitToDB addPl = new AddPlanungseinheitToDB();
+		addPl.execute(pl);
+		System.out.println("Planungseinheit ["+pl.getId()+"] added.");
+	}
+	
+	public void deletePlanungseinheitFromDB(int planungseinheitId){
+		System.out.println("Deleting Planungseinheit ["+planungseinheitId+"] from DB...");
+		DeletePlanungseinheitFromDB deletePl = new DeletePlanungseinheitFromDB();
+		deletePl.execute(planungseinheitId);
+		System.out.println("Planungseinheit ["+planungseinheitId+"]) deleted.");
 	}
 
 	/**
