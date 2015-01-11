@@ -2,8 +2,6 @@ package de.unibremen.swp.stundenplan.command;
 
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
-import de.unibremen.swp.stundenplan.logic.RaumManager;
 
 public class DeleteRaumFromDB implements Command {
 
