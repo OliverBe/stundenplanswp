@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
@@ -72,6 +73,10 @@ public class DeleteDialogue extends JFrame {
 				}
 				if(o instanceof Personal) {
 					DataPersonal.deletePersonalByKuerzel(((Personal) o).getKuerzel());
+					PersonalPanel.updateList();
+				}
+				if(o instanceof Jahrgang) {
+		//			DataSchulklasse.deleteBedarfByJundSkuerzel(Jahrgang);
 					PersonalPanel.updateList();
 				}
 				dispose();	

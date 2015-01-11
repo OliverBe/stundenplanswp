@@ -33,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.SeparatorUI;
@@ -100,7 +101,7 @@ public class PersonalPanel extends JPanel {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Neues Personal hinzufuegen"));
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(10, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -216,7 +217,6 @@ public class PersonalPanel extends JPanel {
 		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
 
 		c.gridy = 7;
-		c.gridwidth=5;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
 		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
@@ -346,7 +346,7 @@ public class PersonalPanel extends JPanel {
 		TextField timeField2 = new TextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
-		JButton button2 = new JButton("Personal hinzufuegen");
+		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
 
 		c=new GridBagConstraints();
@@ -395,7 +395,17 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 3;
 		p.add(lPrefTime2, c);
 
-		final DefaultTableModel model = new DefaultTableModel();
+		final DefaultTableModel model = new DefaultTableModel(){
+		    @Override
+			public boolean isCellEditable(int row, int column)
+		    {
+		        if(column == 0){ 
+		        	return false;
+		        }else{
+		        	return true;
+		        };
+		    }
+		};
 		JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 
@@ -473,6 +483,7 @@ public class PersonalPanel extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(table.getTableHeader(), c);
 		c.gridy = 5;
+		table.
 		p.add(table, c);
 
 		c.gridy = 6;
@@ -543,14 +554,13 @@ public class PersonalPanel extends JPanel {
 		c.fill=GridBagConstraints.HORIZONTAL;
 		add(button3,c);
 		
-		//abbrechen 
-		
-		button3.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//	
-			}
-		});
+		// abbruch Button
+				button3.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+						topFrame.dispose();
+					}
+				});
 		return p;
 	}
 

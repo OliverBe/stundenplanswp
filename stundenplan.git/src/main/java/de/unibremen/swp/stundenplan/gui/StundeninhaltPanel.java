@@ -74,7 +74,7 @@ public class StundeninhaltPanel extends JPanel {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Neuen Stundeninhalt hinzufuegen"));
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(5, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
