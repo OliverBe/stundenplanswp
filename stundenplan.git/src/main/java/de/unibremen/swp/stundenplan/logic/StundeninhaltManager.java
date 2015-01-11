@@ -10,9 +10,6 @@ import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 /**
  * Verwaltet das Stundeninhalt
  * 
- * @author Oli
- * @version 0.1
- * 
  */
 public class StundeninhaltManager {
 
@@ -35,8 +32,8 @@ public class StundeninhaltManager {
      * Sucht nach Stundeninhalt anhand des Acronyms. Gibt das Acronym an die DB weiter,
      * wo Stundeninhalt gesucht wird.
      * 
-     * @param Acronym der gesuchten Person
-     * @return gefundene Person mit Acronym
+     * @param Acronym des gesuchten Stundeninhaltes
+     * @return gefundener Stundeninhalt
      */
     public static Stundeninhalt getStundeninhaltByKuerzel(final String kuerz) {
     	System.out.println("Searching for Stundeninhalt with Kuerzel: "+kuerz+"...");
