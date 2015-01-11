@@ -25,6 +25,5 @@ public class AddPersonalToDB implements Command {
 	@Override
 	public void undo(){	
 		PersonalManager.deletePersonalFromDB(kuerz);
-		CommandHistory.deleteLast();
 	}
 }

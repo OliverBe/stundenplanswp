@@ -6,10 +6,10 @@ package de.unibremen.swp.stundenplan.command;
  */
 public interface Command {
 	
+	/**
+	 * Muss " CommandHistory.addCommand(this); " implementieren
+	 */
 	public abstract void execute();
 	
-	/**
-	 * Muss " CommandHistory.deleteLast(); " implementieren
-	 */
 	public abstract void undo();
 }
