@@ -1,3 +1,5 @@
+
+
 package de.unibremen.swp.stundenplan.logic;
 
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.List;
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.AddPlanungseinheitToDB;
 import de.unibremen.swp.stundenplan.command.DeletePlanungseinheitFromDB;
-import de.unibremen.swp.stundenplan.command.EditPlanungseinheit;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
@@ -20,30 +21,23 @@ import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
 	
+	private static int peindex = 0;
+
 	private PlanungseinheitManager() {
 	}
+	
+
+	
 	
 	public static void addPlanungseinheitToDB(Planungseinheit pl){
 		System.out.println("Adding Planungseinheit ["+pl.getId()+"] to DB...");
 		AddPlanungseinheitToDB addPl = new AddPlanungseinheitToDB();
+		pl.setId(createId());
 		addPl.execute(pl);
 		System.out.println("Planungseinheit ["+pl.getId()+"] added.");
 	}
 	
-	/**
-	 * Bearbeitet eine Planungseinheit aus der DB.Bearbeiten findet im wörtlichen Sinne nicht statt,
-	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
-	 * @param pId 
-	 * 			Die ID Der Planungseinheit, die bearbeitet werden soll.
-	 * @param neuesPersonal
-	 * 			Die Planungseinheit, mit der die alte Planungseinheit überschrieben wird.
-	 */
-	public static void editPlanungseinheit(final int pId, final Planungseinheit pl){
-		System.out.println("Editing Planungseinheit ["+pl.getId()+"] to DB...");
-		EditPlanungseinheit editPl = new EditPlanungseinheit();
-		editPl.execute(pId, pl);
-		System.out.println("Planungseinheit ["+pl.getId()+"] edited.");
-	}
+	
 	
 	public static void deletePlanungseinheitFromDB(int planungseinheitId){
 		System.out.println("Deleting Planungseinheit ["+planungseinheitId+"] from DB...");
@@ -51,149 +45,14 @@ public final class PlanungseinheitManager {
 		deletePl.execute(planungseinheitId);
 		System.out.println("Planungseinheit ["+planungseinheitId+"]) deleted.");
 	}
-
-	/**
-	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zurÃ¼ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
-	 * 
-	 * @param pWeekday
-	 *            der Tag der Planungeinheiten
-	 * @param pPerson
-	 *            das Personal die in der Planungseinheiten geplant ist.
-	 * @return Liste von Planungseinheiten nach geordnete Zeit.
-	 */
-	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
-			Weekday pWeekday, final Personal pPerson) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsPersonal(pPerson) || p.isWeekday(pWeekday)){
-				pes.add(p);
-				}
-		}
-		orderByTime(pes);
-		return pes;
-	}
-
-	/**
-	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zurÃ¼ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
-	 * 
-	 * @param pWeekday
-	 *            der Tag der Planungeinheiten
-	 * @param pPerson
-	 *            das Personal die in der Planungseinheiten geplant ist.
-	 * @return Liste von Planungseinheiten nach geordnete Zeit.
-	 */
-	public static ArrayList<Planungseinheit> getPEForSchoolclassbyWeekday(
-			Weekday pWeekday, final Schoolclass pSchoolclass) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsClass(pSchoolclass) || p.isWeekday(pWeekday)){
-				pes.add(p);
-				}
-		}
-		orderByTime(pes);
-		return pes;
-	}
-
-	/**
-	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
-	 * zurÃ¼ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
-	 * 
-	 * @param pWeekday
-	 *            der Tag der Planungeinheiten
-	 * @param pRoom
-	 *            Den Raum den in der Planungseinheiten geplant ist.
-	 * @return Liste von Planungseinheiten nach geordnete Zeit.
-	 */
-	public static ArrayList<Planungseinheit> getPEForRoombyWeekday(
-			Weekday pWeekday, final Room pRoom) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-
-		// hier muss die Liste geholt werden
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsRoom(pRoom) || p.isWeekday(pWeekday)){
-				pes.add(p);
-				}
-		}
-		orderByTime(pes);
-		return pes;
+	
+	public static void preparedemo(){
+		for(final Weekday weekday : TimetableManager.validdays()){
+        	demoinit(weekday);
+        }
 	}
 	
-	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
-    	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zurÃ¼ck.
-    	ArrayList<Planungseinheit> pes;
-    	if(pOwner instanceof Personal){
-    		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex], (Personal)pOwner);
-    	}else if(pOwner instanceof Room){
-    		pes = getPEForRoombyWeekday(TimetableManager.validdays()[pDayIndex], (Room)pOwner);
-    	}else if(pOwner instanceof Schoolclass){
-    		pes = getPEForSchoolclassbyWeekday(TimetableManager.validdays()[pDayIndex], (Schoolclass)pOwner);
-    	}else{
-    		return null;
-    	}
-    	for(Planungseinheit p : pes){
-    		
-    	}
-    	return null;
-    }
-	
-	public static void orderByTime(List<Planungseinheit> pPE) {
-		Collections.sort(pPE, new Comparator<Planungseinheit>() {
-			@Override
-			public int compare(Planungseinheit p1, Planungseinheit p2) {
-				if (p1.getStartHour() != p2.getStartHour()) {
-					return p1.getStartHour() - p2.getStartHour(); // Ascending
-				} else {
-					return p1.getStartminute() - p2.getStartminute();
-				}
-			}
-		});
-	}
-
-	public static void orderByID(List<Planungseinheit> pPE) {
-		Collections.sort(pPE, new Comparator<Planungseinheit>() {
-			@Override
-			public int compare(Planungseinheit p1, Planungseinheit p2) {
-					return p1.getId() - p2.getId(); // Ascending
-				}
-		});
-	}
-	/**
-	 * Testet order()
-	 */
-	public static void ordertest() {
-		Planungseinheit pe1 = new Planungseinheit();
-		pe1.setStarthour(8);
-		pe1.setStartminute(0);
-		Planungseinheit pe2 = new Planungseinheit();
-		pe2.setStarthour(8);
-		pe2.setStartminute(30);
-		Planungseinheit pe3 = new Planungseinheit();
-		pe3.setStarthour(9);
-		pe3.setStartminute(30);
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		pes.add(pe2);
-		pes.add(pe3);
-		pes.add(pe1);
-		for (Planungseinheit p : pes) {
-			System.out.println(p.getStartHour());
-			System.out.println(p.getStartminute());
-		}
-		orderByTime(pes);
-		for (Planungseinheit p : pes) {
-			System.out.println(p.getStartHour());
-			System.out.println(p.getStartminute());
-		}
-		orderByID(pes);
-		for (Planungseinheit p : pes) {
-			System.out.println(p.getId());
-		}
-	}
-
-	public static ArrayList<Planungseinheit> demomethod(Weekday pWeekday) {
-		ArrayList<Planungseinheit> p = new ArrayList<Planungseinheit>();
+	private static void demoinit(Weekday pWeekday){
 		Planungseinheit p1 = new Planungseinheit();
 		Planungseinheit p2 = new Planungseinheit();
 		Personal per1 = new Personal();
@@ -347,15 +206,179 @@ public final class PlanungseinheitManager {
 			p1.setWeekday(pWeekday);
 			p2.setWeekday(pWeekday);		
 		}
-		p.add(p1);
-		p.add(p2);
+		addPlanungseinheitToDB(p1);
+		addPlanungseinheitToDB(p2);
+	} 
+	/**
+	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
+	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * 
+	 * @param pWeekday
+	 *            der Tag der Planungeinheiten
+	 * @param pPerson
+	 *            das Personal die in der Planungseinheiten geplant ist.
+	 * @return Liste von Planungseinheiten nach geordnete Zeit.
+	 */
+	public static ArrayList<Planungseinheit> getPEForWeekdayDemo(
+			Weekday pWeekday) {
+		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
+		orderByTime(pes);
+		return pes;
+	}
+	
+	/**
+	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
+	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * 
+	 * @param pWeekday
+	 *            der Tag der Planungeinheiten
+	 * @param pPerson
+	 *            das Personal die in der Planungseinheiten geplant ist.
+	 * @return Liste von Planungseinheiten nach geordnete Zeit.
+	 */
+	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
+			Weekday pWeekday, final Personal pPerson) {
+		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsPersonal(pPerson) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
+		orderByTime(pes);
+		return pes;
+	}
+
+	/**
+	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
+	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * 
+	 * @param pWeekday
+	 *            der Tag der Planungeinheiten
+	 * @param pPerson
+	 *            das Personal die in der Planungseinheiten geplant ist.
+	 * @return Liste von Planungseinheiten nach geordnete Zeit.
+	 */
+	public static ArrayList<Planungseinheit> getPEForSchoolclassbyWeekday(
+			Weekday pWeekday, final Schoolclass pSchoolclass) {
+		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsClass(pSchoolclass) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
+		orderByTime(pes);
+		return pes;
+	}
+
+	/**
+	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
+	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * 
+	 * @param pWeekday
+	 *            der Tag der Planungeinheiten
+	 * @param pRoom
+	 *            Den Raum den in der Planungseinheiten geplant ist.
+	 * @return Liste von Planungseinheiten nach geordnete Zeit.
+	 */
+	public static ArrayList<Planungseinheit> getPEForRoombyWeekday(
+			Weekday pWeekday, final Room pRoom) {
+		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+
+		// hier muss die Liste geholt werden
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
+			if(p.containsRoom(pRoom) || p.isWeekday(pWeekday)){
+				pes.add(p);
+				}
+		}
+		orderByTime(pes);
+		return pes;
+	}
+	
+	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
+    	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zurück.
+    	ArrayList<Planungseinheit> pes;
+    	if(pOwner instanceof Personal){
+    		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex], (Personal)pOwner);
+    	}else if(pOwner instanceof Room){
+    		pes = getPEForRoombyWeekday(TimetableManager.validdays()[pDayIndex], (Room)pOwner);
+    	}else if(pOwner instanceof Schoolclass){
+    		pes = getPEForSchoolclassbyWeekday(TimetableManager.validdays()[pDayIndex], (Schoolclass)pOwner);
+    	}else{
+    		return null;
+    	}
+    	for(Planungseinheit p : pes){
+    		
+    	}
+    	return null;
+    }
+	
+	public static void orderByTime(List<Planungseinheit> pPE) {
+		Collections.sort(pPE, new Comparator<Planungseinheit>() {
+			@Override
+			public int compare(Planungseinheit p1, Planungseinheit p2) {
+				if (p1.getStartHour() != p2.getStartHour()) {
+					return p1.getStartHour() - p2.getStartHour(); // Ascending
+				} else {
+					return p1.getStartminute() - p2.getStartminute();
+				}
+			}
+		});
+	}
+
+	public static void orderByID(List<Planungseinheit> pPE) {
+		Collections.sort(pPE, new Comparator<Planungseinheit>() {
+			@Override
+			public int compare(Planungseinheit p1, Planungseinheit p2) {
+					return p1.getId() - p2.getId(); // Ascending
+				}
+		});
+	}
+	/**
+	 * Testet order()
+	 */
+	public static void ordertest() {
+		Planungseinheit pe1 = new Planungseinheit();
+		pe1.setStarthour(8);
+		pe1.setStartminute(0);
+		Planungseinheit pe2 = new Planungseinheit();
+		pe2.setStarthour(8);
+		pe2.setStartminute(30);
+		Planungseinheit pe3 = new Planungseinheit();
+		pe3.setStarthour(9);
+		pe3.setStartminute(30);
+		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+		pes.add(pe2);
+		pes.add(pe3);
+		pes.add(pe1);
+		for (Planungseinheit p : pes) {
+			System.out.println(p.getStartHour());
+			System.out.println(p.getStartminute());
+		}
+		orderByTime(pes);
+		for (Planungseinheit p : pes) {
+			System.out.println(p.getStartHour());
+			System.out.println(p.getStartminute());
+		}
+		orderByID(pes);
+		for (Planungseinheit p : pes) {
+			System.out.println(p.getId());
+		}
+	}
+
+	public static ArrayList<Planungseinheit> demomethod(Weekday pWeekday) {
+		ArrayList<Planungseinheit> p = getPEForWeekdayDemo(pWeekday);
 		orderByTime(p);
-		System.out.println(p.size());
 		return p;
 	}
 
 	/**
-	 * TO-DO prÃ¼ft ob zwei Planungseinheiten sich Ã¼berschneiden im selben Tag.
+	 * TO-DO prüft ob zwei Planungseinheiten sich überschneiden im selben Tag.
 	 * 
 	 * @return
 	 */
@@ -365,7 +388,7 @@ public final class PlanungseinheitManager {
 	}
 	
 	/**
-	 * TO-DO prÃ¼ft ob Zeitpunkt sich mit PE Ã¼berschneidet im selben Tag.
+	 * TO-DO prüft ob Zeitpunkt sich mit PE überschneidet im selben Tag.
 	 * 
 	 * @return
 	 */
@@ -385,13 +408,7 @@ public final class PlanungseinheitManager {
 		return DataPlanungseinheit.getAllPlanungseinheit();
 	}
     
-	/**
-	 * PE in Db hinzufÃ¼gen
-	 */
-	public static void addPEtoDB(final Planungseinheit pPE){
-		pPE.setId(createId());
-		DataPlanungseinheit.addPlanungseinheit(pPE);
-	}
+	
 	
 	public static void dbPETest(){
 		Planungseinheit p1 = new Planungseinheit();
@@ -406,8 +423,8 @@ public final class PlanungseinheitManager {
 		p2.setEndminute(30);
 		p1.setWeekday(Weekday.MONDAY);
 		p2.setWeekday(Weekday.SATURDAY);
-		addPEtoDB(p1);
-		addPEtoDB(p2);	
+		addPlanungseinheitToDB(p1);
+		addPlanungseinheitToDB(p2);
 	}
 	/**
 	 * hier wird ein Id fuer eine PE generiert

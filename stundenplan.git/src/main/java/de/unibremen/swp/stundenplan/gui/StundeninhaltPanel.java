@@ -268,7 +268,7 @@ public class StundeninhaltPanel extends JPanel {
 
 		c.gridx = 0;
 		c.gridy = 6;
-		c.gridwidth = 2;
+		c.gridwidth = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button2, c);
 		
@@ -298,6 +298,8 @@ public class StundeninhaltPanel extends JPanel {
 			}
 		});
 		
+		c.gridx=1;
+		p.add(button3, c);
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);

@@ -42,64 +42,15 @@ import java.util.ArrayList;
  * 
  */
 public final class TimetableManager {
+	
+	private static int counter = 0;
+	private static int tscounter = 0;
 
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private TimetableManager() {
     }
-
-//    /**
-//     * Prüft, ob es im unterliegenden Datenbestand schon Tagespläne gibt. Falls nicht, wird für jeden Wochentag ein
-//     * Tagesplan erzeugt.
-//     * 
-//     * @throws DatasetException
-//     *             falls es ein Problem beim Zugriff auf den Datenbestand gibt
-//     */
-//    public static void init() throws DatasetException {
-//        List<DayTable> daytables = Data.getDayTables();
-//        if (daytables.isEmpty()) {
-//            fillDefaultData();
-//        }
-//    }
-//
-//    /**
-//     * Prüft, ob es im unterliegenden Datenbestand schon Tagespläne gibt. Falls nicht, wird für jeden Wochentag ein
-//     * Tagesplan erzeugt.
-//     * 
-//     * @throws DatasetException
-//     *             falls es ein Problem beim Zugriff auf den Datenbestand gibt
-//     */
-//    public static void init(Teacher pTeacher) throws DatasetException {
-//            fillDefaultDataForTeacher(pTeacher);
-//        
-//    }
-//
-//    /**
-//     * Prüft, ob es im unterliegenden Datenbestand schon Tagespläne gibt. Falls nicht, wird für jeden Wochentag ein
-//     * Tagesplan erzeugt.
-//     * 
-//     * @throws DatasetException
-//     *             falls es ein Problem beim Zugriff auf den Datenbestand gibt
-//     */
-//    public static void init(Schoolclass pSchoolclass) throws DatasetException {
-//           fillDefaultDataForSchoolclass(pSchoolclass);
-//        
-//    }
-    
-//    /**
-//     * Erzeugt für jeden Wochentag einen Tagesplan und fügt sie diesem Manager hinzu.
-//     * 
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-//    private static void fillDefaultData() throws DatasetException {
-//
-//        for (final Weekday weekday : Weekday.values()) {
-//            final DayTable dayTable = createDayTable(weekday);
-//            Data.addDayTable(dayTable);
-//        }
-//    }
     
     public static Weekday[] validdays(){
        Weekday[] w = new Weekday[givevaliddays().size()];
@@ -140,6 +91,8 @@ public final class TimetableManager {
     private static DayTable createTimeslots(Weekday pWeekday) {
         final Calendar cal = Calendar.getInstance();
         DayTable dayTable = createTimeslotsForPES(PlanungseinheitManager.demomethod(pWeekday), pWeekday);
+        tscounter += 1 ;
+        System.out.println("ts:"+tscounter);
         return dayTable;
    }
     
@@ -189,6 +142,8 @@ public final class TimetableManager {
         if(dayTable.slotslength()<daytablelength()){
         	dayTable.addTimeslot(filltoEnd(dayTable, cal));
         }
+        counter +=1;
+        System.out.println("Zaehler"+counter);
         return dayTable;
     
     }
