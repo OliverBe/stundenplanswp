@@ -1,13 +1,10 @@
 package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
-import java.util.Collection;
-
 import de.unibremen.swp.stundenplan.command.AddPersonalToDB;
 import de.unibremen.swp.stundenplan.command.DeletePersonalFromDB;
+import de.unibremen.swp.stundenplan.command.EditPersonal;
 import de.unibremen.swp.stundenplan.data.*;
-import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 /**
  * Verwaltet das Personal
@@ -66,6 +63,21 @@ public class PersonalManager {
 		AddPersonalToDB addPerso = new AddPersonalToDB();
 		addPerso.execute(personal);
 		System.out.println("added Personal: "+personal);
+	}
+	
+	/**
+	 * Bearbeitet eine Person aus der DB.Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * @param zuBearbeitendesKuerz 
+	 * 			Das Kuerzel der Person, die bearbeitet werden soll.
+	 * @param neuesPersonal
+	 * 			Die Person, mit der die alte Person überschrieben wird.
+	 */
+	public static void editPersonal(final String zuBearbeitendesKuerz, final Personal neuesPersonal){
+		System.out.println("Editing: "+zuBearbeitendesKuerz);
+		EditPersonal editP = new EditPersonal();
+		editP.execute(zuBearbeitendesKuerz, neuesPersonal);
+		System.out.println(neuesPersonal.getKuerzel()+ "was edited.");
 	}
 	
 	/**
