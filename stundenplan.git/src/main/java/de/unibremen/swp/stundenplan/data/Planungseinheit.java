@@ -8,6 +8,7 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class Planungseinheit{
@@ -243,5 +244,9 @@ public class Planungseinheit{
 	public int duration(){
 		int dur = TimetableManager.duration(startHour, startMin, endHour, endMin);
 	    return dur;
+	}
+	
+	public void setId(int pId){
+	 id = pId;	
 	}
 }
