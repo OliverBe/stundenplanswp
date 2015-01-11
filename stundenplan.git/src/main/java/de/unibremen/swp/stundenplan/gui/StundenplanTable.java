@@ -7,8 +7,9 @@ public class StundenplanTable {
 
 	private JTable table;
 	
-	public StundenplanTable() {
-		table = new JTable (new TimetableModel()); 
+	
+	public StundenplanTable(Object obj) {
+		table = new JTable (new TimetableModel(obj)); 
 		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
 		table.setRowSelectionAllowed(false);
 		table.setColumnSelectionAllowed(false);
@@ -16,6 +17,17 @@ public class StundenplanTable {
 		table.setRowHeight(75);
 	
 	
+	}
+	
+	public StundenplanTable() {
+		table = new JTable (new TimetableModel()); 
+		table.setDefaultRenderer(Timeslot.class, new TimetableRenderer());
+		table.setRowSelectionAllowed(false);
+		table.setColumnSelectionAllowed(false);
+		table.setCellSelectionEnabled(true);
+		table.setRowHeight(75);
+		
+		
 	}
 	
 	
