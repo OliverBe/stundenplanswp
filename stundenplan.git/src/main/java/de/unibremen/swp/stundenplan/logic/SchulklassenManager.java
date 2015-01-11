@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.logic;
 
 import java.util.ArrayList;
 
+import de.unibremen.swp.stundenplan.command.AddSchulklasseToDB;
+import de.unibremen.swp.stundenplan.command.DeleteSchulklasseFromDB;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
@@ -21,8 +23,9 @@ public class SchulklassenManager {
 	 */
 	public static void addSchoolclassToDb(final Schoolclass schulklasse){
 		System.out.println("adding Schoolclass...");
-		DataSchulklasse.addSchulklasse(schulklasse);
-		System.out.println("added Schoolclass: "+schulklasse);
+		AddSchulklasseToDB addClass = new AddSchulklasseToDB();
+		addClass.execute(schulklasse);
+		System.out.println("added Schoolclass: "+schulklasse.getName());
 	}
 	
 	/**
@@ -51,7 +54,8 @@ public class SchulklassenManager {
     public static void deleteSchulklasseFromDB(final String name)	{
     	if(getSchoolclassByName(name)!= null){
     		System.out.println("Deleting...");
-    		DataSchulklasse.deleteSchulklasseByName(name);
+    		DeleteSchulklasseFromDB deleteClass = new DeleteSchulklasseFromDB();
+    		deleteClass.execute(name);
     	}else{
     		System.out.println("Name "+name+" not found.");
     	}
