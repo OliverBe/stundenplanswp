@@ -128,7 +128,7 @@ public class DataRaum {
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
 		try{
 			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
-			sql = "SELECT * FROM Raumfunktion";
+			sql = "SELECT DISTINCT name FROM Raumfunktion";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String name = rs.getString("name");
