@@ -121,6 +121,29 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
+	public static Planungseinheit getPlanungseinheitById(int pId){
+		Planungseinheit pl = new Planungseinheit();
+		try{
+			sql = "SELECT * FROM Planungseinheit WHERE id = " + pId + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				int weekday = rs.getInt("weekday");
+				int startHour = rs.getInt("startHour");
+				int startMin = rs.getInt("startMin");
+				int endHour = rs.getInt("endHour");
+				int endMin = rs.getInt("endMin");
+				
+				pl = new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin);
+				return pl;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+	
 	public static void deletePlanungseinheitById(int id) {
 		try {
 			sql = "DELETE FROM Planungseinheit WHERE id = " + id + ";";
@@ -136,5 +159,10 @@ public class DataPlanungseinheit {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void editPlanungseinheit(int iD, Planungseinheit planungseinheit) {
+			deletePlanungseinheitById(iD);
+			addPlanungseinheit(planungseinheit);
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.AddPlanungseinheitToDB;
 import de.unibremen.swp.stundenplan.command.DeletePlanungseinheitFromDB;
+import de.unibremen.swp.stundenplan.command.EditPlanungseinheit;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
@@ -19,19 +20,32 @@ import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
 	
-	private static int id = getAllPlanungseinheitFromDB().size();
-
 	private PlanungseinheitManager() {
 	}
 	
-	public void addPlanungseinheitToDB(Planungseinheit pl){
+	public static void addPlanungseinheitToDB(Planungseinheit pl){
 		System.out.println("Adding Planungseinheit ["+pl.getId()+"] to DB...");
 		AddPlanungseinheitToDB addPl = new AddPlanungseinheitToDB();
 		addPl.execute(pl);
 		System.out.println("Planungseinheit ["+pl.getId()+"] added.");
 	}
 	
-	public void deletePlanungseinheitFromDB(int planungseinheitId){
+	/**
+	 * Bearbeitet eine Planungseinheit aus der DB.Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * @param pId 
+	 * 			Die ID Der Planungseinheit, die bearbeitet werden soll.
+	 * @param neuesPersonal
+	 * 			Die Planungseinheit, mit der die alte Planungseinheit überschrieben wird.
+	 */
+	public static void editPlanungseinheit(final int pId, final Planungseinheit pl){
+		System.out.println("Editing Planungseinheit ["+pl.getId()+"] to DB...");
+		EditPlanungseinheit editPl = new EditPlanungseinheit();
+		editPl.execute(pId, pl);
+		System.out.println("Planungseinheit ["+pl.getId()+"] edited.");
+	}
+	
+	public static void deletePlanungseinheitFromDB(int planungseinheitId){
 		System.out.println("Deleting Planungseinheit ["+planungseinheitId+"] from DB...");
 		DeletePlanungseinheitFromDB deletePl = new DeletePlanungseinheitFromDB();
 		deletePl.execute(planungseinheitId);
