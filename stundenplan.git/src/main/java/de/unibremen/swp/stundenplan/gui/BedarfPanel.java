@@ -173,7 +173,7 @@ public class BedarfPanel extends JPanel {
 				Matcher matcher = Pattern.compile("'(.*?)'").matcher(
 						list.getSelectedValue());
 				ArrayList<String> arr = new ArrayList<String>();
-				while (matcher.find()) {
+				while (matcher.find() && arr.size()<2) {
 					System.out.println(matcher.group(1));
 					arr.add(matcher.group(1));
 				}
@@ -269,7 +269,10 @@ public class BedarfPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			Integer.parseInt(bedField2.getText());
+			for(Component c : p.getComponents()){
+				if(c==bedField)Integer.parseInt(bedField.getText());
+				if(c==bedField2)Integer.parseInt(bedField2.getText());
+			}
 		} catch (NumberFormatException e) {
 			return false;
 		}
