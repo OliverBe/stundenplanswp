@@ -69,7 +69,7 @@ public class DataStundeninhalt {
 		try {
 			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalte_kuerzel = '" + pKuerzel + "';";
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
@@ -88,7 +88,7 @@ public class DataStundeninhalt {
 		try {
 			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "UPDATE moegliche_Stundeninhalte_Personal SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalte_kuerzel = '" + pKuerzel + "';";
+			sql = "UPDATE moegliche_Stundeninhalte_Personal SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE Raumfunktion SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
