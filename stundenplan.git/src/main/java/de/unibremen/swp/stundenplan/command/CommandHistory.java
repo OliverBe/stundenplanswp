@@ -2,6 +2,12 @@ package de.unibremen.swp.stundenplan.command;
 
 import java.util.ArrayList;
 
+/**
+ * Verwaltet die History der ausgeführten Commands.
+ * (Im Hinblick auf Undo-Funktion)
+ * @author Roman
+ *
+ */
 public class CommandHistory {
 
 	private static ArrayList<Command> commands = new ArrayList<>();

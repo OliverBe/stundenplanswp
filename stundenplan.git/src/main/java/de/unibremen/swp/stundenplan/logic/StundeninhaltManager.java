@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import de.unibremen.swp.stundenplan.command.AddStundeninhaltToDB;
+import de.unibremen.swp.stundenplan.command.DeleteStundeninhaltFromDB;
 import de.unibremen.swp.stundenplan.data.*;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
@@ -24,7 +26,8 @@ public class StundeninhaltManager {
 	 */
 	public static void addStundeninhaltToDb(final Stundeninhalt stundeninhalt){
 		System.out.println("adding Stundeninhalt...");
-		DataStundeninhalt.addStundeninhalt(stundeninhalt);
+		AddStundeninhaltToDB addInhalt = new AddStundeninhaltToDB();
+		addInhalt.execute(stundeninhalt);
 		System.out.println("added Stundeninhalt: "+stundeninhalt);
 	}
 	
@@ -54,7 +57,8 @@ public class StundeninhaltManager {
     public static void deleteStundeninhaltFromDB(final String kuerz)	{
     	if(getStundeninhaltByKuerzel(kuerz)!= null){
     		System.out.println("Deleting...");
-    		DataStundeninhalt.deleteStundeninhaltByKuerzel(kuerz);
+    		DeleteStundeninhaltFromDB deleteInhalt = new DeleteStundeninhaltFromDB();
+    		deleteInhalt.execute(kuerz);
     	}else{
     		System.out.println("Kuerzel "+kuerz+" not found.");
     	}
