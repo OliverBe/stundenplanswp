@@ -18,6 +18,8 @@ import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
+	
+	private static int id = getAllPlanungseinheitFromDB().size();
 
 	private PlanungseinheitManager() {
 	}
@@ -54,7 +56,7 @@ public final class PlanungseinheitManager {
 				pes.add(p);
 				}
 		}
-		order(pes);
+		orderByTime(pes);
 		return pes;
 	}
 
@@ -77,7 +79,7 @@ public final class PlanungseinheitManager {
 				pes.add(p);
 				}
 		}
-		order(pes);
+		orderByTime(pes);
 		return pes;
 	}
 
@@ -101,7 +103,7 @@ public final class PlanungseinheitManager {
 				pes.add(p);
 				}
 		}
-		order(pes);
+		orderByTime(pes);
 		return pes;
 	}
 	
@@ -123,7 +125,7 @@ public final class PlanungseinheitManager {
     	return null;
     }
 	
-	public static void order(List<Planungseinheit> pPE) {
+	public static void orderByTime(List<Planungseinheit> pPE) {
 		Collections.sort(pPE, new Comparator<Planungseinheit>() {
 			@Override
 			public int compare(Planungseinheit p1, Planungseinheit p2) {
@@ -136,6 +138,14 @@ public final class PlanungseinheitManager {
 		});
 	}
 
+	public static void orderByID(List<Planungseinheit> pPE) {
+		Collections.sort(pPE, new Comparator<Planungseinheit>() {
+			@Override
+			public int compare(Planungseinheit p1, Planungseinheit p2) {
+					return p1.getId() - p2.getId(); // Ascending
+				}
+		});
+	}
 	/**
 	 * Testet order()
 	 */
@@ -157,10 +167,14 @@ public final class PlanungseinheitManager {
 			System.out.println(p.getStartHour());
 			System.out.println(p.getStartminute());
 		}
-		order(pes);
+		orderByTime(pes);
 		for (Planungseinheit p : pes) {
 			System.out.println(p.getStartHour());
 			System.out.println(p.getStartminute());
+		}
+		orderByID(pes);
+		for (Planungseinheit p : pes) {
+			System.out.println(p.getId());
 		}
 	}
 
@@ -190,6 +204,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(30);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 1) {
 			Stundeninhalt s1 = new Stundeninhalt("Westeroskunde", "WK", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Terrakunde", "TK", 45, 0);
@@ -209,6 +225,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(30);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 2) {
 			Stundeninhalt s1 = new Stundeninhalt("Valyrian Steel", "VS", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Emperor", "EMP", 45, 0);
@@ -228,6 +246,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(00);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 3) {
 			Stundeninhalt s1 = new Stundeninhalt("Winterfellkunde", "WF", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Padawan Sein", "PS", 45, 0);
@@ -247,6 +267,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(00);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 4) {
 			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
@@ -266,6 +288,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(00);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 5) {
 			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
@@ -285,6 +309,8 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(00);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		} else if (pWeekday.getOrdinal() == 6) {
 			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
 			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
@@ -304,10 +330,12 @@ public final class PlanungseinheitManager {
 			p2.setStartminute(00);
 			p2.setEndhour(12);
 			p2.setEndminute(30);
+			p1.setWeekday(pWeekday);
+			p2.setWeekday(pWeekday);		
 		}
 		p.add(p1);
 		p.add(p2);
-		order(p);
+		orderByTime(p);
 		System.out.println(p.size());
 		return p;
 	}
@@ -319,17 +347,20 @@ public final class PlanungseinheitManager {
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
-		return true;
+		return false;
 	}
 	
 	/**
-	 * TO-DO prüft ob Zeitpunkt sich  mit PE überschneidet im selben Tag.
+	 * TO-DO prüft ob Zeitpunkt sich mit PE überschneidet im selben Tag.
 	 * 
 	 * @return
 	 */
 	public static boolean checkPEandTime(final Planungseinheit p1,
 			final int startHour, final int startMinute) {
-		return true;
+		if (startHour >= p1.getStartHour() && startHour <= p1.getEndhour()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -339,5 +370,46 @@ public final class PlanungseinheitManager {
 		System.out.println("Getting all Planungseinheiten from DB...");
 		return DataPlanungseinheit.getAllPlanungseinheit();
 	}
-
+    
+	/**
+	 * PE in Db hinzufügen
+	 */
+	public static void addPEtoDB(final Planungseinheit pPE){
+		pPE.setId(createId());
+		DataPlanungseinheit.addPlanungseinheit(pPE);
+	}
+	
+	public static void dbPETest(){
+		Planungseinheit p1 = new Planungseinheit();
+		Planungseinheit p2 = new Planungseinheit();
+		p1.setStarthour(9);
+		p1.setStartminute(30);
+		p1.setEndhour(10);
+		p1.setEndminute(30);
+		p2.setStarthour(11);
+		p2.setStartminute(30);
+		p2.setEndhour(12);
+		p2.setEndminute(30);
+		p1.setWeekday(Weekday.MONDAY);
+		p2.setWeekday(Weekday.SATURDAY);
+		addPEtoDB(p1);
+		addPEtoDB(p2);	
+	}
+	/**
+	 * hier wird ein Id fuer eine PE generiert
+	 * @return einzigartige Id des PE
+	 */
+	public static int createId() {
+		ArrayList<Planungseinheit> pes = getAllPlanungseinheitFromDB();
+		orderByID(pes);
+		System.out.println("size:"+getAllPlanungseinheitFromDB().size());
+		for(Planungseinheit p : pes){
+			System.out.println("iddb:"+p.getId());
+		}
+		if(pes.size() == 0){
+			return 1;
+		}else{
+			return pes.get(pes.size()-1).getId()+1;
+		}
+	}
 }
