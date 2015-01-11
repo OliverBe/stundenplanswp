@@ -56,6 +56,7 @@ public class BedarfPanel extends JPanel {
 	private JComboBox cb2;
 
 	public TextField bedField = new TextField(3);
+	public TextField bedField2 = new TextField(3);
 	public Integer[] jahrgaenge = { 1, 2, 3, 4 };
 
 	public JButton button = new JButton("Bedarf hinzufuegen");
@@ -206,7 +207,6 @@ public class BedarfPanel extends JPanel {
 	private JPanel createEditPanel(final JPanel p, final Jahrgang j) {
 		c = new GridBagConstraints();
 		Label lBed2 = new Label("Bedarf in Stunden: ");
-		TextField bedField2 = new TextField(3);
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
 
@@ -218,12 +218,10 @@ public class BedarfPanel extends JPanel {
 		c.gridy = 0;
 		p.add(new Label("Jahrgang: " + j.getJahrgang()), c);
 		c.gridy = 1;
-		String stdi = "";
-		int stdb = 0;
-		for (Entry<String, Integer> entry : j.getStundenbedarf().entrySet()) {
-			stdi = entry.getKey();
-			stdb = entry.getValue();
-		}
+		Entry<String, Integer> ent=j.getStundenbedarf().entrySet().iterator().next();
+		String stdi = ent.getKey();
+		int stdb =ent.getValue();
+		
 		p.add(new Label("Stundeninhalt: " + stdi),c);
 		c.gridy = 2;
 		p.add(lBed2, c);
@@ -246,6 +244,8 @@ public class BedarfPanel extends JPanel {
 					DataSchulklasse.editJahrgang(j);
 
 					updateList();
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					topFrame.dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -269,7 +269,7 @@ public class BedarfPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			Integer.parseInt(bedField.getText());
+			Integer.parseInt(bedField2.getText());
 		} catch (NumberFormatException e) {
 			return false;
 		}

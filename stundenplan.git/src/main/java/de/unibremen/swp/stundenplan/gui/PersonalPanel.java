@@ -483,7 +483,6 @@ public class PersonalPanel extends JPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(table.getTableHeader(), c);
 		c.gridy = 5;
-		table.
 		p.add(table, c);
 
 		c.gridy = 6;
