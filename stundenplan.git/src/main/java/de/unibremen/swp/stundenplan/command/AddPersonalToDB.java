@@ -6,7 +6,7 @@ import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class AddPersonalToDB implements Command {
 	
-	private String kuerz;
+	private Personal personal;
 
     public AddPersonalToDB(){
     }
@@ -14,16 +14,15 @@ public class AddPersonalToDB implements Command {
 	public void execute(Personal p) {
 		DataPersonal.addPersonal(p);
 		CommandHistory.addCommand(this);
-		kuerz = p.getKuerzel();
+		personal = p;
 	}
 
 	@Override
 	public void execute(){
-		CommandHistory.addCommand(this);
 	}
 	
 	@Override
 	public void undo(){	
-		PersonalManager.deletePersonalFromDB(kuerz);
+		DataPersonal.addPersonal(personal);
 	}
 }

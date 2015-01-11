@@ -24,7 +24,7 @@ public class DeletePersonalFromDB implements Command {
 
 	@Override
 	public void undo() {
-		PersonalManager.addPersonalToDb(personal);
+		DataPersonal.addPersonal(personal);
 	}
 
 }

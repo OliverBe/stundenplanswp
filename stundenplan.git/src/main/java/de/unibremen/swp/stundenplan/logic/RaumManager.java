@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.logic;
 
 import java.util.ArrayList;
 
+import de.unibremen.swp.stundenplan.command.AddRaumToDB;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataRaum;
@@ -21,7 +22,8 @@ private RaumManager() {
 	 */
 	public static void addRaumToDb(final Room room){
 		System.out.println("adding Room...");
-		DataRaum.addRaum(room);
+		AddRaumToDB addRaum = new AddRaumToDB();
+		addRaum.execute(room);
 		System.out.println("added Room: "+room);
 	}
 	

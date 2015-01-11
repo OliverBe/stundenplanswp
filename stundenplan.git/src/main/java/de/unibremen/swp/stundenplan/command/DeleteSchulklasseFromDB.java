@@ -25,6 +25,6 @@ public class DeleteSchulklasseFromDB implements Command {
 
 	@Override
 	public void undo() {
-		SchulklassenManager.addSchoolclassToDb(schoolClass);
+		DataSchulklasse.addSchulklasse(schoolClass);
 	}
 }
