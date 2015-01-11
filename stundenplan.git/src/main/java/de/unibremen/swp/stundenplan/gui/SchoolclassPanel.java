@@ -11,14 +11,13 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -26,21 +25,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 public class SchoolclassPanel extends JPanel{
 	
@@ -50,16 +43,15 @@ public class SchoolclassPanel extends JPanel{
 	public JTextField bezField = new JTextField(5);
 	private JLabel pflicht = new JLabel("<html><body>Bedarf an Stundeninhalten :</body></html>");
 	
-	private JComboBox jcb;
+	private JComboBox<Object> jcb;
 	public Integer[] jahrgang = {1,2,3,4};
+	private JComboBox<Object> jg = new JComboBox<Object>(jahrgang);
 	
 	public JButton button = new JButton("Klasse hinzufuegen");
 	public JButton bTeam =new JButton("+");
 	
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
-	
-	private int x=1;
 	
 	private static DefaultListModel<Schoolclass> listModel = new DefaultListModel<Schoolclass>();
 	private JList<Schoolclass> list = new JList<Schoolclass>(listModel);
@@ -90,7 +82,7 @@ public class SchoolclassPanel extends JPanel{
 		c.gridy=0;
 		p.add(jahr,c);
 		c.gridx=1;
-	    p.add(new JComboBox(jahrgang),c);   
+	    p.add(jg,c);
 		c.gridx=0;
 		c.gridy=1;
 		p.add(bez,c);
@@ -113,7 +105,7 @@ public class SchoolclassPanel extends JPanel{
 		c.gridx=1;
 		
 		ArrayList<Room> ro=DataRaum.getAllRaum();
-	    jcb=new JComboBox(ro.toArray());
+	    jcb=new JComboBox<Object>(ro.toArray());
 		p.add(jcb,c);
 	    c.gridx=0;
 	    c.gridy=4;
@@ -122,9 +114,11 @@ public class SchoolclassPanel extends JPanel{
 	    p.add(pflicht,c);
 	    pflicht.setFont(new Font(bezField.getFont().getFontName(),
 				Font.PLAIN, bezField.getFont().getSize()));
+	    
 	    DefaultTableModel model = new DefaultTableModel();
-	    String[] array={"English 5h","Mathe 5h"};
-	    model.addColumn("MyColumnHeader",array);
+//	    String[] stundeninhalte = DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()).getStundenbedarf().keySet();
+	    String[] stundeninhalte = {"LEL, LOL"};
+	    model.addColumn("MyColumnHeader",stundeninhalte);
 	    JTable table = new JTable(model);
 //	    final DefaultListModel<String> dummyList = new DefaultListModel<String>();
 //	    for ( String ss : ("English		5h,Mathe		5h,		," +
