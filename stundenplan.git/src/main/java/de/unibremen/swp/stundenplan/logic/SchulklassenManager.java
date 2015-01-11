@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.command.AddSchulklasseToDB;
 import de.unibremen.swp.stundenplan.command.DeleteSchulklasseFromDB;
+import de.unibremen.swp.stundenplan.command.EditPersonal;
+import de.unibremen.swp.stundenplan.command.EditSchulklasse;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
@@ -27,6 +29,22 @@ public class SchulklassenManager {
 		addClass.execute(schulklasse);
 		System.out.println("added Schoolclass: "+schulklasse.getName());
 	}
+	
+	/**
+	 * Bearbeitet eine Schulklasse aus der DB. Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * @param name 
+	 * 			Der Name der Klasse, die bearbeitet werden soll.
+	 * @param s
+	 * 			Die Llasse, mit der die alte Klasse überschrieben wird.
+	 */
+	public static void editSchoolclass(final String name, final Schoolclass s){
+			System.out.println("Editing: "+name);
+			EditSchulklasse editS = new EditSchulklasse();
+			editS.execute(name, s);
+			System.out.println(s.getName()+ "was edited.");
+		}
+	
 	
 	/**
      * Sucht nach Personal anhand des Acronyms. Gibt das Acronym an die DB weiter,

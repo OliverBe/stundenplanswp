@@ -28,6 +28,14 @@ public class RaumManager {
 		System.out.println("added Room: " + room);
 	}
 
+	/**
+	 * Bearbeitet einen Raum aus der DB. Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * @param s 
+	 * 			Der Name des Raums, der bearbeitet werden soll.
+	 * @param room
+	 * 			Der Raum, mit dem der alte Raum überschrieben wird.
+	 */
 	public static void editRaum(final String s, Room room) {
 		System.out.println("editing Room [" + s + "]...");
 		EditRaum editR = new EditRaum();

@@ -70,7 +70,8 @@ public class PersonalManager {
 	}
 	
 	/**
-	 * Bearbeitet eine Person aus der DB.
+	 * Bearbeitet eine Person aus der DB.Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
 	 * @param zuBearbeitendesKuerz 
 	 * 			Das Kuerzel der Person, die bearbeitet werden soll.
 	 * @param neuesPersonal
