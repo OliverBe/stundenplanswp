@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MouseInfo;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -184,6 +185,7 @@ public class StundeninhaltPanel extends JPanel {
 					public void actionPerformed(ActionEvent ae) {
 						JFrame edit = new JFrame("Bedarf editieren");
 						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -192,6 +194,7 @@ public class StundeninhaltPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
+						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						deleteD.setVisible(true);
 					}
 				});
@@ -291,6 +294,8 @@ public class StundeninhaltPanel extends JPanel {
 					DataStundeninhalt.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					topFrame.dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();

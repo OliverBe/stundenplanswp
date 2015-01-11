@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MouseInfo;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,6 +68,8 @@ public class BedarfPanel extends JPanel {
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
 	private JList<String> list = new JList<String>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
+
+	static int zaehler = 0;
 
 	public BedarfPanel() {
 		setLayout(new GridBagLayout());
@@ -161,43 +164,54 @@ public class BedarfPanel extends JPanel {
 
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
-				final DataPopup pop = new DataPopup(list, listModel);
-				setComponentPopupMenu(pop);
-				list.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						if (e.isMetaDown()) {
-							pop.show(list, e.getX(), e.getY());
+				if (event.getValueIsAdjusting()) {
+					final DataPopup pop = new DataPopup(list, listModel);
+					setComponentPopupMenu(pop);
+					list.addMouseListener(new MouseAdapter() {
+						public void mouseClicked(MouseEvent e) {
+							if (e.isMetaDown()) {
+								pop.show(list, e.getX(), e.getY());
+							}
 						}
+					});
+					ArrayList<String> arr = new ArrayList<String>();
+					try {
+						Matcher matcher = Pattern.compile("'(.*?)'").matcher(
+								list.getSelectedValue());
+						while (matcher.find() && arr.size() < 2) {
+							arr.add(matcher.group(1));
+						}
+					} catch (NullPointerException e) {
+						e.printStackTrace();
 					}
-				});
-				Matcher matcher = Pattern.compile("'(.*?)'").matcher(
-						list.getSelectedValue());
-				ArrayList<String> arr = new ArrayList<String>();
-				while (matcher.find() && arr.size()<2) {
-					System.out.println(matcher.group(1));
-					arr.add(matcher.group(1));
+					pop.edit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							JFrame edit = new JFrame("Bedarf editieren");
+							edit.add(createEditPanel(new JPanel(),
+									DataSchulklasse.getJahrgangByJundSkuerzel(
+											Integer.parseInt(arr.get(0)),
+											arr.get(1))));
+							edit.setLocation(MouseInfo.getPointerInfo()
+									.getLocation().x, MouseInfo
+									.getPointerInfo().getLocation().y);
+							edit.pack();
+							edit.setVisible(true);
+						}
+					});
+					pop.delete.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							DeleteDialogue deleteD = new DeleteDialogue(
+									DataSchulklasse.getJahrgangByJundSkuerzel(
+											Integer.parseInt(arr.get(0)),
+											arr.get(1)));
+							deleteD.setLocation(MouseInfo.getPointerInfo()
+									.getLocation().x, MouseInfo
+									.getPointerInfo().getLocation().y);
+							deleteD.setVisible(true);
+						}
+					});
 				}
-				pop.edit.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent ae) {
-						JFrame edit = new JFrame("Bedarf editieren");
-						edit.add(createEditPanel(new JPanel(), DataSchulklasse
-								.getJahrgangByJundSkuerzel(
-										Integer.parseInt(arr.get(0)),
-										arr.get(1))));
-						edit.pack();
-						edit.setVisible(true);
-					}
-				});
-				pop.delete.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue(
-								DataSchulklasse.getJahrgangByJundSkuerzel(
-										Integer.parseInt(arr.get(0)),
-										arr.get(1)));
-						deleteD.setVisible(true);
-					}
-				});
 			}
 		});
 
@@ -218,11 +232,12 @@ public class BedarfPanel extends JPanel {
 		c.gridy = 0;
 		p.add(new Label("Jahrgang: " + j.getJahrgang()), c);
 		c.gridy = 1;
-		Entry<String, Integer> ent=j.getStundenbedarf().entrySet().iterator().next();
+		Entry<String, Integer> ent = j.getStundenbedarf().entrySet().iterator()
+				.next();
 		String stdi = ent.getKey();
-		int stdb =ent.getValue();
-		
-		p.add(new Label("Stundeninhalt: " + stdi),c);
+		int stdb = ent.getValue();
+
+		p.add(new Label("Stundeninhalt: " + stdi), c);
 		c.gridy = 2;
 		p.add(lBed2, c);
 		c.gridx = 1;
@@ -237,14 +252,16 @@ public class BedarfPanel extends JPanel {
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				try {
-					if (!check(p)) throw new WrongInputException();
+					if (!check(p))
+						throw new WrongInputException();
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(stdi, Integer.parseInt(bedField2.getText()));
 					j.setStundenbedarf(hm);
 					DataSchulklasse.editJahrgang(j);
 
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					JFrame topFrame = (JFrame) SwingUtilities
+							.getWindowAncestor(p);
 					topFrame.dispose();
 
 				} catch (WrongInputException e) {
@@ -252,8 +269,8 @@ public class BedarfPanel extends JPanel {
 				}
 			}
 		});
-	
-		c.gridx=1;
+
+		c.gridx = 1;
 		p.add(button3, c);
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -269,9 +286,11 @@ public class BedarfPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			for(Component c : p.getComponents()){
-				if(c==bedField)Integer.parseInt(bedField.getText());
-				if(c==bedField2)Integer.parseInt(bedField2.getText());
+			for (Component c : p.getComponents()) {
+				if (c == bedField)
+					Integer.parseInt(bedField.getText());
+				if (c == bedField2)
+					Integer.parseInt(bedField2.getText());
 			}
 		} catch (NumberFormatException e) {
 			return false;
@@ -307,5 +326,6 @@ public class BedarfPanel extends JPanel {
 			}
 		}
 		;
+		zaehler = 0;
 	}
 }

@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MouseInfo;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -319,6 +320,7 @@ public class PersonalPanel extends JPanel {
 					public void actionPerformed(ActionEvent ae) {
 						JFrame edit = new JFrame("Personal editieren");
 						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -327,6 +329,7 @@ public class PersonalPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
+						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						deleteD.setVisible(true);
 					}
 				});
@@ -395,6 +398,7 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 3;
 		p.add(lPrefTime2, c);
 
+		@SuppressWarnings("serial")
 		final DefaultTableModel model = new DefaultTableModel(){
 		    @Override
 			public boolean isCellEditable(int row, int column)
@@ -403,7 +407,7 @@ public class PersonalPanel extends JPanel {
 		        	return false;
 		        }else{
 		        	return true;
-		        };
+		        }
 		    }
 		};
 		JTable table = new JTable(model);
