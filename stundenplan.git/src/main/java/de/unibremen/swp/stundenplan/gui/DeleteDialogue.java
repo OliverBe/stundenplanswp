@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -76,8 +77,10 @@ public class DeleteDialogue extends JFrame {
 					PersonalPanel.updateList();
 				}
 				if(o instanceof Jahrgang) {
-		//			DataSchulklasse.deleteBedarfByJundSkuerzel(Jahrgang);
-					PersonalPanel.updateList();
+					Entry<String, Integer> ent = ((Jahrgang) o).getStundenbedarf().entrySet().iterator()
+							.next();
+					DataSchulklasse.deleteJahrgangbedarfByJAndSkuerzel(((Jahrgang)o).getJahrgang(),ent.getKey());
+					BedarfPanel.updateList();
 				}
 				dispose();	
 			}
