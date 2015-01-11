@@ -28,11 +28,14 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.SeparatorUI;
 import javax.swing.plaf.TableHeaderUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -59,8 +62,7 @@ public class PersonalPanel extends JPanel {
 	public TextField nameField = new TextField(15);
 	public TextField kuerzField = new TextField(5);
 	public TextField timeField = new TextField(5);
-	private JLabel lSubjects = new JLabel(
-			"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
+	private JLabel lSubjects = new JLabel("Moegliche Stundeninhalte :");
 
 	public JButton button = new JButton("Personal hinzufuegen");
 
@@ -210,16 +212,21 @@ public class PersonalPanel extends JPanel {
 		p.add(table.getTableHeader(), c);
 		c.gridy = 5;
 		p.add(table, c);
+		c.gridy=6;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
 
-		c.gridx = 0;
-		c.gridy = 6;
-		c.gridheight = 2;
-		c.gridwidth = 1;
+		c.gridy = 7;
+		c.gridwidth=5;
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
 		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
 				Font.PLAIN, nameField.getFont().getSize()));
 		p.add(lSubjects, c);
-		c.gridheight = 1;
-		c.gridx = 1;
+		
+		c.anchor = GridBagConstraints.WEST;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridheight = 2;
+		c.gridy=8;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
@@ -228,10 +235,11 @@ public class PersonalPanel extends JPanel {
 		 };
 
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 		
 		c.gridx = 0;
-		c.gridy = 8;
+		c.gridy = 10;
 		c.gridwidth = 5;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button, c);
@@ -467,7 +475,6 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 5;
 		p.add(table, c);
 
-		c.gridx = 0;
 		c.gridy = 6;
 		c.gridheight = 2;
 		c.gridwidth = 1;
