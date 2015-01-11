@@ -44,6 +44,7 @@ public class StundeninhaltPanel extends JPanel {
 	private TextField nameField = new TextField(15);
 	private TextField kuerzField = new TextField(5);
 	private TextField timeField = new TextField(5);
+	private TextField timeField2 = new TextField(5);
 
 	public JButton button = new JButton("Stundeninhalt hinzufuegen");
 
@@ -210,7 +211,6 @@ public class StundeninhaltPanel extends JPanel {
 
 		TextField nameField2 = new TextField(15);
 		TextField kuerzField2 = new TextField(5);
-		TextField timeField2 = new TextField(5);
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
@@ -283,12 +283,12 @@ public class StundeninhaltPanel extends JPanel {
 					if(leichtB2.isSelected()) rythm=1;
 					if(schwerB2.isSelected()) rythm=2;
 					
-					Stundeninhalt si = new Stundeninhalt(nameField2.getText(), 
+					Stundeninhalt si2 = new Stundeninhalt(nameField2.getText(), 
 							kuerzField2.getText(), 
 							Integer.parseInt(timeField2.getText()),
 							rythm);
 
-					DataStundeninhalt.addStundeninhalt(si);
+					DataStundeninhalt.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
 
@@ -314,7 +314,10 @@ public class StundeninhaltPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			Integer.parseInt(timeField.getText());
+			for(Component c : p.getComponents()){
+				if(c==timeField)Integer.parseInt(timeField.getText());
+				if(c==timeField2)Integer.parseInt(timeField2.getText());
+			}
 		} catch (NumberFormatException e) {
 			return false;
 		}
