@@ -2,7 +2,6 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,28 +10,31 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 
 public class SchoolclassPanel extends JPanel{
@@ -41,7 +43,6 @@ public class SchoolclassPanel extends JPanel{
 	private Label bez = new Label("Zusatzbezeichner: ");
 
 	public JTextField bezField = new JTextField(5);
-	private JLabel pflicht = new JLabel("<html><body>Bedarf an Stundeninhalten :</body></html>");
 	
 	private JComboBox<Object> jcb;
 	public Integer[] jahrgang = {1,2,3,4};
@@ -107,39 +108,54 @@ public class SchoolclassPanel extends JPanel{
 		ArrayList<Room> ro=DataRaum.getAllRaum();
 	    jcb=new JComboBox<Object>(ro.toArray());
 		p.add(jcb,c);
-	    c.gridx=0;
-	    c.gridy=4;
-	    c.gridwidth=2;
-	    c.fill=GridBagConstraints.HORIZONTAL;
-	    p.add(pflicht,c);
-	    pflicht.setFont(new Font(bezField.getFont().getFontName(),
-				Font.PLAIN, bezField.getFont().getSize()));
 	    
-	    DefaultTableModel model = new DefaultTableModel();
-	    Set<String> stundeninhalt_set = DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().keySet();
-	    String[] stundeninhalte = stundeninhalt_set.toArray(new String[stundeninhalt_set.size()]);
-	    
+	    final DefaultTableModel model = new DefaultTableModel();
 	    model.addColumn("Stundeninhalt");
 	    model.addColumn("Bedarf");
-	    for(int i=0;i<stundeninhalte.length;i++) {
-	    	model.addRow(new String[] {stundeninhalte[i], "4"});
+	    for(Stundeninhalt si : DataStundeninhalt.getAllStundeninhalte()) {
+	    	model.addRow(new String[] {si.getKuerzel(), "0"});
 	    }
+	    for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().entrySet()) {
+	    	for(int i=0;i<model.getRowCount();i++) {
+	    		if(model.getValueAt(i, 0).toString().equals(entry.getKey())) {
+	    			model.setValueAt(entry.getValue(), i, 1);
+	    		}
+	    	}
+		}
+	    
 	    JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
+		
+		jg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				for(int i=0;i<model.getRowCount();i++) {
+					model.setValueAt("0", i, 1);
+				}
+				for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().entrySet()) {
+			    	for(int i=0;i<model.getRowCount();i++) {
+			    		if(model.getValueAt(i, 0).toString().equals(entry.getKey())) {
+			    			model.setValueAt(entry.getValue(), i, 1);
+			    		}
+			    	}
+				}
+			}
+		});
 		
 //	    final DefaultListModel<String> dummyList = new DefaultListModel<String>();
 //	    for ( String ss : ("English		5h,Mathe		5h,		," +
 //	                      "			, 		,		,").split(",") )
 //	      dummyList.addElement( ss );
 //	    JList<String> list = new JList<String>( dummyList );
-		  
-	    c.gridy=5;
-	    c.gridx=0; 
+		
+	    c.gridx=0;
+	    c.gridy=4;
+	    c.gridwidth=2;
+	    c.fill=GridBagConstraints.HORIZONTAL;
 	    p.add(table.getTableHeader(),c);
 	    
-	    c.gridy=6;
+	    c.gridy=5;
 	    c.gridx=0; 
 	    p.add(table,c);
 	    
