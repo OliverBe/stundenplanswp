@@ -55,6 +55,12 @@ public class TimetableModel extends AbstractTableModel {
     public TimetableModel(Object pOwner) {
 	super();
 	owner = pOwner;
+	try {
+			Config.init(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /*
@@ -112,8 +118,10 @@ public class TimetableModel extends AbstractTableModel {
             return TimetableManager.getTimeframeDisplay(row);
         } else {
             try {
+            	if(owner==null){
             	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row);
-                //return TimetableManager.getTimeslotAt(Weekday.values()[col - 1], row, owner);
+            	}
+            	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row, owner);
             } catch (DatasetException e) {
                 /*
                  * Exception wurde schon protokolliert.

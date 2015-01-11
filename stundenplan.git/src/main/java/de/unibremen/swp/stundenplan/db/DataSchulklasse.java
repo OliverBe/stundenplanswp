@@ -36,6 +36,13 @@ public class DataSchulklasse {
 						+ klassenlehrer + "');";
 				stmt.executeUpdate(sql);
 			}
+			for (Entry<String, Integer> entry : schulklasse.getStundenbedarf().entrySet()) {
+				sql = "INSERT INTO stundenbedarf " + "VALUES ('" 
+						+ schulklasse.getName() + "', '"
+						+ entry.getKey() + "', "
+						+ entry.getValue() + ");";
+				stmt.executeUpdate(sql);
+			}
 			StundenplanPanel.updateLists(); 
 			
 		}catch (SQLException e) {
@@ -96,11 +103,19 @@ public class DataSchulklasse {
 	}
 	
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
-		
-	}
-	
-	public static void addStundenbedarf() {
-		
+		try {
+			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "UPDATE planungseinheit SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			addSchulklasse(newSchulklasse);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void addJahrgang(Jahrgang jahrgang) {

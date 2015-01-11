@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.gui.RaumbelegungsplanPanel;
 
 public class DataRaum {
 	
@@ -31,6 +32,7 @@ public class DataRaum {
 					+ "VALUES ('" + raum.getName() + "', '" + kuerzel + "');";
 				stmt.executeUpdate(sql);
 			}
+			RaumbelegungsplanPanel.updateLists();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
