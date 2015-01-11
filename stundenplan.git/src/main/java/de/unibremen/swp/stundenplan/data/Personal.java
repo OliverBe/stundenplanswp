@@ -62,6 +62,7 @@ public final class Personal {
     	ersatzZeit = pErsatzZeit;
     	gependelt = pGependelt;
     	lehrer = pLehrer;
+    	moeglicheStundeninhalte = pMoeglicheStundeninhalte;
     }
     
     public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer) {
