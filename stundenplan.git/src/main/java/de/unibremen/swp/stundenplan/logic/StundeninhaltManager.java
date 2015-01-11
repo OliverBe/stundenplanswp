@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import de.unibremen.swp.stundenplan.command.AddStundeninhaltToDB;
+import de.unibremen.swp.stundenplan.command.DeleteStundeninhaltFromDB;
 import de.unibremen.swp.stundenplan.data.*;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
@@ -9,9 +11,6 @@ import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 /**
  * Verwaltet das Stundeninhalt
- * 
- * @author Oli
- * @version 0.1
  * 
  */
 public class StundeninhaltManager {
@@ -27,7 +26,8 @@ public class StundeninhaltManager {
 	 */
 	public static void addStundeninhaltToDb(final Stundeninhalt stundeninhalt){
 		System.out.println("adding Stundeninhalt...");
-		DataStundeninhalt.addStundeninhalt(stundeninhalt);
+		AddStundeninhaltToDB addInhalt = new AddStundeninhaltToDB();
+		addInhalt.execute(stundeninhalt);
 		System.out.println("added Stundeninhalt: "+stundeninhalt);
 	}
 	
@@ -35,8 +35,8 @@ public class StundeninhaltManager {
      * Sucht nach Stundeninhalt anhand des Acronyms. Gibt das Acronym an die DB weiter,
      * wo Stundeninhalt gesucht wird.
      * 
-     * @param Acronym der gesuchten Person
-     * @return gefundene Person mit Acronym
+     * @param Acronym des gesuchten Stundeninhaltes
+     * @return gefundener Stundeninhalt
      */
     public static Stundeninhalt getStundeninhaltByKuerzel(final String kuerz) {
     	System.out.println("Searching for Stundeninhalt with Kuerzel: "+kuerz+"...");
@@ -57,7 +57,8 @@ public class StundeninhaltManager {
     public static void deleteStundeninhaltFromDB(final String kuerz)	{
     	if(getStundeninhaltByKuerzel(kuerz)!= null){
     		System.out.println("Deleting...");
-    		DataStundeninhalt.deleteStundeninhaltByKuerzel(kuerz);
+    		DeleteStundeninhaltFromDB deleteInhalt = new DeleteStundeninhaltFromDB();
+    		deleteInhalt.execute(kuerz);
     	}else{
     		System.out.println("Kuerzel "+kuerz+" not found.");
     	}

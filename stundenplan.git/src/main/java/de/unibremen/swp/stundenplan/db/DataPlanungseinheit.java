@@ -121,7 +121,7 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
-	public void deletePlanungseinheitById(int id) {
+	public static void deletePlanungseinheitById(int id) {
 		try {
 			sql = "DELETE FROM Planungseinheit WHERE id = " + id + ";";
 			stmt.executeUpdate(sql);

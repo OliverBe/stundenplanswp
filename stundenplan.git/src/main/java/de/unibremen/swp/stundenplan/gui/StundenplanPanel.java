@@ -26,6 +26,8 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 
 public class StundenplanPanel extends JPanel implements ActionListener {
 
@@ -149,21 +151,19 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	}
 
 	public static void updateLists() {
-		Personal[] personalListe = new Personal[DataPersonal.getAllPersonal()
-				.size()];
-		Schoolclass[] schoolclassListe = new Schoolclass[DataSchulklasse
-				.getAllSchulklasse().size()];
+		Personal[] personalListe = new Personal[PersonalManager.getAllPersonalFromDB().size()];
+		Schoolclass[] schoolclassListe = new Schoolclass[SchulklassenManager.getAllSchulklassenFromDB().size()];
 		pList = new DefaultListModel();
 		sList = new DefaultListModel();
 
-		for (int i = 0; i < DataPersonal.getAllPersonal().size(); i++) {
-			personalListe[i] = DataPersonal.getAllPersonal().get(i);
+		for (int i = 0; i <PersonalManager.getAllPersonalFromDB().size(); i++) {
+			personalListe[i] = PersonalManager.getAllPersonalFromDB().get(i);
 
 			pList.addElement(personalListe[i]);
 		}
 
-		for (int i = 0; i < DataSchulklasse.getAllSchulklasse().size(); i++) {
-			schoolclassListe[i] = DataSchulklasse.getAllSchulklasse().get(i);
+		for (int i = 0; i <SchulklassenManager.getAllSchulklassenFromDB().size(); i++) {
+			schoolclassListe[i] = SchulklassenManager.getAllSchulklassenFromDB().get(i);
 
 			sList.addElement(schoolclassListe[i]);
 		}

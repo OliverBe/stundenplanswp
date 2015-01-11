@@ -2,6 +2,12 @@ package de.unibremen.swp.stundenplan.command;
 
 import java.util.ArrayList;
 
+/**
+ * Verwaltet die History der ausgeführten Commands.
+ * (Im Hinblick auf Undo-Funktion)
+ * @author Roman
+ *
+ */
 public class CommandHistory {
 
 	private static ArrayList<Command> commands = new ArrayList<>();
@@ -15,11 +21,13 @@ public class CommandHistory {
 	}
 	
 	public static Command getLast(){
-		if(commands.size() > 0) return commands.get(commands.size() - 1);		
+		if(commands.size() > 0) return commands.get(commands.size() - 1);
+		
+		System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		return null;
 	}
 	
 	public static void deleteLast(){
-		commands.remove(commands.get(commands.size()-1));	
+		commands.remove(CommandHistory.getLast());	
 	}
 }
