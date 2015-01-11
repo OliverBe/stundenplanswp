@@ -116,16 +116,30 @@ public class SchoolclassPanel extends JPanel{
 				Font.PLAIN, bezField.getFont().getSize()));
 	    
 	    DefaultTableModel model = new DefaultTableModel();
-//	    String[] stundeninhalte = DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()).getStundenbedarf().keySet();
-	    String[] stundeninhalte = {"LEL, LOL"};
-	    model.addColumn("MyColumnHeader",stundeninhalte);
+	    Set<String> stundeninhalt_set = DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().keySet();
+	    String[] stundeninhalte = stundeninhalt_set.toArray(new String[stundeninhalt_set.size()]);
+	    
+	    model.addColumn("Stundeninhalt");
+	    model.addColumn("Bedarf");
+	    for(int i=0;i<stundeninhalte.length;i++) {
+	    	model.addRow(new String[] {stundeninhalte[i], "4"});
+	    }
 	    JTable table = new JTable(model);
+		table.setColumnSelectionAllowed(false);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
+		
 //	    final DefaultListModel<String> dummyList = new DefaultListModel<String>();
 //	    for ( String ss : ("English		5h,Mathe		5h,		," +
 //	                      "			, 		,		,").split(",") )
 //	      dummyList.addElement( ss );
-//	    JList<String> list = new JList<String>( dummyList );    
+//	    JList<String> list = new JList<String>( dummyList );
+		  
 	    c.gridy=5;
+	    c.gridx=0; 
+	    p.add(table.getTableHeader(),c);
+	    
+	    c.gridy=6;
 	    c.gridx=0; 
 	    p.add(table,c);
 	    

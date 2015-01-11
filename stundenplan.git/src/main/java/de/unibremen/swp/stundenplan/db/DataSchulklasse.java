@@ -212,4 +212,15 @@ public class DataSchulklasse {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void editJahrgang(Jahrgang jahrgang) {
+		try {
+			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
+				sql = "UPDATE Jahrgang_Stundenbedarf SET bedarf = " + entry.getValue() + " WHERE jahrgang = " + jahrgang.getJahrgang() + " AND stundeninhalt_kuerzel = '" + entry.getKey() + "';";
+				stmt.executeUpdate(sql);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
