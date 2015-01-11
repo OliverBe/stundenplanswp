@@ -1,14 +1,10 @@
 package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
-import java.util.Collection;
-
 import de.unibremen.swp.stundenplan.command.AddPersonalToDB;
 import de.unibremen.swp.stundenplan.command.DeletePersonalFromDB;
 import de.unibremen.swp.stundenplan.command.EditPersonal;
 import de.unibremen.swp.stundenplan.data.*;
-import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 /**
  * Verwaltet das Personal

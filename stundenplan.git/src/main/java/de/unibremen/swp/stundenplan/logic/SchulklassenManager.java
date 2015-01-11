@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.command.AddSchulklasseToDB;
 import de.unibremen.swp.stundenplan.command.DeleteSchulklasseFromDB;
-import de.unibremen.swp.stundenplan.command.EditPersonal;
 import de.unibremen.swp.stundenplan.command.EditSchulklasse;
-import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
 public class SchulklassenManager {
