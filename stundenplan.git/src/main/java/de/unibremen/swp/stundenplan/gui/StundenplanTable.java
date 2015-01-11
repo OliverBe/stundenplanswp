@@ -26,8 +26,8 @@ public class StundenplanTable {
 		table.setColumnSelectionAllowed(false);
 		table.setCellSelectionEnabled(true);
 		table.setRowHeight(75);
-		
-		
+	
+	
 	}
 	
 	
