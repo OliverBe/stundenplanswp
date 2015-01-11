@@ -26,6 +26,7 @@ import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 /**
  * Hauptklasse für den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
@@ -53,7 +54,11 @@ public final class Stundenplan {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+    	//PEtest
+    	if(PlanungseinheitManager.getAllPlanungseinheitFromDB().size() != 0){
+    		PlanungseinheitManager.preparedemo();
+    	}
+    	}
     
     /**
      * Startet die Anwendung. Erzeugt dazu einen neuen Stundenplaner und dann das Hauptanzeigefenster und macht dieses
