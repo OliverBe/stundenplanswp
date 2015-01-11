@@ -189,7 +189,7 @@ public class DataSchulklasse {
 				allJahrgangbedarf.add(new Jahrgang(jahrgang, new HashMap<String, Integer>()));
 			}
 			for(int i=0;i<allJahrgangbedarf.size();i++) {
-				sql = "SELECT * jahrgang FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + allJahrgangbedarf.get(i).getJahrgang() + ";";
+				sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + allJahrgangbedarf.get(i).getJahrgang() + ";";
 				rs = stmt.executeQuery(sql);
 				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
 				int bedarf = rs.getInt("bedarf");
