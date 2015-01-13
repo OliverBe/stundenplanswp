@@ -24,6 +24,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class DeleteDialogue extends JFrame {
 	
@@ -61,7 +62,7 @@ public class DeleteDialogue extends JFrame {
 					RaumfunktionPanel.updateList();
 				}
 				if(o instanceof Stundeninhalt) {
-					DataStundeninhalt.deleteStundeninhaltByKuerzel(((Stundeninhalt) o).getKuerzel());
+					StundeninhaltManager.deleteStundeninhaltFromDB(((Stundeninhalt) o).getKuerzel());
 					StundeninhaltPanel.updateList();
 				}
 				if(o instanceof Schoolclass) {
