@@ -52,6 +52,7 @@ public class WochenplanTag extends JPanel {
 	public Planungseinheit e1 = new Planungseinheit();
 	public Planungseinheit e2 = new Planungseinheit();
 	public Room r1 = new Room("MZH 1100", 1);
+	public Room r2 = new Room("SGF 0140", 2);
 	public Schoolclass s1 = new Schoolclass("K1", 5, r1);
 	public Stundeninhalt fach = new Stundeninhalt("Mathe", "Ma", 90, 0);
 
@@ -60,11 +61,14 @@ public class WochenplanTag extends JPanel {
 	public WochenplanTag(final Weekday pDay) {
 		day = pDay;
 		init();
-	//	setTestPlanungs();
+		setTestPlanungs();
 		addData();
-		generateTime();
+		calculateTime();
 	}
 
+	/**
+	 * Erstellt das Layout und die Tabelle des Wochenplanes.
+	 */
 	public void init() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -114,8 +118,8 @@ public class WochenplanTag extends JPanel {
 	}
 
 	/**
-	 * Diese Methode füllt die Reihen der ersten Spalte der Tabelle mit den Vor und Nachnamen 
-	 * des gesamten Personals.
+	 * Diese Methode füllt die Reihen der ersten Spalte der Tabelle mit den Vor
+	 * und Nachnamen des gesamten Personals.
 	 */
 	public void addData() {
 		try {
@@ -131,29 +135,30 @@ public class WochenplanTag extends JPanel {
 
 	}
 
-	public void generateTime() {
+	/**
+	 * Diese Methode durchläuft alle Planungseinheiten und versucht diese den
+	 * entsprechenden Lehrern zuzuordnen, mit Infos des Faches, der Klasse und
+	 * des Raumes an der besagten Zeit der Planungseinheit.
+	 */
+	public void calculateTime() {
 		for (Planungseinheit p : einheitsliste) {
 			List<Personal> ppliste = new ArrayList<>();
 			ppliste = p.getPersonal();
-			int starthour;
-			int startminute;
-			int endminute;
-			int endhour;
+			int starthour = p.getStartHour();
+			int startminute = p.getStartminute();
+			int endminute = p.getEndminute();
+			int endhour = p.getEndhour();
+			StringBuilder raeume = new StringBuilder();
+
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
 				String personalName = ppliste.get(0).getName();
 				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
-					starthour = p.getStartHour();
-					startminute = p.getStartminute();
-					endminute = p.getEndminute();
-					endhour = p.getEndhour();
 					String ausgabe = "<html><body><center>"
 							+ p.getStundeninhalte().get(0) + " "
-							+ p.getSchoolclasses().get(0) + "<br>"
-							+ p.getRooms().get(0) + "<br>" + starthour + ":"
-							+ startminute + "-" + endhour + ":" + endminute
+							+ p.getSchoolclasses().get(0) + "<br>" + raeume
 							+ "</center></body></html>";
 
 					for (int j = 1; j < model.getColumnCount(); j++) {
@@ -161,9 +166,24 @@ public class WochenplanTag extends JPanel {
 						String[] zeiten = zeit.split(":");
 						int stunde = Integer.parseInt(zeiten[0]);
 						int minute = Integer.parseInt(zeiten[1]);
-						if (starthour <= stunde && minute >= startminute) {
-							//Endzeit noch implementieren.
-							model.setValueAt(ausgabe, i, j);
+						if (stunde >= starthour && minute >= startminute) {
+							if (ausgabe.length() >= 70) {
+								TableColumn spalte = table.getColumnModel()
+										.getColumn(j);
+								spalte.setPreferredWidth(ausgabe.length() + 30);
+							}
+							if (stunde >= endhour && minute >= endminute) {
+								System.out.println("Ausgabe läenge"
+										+ ausgabe.length());
+
+								model.setValueAt(ausgabe, i, j);
+
+								return;
+
+							} else {
+								model.setValueAt(ausgabe, i, j);
+							}
+
 						}
 					}
 
@@ -174,30 +194,118 @@ public class WochenplanTag extends JPanel {
 		}
 	}
 
-	public void deleteAllRows() {
+	/**
+	 * Generiert den Output eine Zelle im Wochenplaner
+	 * 
+	 * @param pEinheit
+	 *            Die entsprechende Planungseinheit
+	 * @return Ein String mit Infos des Faches/Fächer, der Klasse/Klassen und
+	 *         anschließend des Raumes/der Raeume
+	 */
+	public String createOutput(Planungseinheit pEinheit) {
+		final String outputAnfang = "<html><body><center>";
+		final String outputEnde = "</center></body></html>";
+		final String br = "<br>";
+		String raeume = holeRaume(pEinheit);
+		String stundenInhalte = holeStundeninhalte(pEinheit);
+		return null;
+
+	}
+
+	/**
+	 * Durchquert alle Raume in der entsprechenden Planungseinheit und gibt
+	 * diese aus.
+	 * 
+	 * @param pEinheit
+	 *            Die entsprechende Planungseinheit
+	 * @return Ein String mit allen Raeumen in der Planungseinheit
+	 */
+	public String holeRaume(Planungseinheit pEinheit) {
+		StringBuilder raeumeOutput = new StringBuilder();
+		for (int i = 0; i < pEinheit.getRooms().size(); i++) {
+			if (raeumeOutput.length() > 0) {
+				raeumeOutput.append(" / ");
+
+			}
+			raeumeOutput.append(pEinheit.getRooms().get(i));
+		}
+		return raeumeOutput.toString();
+	}
+
+	/**
+	 * Durchquert alle Stundeninhalte in der entsprechenden Planungseinheit und
+	 * gibt diese aus.
+	 * 
+	 * @param pEinheit
+	 * 
+	 * @return
+	 */
+	public String holeStundeninhalte(Planungseinheit pEinheit) {
+		StringBuilder stundeninhaltOutput = new StringBuilder();
+		for (int i = 0; i < pEinheit.getStundeninhalte().size(); i++) {
+			if (stundeninhaltOutput.length() > 0) {
+				stundeninhaltOutput.append(" / ");
+
+			}
+			stundeninhaltOutput.append(pEinheit.getStundeninhalte().get(i));
+		}
+		return stundeninhaltOutput.toString();
+
+	}
+
+	/**
+	 * Durchquert alle Schulklassen in der entsprechenden Planungseinheit und
+	 * gibt diese aus.
+	 * @param pEinheit
+	 * 			Die entsprechende Planungseinheit
+	 * @return
+	 */
+	public String holeSchulklassen(Planungseinheit pEinheit) {
+		StringBuilder schulklassenOutput = new StringBuilder();
+		for (int i = 0; i < pEinheit.getSchoolclasses().size(); i++) {
+			if (schulklassenOutput.length() > 0) {
+				schulklassenOutput.append("/ ");
+			}
+		}
+		return schulklassenOutput.toString();
+	}
+
+	/**
+	 * Löscht das gesamte Personal aus der Tabelle.
+	 */
+	public void deleteAllPersonal() {
 
 		for (int i = 0; i < model.getRowCount(); i++) {
 			model.removeRow(i);
 		}
 	}
 
+	/**
+	 * Löscht einmal das gesamte Personal fügt dann wieder das gesamte Personal
+	 * ein.
+	 */
 	public void refresh() {
-		deleteAllRows();
+		deleteAllPersonal();
 		addData();
 	}
 
-//	public void setTestPlanungs() {
-//		e1.addPersonal(DataPersonal.getPersonalByKuerzel("TP1"), new int[] { 1,
-//				2, 3 });
-//		e1.addPersonal(p2, new int[] { 1, 2, 3 });
-//		e1.setStarthour(8);
-//		e1.setEndhour(10);
-//		e1.setWeekday(Weekday.MONDAY);
-//		e1.addRoom(r1);
-//		e1.addSchulklassen(s1);
-//		e1.addStundeninhalt(fach);
-//		einheitsliste.add(e1);
-//	}
+	/**
+	 * Erstellt hier lokale Testdaten um die Funktionalität des Wochenplans zu
+	 * testen.
+	 *
+	 */
+	public void setTestPlanungs() {
+		e1.addPersonal(DataPersonal.getPersonalByKuerzel("TP1"), new int[] { 1,
+				2, 3 });
+		e1.setStarthour(8);
+		e1.setEndhour(10);
+		e1.setWeekday(Weekday.MONDAY);
+		e1.addRoom(r1);
+		e1.addRoom(r2);
+		e1.addSchulklassen(s1);
+		e1.addStundeninhalt(fach);
+		einheitsliste.add(e1);
+	}
 
 	private void buttonOkay(JButton b) {
 		b.addActionListener(new ActionListener() {
