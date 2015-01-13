@@ -60,7 +60,15 @@ public class DataRaum {
 			while (rs.next()) {
 				String name = rs.getString("name");
 				int gebaeude = rs.getInt("gebaeudennr");
-				allRaum.add(new Room(name, gebaeude));
+				allRaum.add(new Room(name, gebaeude, new ArrayList<String>()));
+			}
+			for(int i=0; i<allRaum.size(); i++) {
+				sql = "SELECT * FROM raum_Raumfunktion WHERE raum_name = '" + allRaum.get(i).getName() + "';";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String rf_name = rs.getString("raumfunktion_name");
+					allRaum.get(i).getMoeglicheFunktionen().add(rf_name);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
