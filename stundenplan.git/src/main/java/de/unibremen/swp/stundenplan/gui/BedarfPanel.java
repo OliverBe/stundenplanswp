@@ -174,7 +174,7 @@ public class BedarfPanel extends JPanel {
 							}
 						}
 					});
-					ArrayList<String> arr = new ArrayList<String>();
+					final ArrayList<String> arr = new ArrayList<String>();
 					try {
 						Matcher matcher = Pattern.compile("'(.*?)'").matcher(
 								list.getSelectedValue());
@@ -234,7 +234,7 @@ public class BedarfPanel extends JPanel {
 		c.gridy = 1;
 		Entry<String, Integer> ent = j.getStundenbedarf().entrySet().iterator()
 				.next();
-		String stdi = ent.getKey();
+		final String stdi = ent.getKey();
 		int stdb = ent.getValue();
 
 		p.add(new Label("Stundeninhalt: " + stdi), c);

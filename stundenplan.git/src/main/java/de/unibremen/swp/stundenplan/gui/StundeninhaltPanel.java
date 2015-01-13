@@ -28,10 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import de.unibremen.swp.stundenplan.data.Jahrgang;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -213,8 +210,8 @@ public class StundeninhaltPanel extends JPanel {
 		Label ltime2 = new Label("Regeldauer in min:");
 		Label lPause2 = new Label("rythmischer Typ:");
 
-		TextField nameField2 = new TextField(15);
-		TextField kuerzField2 = new TextField(5);
+		final TextField nameField2 = new TextField(15);
+		final TextField kuerzField2 = new TextField(5);
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");

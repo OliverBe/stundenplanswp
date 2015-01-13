@@ -45,7 +45,14 @@ public class DataRaum {
 			rs.next();
 			String name = rs.getString("name");
 			int gebaeude = rs.getInt("gebaeudennr");
-			return new Room(name, gebaeude);
+			Room raum = new Room(name, gebaeude, new ArrayList<String>());
+			sql = "SELECT * FROM raum_Raumfunktion WHERE raum_name = '" + name + "';";
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				String rf_name = rs.getString("raumfunktion_name");
+				raum.getMoeglicheFunktionen().add(rf_name);
+			}
+			return raum;
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
@@ -93,7 +100,7 @@ public class DataRaum {
 		try {
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "UPDATE raum_Raumfunktion SET raum_name = '" + newRaum.getName() + "' WHERE raum_name = '" + pName + "';";
+			sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE planungseinheit_Raum SET raum_name = '" + newRaum.getName() + "' WHERE raum_name = '" + pName + "';";
 			stmt.executeUpdate(sql);

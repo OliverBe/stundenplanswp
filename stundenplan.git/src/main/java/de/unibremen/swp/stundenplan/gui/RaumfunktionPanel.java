@@ -89,7 +89,7 @@ public class RaumfunktionPanel extends JPanel {
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridy = 3;
 		c.gridheight=2;
-		CheckBoxList checkList = new CheckBoxList();
+		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		for (Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
 			boxes.add(new JCheckBox(s.getKuerzel()));
@@ -187,7 +187,7 @@ public class RaumfunktionPanel extends JPanel {
 	private JPanel createEditPanel(final JPanel p, final Raumfunktion rf) {
 		Label lName2 = new Label("Name der Funktion");
 		Label lStdi2 = new Label("Moegliche Stundeninhalte");
-		JTextField tf2 = new JTextField(20);
+		final JTextField tf2 = new JTextField(20);
 		JButton button2 = new JButton("Funktion editieren");
 		JButton button3 = new JButton("Abbrechen");
 

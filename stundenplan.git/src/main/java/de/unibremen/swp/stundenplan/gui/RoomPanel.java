@@ -9,16 +9,12 @@ import java.awt.Insets;
 import java.awt.Label;
 import java.awt.MouseInfo;
 import java.awt.TextField;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,30 +23,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-
-import de.unibremen.swp.stundenplan.config.Config;
-import de.unibremen.swp.stundenplan.config.Weekday;
-import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
-import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class RoomPanel extends JPanel {
 
@@ -163,7 +146,7 @@ public class RoomPanel extends JPanel {
 
 	private JPanel createListPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
-		p.setBorder(BorderFactory.createTitledBorder("Existierende Räume"));
+		p.setBorder(BorderFactory.createTitledBorder("Existierende Rï¿½ume"));
 
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -219,8 +202,8 @@ public class RoomPanel extends JPanel {
 		Label lName2 = new Label("Name des Raumes: ");
 		Label lPos2 = new Label("In welchem Gebaeude: ");
 
-		TextField nameField2 = new TextField(5);
-		JComboBox jcb2;
+		final TextField nameField2 = new TextField(5);
+		final JComboBox jcb2;
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
@@ -249,7 +232,7 @@ public class RoomPanel extends JPanel {
 		p.add(new Label("Spezieller Raum:"), c);
 		c.gridx = 1;
 		
-		CheckBoxList checkList2 = new CheckBoxList();
+		final CheckBoxList checkList2 = new CheckBoxList();
 		ArrayList<JCheckBox> boxes2 = new ArrayList<JCheckBox>();
 		
 		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
