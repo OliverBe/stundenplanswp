@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
 		if(c instanceof LehreransichtPanel){
 			paneLehrer.removeAll();
 			paneLehrer.init();
-			System.out.println("josososososo");
+			System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
 		};
 	}
 
