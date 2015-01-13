@@ -1,13 +1,12 @@
 package de.unibremen.swp.stundenplan.logic;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import de.unibremen.swp.stundenplan.command.AddStundeninhaltToDB;
 import de.unibremen.swp.stundenplan.command.DeleteStundeninhaltFromDB;
+import de.unibremen.swp.stundenplan.command.EditSchulklasse;
+import de.unibremen.swp.stundenplan.command.EditStundeninhalt;
 import de.unibremen.swp.stundenplan.data.*;
-import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
 /**
  * Verwaltet das Stundeninhalt
@@ -30,6 +29,21 @@ public class StundeninhaltManager {
 		addInhalt.execute(stundeninhalt);
 		System.out.println("added Stundeninhalt: "+stundeninhalt);
 	}
+	
+	/**
+	 * Bearbeitet einen Stundeninhalt aus der DB. Bearbeiten findet im wörtlichen Sinne nicht statt,
+	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * @param name 
+	 * 			KÜrzel des SI, die bearbeitet werden soll.
+	 * @param s
+	 * 			Der SI, mit dem der alte SI überschrieben wird.
+	 */
+	public static void editStundeninhalt(final String kuerzel, final Stundeninhalt s){
+			System.out.println("Editing: "+kuerzel);
+			EditStundeninhalt editS = new EditStundeninhalt();
+			editS.execute(kuerzel, s);
+			System.out.println(s.getKuerzel()+ "was edited.");
+		}
 	
 	/**
      * Sucht nach Stundeninhalt anhand des Acronyms. Gibt das Acronym an die DB weiter,
