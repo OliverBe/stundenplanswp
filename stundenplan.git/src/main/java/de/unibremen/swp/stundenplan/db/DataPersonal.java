@@ -76,6 +76,19 @@ public class DataPersonal {
 					moeglicheStundeninhalte.add(rs.getString("stundeninhalt_kuerzel"));
 				}
 				p.setMoeglicheStundeninhalte(moeglicheStundeninhalte);
+				sql = "SELECT * FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+				rs = stmt.executeQuery(sql);
+				HashMap<Weekday, int[]> zeitwunsch = new HashMap<Weekday, int[]>();
+				while(rs.next()) {
+					int weekday = rs.getInt("weekday");
+					int[] zeiten = new int[4];
+					zeiten[0] = rs.getInt("startHour");
+					zeiten[1] = rs.getInt("startMin");
+					zeiten[2] = rs.getInt("endHour");
+					zeiten[3] = rs.getInt("endMin");
+					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
+				}
+				p.setWunschZeiten(zeitwunsch);
 				return p;
 			}else {
 				return null;
@@ -131,6 +144,7 @@ public class DataPersonal {
 					zeiten[3] = rs.getInt("endMin");
 					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
 				}
+				p.setWunschZeiten(zeitwunsch);
 			}
 			return allPersonal;
 		} catch (SQLException e) {
