@@ -29,9 +29,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -84,7 +86,7 @@ public class RoomPanel extends JPanel {
 	private JPanel createAddPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Neuen Raum hinzufuegen"));
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(8, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -98,12 +100,23 @@ public class RoomPanel extends JPanel {
 		Integer[] gebaeude = { 1, 2 };
 		jcb = new JComboBox(gebaeude);
 		p.add(jcb, c);
+
 		c.gridx = 0;
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.NORTHWEST;
+		c.gridy=2;
+		c.gridwidth = 2;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+			
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
 		p.add(new Label("Spezieller Raum:"), c);
 		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 1;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridheight = 2;
+		c.gridy = 4;
+		
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
@@ -111,10 +124,10 @@ public class RoomPanel extends JPanel {
 		}
 		;
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
+
+		c.gridy = 6;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button, c);
 
@@ -126,11 +139,10 @@ public class RoomPanel extends JPanel {
 						throw new WrongInputException();
 
 					ArrayList<String> rf = new ArrayList<String>();
-					for (int i = 0; i < checkList.getSelectedValuesList()
-							.size(); i++) {
-						JCheckBox cb = (JCheckBox) checkList
-								.getSelectedValuesList().get(i);
-						rf.add(cb.getText());
+					for (int i = 0; i < checkList.getModel().getSize(); i++) {
+						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
+						if(cb.isSelected()) rf.add(cb.getText());
+						if(cb.isSelected()) System.out.println("---  RF : "+cb.getText());
 					}
 
 					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
@@ -233,14 +245,27 @@ public class RoomPanel extends JPanel {
 		c.gridy = 2;
 		p.add(new Label("Spezieller Raum:"), c);
 		c.gridx = 1;
+		
+//		final CheckBoxList checkList = new CheckBoxList();
+//		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+//		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
+//			boxes.add(new JCheckBox(rf.getName()));
+//		}
+//		;
+//		checkList.setListData(boxes.toArray());
+//		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+//		p.add(checkList, c);
+		
 		CheckBoxList checkList2 = new CheckBoxList();
 		ArrayList<JCheckBox> boxes2 = new ArrayList<JCheckBox>();
-//		for (Raumfunktion rf : ro.getMoeglicheFunktionen()) {
-//			boxes2.add(new JCheckBox(rf.getName()));
-//		};
-//		System.out.println(ro.getMoeglicheFunktionen().toString());
+		for (String rf : ro.getMoeglicheFunktionen()) {
+			boxes2.add(new JCheckBox(rf));
+		};
+	//	System.out.println(ro.getMoeglicheFunktionen().toString());
+		checkList2.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		checkList2.setListData(boxes2.toArray());
 		p.add(checkList2, c);
+		
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 1;

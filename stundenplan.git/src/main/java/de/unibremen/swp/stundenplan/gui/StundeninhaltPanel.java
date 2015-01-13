@@ -34,6 +34,7 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class StundeninhaltPanel extends JPanel {
 
@@ -136,7 +137,7 @@ public class StundeninhaltPanel extends JPanel {
 							Integer.parseInt(timeField.getText()),
 							rythm);
 
-					DataStundeninhalt.addStundeninhalt(si);
+					StundeninhaltManager.addStundeninhaltToDb(si);
 
 					updateList();
 
@@ -291,7 +292,7 @@ public class StundeninhaltPanel extends JPanel {
 							Integer.parseInt(timeField2.getText()),
 							rythm);
 
-					DataStundeninhalt.editStundeninhalt(si.getKuerzel(), si2);
+		//			StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
 					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);

@@ -135,6 +135,12 @@ public class PersonalPanel extends JPanel {
 		p.add(timeField, c);
 		c.gridx = 0;
 		c.gridy = 3;
+		c.gridwidth = 5;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridy=4;
 		p.add(lPrefTime, c);
 
 		JTable table = new JTable(model);
@@ -208,16 +214,16 @@ public class PersonalPanel extends JPanel {
 			wds.add(Weekday.SUNDAY);
 		}
 
-		c.gridy = 4;
-		c.gridwidth = 5;
+		c.gridy = 5;
+		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(table.getTableHeader(), c);
-		c.gridy = 5;
+		c.gridy = 6;
 		p.add(table, c);
-		c.gridy=6;
+		c.gridy=7;
 		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
 
-		c.gridy = 7;
+		c.gridy = 8;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
 		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
@@ -227,7 +233,7 @@ public class PersonalPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridheight = 2;
-		c.gridy=8;
+		c.gridy=9;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
@@ -240,7 +246,7 @@ public class PersonalPanel extends JPanel {
 		p.add(checkList, c);
 		
 		c.gridx = 0;
-		c.gridy = 10;
+		c.gridy = 11;
 		c.gridwidth = 5;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button, c);

@@ -61,7 +61,7 @@ public class WochenplanTag extends JPanel {
 	public WochenplanTag(final Weekday pDay) {
 		day = pDay;
 		init();
-		setTestPlanungs();
+	//	setTestPlanungs();
 		addData();
 		calculateTime();
 	}
