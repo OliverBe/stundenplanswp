@@ -10,24 +10,28 @@ import java.util.ArrayList;
  */
 public class CommandHistory {
 
-	private static ArrayList<Command> commands = new ArrayList<>();
+	private static ArrayList<Command> commandHistory = new ArrayList<>();
 	
 	public CommandHistory(){
-		commands = new ArrayList<>();
+		commandHistory = new ArrayList<>();
 	}
 	
 	public static void addCommand(Command c){
-		commands.add(c);
+		commandHistory.add(c);
 	}
 	
 	public static Command getLast(){
-		if(commands.size() > 0) return commands.get(commands.size() - 1);
+		if(commandHistory.size() > 0) return commandHistory.get(commandHistory.size() - 1);
 		
 		System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		return null;
 	}
 	
 	public static void deleteLast(){
-		commands.remove(CommandHistory.getLast());	
+		try{
+			commandHistory.remove(CommandHistory.getLast());
+		}catch(NullPointerException n){
+			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
+		}
 	}
 }
