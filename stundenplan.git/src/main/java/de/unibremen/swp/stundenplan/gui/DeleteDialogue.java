@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
@@ -73,6 +75,12 @@ public class DeleteDialogue extends JFrame {
 				if(o instanceof Personal) {
 					DataPersonal.deletePersonalByKuerzel(((Personal) o).getKuerzel());
 					PersonalPanel.updateList();
+				}
+				if(o instanceof Jahrgang) {
+					Entry<String, Integer> ent = ((Jahrgang) o).getStundenbedarf().entrySet().iterator()
+							.next();
+					DataSchulklasse.deleteJahrgangbedarfByJAndSkuerzel(((Jahrgang)o).getJahrgang(),ent.getKey());
+					BedarfPanel.updateList();
 				}
 				dispose();	
 			}

@@ -147,39 +147,78 @@ public class DataSchulklasse {
 		}
 	}
 	
+	public static Jahrgang getJahrgangByJahrgang(int jahrgang) {
+		try {
+			sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + jahrgang + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			Jahrgang jg = new Jahrgang(jahrgang, new HashMap<String, Integer>());
+			while (rs.next()) {
+				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+				int bedarf = rs.getInt("bedarf");
+				jg.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+			}
+			return jg;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Jahrgang getJahrgangByJundSkuerzel(int jahrgang, String stundeninhalt_kuerzel) {
+		try {
+			sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + jahrgang + " AND stundeninhalt_kuerzel = '" + stundeninhalt_kuerzel + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			Jahrgang jg = new Jahrgang(jahrgang, new HashMap<String, Integer>());
+			rs.next();
+			int bedarf = rs.getInt("bedarf");
+			jg.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+			return jg;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static ArrayList<Jahrgang> getAllJahrgang() {
 		ArrayList<Jahrgang> allJahrgangbedarf = new ArrayList<Jahrgang>();
 		try {
-			sql = "SELECT * FROM Jahrgang_Stundenbedarf ORDER BY jahrgang ASC";
+			sql = "SELECT DISTINCT jahrgang FROM Jahrgang_Stundenbedarf ORDER BY jahrgang ASC";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				int jahrgang = rs.getInt("jahrgang");
-				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
-				int bedarf = rs.getInt("bedarf");
-				boolean put = false;
-				for(int i=0;i<allJahrgangbedarf.size();i++) {
-					if(allJahrgangbedarf.get(i).getJahrgang() == jahrgang && !put) {
-						allJahrgangbedarf.get(i).getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
-						put = true;
-					}
-				}
-				if(!put) {
-					HashMap<String, Integer> bedarfMap = new HashMap<String, Integer>();
-					bedarfMap.put(stundeninhalt_kuerzel, bedarf);
-					allJahrgangbedarf.add(new Jahrgang(jahrgang, bedarfMap));
+				allJahrgangbedarf.add(new Jahrgang(jahrgang, new HashMap<String, Integer>()));
+			}
+			for(int i=0;i<allJahrgangbedarf.size();i++) {
+				sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + allJahrgangbedarf.get(i).getJahrgang() + ";";
+				rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					int bedarf = rs.getInt("bedarf");
+					allJahrgangbedarf.get(i).getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
 				}
 			}
 			return allJahrgangbedarf;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	public static void deleteJahrgangbedarfByJAndSkuerzel(int pJahrgang, String pStundeninhalt_kuerzel) {
 		try {
 			sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + pJahrgang + " AND stundeninhalt_kuerzel = '" + pStundeninhalt_kuerzel + "';";
 			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void editJahrgang(Jahrgang jahrgang) {
+		try {
+			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
+				sql = "UPDATE Jahrgang_Stundenbedarf SET bedarf = " + entry.getValue() + " WHERE jahrgang = " + jahrgang.getJahrgang() + " AND stundeninhalt_kuerzel = '" + entry.getKey() + "';";
+				stmt.executeUpdate(sql);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MouseInfo;
 import java.awt.TextField;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -180,6 +181,7 @@ public class RoomPanel extends JPanel {
 					public void actionPerformed(ActionEvent ae) {
 						JFrame edit = new JFrame("Raum editieren");
 						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -188,6 +190,7 @@ public class RoomPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						DeleteDialogue deleteD = new DeleteDialogue(list.getModel());
+						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						deleteD.setVisible(true);
 					}
 				});

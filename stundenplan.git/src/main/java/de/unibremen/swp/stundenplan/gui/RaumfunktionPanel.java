@@ -22,8 +22,10 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -36,7 +38,7 @@ import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 
 public class RaumfunktionPanel extends JPanel {
 	private Label lName = new Label("Name der Funktion");
-	private Label lStdi = new Label("Mögliche Stundeninhalte");
+	private Label lStdi = new Label("Moegliche Stundeninhalte: ");
 	private JTextField tf = new JTextField(20);
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
@@ -64,30 +66,39 @@ public class RaumfunktionPanel extends JPanel {
 	private JPanel createAddPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Funktionen von Raeumen "));
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(5, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
 		p.add(lName, c);
 		c.gridx = 1;
 		p.add(tf, c);
-		c.gridx = 0;
-		c.gridy = 1;
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridwidth = 2;
+		c.gridx=0;
+		c.gridy=1;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+		
+		c.gridy = 2;
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
 		p.add(lStdi, c);
 
-		c.gridx = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridy = 3;
+		c.gridheight=2;
 		CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		for (Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
 			boxes.add(new JCheckBox(s.getKuerzel()));
 		};
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 
-		c.gridx = 0;
-		c.gridy = 2;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 5;
 		p.add(button, c);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -207,6 +218,7 @@ public class RaumfunktionPanel extends JPanel {
 			}	
 		}	
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 
 		c.gridx = 0;

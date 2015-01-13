@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MouseInfo;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +45,7 @@ public class StundeninhaltPanel extends JPanel {
 	private TextField nameField = new TextField(15);
 	private TextField kuerzField = new TextField(5);
 	private TextField timeField = new TextField(5);
+	private TextField timeField2 = new TextField(5);
 
 	public JButton button = new JButton("Stundeninhalt hinzufuegen");
 
@@ -74,7 +76,7 @@ public class StundeninhaltPanel extends JPanel {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Neuen Stundeninhalt hinzufuegen"));
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(5, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -183,6 +185,7 @@ public class StundeninhaltPanel extends JPanel {
 					public void actionPerformed(ActionEvent ae) {
 						JFrame edit = new JFrame("Bedarf editieren");
 						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
+						edit.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -191,6 +194,7 @@ public class StundeninhaltPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
+						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						deleteD.setVisible(true);
 					}
 				});
@@ -210,7 +214,6 @@ public class StundeninhaltPanel extends JPanel {
 
 		TextField nameField2 = new TextField(15);
 		TextField kuerzField2 = new TextField(5);
-		TextField timeField2 = new TextField(5);
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
@@ -283,14 +286,16 @@ public class StundeninhaltPanel extends JPanel {
 					if(leichtB2.isSelected()) rythm=1;
 					if(schwerB2.isSelected()) rythm=2;
 					
-					Stundeninhalt si = new Stundeninhalt(nameField2.getText(), 
+					Stundeninhalt si2 = new Stundeninhalt(nameField2.getText(), 
 							kuerzField2.getText(), 
 							Integer.parseInt(timeField2.getText()),
 							rythm);
 
-					DataStundeninhalt.addStundeninhalt(si);
+					DataStundeninhalt.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					topFrame.dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -314,7 +319,10 @@ public class StundeninhaltPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			Integer.parseInt(timeField.getText());
+			for(Component c : p.getComponents()){
+				if(c==timeField)Integer.parseInt(timeField.getText());
+				if(c==timeField2)Integer.parseInt(timeField2.getText());
+			}
 		} catch (NumberFormatException e) {
 			return false;
 		}
