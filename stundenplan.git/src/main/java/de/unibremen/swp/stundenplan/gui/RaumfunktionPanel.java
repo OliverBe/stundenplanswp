@@ -212,6 +212,7 @@ public class RaumfunktionPanel extends JPanel {
 		for (Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
 			boxes.add(new JCheckBox(s.getKuerzel()));
 		};
+		
 		for(JCheckBox jcb : boxes){
 			for(String s : rf.getStundeninhalte()){
 				if(jcb.getText().equals(s)) jcb.setSelected(true);

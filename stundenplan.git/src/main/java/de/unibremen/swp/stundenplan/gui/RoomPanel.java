@@ -47,6 +47,7 @@ import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -55,6 +56,7 @@ public class RoomPanel extends JPanel {
 
 	private Label lName = new Label("Name des Raumes: ");
 	private Label lPos = new Label("In welchem Gebaeude: ");
+	private JLabel lSp = new JLabel("Spezieller Raum:");
 
 	private TextField nameField = new TextField(5);
 	private JComboBox jcb;
@@ -111,7 +113,9 @@ public class RoomPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		p.add(new Label("Spezieller Raum:"), c);
+		lSp.setFont(new Font(lName.getFont().getFontName(),
+				Font.PLAIN, lName.getFont().getSize()));
+		p.add(lSp, c);
 		c.anchor = GridBagConstraints.WEST;
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridheight = 2;
@@ -142,7 +146,6 @@ public class RoomPanel extends JPanel {
 					for (int i = 0; i < checkList.getModel().getSize(); i++) {
 						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
 						if(cb.isSelected()) rf.add(cb.getText());
-						if(cb.isSelected()) System.out.println("---  RF : "+cb.getText());
 					}
 
 					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
@@ -201,7 +204,7 @@ public class RoomPanel extends JPanel {
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue(list.getModel());
+						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
 						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
 						deleteD.setVisible(true);
 					}
@@ -246,22 +249,18 @@ public class RoomPanel extends JPanel {
 		p.add(new Label("Spezieller Raum:"), c);
 		c.gridx = 1;
 		
-//		final CheckBoxList checkList = new CheckBoxList();
-//		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
-//		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
-//			boxes.add(new JCheckBox(rf.getName()));
-//		}
-//		;
-//		checkList.setListData(boxes.toArray());
-//		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-//		p.add(checkList, c);
-		
 		CheckBoxList checkList2 = new CheckBoxList();
 		ArrayList<JCheckBox> boxes2 = new ArrayList<JCheckBox>();
-		for (String rf : ro.getMoeglicheFunktionen()) {
-			boxes2.add(new JCheckBox(rf));
+		
+		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
+			boxes2.add(new JCheckBox(rf.getName()));
 		};
-	//	System.out.println(ro.getMoeglicheFunktionen().toString());
+		
+		for(JCheckBox jcb : boxes2){
+			for (String rf : ro.getMoeglicheFunktionen()) {
+				if(jcb.getText().equals(rf)) jcb.setSelected(true);
+			};
+		};
 		checkList2.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		checkList2.setListData(boxes2.toArray());
 		p.add(checkList2, c);
@@ -279,16 +278,14 @@ public class RoomPanel extends JPanel {
 					if (textFieldsEmpty(p))
 						throw new WrongInputException();
 
-					ArrayList<String> rf = new ArrayList<String>();
-					for (int i = 0; i < checkList2.getSelectedValuesList()
-							.size(); i++) {
-						JCheckBox cb = (JCheckBox) checkList2
-								.getSelectedValuesList().get(i);
-						rf.add(cb.getText());
+					ArrayList<String> rf2 = new ArrayList<String>();
+					for (int i = 0; i < checkList2.getModel().getSize(); i++) {
+						JCheckBox cb = (JCheckBox) checkList2.getModel().getElementAt(i);
+						if(cb.isSelected()) rf2.add(cb.getText());
 					}
 
-					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
-							.getSelectedItem(), rf));
+					DataRaum.editRaum(ro.getName(),new Room(nameField2.getText(), (int) jcb2
+							.getSelectedItem(), rf2));
 
 					updateList();
 

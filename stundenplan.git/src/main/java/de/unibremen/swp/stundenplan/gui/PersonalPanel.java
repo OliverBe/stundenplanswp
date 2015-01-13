@@ -270,9 +270,9 @@ public class PersonalPanel extends JPanel {
 					};
 
 					ArrayList<String> stdi = new ArrayList<String>();
-					for(int i=0; i<checkList.getSelectedValuesList().size();i++){
-						JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
-						stdi.add(cb.getText());
+					for (int i = 0; i < checkList.getModel().getSize(); i++) {
+						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
+						if(cb.isSelected()) stdi.add(cb.getText());
 					}
 					
 					Personal pe = new Personal(nameField.getText(), kuerzField
@@ -455,6 +455,8 @@ public class PersonalPanel extends JPanel {
 		}
 		;
 
+	//	HashMap<Weekday,int[]> hm = pe.getWunschzeiten();
+		
 		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
 		int i=0;
 		if (Config.MONDAY) {

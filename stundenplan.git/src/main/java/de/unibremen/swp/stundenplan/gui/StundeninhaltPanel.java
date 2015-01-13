@@ -292,7 +292,7 @@ public class StundeninhaltPanel extends JPanel {
 							Integer.parseInt(timeField2.getText()),
 							rythm);
 
-		//			StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
+					StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
 					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
