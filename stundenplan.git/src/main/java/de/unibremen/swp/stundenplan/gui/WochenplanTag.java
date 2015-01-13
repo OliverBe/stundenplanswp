@@ -156,10 +156,7 @@ public class WochenplanTag extends JPanel {
 				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
-					String ausgabe = "<html><body><center>"
-							+ p.getStundeninhalte().get(0) + " "
-							+ p.getSchoolclasses().get(0) + "<br>" + raeume
-							+ "</center></body></html>";
+					String ausgabe = createOutput(p);
 
 					for (int j = 1; j < model.getColumnCount(); j++) {
 						String zeit = model.getColumnName(j);
@@ -208,7 +205,10 @@ public class WochenplanTag extends JPanel {
 		final String br = "<br>";
 		String raeume = holeRaume(pEinheit);
 		String stundenInhalte = holeStundeninhalte(pEinheit);
-		return null;
+		String schulklassen = holeSchulklassen(pEinheit);
+		String completeOutput = outputAnfang + schulklassen + br
+				+ stundenInhalte + br + raeume + outputEnde;
+		return completeOutput;
 
 	}
 
@@ -256,8 +256,9 @@ public class WochenplanTag extends JPanel {
 	/**
 	 * Durchquert alle Schulklassen in der entsprechenden Planungseinheit und
 	 * gibt diese aus.
+	 * 
 	 * @param pEinheit
-	 * 			Die entsprechende Planungseinheit
+	 *            Die entsprechende Planungseinheit
 	 * @return
 	 */
 	public String holeSchulklassen(Planungseinheit pEinheit) {
@@ -266,6 +267,7 @@ public class WochenplanTag extends JPanel {
 			if (schulklassenOutput.length() > 0) {
 				schulklassenOutput.append("/ ");
 			}
+			schulklassenOutput.append(pEinheit.getSchoolclasses().get(i));
 		}
 		return schulklassenOutput.toString();
 	}
