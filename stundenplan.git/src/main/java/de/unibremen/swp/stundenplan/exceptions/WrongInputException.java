@@ -17,6 +17,9 @@ package de.unibremen.swp.stundenplan.exceptions;
 
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
+
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
 
 /**
@@ -43,16 +46,16 @@ public class WrongInputException extends Exception {
      */
     public WrongInputException(final String message) {
         super(message);
-        MainFrame.getWarning().setText(message);
-        MainFrame.getWarning().setColor(new Color (255, 0, 0));
+        JOptionPane.showMessageDialog(Stundenplan.getMain(), message);
+        
     }
     
     public WrongInputException() {
         super();
-        MainFrame.getWarning().setText("Eine ihrer Angaben ist nicht zulässig. "
+        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Eine ihrer Angaben ist nicht zulässig. "
         		+ "Haben Sie vielleicht einen Buchstaben zu viel geschrieben "
         		+ "oder eine Zeile leer gelassen?");
-        MainFrame.getWarning().setColor(new Color (255, 0, 0));
+        
     }
 
 }

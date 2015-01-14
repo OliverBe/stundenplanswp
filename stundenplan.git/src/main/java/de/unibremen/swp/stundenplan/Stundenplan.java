@@ -42,12 +42,14 @@ public final class Stundenplan {
      */
     private static final Logger LOGGER = Logger.getLogger(Stundenplan.class.getName());
     
+    private static MainFrame main;
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
     	Data.start();
     	final MainFrame mainFrame= new MainFrame();
+    	 main = mainFrame;
     	try {
 			Config.init(null);
 		} catch (IOException e) {
@@ -71,5 +73,9 @@ public final class Stundenplan {
      */
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
+    }
+    
+    public static MainFrame getMain() {
+    	return main;
     }
 }

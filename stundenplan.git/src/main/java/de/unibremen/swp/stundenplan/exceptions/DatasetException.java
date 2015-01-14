@@ -17,6 +17,9 @@ package de.unibremen.swp.stundenplan.exceptions;
 
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
+
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
 
 /**
@@ -43,8 +46,7 @@ public class DatasetException extends Exception {
      */
     public DatasetException(final String message) {
         super(message);
-        MainFrame.getWarning().setText(message);
-        MainFrame.getWarning().setColor(new Color (255, 0, 0));
+        JOptionPane.showMessageDialog(Stundenplan.getMain(), message);
     }
 
 }
