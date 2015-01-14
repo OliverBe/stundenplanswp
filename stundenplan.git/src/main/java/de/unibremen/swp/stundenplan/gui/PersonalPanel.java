@@ -14,10 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -37,18 +38,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.SeparatorUI;
-import javax.swing.plaf.TableHeaderUI;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -63,7 +58,9 @@ public class PersonalPanel extends JPanel {
 
 	public TextField nameField = new TextField(15);
 	public TextField kuerzField = new TextField(5);
-	public TextField timeField = new TextField(5);
+	private TextField timeField = new TextField(5);
+	private TextField timeField2 = new TextField(5);
+	
 	private JLabel lSubjects = new JLabel("Moegliche Stundeninhalte :");
 
 	public JButton button = new JButton("Personal hinzufuegen");
@@ -75,7 +72,9 @@ public class PersonalPanel extends JPanel {
 	private JList<Personal> list = new JList<Personal>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 	
-	final DefaultTableModel model = new DefaultTableModel();
+	private DefaultTableModel model;
+	
+	private DefaultTableModel model2;
 
 	/**
 	 * 
@@ -97,7 +96,19 @@ public class PersonalPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
-	private JPanel createAddPanel(final JPanel p) {
+	private JPanel createAddPanel(final JPanel p) {		
+		model = new DefaultTableModel(){
+		    @Override
+			public boolean isCellEditable(int row, int column)
+		    {
+		        if(column == 0){ 
+		        	return false;
+		        }else{
+		        	return true;
+		        }
+		    }
+		};
+		
 
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
@@ -270,9 +281,14 @@ public class PersonalPanel extends JPanel {
 					};
 
 					ArrayList<String> stdi = new ArrayList<String>();
+					int zaehler=0;
 					for (int i = 0; i < checkList.getModel().getSize(); i++) {
 						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
-						if(cb.isSelected()) stdi.add(cb.getText());
+						if(cb.isSelected()) {
+							zaehler++;
+							stdi.add(cb.getText());
+						}
+						System.out.println("STUDNENINAHLT OLI : "+stdi.get(zaehler));
 					}
 					
 					Personal pe = new Personal(nameField.getText(), kuerzField
@@ -352,11 +368,23 @@ public class PersonalPanel extends JPanel {
 		Label lTime2 = new Label("Zeitverpflichtung in h:");
 		TextField nameField2 = new TextField(15);
 		TextField kuerzField2 = new TextField(5);
-		TextField timeField2 = new TextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
+		
+		model2 = new DefaultTableModel(){
+		    @Override
+			public boolean isCellEditable(int row, int column)
+		    {
+		        if(column == 0){ 
+		        	return false;
+		        }else{
+		        	return true;
+		        }
+		    }
+		};
+		
 
 		c=new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
@@ -402,124 +430,93 @@ public class PersonalPanel extends JPanel {
 		
 		c.gridx = 0;
 		c.gridy = 3;
+		c.gridwidth = 5;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridy=4;
 		p.add(lPrefTime2, c);
 
-		@SuppressWarnings("serial")
-		final DefaultTableModel model = new DefaultTableModel(){
-		    @Override
-			public boolean isCellEditable(int row, int column)
-		    {
-		        if(column == 0){ 
-		        	return false;
-		        }else{
-		        	return true;
-		        }
-		    }
-		};
-		JTable table = new JTable(model);
-		table.setColumnSelectionAllowed(false);
+		JTable table2 = new JTable(model2);
+		table2.setColumnSelectionAllowed(false);
 
-		model.addColumn("Wochentag");
-		model.addColumn("Von (h)");
-		model.addColumn("Von (min)");
-		model.addColumn("Bis (h)");
-		model.addColumn("Bis (min)");
+		model2.addColumn("Wochentag");
+		model2.addColumn("Von (h)");
+		model2.addColumn("Von (min)");
+		model2.addColumn("Bis (h)");
+		model2.addColumn("Bis (min)");
 
 		String sh;
 		String sm;
 		String eh;
 		String em;
-
-		if (Config.DAY_STARTTIME_HOUR < 10) {
-			sh = "0" + Config.DAY_STARTTIME_HOUR;
-		} else {
-			sh = "" + Config.DAY_STARTTIME_HOUR;
-		}
-		;
-		if (Config.DAY_STARTTIME_MINUTE < 10) {
-			sm = "0" + Config.DAY_STARTTIME_MINUTE;
-		} else {
-			sm = "" + Config.DAY_STARTTIME_MINUTE;
-		}
-		;
-		if (Config.DAY_ENDTIME_HOUR < 10) {
-			eh = "0" + Config.DAY_ENDTIME_HOUR;
-		} else {
-			eh = "" + Config.DAY_ENDTIME_HOUR;
-		}
-		;
-		if (Config.DAY_ENDTIME_MINUTE < 10) {
-			em = "0" + Config.DAY_ENDTIME_MINUTE;
-		} else {
-			em = "" + Config.DAY_ENDTIME_MINUTE;
-		}
-		;
-
-	//	HashMap<Weekday,int[]> hm = pe.getWunschzeiten();
 		
-		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
-		int i=0;
-		if (Config.MONDAY) {
-			int arr[] = pe.getWunschzeiten().get(i);
-			model.addRow(new String[] { Config.MONDAY_STRING, arr[0]+"", arr[1]+"", arr[2]+"", arr[3]+""});
-			wds.add(Weekday.MONDAY);
-			i++;
+		Map<Weekday, int[]> map =new TreeMap<Weekday, int[]>(pe.getWunschzeiten());		
+		for(Entry<Weekday, int[]> entry : map.entrySet()) {
+			int[] arr = entry.getValue();
+			if(arr[0] < 10) {
+				sh="0"+arr[0];
+			}else{
+				sh=""+arr[0];
+			}
+			if(arr[1] < 10) {
+				sm="0"+arr[1];
+			}else{
+				sm=""+arr[1];
+			}
+			if(arr[2] < 10) {
+				eh="0"+arr[2];
+			}else{
+				eh=""+arr[2];
+			}
+			if(arr[3] < 10) {
+				em="0"+arr[3];
+			}else{
+				em=""+arr[3];
+			}
+			model2.addRow(new String[] { entry.getKey().toString(), sh, sm, eh, em});
 		}
-		if (Config.TUESDAY) {
-			model.addRow(new String[] { Config.TUESDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.TUESDAY);
-		}
-		if (Config.WEDNESDAY) {
-			model.addRow(new String[] { Config.WEDNESDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.WEDNESDAY);
-		}
-		if (Config.THURSDAY) {
-			model.addRow(new String[] { Config.THURSDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.THURSDAY);
-		}
-		if (Config.FRIDAY) {
-			model.addRow(new String[] { Config.FRIDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.FRIDAY);
-		}
-		if (Config.SATURDAY) {
-			model.addRow(new String[] { Config.SATURDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.SATURDAY);
-		}
-		if (Config.SUNDAY) {
-			model.addRow(new String[] { Config.SUNDAY_STRING, sh, sm, eh, em });
-			wds.add(Weekday.SUNDAY);
-		}
-
-		c.gridy = 4;
-		c.gridwidth = 5;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		p.add(table.getTableHeader(), c);
 		c.gridy = 5;
-		p.add(table, c);
-
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(table2.getTableHeader(), c);
 		c.gridy = 6;
-		c.gridheight = 2;
-		c.gridwidth = 1;
-		lSubjects2.setFont(new Font(nameField.getFont().getFontName(),
+		p.add(table2, c);
+		c.gridy=7;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+
+		c.gridy = 8;
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
+		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
 				Font.PLAIN, nameField.getFont().getSize()));
-		p.add(lSubjects2, c);
-		c.gridheight = 1;
-		c.gridx = 1;
+		p.add(lSubjects, c);
+		
+		c.anchor = GridBagConstraints.WEST;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridheight = 2;
+		c.gridy=9;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
-		 for(Stundeninhalt s :
-		 StundeninhaltManager.getAllStundeninhalteFromDB()){
-		 boxes.add(new JCheckBox(s.getKuerzel()));
+		 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+			 boxes.add(new JCheckBox(s.getKuerzel()));
 		 };
-		boxes.add(new JCheckBox("Ma"));
+		 
+		 for(JCheckBox jcb : boxes){
+				for(String s : pe.getMoeglicheStundeninhalte()){
+					if(jcb.getText().equals(s)) jcb.setSelected(true);
+				}	
+			}	
 
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 		
 		c.gridx = 0;
-		c.gridy = 8;
-		c.gridwidth = 5;
+		c.gridy = 11;
+		c.gridwidth = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button2, c);
 
@@ -531,29 +528,30 @@ public class PersonalPanel extends JPanel {
 
 					if (!check(p))
 						throw new WrongInputException();
+					
 					HashMap<Weekday, int[]> wunsch = new HashMap<Weekday, int[]>();
 
-					for (int i = 0; i < wds.size(); i++) {
-						int[] arr = {Integer.parseInt((String) model.getValueAt(i,1)),
-								Integer.parseInt((String) model.getValueAt(i,2)),
-								Integer.parseInt((String) model.getValueAt(i,3)),
-								Integer.parseInt((String) model.getValueAt(i,4))};
-					
-						wunsch.put(wds.get(i), arr);
+					for (int i = 0; i < model2.getRowCount(); i++) {
+						int[] arr = {Integer.parseInt((String) model2.getValueAt(i,1)),
+								Integer.parseInt((String) model2.getValueAt(i,2)),
+								Integer.parseInt((String) model2.getValueAt(i,3)),
+								Integer.parseInt((String) model2.getValueAt(i,4))};			
+						wunsch.put(Weekday.getDay((String) model2.getValueAt(i, 0)), arr);
 					};
 
 					ArrayList<String> stunden = new ArrayList<String>();
-					for(int i=0; i<checkList.getSelectedValuesList().size();i++){
-						JCheckBox cb = (JCheckBox)checkList.getSelectedValuesList().get(i);
-						stunden.add(cb.getText());
+					for (int i = 0; i < checkList.getModel().getSize(); i++) {
+						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
+						if(cb.isSelected()) stunden.add(cb.getText());
 					}
 					
-					Personal pe = new Personal(nameField.getText(), kuerzField
-							.getText(), Integer.parseInt(timeField.getText()),
-							lehrerB2.isSelected(), stunden, wunsch);
-					PersonalManager.addPersonalToDb(pe);
-					
-					 updateList();
+					PersonalManager.editPersonal(pe.getKuerzel(),new Personal(nameField2.getText(), kuerzField2
+							.getText(), Integer.parseInt(timeField2.getText()),
+							lehrerB2.isSelected(), stunden, wunsch));
+	
+					updateList();
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					topFrame.dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -561,9 +559,9 @@ public class PersonalPanel extends JPanel {
 			}
 		});
 		
-		c.gridwidth=2;
-		c.fill=GridBagConstraints.HORIZONTAL;
-		add(button3,c);
+		c.gridx = 3;
+		c.gridwidth = 2;
+		p.add(button3,c);
 		
 		// abbruch Button
 				button3.addActionListener(new ActionListener() {
@@ -579,13 +577,26 @@ public class PersonalPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-			Integer.parseInt(timeField.getText());
-			for (int i = 0; i < model.getRowCount(); i++) {
-				Integer.parseInt((String) model.getValueAt(i,1));
-				Integer.parseInt((String) model.getValueAt(i,2));
-				Integer.parseInt((String) model.getValueAt(i,3));
-				Integer.parseInt((String) model.getValueAt(i,4));
-			};
+//			for (int i = 0; i < model.getRowCount(); i++) {
+//				Integer.parseInt((String) model.getValueAt(i,1));
+//				Integer.parseInt((String) model.getValueAt(i,2));
+//				Integer.parseInt((String) model.getValueAt(i,3));
+//				Integer.parseInt((String) model.getValueAt(i,4));
+//			};
+			for (Component c : p.getComponents()) {
+				if (c == timeField)
+					Integer.parseInt(timeField.getText());
+				if (c == timeField2)
+					Integer.parseInt(timeField2.getText());
+//				if (c == model){
+//					for (int i = 0; i < model.getRowCount(); i++) {
+//						Integer.parseInt((String) model.getValueAt(i,1));
+//						Integer.parseInt((String) model.getValueAt(i,2));
+//						Integer.parseInt((String) model.getValueAt(i,3));
+//						Integer.parseInt((String) model.getValueAt(i,4));
+//					};
+//				};
+			}
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -610,7 +621,7 @@ public class PersonalPanel extends JPanel {
 
 	public static void updateList() {
 		listModel.clear();
-		for (Personal per : DataPersonal.getAllPersonal()){
+		for (Personal per : PersonalManager.getAllPersonalFromDB()){
 			 listModel.addElement(per);
 		 }
 	}

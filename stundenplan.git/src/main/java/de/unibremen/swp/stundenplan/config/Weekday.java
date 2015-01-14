@@ -134,4 +134,25 @@ public enum Weekday {
     		throw new IllegalArgumentException("Tag nicht vorhanden!");
     	}
     }
+    
+    public static Weekday getDay(String s) {
+    	switch(s) {
+    	case "Montag":
+    		return MONDAY;
+    	case "Dienstag":
+    		return TUESDAY;
+    	case "Mittwoch":
+    		return WEDNESDAY;
+    	case "Donnerstag":
+    		return THURSDAY;
+    	case "Freitag":
+    		return FRIDAY;
+    	case "Samstag":
+    		return SATURDAY;
+    	case "Sonntag":
+    		return SUNDAY;
+    	default:
+    		throw new IllegalArgumentException("Tag nicht vorhanden!");
+    	}
+    }
 }

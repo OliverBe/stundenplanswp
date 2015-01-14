@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -28,12 +29,15 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.RaumManager;
 
 public class RoomPanel extends JPanel {
 
@@ -131,7 +135,7 @@ public class RoomPanel extends JPanel {
 						if(cb.isSelected()) rf.add(cb.getText());
 					}
 
-					DataRaum.addRaum(new Room(nameField.getText(), (int) jcb
+					RaumManager.addRaumToDB(new Room(nameField.getText(), (int) jcb
 							.getSelectedItem(), rf));
 
 					updateList();
@@ -146,7 +150,7 @@ public class RoomPanel extends JPanel {
 
 	private JPanel createListPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
-		p.setBorder(BorderFactory.createTitledBorder("Existierende R�ume"));
+		p.setBorder(BorderFactory.createTitledBorder("Existierende Raeume"));
 
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -271,6 +275,8 @@ public class RoomPanel extends JPanel {
 							.getSelectedItem(), rf2));
 
 					updateList();
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+					topFrame.dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -285,7 +291,8 @@ public class RoomPanel extends JPanel {
 		// abbruch Button
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				((JFrame) p.getParent()).dispose();
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
+				topFrame.dispose();
 			}
 		});
 		return p;

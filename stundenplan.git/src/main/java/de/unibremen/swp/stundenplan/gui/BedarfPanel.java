@@ -125,6 +125,7 @@ public class BedarfPanel extends JPanel {
 				try {
 					if (!check(p))
 						throw new WrongInputException();
+					
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(((Stundeninhalt) cb2.getSelectedItem()).getKuerzel(),
 							Integer.parseInt(bedField.getText()));

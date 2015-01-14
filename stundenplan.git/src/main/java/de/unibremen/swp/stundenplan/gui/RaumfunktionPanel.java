@@ -32,9 +32,9 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.RaumManager;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class RaumfunktionPanel extends JPanel {
 	private Label lName = new Label("Name der Funktion");
@@ -91,7 +91,7 @@ public class RaumfunktionPanel extends JPanel {
 		c.gridheight=2;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
-		for (Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
+		for (Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()) {
 			boxes.add(new JCheckBox(s.getKuerzel()));
 		};
 		checkList.setListData(boxes.toArray());
@@ -114,7 +114,7 @@ public class RaumfunktionPanel extends JPanel {
 					}
 
 					rf = new Raumfunktion(tf.getText(), stdi);
-					DataRaum.addRaumfunktion(rf);
+					RaumManager.addRaumfunktionToDB(rf);
 
 					updateList();
 
@@ -209,7 +209,7 @@ public class RaumfunktionPanel extends JPanel {
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
-		for (Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
+		for (Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()) {
 			boxes.add(new JCheckBox(s.getKuerzel()));
 		};
 		
@@ -241,7 +241,7 @@ public class RaumfunktionPanel extends JPanel {
 					}
 
 					rf2 = new Raumfunktion(tf2.getText(), stdi);
-					DataRaum.editRaumfunktion(rf.getName(), rf2);
+					RaumManager.editRaumfunktion(rf.getName(), rf2);
 					updateList();				
 					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
 					topFrame.dispose();
@@ -284,7 +284,7 @@ public class RaumfunktionPanel extends JPanel {
 	
 	public static void updateList(){
 		listModel.clear();
-		for (Raumfunktion r : DataRaum.getAllRaumfunktion()) {
+		for (Raumfunktion r : RaumManager.getAllRaumfunktionFromDB()) {
 			listModel.addElement(r);
 		}
 	}
