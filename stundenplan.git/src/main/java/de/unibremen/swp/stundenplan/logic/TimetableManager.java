@@ -331,25 +331,25 @@ public final class TimetableManager {
         return display;
     }
 
-    public static int startTimeMinute() {
+    private static int startTimeMinute() {
 	// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_STARTTIME_MINUTE_STRING,
 	            Config.DAY_STARTTIME_MINUTE);
 	}
 
-	public static int startTimeHour() {
+	private static int startTimeHour() {
 		// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_STARTTIME_HOUR_STRING,
 	            Config.DAY_STARTTIME_HOUR);
 	}
 
-	public static int endTimeMinute() {
+	private static int endTimeMinute() {
 	// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_ENDTIME_MINUTE_STRING,
 	            Config.DAY_ENDTIME_MINUTE);
 	}
 
-	public static int endTimeHour() {
+	private static int endTimeHour() {
 		// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_ENDTIME_HOUR_STRING,
 	            Config.DAY_ENDTIME_HOUR);

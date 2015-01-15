@@ -133,16 +133,12 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				JFrame frame = new PEedit();
-				frame.setVisible(true);
 			}
 		});
 		menu2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				JFrame frame = new PEedit();
-				frame.setVisible(true);
 			}
 		});
 		popmen.add(menu1);

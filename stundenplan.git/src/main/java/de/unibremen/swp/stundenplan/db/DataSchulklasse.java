@@ -87,23 +87,6 @@ public class DataSchulklasse {
 		return allSchulklasse;
 	}
 	
-	public static ArrayList<String> getAllNameFromSchulklasse(){
-		try{ 
-			sql = "SELECT name FROM Schulklasse";
-			ResultSet rs = stmt.executeQuery(sql);
-			ArrayList<String> names = new ArrayList<>();
-			while(rs.next()){
-				names.add(rs.getString("name"));
-			}
-			
-			return names;
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	public static void deleteSchulklasseByName(String pName) {
 		try {
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
