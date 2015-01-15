@@ -304,7 +304,7 @@ public class WochenplanTag extends JPanel {
 		e1.setWeekday(Weekday.MONDAY);
 		e1.addRoom(r1);
 		e1.addRoom(r2);
-		e1.addSchulklassen(s1);
+	//	e1.addSchulklassen(s1);
 		e1.addStundeninhalt(fach);
 		einheitsliste.add(e1);
 	}
