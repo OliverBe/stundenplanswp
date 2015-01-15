@@ -78,6 +78,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					System.out.println("[Undone]: "+CommandHistory.getLast().toString());
 					CommandHistory.getLast().undo();
 					CommandHistory.deleteLast();
 					checkSelectedTab();
