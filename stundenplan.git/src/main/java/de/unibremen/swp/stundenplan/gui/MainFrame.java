@@ -4,11 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +23,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import de.unibremen.swp.stundenplan.command.CommandHistory;
+import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
 public class MainFrame extends JFrame {
 
@@ -43,8 +52,10 @@ public class MainFrame extends JFrame {
 
 		initComponents();
 		pack();
-		setVisible(true);
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
+		
+		setVisible(true);
 	}
 
 	private void initComponents() {
@@ -57,6 +68,22 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Wochenplan", paneWochen);
 		tabpane.addTab("Einstellungen", paneConfig);
 
+		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
+		JButton button1 = new JButton(revert);
+		add(button1, BorderLayout.EAST);
+		button1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					CommandHistory.getLast().undo();
+					CommandHistory.deleteLast();
+					checkSelectedTab();
+				}catch (StundenplanException e){
+					System.out.println("[COMMANDHISTORY]: Keine Befehle in History.");
+				}
+			}});
+		
 		setJMenuBar(menu);
 		add(tabpane);
 		add(paneWarning, BorderLayout.SOUTH);

@@ -1,5 +1,6 @@
 package de.unibremen.swp.stundenplan.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,10 +53,7 @@ public class MenuBar extends JMenuBar{
 		add(data);
 		edit.add(undo);
 		add(edit);
-		
-		ImageIcon revert = new ImageIcon("revert.png");
-		JButton button2 = new JButton("UndoButton", revert);
-		add(button2);
+
 		
 		newClick(neww);
 		openClick(open);

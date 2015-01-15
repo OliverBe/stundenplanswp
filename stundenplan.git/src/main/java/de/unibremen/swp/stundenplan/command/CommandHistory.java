@@ -2,6 +2,8 @@ package de.unibremen.swp.stundenplan.command;
 
 import java.util.ArrayList;
 
+import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
+
 /**
  * Verwaltet die History der ausgeführten Commands.
  * (Im Hinblick auf Undo-Funktion)
@@ -20,17 +22,18 @@ public class CommandHistory {
 		commandHistory.add(c);
 	}
 	
-	public static Command getLast(){
-		if(commandHistory.size() > 0) return commandHistory.get(commandHistory.size() - 1);
-		
-		System.out.println("[COMMANDHISTORY]: No Command in history yet.");
-		return null;
+	public static Command getLast() throws StundenplanException{
+		if(commandHistory.size() > 0){ 
+			return commandHistory.get(commandHistory.size() - 1);
+		}else{
+			throw new StundenplanException("Keine Befehle zum rückgängig machen verfügbar.");
+		}
 	}
 	
 	public static void deleteLast(){
 		try{
 			commandHistory.remove(CommandHistory.getLast());
-		}catch(NullPointerException n){
+		}catch(StundenplanException n){
 			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		}
 	}
