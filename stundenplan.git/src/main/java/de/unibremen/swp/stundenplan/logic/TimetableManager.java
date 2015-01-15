@@ -296,6 +296,7 @@ public final class TimetableManager {
     public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
         DayTable dayTable;
         if(clazz instanceof Personal){
+        	System.out.println("Personal Time Table");
         	dayTable = createTimeslotsForPersonal(weekday, (Personal)clazz);
         }else if(clazz instanceof Schoolclass){
         	dayTable = createTimeslotsForSchoolclass(weekday, (Schoolclass)clazz);

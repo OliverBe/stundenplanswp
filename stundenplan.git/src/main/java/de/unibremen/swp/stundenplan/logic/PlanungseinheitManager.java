@@ -256,7 +256,7 @@ public final class PlanungseinheitManager {
 			Weekday pWeekday, final Personal pPerson) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsPersonal(pPerson) || p.isWeekday(pWeekday)){
+			if(p.containsPersonal(pPerson) && p.isWeekday(pWeekday)){
 				pes.add(p);
 				}
 		}
@@ -279,7 +279,7 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
 		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsClass(pSchoolclass) || p.isWeekday(pWeekday)){
+			if(p.containsClass(pSchoolclass) && p.isWeekday(pWeekday)){
 				pes.add(p);
 				}
 		}
@@ -303,7 +303,7 @@ public final class PlanungseinheitManager {
 
 		// hier muss die Liste geholt werden
 		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsRoom(pRoom) || p.isWeekday(pWeekday)){
+			if(p.containsRoom(pRoom) && p.isWeekday(pWeekday)){
 				pes.add(p);
 				}
 		}
@@ -389,26 +389,66 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * TO-DO pr�ft ob zwei Planungseinheiten sich �berschneiden im selben Tag.
+	 * TO-DO prueft ob zwei Planungseinheiten sich ueberschneiden im selben Tag.
 	 * 
 	 * @return
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
+		if(checkPEandTime(p1,p2.getStartHour(), p2.getStartminute())){
+			return true;
+		}else if(checkPEandTime(p1,p2.getEndhour(), p2.getEndminute())){
+			return true;
+		}else if(checkPEandTime(p2,p1.getStartHour(), p1.getStartminute())){
+			return true;
+		}else if(checkPEandTime(p2,p1.getEndhour(), p1.getEndminute())){
+			return true;
+		}
 		return false;
 	}
 	
 	/**
-	 * TO-DO pr�ft ob Zeitpunkt sich mit PE �berschneidet im selben Tag.
+	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
 	 * 
 	 * @return
 	 */
 	public static boolean checkPEandTime(final Planungseinheit p1,
-			final int startHour, final int startMinute) {
-		if (startHour >= p1.getStartHour() && startHour <= p1.getEndhour()) {
+			final int hour, final int minute) {
+		if (hour > p1.getStartHour() && hour < p1.getEndhour()) {
+			return true;
+		}else if(hour== p1.getStartHour() && minute >= p1.getStartminute()){
+				return true;
+		}else if(hour== p1.getEndhour() && minute <= p1.getEndminute()){
 			return true;
 		}
 		return false;
+	}
+	
+	public static void checkPetimetest(){
+		Planungseinheit p1 = new Planungseinheit();
+		p1.setStarthour(9);
+		p1.setStartminute(30);
+		p1.setEndhour(10);
+		p1.setEndminute(30);
+		Planungseinheit p2 = new Planungseinheit();
+		p2.setStarthour(11);
+		p2.setStartminute(30);
+		p2.setEndhour(12);
+		p2.setEndminute(30);
+		System.out.println("true "+checkPEandTime(p1, 9, 30));
+		System.out.println("true "+checkPEandTime(p1, 10, 0));
+		System.out.println("true "+checkPEandTime(p1, 10, 30));
+		System.out.println("false "+checkPEandTime(p1, 10, 45));
+		System.out.println("false "+checkPEandTime(p1, 9, 15));
+		System.out.println("false "+checkPEandTime(p1, 8, 15));
+		System.out.println("false "+checkPEandTime(p1, 11, 15));
+		System.out.println("2pecomparison : false "+checktwoPEs(p1, p2));
+		p2.setStarthour(10);
+		p2.setStartminute(15);
+		System.out.println("2pecomparison : true "+checktwoPEs(p1, p2));
+		p2.setStarthour(9);
+		p2.setStartminute(15);
+		System.out.println("2pecomparison : true "+checktwoPEs(p1, p2));
 	}
 	
 	/**
