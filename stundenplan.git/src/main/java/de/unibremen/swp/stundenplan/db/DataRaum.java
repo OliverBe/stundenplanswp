@@ -83,6 +83,23 @@ public class DataRaum {
 		return allRaum;
 	}
 	
+	public static ArrayList<String> getAllNameFromRaum(){
+				try{ 
+					sql = "SELECT name FROM Raum";
+					ResultSet rs = stmt.executeQuery(sql);
+					ArrayList<String> names = new ArrayList<>();
+					while(rs.next()){
+						names.add(rs.getString("name"));
+					}
+					
+					return names;
+					
+				}catch (SQLException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+	
 	public static void deleteRaumByName(String pName) {
 		try {
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";

@@ -65,6 +65,23 @@ public class DataStundeninhalt {
 		return allStundeninhalt;
 	}
 	
+	public static ArrayList<String> getAllAcronymsFromStundeninhalt(){
+				try{ 
+					sql = "SELECT kuerzel FROM Stundeninhalt";
+					ResultSet rs = stmt.executeQuery(sql);
+					ArrayList<String> kuerzels = new ArrayList<>();
+					while(rs.next()){
+						kuerzels.add(rs.getString("kuerzel"));
+					}
+					
+					return kuerzels;
+					
+				}catch (SQLException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+	
 	public static void deleteStundeninhaltByKuerzel(String pKuerzel) {
 		try {
 			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
