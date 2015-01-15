@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -50,6 +52,10 @@ public class MenuBar extends JMenuBar{
 		add(data);
 		edit.add(undo);
 		add(edit);
+		
+		ImageIcon revert = new ImageIcon("revert.png"); 
+		JButton button2 = new JButton("UndoButton", revert);
+		add(button2);
 		
 		newClick(neww);
 		openClick(open);
