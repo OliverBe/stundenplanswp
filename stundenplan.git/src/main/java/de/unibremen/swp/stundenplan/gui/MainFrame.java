@@ -68,10 +68,11 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Wochenplan", paneWochen);
 		tabpane.addTab("Einstellungen", paneConfig);
 
+		// Der Undo-Button und Funktionen etc.
 		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
-		JButton button1 = new JButton(revert);
-		add(button1, BorderLayout.EAST);
-		button1.addActionListener(new ActionListener(){
+		JButton undo = new JButton(revert);
+		add(undo, BorderLayout.EAST);
+		undo.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
