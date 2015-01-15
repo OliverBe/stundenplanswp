@@ -29,19 +29,19 @@ public final class PlanungseinheitManager {
 	
 	public static void addPlanungseinheitToDB(Planungseinheit pl){
 		System.out.println("Adding Planungseinheit ["+pl.getId()+"] to DB...");
-		AddPlanungseinheitToDB addPl = new AddPlanungseinheitToDB();
 		pl.setId(createId());
+		AddPlanungseinheitToDB addPl = new AddPlanungseinheitToDB();
 		addPl.execute(pl);
 		System.out.println("Planungseinheit ["+pl.getId()+"] added.");
 	}
 	
 	/**
-	 * Bearbeitet eine Planungseinheit aus der DB. Bearbeiten findet im wörtlichen Sinne nicht statt,
-	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * Bearbeitet eine Planungseinheit aus der DB. Bearbeiten findet im wï¿½rtlichen Sinne nicht statt,
+	 * das ausgewï¿½hlte Objekt wird mit einem neuen ï¿½berschrieben.
 	 * @param pId 
 	 * 			Die ID der Planungseinheit, die bearbeitet werden soll.
 	 * @param pl
-	 * 			Die Planungseinheit, mit der die alte Planungseinheit überschrieben wird.
+	 * 			Die Planungseinheit, mit der die alte Planungseinheit ï¿½berschrieben wird.
 	 */
 	public static void editPlanungseinheit(int pId, Planungseinheit pl){
 		System.out.println("Editing Planungseinheit ["+pId+"].");
@@ -222,7 +222,7 @@ public final class PlanungseinheitManager {
 	} 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurï¿½ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -244,7 +244,7 @@ public final class PlanungseinheitManager {
 	
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurï¿½ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -266,7 +266,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurï¿½ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -289,7 +289,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
-	 * zurückgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurï¿½ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -312,7 +312,7 @@ public final class PlanungseinheitManager {
 	}
 	
 	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
-    	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zurück.
+    	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zurï¿½ck.
     	ArrayList<Planungseinheit> pes;
     	if(pOwner instanceof Personal){
     		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex], (Personal)pOwner);
@@ -389,7 +389,7 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * TO-DO prüft ob zwei Planungseinheiten sich überschneiden im selben Tag.
+	 * TO-DO prï¿½ft ob zwei Planungseinheiten sich ï¿½berschneiden im selben Tag.
 	 * 
 	 * @return
 	 */
@@ -399,7 +399,7 @@ public final class PlanungseinheitManager {
 	}
 	
 	/**
-	 * TO-DO prüft ob Zeitpunkt sich mit PE überschneidet im selben Tag.
+	 * TO-DO prï¿½ft ob Zeitpunkt sich mit PE ï¿½berschneidet im selben Tag.
 	 * 
 	 * @return
 	 */

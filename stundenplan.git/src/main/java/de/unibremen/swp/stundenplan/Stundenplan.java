@@ -57,7 +57,7 @@ public final class Stundenplan {
 			e.printStackTrace();
 		}
     	//PEtest
-    	if(PlanungseinheitManager.getAllPlanungseinheitFromDB().size() != 0){
+    	if(PlanungseinheitManager.getAllPlanungseinheitFromDB().size() == 0){
     		PlanungseinheitManager.preparedemo();
     	}
     	}
