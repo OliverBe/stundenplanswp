@@ -25,6 +25,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.unibremen.swp.stundenplan.command.CommandHistory;
+import de.unibremen.swp.stundenplan.exceptions.CommandHistoryException;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
 public class MainFrame extends JFrame {
@@ -80,7 +81,7 @@ public class MainFrame extends JFrame {
 					CommandHistory.getLast().undo();
 					CommandHistory.deleteLast();
 					checkSelectedTab();
-				}catch (StundenplanException e){
+				}catch (CommandHistoryException e){
 					System.out.println("[COMMANDHISTORY]: Keine Befehle in History.");
 				}
 			}});

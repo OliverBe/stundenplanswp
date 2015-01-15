@@ -23,6 +23,6 @@ public class AddPersonalToDB implements Command {
 	
 	@Override
 	public void undo(){	
-		DataPersonal.addPersonal(personal);
+		DataPersonal.deletePersonalByKuerzel((personal.getKuerzel()));
 	}
 }

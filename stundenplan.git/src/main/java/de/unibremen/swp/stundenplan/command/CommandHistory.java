@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.command;
 
 import java.util.ArrayList;
 
+import de.unibremen.swp.stundenplan.exceptions.CommandHistoryException;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
 /**
@@ -22,18 +23,18 @@ public class CommandHistory {
 		commandHistory.add(c);
 	}
 	
-	public static Command getLast() throws StundenplanException{
+	public static Command getLast() throws CommandHistoryException{
 		if(commandHistory.size() > 0){ 
 			return commandHistory.get(commandHistory.size() - 1);
 		}else{
-			throw new StundenplanException("Keine Befehle zum rückgängig machen verfügbar.");
+			throw new CommandHistoryException("Keine Befehle zum rückgängig machen verfügbar.");
 		}
 	}
 	
 	public static void deleteLast(){
 		try{
 			commandHistory.remove(CommandHistory.getLast());
-		}catch(StundenplanException n){
+		}catch(CommandHistoryException n){
 			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		}
 	}
