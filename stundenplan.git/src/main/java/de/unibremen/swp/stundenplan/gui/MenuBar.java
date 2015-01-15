@@ -53,7 +53,7 @@ public class MenuBar extends JMenuBar{
 		edit.add(undo);
 		add(edit);
 		
-		ImageIcon revert = new ImageIcon("revert.png"); 
+		ImageIcon revert = new ImageIcon("revert.png");
 		JButton button2 = new JButton("UndoButton", revert);
 		add(button2);
 		
