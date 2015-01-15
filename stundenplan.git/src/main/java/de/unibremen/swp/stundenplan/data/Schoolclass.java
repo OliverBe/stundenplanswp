@@ -54,10 +54,12 @@ public final class Schoolclass extends Jahrgang{
     	
     }
 
-    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum) {
+    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
 		name = pName;
 		jahrgang = pJahrgang;
 		klassenraum = pKlassenraum;
+		klassenlehrer=pKlassenlehrer;
+		stundenbedarf=pStundenbedarf;
 	}
 
 	/**

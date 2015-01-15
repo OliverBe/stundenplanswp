@@ -53,7 +53,7 @@ public class WochenplanTag extends JPanel {
 	public Planungseinheit e2 = new Planungseinheit();
 	public Room r1 = new Room("MZH 1100", 1);
 	public Room r2 = new Room("SGF 0140", 2);
-	public Schoolclass s1 = new Schoolclass("K1", 5, r1);
+//	public Schoolclass s1 = new Schoolclass("K1", 5, r1);
 	public Stundeninhalt fach = new Stundeninhalt("Mathe", "Ma", 90, 0);
 
 	public List<Planungseinheit> einheitsliste = new ArrayList<>();

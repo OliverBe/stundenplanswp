@@ -288,7 +288,6 @@ public class PersonalPanel extends JPanel {
 							zaehler++;
 							stdi.add(cb.getText());
 						}
-						System.out.println("STUDNENINAHLT OLI : "+stdi.get(zaehler));
 					}
 					
 					Personal pe = new Personal(nameField.getText(), kuerzField
@@ -577,25 +576,35 @@ public class PersonalPanel extends JPanel {
 		if (textFieldsEmpty(p))
 			return false;
 		try {
-//			for (int i = 0; i < model.getRowCount(); i++) {
-//				Integer.parseInt((String) model.getValueAt(i,1));
-//				Integer.parseInt((String) model.getValueAt(i,2));
-//				Integer.parseInt((String) model.getValueAt(i,3));
-//				Integer.parseInt((String) model.getValueAt(i,4));
-//			};
+			if(model!=null){
+				for (int i = 0; i < model.getRowCount(); i++) {
+					Integer.parseInt((String) model.getValueAt(i, 1));
+					Integer.parseInt((String) model.getValueAt(i, 2));
+					Integer.parseInt((String) model.getValueAt(i, 3));
+					Integer.parseInt((String) model.getValueAt(i, 4));
+					if((Integer.parseInt((String) model.getValueAt(i, 1))>23)) return false;
+					if((Integer.parseInt((String) model.getValueAt(i, 2))>59)) return false;
+					if((Integer.parseInt((String) model.getValueAt(i, 3))>23)) return false;
+					if((Integer.parseInt((String) model.getValueAt(i, 4))>59)) return false;
+				}
+			}
+			if(model2!=null){
+				for (int i = 0; i < model.getRowCount(); i++) {
+					Integer.parseInt((String) model.getValueAt(i, 1));
+					Integer.parseInt((String) model.getValueAt(i, 2));
+					Integer.parseInt((String) model.getValueAt(i, 3));
+					Integer.parseInt((String) model.getValueAt(i, 4));
+					if((Integer.parseInt((String) model2.getValueAt(i, 1))>23)) return false;
+					if((Integer.parseInt((String) model2.getValueAt(i, 2))>59)) return false;
+					if((Integer.parseInt((String) model2.getValueAt(i, 3))>23)) return false;
+					if((Integer.parseInt((String) model2.getValueAt(i, 4))>59)) return false;
+				}
+			}
 			for (Component c : p.getComponents()) {
 				if (c == timeField)
 					Integer.parseInt(timeField.getText());
 				if (c == timeField2)
 					Integer.parseInt(timeField2.getText());
-//				if (c == model){
-//					for (int i = 0; i < model.getRowCount(); i++) {
-//						Integer.parseInt((String) model.getValueAt(i,1));
-//						Integer.parseInt((String) model.getValueAt(i,2));
-//						Integer.parseInt((String) model.getValueAt(i,3));
-//						Integer.parseInt((String) model.getValueAt(i,4));
-//					};
-//				};
 			}
 		} catch (NumberFormatException e) {
 			return false;

@@ -58,7 +58,7 @@ public class DataSchulklasse {
 			String name = rs.getString("name");
 			int jahrgang = rs.getInt("jahrgang");
 			String klassenraumName = rs.getString("klassenraumName");
-			return new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName));
+		//	return new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class DataSchulklasse {
 				int jahrgang = rs.getInt("jahrgang");
 				String klassenraumName = rs.getString("klassenraumName");
 				klassenraumNamen.add(klassenraumName);
-				allSchulklasse.add(new Schoolclass(name, jahrgang, null));
+			//	allSchulklasse.add(new Schoolclass(name, jahrgang, null));
 			}
 			for(int i=0;i<allSchulklasse.size();i++) {
 				allSchulklasse.get(i).setKlassenraum(DataRaum.getRaumByName(klassenraumNamen.get(i)));

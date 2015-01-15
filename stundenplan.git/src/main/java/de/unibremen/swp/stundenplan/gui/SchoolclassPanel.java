@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,12 +19,15 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,11 +40,13 @@ import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class SchoolclassPanel extends JPanel{
 	
 	private Label jahr = new Label("Jahrgang: ");
 	private Label bez = new Label("Zusatzbezeichner: ");
+	private JLabel lKt = new JLabel("Klassenteam: ");
 
 	public JTextField bezField = new JTextField(5);
 	
@@ -77,7 +83,7 @@ public class SchoolclassPanel extends JPanel{
 	private JPanel createAddPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Neue Schulklasse hinzufuegen"));
-		c.insets=new Insets(1,5,1,1);
+		c.insets=new Insets(8,5,1,1);
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx=0;
 		c.gridy=0;
@@ -91,8 +97,22 @@ public class SchoolclassPanel extends JPanel{
 	    p.add(bezField,c);
 		c.gridx=0;
 		c.gridy=2;
-		p.add(new Label("Klassenteam:"),c);
-		c.gridx=1;
+		c.gridwidth = 2;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
+			
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.fill=GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
+		lKt.setFont(new Font(jg.getFont().getFontName(),
+				Font.PLAIN, jg.getFont().getSize()));
+		p.add(lKt,c);
+		c.gridy=4;
+		
+		c.anchor = GridBagConstraints.WEST;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridheight = 2;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		 for(Personal per : DataPersonal.getAllPersonal()){
@@ -100,8 +120,10 @@ public class SchoolclassPanel extends JPanel{
 		 };
 		checkList.setListData(boxes.toArray());
 		p.add(checkList, c);
-		c.gridx=0;
-	    c.gridy=3;
+
+	    c.gridy=6;
+	    c.gridheight=1;
+	    c.gridwidth=1;
 		p.add(new Label("Klassenraum:"),c);
 		c.gridx=1;
 		
@@ -112,7 +134,7 @@ public class SchoolclassPanel extends JPanel{
 	    final DefaultTableModel model = new DefaultTableModel();
 	    model.addColumn("Stundeninhalt");
 	    model.addColumn("Bedarf");
-	    for(Stundeninhalt si : DataStundeninhalt.getAllStundeninhalte()) {
+	    for(Stundeninhalt si : StundeninhaltManager.getAllStundeninhalteFromDB()) {
 	    	model.addRow(new String[] {si.getKuerzel(), "0"});
 	    }
 	    for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().entrySet()) {
@@ -150,16 +172,16 @@ public class SchoolclassPanel extends JPanel{
 //	    JList<String> list = new JList<String>( dummyList );
 		
 	    c.gridx=0;
-	    c.gridy=4;
+	    c.gridy=7;
 	    c.gridwidth=2;
 	    c.fill=GridBagConstraints.HORIZONTAL;
 	    p.add(table.getTableHeader(),c);
 	    
-	    c.gridy=5;
+	    c.gridy=8;
 	    c.gridx=0; 
 	    p.add(table,c);
 	    
-	    c.gridy=6;
+	    c.gridy=9;
 	    c.gridx=0;
 		p.add(button,c);   
 		button.addActionListener(new ActionListener() {
@@ -170,7 +192,7 @@ public class SchoolclassPanel extends JPanel{
 					
 					
 					
-				//	DataSchulklasse.addSchulklasse(schulklasse);
+					DataSchulklasse.addSchulklasse(new Schoolclass());
 					
 					updateList();				
 

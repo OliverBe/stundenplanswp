@@ -1,5 +1,6 @@
 package de.unibremen.swp.stundenplan.gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -23,6 +24,8 @@ public class MenuBar extends JMenuBar{
 	private static final long serialVersionUID = 1L;
 	
 	private JMenu data = new JMenu("Datei");
+	private JMenu edit = new JMenu("Edit");
+	private JMenuItem undo = new JMenuItem("Rückgängig");
 	private JMenuItem neww = new JMenuItem("Neue Datei");
 	private JMenuItem open = new JMenuItem("Öffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
@@ -45,11 +48,14 @@ public class MenuBar extends JMenuBar{
 		data.add(save);
 		data.add(export);
 		add(data);
+		edit.add(undo);
+		add(edit);
 		
 		newClick(neww);
 		openClick(open);
 		saveClick(save);
 		exportClick(export);
+		undoClick(undo);
 		
 		
 		//Shortcuts
@@ -57,6 +63,7 @@ public class MenuBar extends JMenuBar{
 		open.setAccelerator(KeyStroke.getKeyStroke( 'O', InputEvent.CTRL_DOWN_MASK ));
 		save.setAccelerator(KeyStroke.getKeyStroke( 'S', InputEvent.CTRL_DOWN_MASK ));
 		export.setAccelerator(KeyStroke.getKeyStroke( 'E', InputEvent.CTRL_DOWN_MASK ));
+		undo.setAccelerator(KeyStroke.getKeyStroke('Z', InputEvent.CTRL_DOWN_MASK));
 	}
 	
 	private void newClick(JMenuItem item) {
@@ -91,6 +98,15 @@ public class MenuBar extends JMenuBar{
 			
 			public void actionPerformed(ActionEvent ae) {
 				ExportPDF.createPDF();
+			}
+		});
+	}
+	
+	private void undoClick(JMenuItem item) {
+		item.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent ae) {
+				//undo
 			}
 		});
 	}
