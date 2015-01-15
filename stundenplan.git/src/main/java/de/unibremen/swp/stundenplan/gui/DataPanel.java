@@ -49,6 +49,7 @@ public class DataPanel extends JPanel {
 	private JMenuBar menuBar = new JMenuBar();
 
 	private JMenuItem mP = new JMenuItem("Personal");
+
 	private JMenuItem mS = new JMenuItem("Schulklassen");
 	private JMenuItem mStdi = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
@@ -275,4 +276,28 @@ public class DataPanel extends JPanel {
 	// e1.printStackTrace();
 	// }
 	// }
+
+	public RaumfunktionPanel getRaumfunktionPanel() {
+		return raumfunktionPanel;
+	}
+
+	public PersonalPanel getPersonalPanel() {
+		return personalPanel;
+	}
+
+	public SchoolclassPanel getSchoolclassPanel() {
+		return schoolclassPanel;
+	}
+
+	public StundeninhaltPanel getStundeninhaltPanel() {
+		return stundeninhaltPanel;
+	}
+
+	public RoomPanel getRoomPanel() {
+		return roomPanel;
+	}
+
+	public BedarfPanel getBedarfPanel() {
+		return bedarfPanel;
+	}
 }

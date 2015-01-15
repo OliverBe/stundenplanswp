@@ -104,11 +104,23 @@ public class MainFrame extends JFrame {
 	 */
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
+		
 		if(c instanceof LehreransichtPanel){
 			paneLehrer.removeAll();
 			paneLehrer.init();
 			System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
-		};
+		}else if(c instanceof DataPanel){
+			dataPanel.getPersonalPanel().updateList();
+			dataPanel.getRoomPanel().updateList();
+			dataPanel.getStundeninhaltPanel().updateList();
+			dataPanel.getSchoolclassPanel().updateList();
+			dataPanel.getRaumfunktionPanel().updateList();
+		}else if(c instanceof WochenplanPanel){
+			paneWochen.removeAll();
+			paneWochen.init();
+			System.out.println("[DEBUG]: Wochenplan aktualisiert.");
+		}
+		// TODO restliche Ansichten/LIsten Update Funktionen implementieren
 	}
 
 	public static WarningPanel getWarning() {
