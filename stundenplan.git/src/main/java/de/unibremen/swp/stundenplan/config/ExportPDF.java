@@ -2,7 +2,10 @@ package de.unibremen.swp.stundenplan.config;
 
 
 import java.io.FileOutputStream;
-import java.util.Date;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JTable;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BadElementException;
@@ -12,8 +15,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -21,8 +22,6 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
 
 
 public class ExportPDF {
@@ -38,7 +37,7 @@ public class ExportPDF {
   private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
       Font.BOLD);
 
-  public static void createPDF() {
+  public static void createPDF(JTable jTable) {
     try {
       Document document = new Document(PageSize.A4.rotate());
       
@@ -46,7 +45,22 @@ public class ExportPDF {
       document.open();
       addMetaData(document);
       addTitleBar(document);
-      addContent(document);
+      
+	  PdfPTable table = new PdfPTable(jTable.getModel().getColumnCount());
+
+      
+      for(int i = 0; i < jTable.getModel().getRowCount(); i++) {
+    	  for(int e = 0; e < jTable.getModel().getColumnCount(); e++) {
+    		  Object obj = jTable.getModel().getValueAt(i, e);
+    		  
+    		    PdfPCell c1 = new PdfPCell(new Phrase(obj.toString()));
+    		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    		    table.addCell(c1);
+    	  }
+      }
+      
+      document.add(table);
+      
       document.close();
      
 
@@ -147,5 +161,29 @@ public class ExportPDF {
     for (int i = 0; i < number; i++) {
       paragraph.add(new Paragraph(" "));
     }
+  }
+  
+  public static void createCSV(JTable jTable) {
+	  
+      
+	try {
+		FileWriter writer = new FileWriter("CSV Export");
+		   for(int i = 0; i < jTable.getModel().getRowCount(); i++) {
+		    	  for(int e = 0; e < jTable.getModel().getColumnCount(); e++) {
+		    		  Object obj = jTable.getModel().getValueAt(i, e);
+		    		  
+		    		   writer.append(obj.toString());
+		    		   
+		    	  }
+		      }
+		  
+	} catch (IOException e1) {
+		System.out.println("ExportFehler");
+		e1.printStackTrace();
+	}
+      
+   
+   
+     
   }
 } 

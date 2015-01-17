@@ -1,21 +1,18 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.config.ExportPDF;
 
 public class MenuBar extends JMenuBar{
@@ -32,7 +29,8 @@ public class MenuBar extends JMenuBar{
 	private JMenuItem neww = new JMenuItem("Neue Datei");
 	private JMenuItem open = new JMenuItem("Öffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
-	private JMenuItem export = new JMenuItem("Exportieren");
+	private JMenuItem export = new JMenuItem("Exportieren als PDF");
+	private JMenuItem exportCSV = new JMenuItem("Exportieren als CSV");
 	
 	private JFileChooser chooser = new JFileChooser();
 	
@@ -50,6 +48,7 @@ public class MenuBar extends JMenuBar{
 		data.add(open);
 		data.add(save);
 		data.add(export);
+		data.add(exportCSV);
 		add(data);
 		edit.add(undo);
 		add(edit);
@@ -59,6 +58,7 @@ public class MenuBar extends JMenuBar{
 		openClick(open);
 		saveClick(save);
 		exportClick(export);
+		exportCSVClick(exportCSV);
 		undoClick(undo);
 		
 		
@@ -101,10 +101,37 @@ public class MenuBar extends JMenuBar{
 		item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ae) {
-				ExportPDF.createPDF();
+				JTable eTable = new JTable();
+				Object obj = Stundenplan.getMain().getTabPane().getComponentAt(Stundenplan.getMain().getTabPane().getSelectedIndex());
+				
+				if(obj instanceof StundenplanPanel) {
+				  StundenplanPanel panel = (StundenplanPanel) obj;
+				  eTable = panel.getTable();
+				  ExportPDF.createPDF(eTable);
+				}
+				
 			}
 		});
 	}
+	
+	private void exportCSVClick(JMenuItem item) {
+		item.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent ae) {
+				JTable eTable = new JTable();
+				Object obj = Stundenplan.getMain().getTabPane().getComponentAt(Stundenplan.getMain().getTabPane().getSelectedIndex());
+				
+				if(obj instanceof StundenplanPanel) {
+				  StundenplanPanel panel = (StundenplanPanel) obj;
+				  eTable = panel.getTable();
+				  ExportPDF.createCSV(eTable);
+				}
+				
+			}
+		});
+	}
+	
+	
 	
 	private void undoClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
