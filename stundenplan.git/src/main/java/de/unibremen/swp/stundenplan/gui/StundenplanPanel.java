@@ -202,4 +202,8 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		}
 
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
 }

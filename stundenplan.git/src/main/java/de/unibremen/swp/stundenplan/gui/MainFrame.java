@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
 
 	private MenuBar menu = new MenuBar(this);
 
-	private JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
+	private static JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
 
 	private DataPanel dataPanel = new DataPanel();
 	private StundenplanPanel paneStundenplan = new StundenplanPanel();
@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 	private static WarningPanel paneWarning = new WarningPanel();
 
 	public MainFrame() {
-		super("GUI-Prototype");
+		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		initComponents();
@@ -112,5 +112,9 @@ public class MainFrame extends JFrame {
 
 	public static WarningPanel getWarning() {
 		return paneWarning;
+	}
+	
+	public static JTabbedPane getTabPane() {
+		return tabpane;
 	}
 }
