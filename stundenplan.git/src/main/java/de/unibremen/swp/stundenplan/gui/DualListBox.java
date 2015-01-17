@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -24,7 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-public class DualListBox extends JPanel {
+public class DualListBox<E> extends JPanel {
 
   private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 
@@ -52,12 +53,8 @@ public class DualListBox extends JPanel {
 
   private JButton removeButton;
 
-  public DualListBox() {
-    initScreen();
-  }
-
-  public DualListBox(String pSLabel,String pDLabel) {
-	    initScreen();
+  public DualListBox(String pSLabel,String pDLabel, Comparator<E> pComp) {
+	    initScreen(pComp);
 	    sourceLabel.setText(pSLabel);
 	    destLabel.setText(pDLabel);
   }
@@ -190,11 +187,11 @@ public class DualListBox extends JPanel {
     destList.getSelectionModel().clearSelection();
   }
 
-  private void initScreen() {
+  private void initScreen(Comparator pComp) {
     setBorder(BorderFactory.createEtchedBorder());
     setLayout(new GridBagLayout());
     sourceLabel = new JLabel(DEFAULT_SOURCE_CHOICE_LABEL);
-    sourceListModel = new SortedListModel();
+    sourceListModel = new SortedListModel(pComp);
     sourceList = new JList(sourceListModel);
     add(sourceLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0,
         GridBagConstraints.CENTER, GridBagConstraints.NONE,
@@ -215,7 +212,7 @@ public class DualListBox extends JPanel {
     removeButton.addActionListener(new RemoveListener());
 
     destLabel = new JLabel(DEFAULT_DEST_CHOICE_LABEL);
-    destListModel = new SortedListModel();
+    destListModel = new SortedListModel(pComp);
     destList = new JList(destListModel);
     add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0,
         GridBagConstraints.CENTER, GridBagConstraints.NONE,
@@ -225,55 +222,55 @@ public class DualListBox extends JPanel {
         EMPTY_INSETS, 0, 0));
   }
 
-  public static void main(String args[]) {
-    JFrame f = new JFrame("Dual List Box Tester");
-    f.setLayout(new GridBagLayout());
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    DualListBox dual = new DualListBox("Test","Test");
-    dual.addSourceElements(new String[] { "One", "Two", "Three" });
-    dual.addSourceElements(new String[] { "Four", "Five", "Six" });
-    dual.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
-    dual.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
-    dual
-        .addSourceElements(new String[] { "Thirteen", "Fourteen",
-            "Fifteen" });
-    dual.addSourceElements(new String[] { "Sixteen", "Seventeen",
-        "Eighteen" });
-    dual.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
-    f.getContentPane().add(dual, new GridBagConstraints(0, 0, 1, 4, .5,
-            1, GridBagConstraints.NORTH, GridBagConstraints.NONE,
-            EMPTY_INSETS, 0, 0));
-    DualListBox dual1 = new DualListBox("Test1", "Test1");
-    dual1.addSourceElements(new String[] { "One", "Two", "Three" });
-    dual1.addSourceElements(new String[] { "Four", "Five", "Six" });
-    dual1.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
-    dual1.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
-    dual1
-        .addSourceElements(new String[] { "Thirteen", "Fourteen",
-            "Fifteen" });
-    dual1.addSourceElements(new String[] { "Sixteen", "Seventeen",
-        "Eighteen" });
-    dual1.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
-    f.getContentPane().add(dual1, new GridBagConstraints(1, 0, 1, 4, .5,
-            1, GridBagConstraints.NORTH, GridBagConstraints.NONE,
-            EMPTY_INSETS, 0, 0));
-    DualListBox dual2 = new DualListBox("Test3","Test3");
-    dual2.addSourceElements(new String[] { "One", "Two", "Three" });
-    dual2.addSourceElements(new String[] { "Four", "Five", "Six" });
-    dual2.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
-    dual2.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
-    dual2
-        .addSourceElements(new String[] { "Thirteen", "Fourteen",
-            "Fifteen" });
-    dual2.addSourceElements(new String[] { "Sixteen", "Seventeen",
-        "Eighteen" });
-    dual2.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
-    f.getContentPane().add(dual2, new GridBagConstraints(0, 1, 1, 4, .5,
-            1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-            EMPTY_INSETS, 0, 0));
-    f.setSize(1300, 700);
-    f.setVisible(true);
-  }
+//  public static void main(String args[]) {
+//    JFrame f = new JFrame("Dual List Box Tester");
+//    f.setLayout(new GridBagLayout());
+//    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    DualListBox dual = new DualListBox("Test","Test");
+//    dual.addSourceElements(new String[] { "One", "Two", "Three" });
+//    dual.addSourceElements(new String[] { "Four", "Five", "Six" });
+//    dual.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
+//    dual.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
+//    dual
+//        .addSourceElements(new String[] { "Thirteen", "Fourteen",
+//            "Fifteen" });
+//    dual.addSourceElements(new String[] { "Sixteen", "Seventeen",
+//        "Eighteen" });
+//    dual.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
+//    f.getContentPane().add(dual, new GridBagConstraints(0, 0, 1, 4, .5,
+//            1, GridBagConstraints.NORTH, GridBagConstraints.NONE,
+//            EMPTY_INSETS, 0, 0));
+//    DualListBox dual1 = new DualListBox("Test1", "Test1");
+//    dual1.addSourceElements(new String[] { "One", "Two", "Three" });
+//    dual1.addSourceElements(new String[] { "Four", "Five", "Six" });
+//    dual1.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
+//    dual1.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
+//    dual1
+//        .addSourceElements(new String[] { "Thirteen", "Fourteen",
+//            "Fifteen" });
+//    dual1.addSourceElements(new String[] { "Sixteen", "Seventeen",
+//        "Eighteen" });
+//    dual1.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
+//    f.getContentPane().add(dual1, new GridBagConstraints(1, 0, 1, 4, .5,
+//            1, GridBagConstraints.NORTH, GridBagConstraints.NONE,
+//            EMPTY_INSETS, 0, 0));
+//    DualListBox dual2 = new DualListBox("Test3","Test3");
+//    dual2.addSourceElements(new String[] { "One", "Two", "Three" });
+//    dual2.addSourceElements(new String[] { "Four", "Five", "Six" });
+//    dual2.addSourceElements(new String[] { "Seven", "Eight", "Nine" });
+//    dual2.addSourceElements(new String[] { "Ten", "Eleven", "Twelve" });
+//    dual2
+//        .addSourceElements(new String[] { "Thirteen", "Fourteen",
+//            "Fifteen" });
+//    dual2.addSourceElements(new String[] { "Sixteen", "Seventeen",
+//        "Eighteen" });
+//    dual2.addSourceElements(new String[] { "Nineteen", "Twenty", "Thirty" });
+//    f.getContentPane().add(dual2, new GridBagConstraints(0, 1, 1, 4, .5,
+//            1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+//            EMPTY_INSETS, 0, 0));
+//    f.setSize(1300, 700);
+//    f.setVisible(true);
+//  }
 
   private class AddListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
@@ -298,6 +295,10 @@ class SortedListModel extends AbstractListModel {
 
   public SortedListModel() {
     model = new TreeSet();
+  }
+  
+  public SortedListModel(Comparator pComp) {
+	    model = new TreeSet(pComp);
   }
 
   public int getSize() {

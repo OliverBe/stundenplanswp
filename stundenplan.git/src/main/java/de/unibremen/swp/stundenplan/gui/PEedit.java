@@ -1,21 +1,27 @@
 package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.EventQueue;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.Comparator;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
@@ -23,7 +29,55 @@ import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class PEedit extends JFrame {
-	  private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
+		public int compare(Personal p1, Personal p2) {
+			if (p1.getName() == null) {
+				return 1;
+			}
+			if (p2.getName() == null) {
+				return -1;
+			}
+			return p1.getName().compareTo(p2.getName());
+		}
+
+	};
+	public static Comparator<Room> RoomComparator = new Comparator<Room>() {
+		public int compare(Room r1, Room r2) {
+			if (r1.getName() == null) {
+				return 1;
+			}
+			if (r2.getName() == null) {
+				return -1;
+			}
+			return r1.getName().compareTo(r2.getName());
+		}
+
+	};
+	public static Comparator<Stundeninhalt> SIComparator = new Comparator<Stundeninhalt>() {
+		public int compare(Stundeninhalt s1, Stundeninhalt s2) {
+			if (s1.getName() == null) {
+				return 1;
+			}
+			if (s2.getName() == null) {
+				return -1;
+			}
+			return s1.getName().compareTo(s2.getName());
+		}
+
+	};
+	public static Comparator<Schoolclass> SCComparator = new Comparator<Schoolclass>() {
+		public int compare(Schoolclass sc1, Schoolclass sc2) {
+			if (sc1.getName() == null) {
+				return 1;
+			}
+			if (sc2.getName() == null) {
+				return -1;
+			}
+			return sc1.getName().compareTo(sc2.getName());
+		}
+
+	};
 
 	/**
 	 * Launch the application.
@@ -64,6 +118,8 @@ public class PEedit extends JFrame {
 		SpinnerModel ehourmodel = new SpinnerNumberModel(TimetableManager.startTimeHour() , TimetableManager.startTimeHour(),TimetableManager.endTimeHour(),1);
 		SpinnerModel minmodel = new SpinnerNumberModel(0 ,0,59,Timeslot.timeslotlength());
 		SpinnerModel eminmodel = new SpinnerNumberModel(0 ,0,59,Timeslot.timeslotlength());
+		JComboBox tag = new JComboBox(TimetableManager.validdays());
+		starttime.add(tag);
 		JSpinner spinner1 = new JSpinner(hourmodel);
 		starttime.add(spinner1);
 		JSpinner spinner2 = new JSpinner(minmodel);
@@ -74,21 +130,23 @@ public class PEedit extends JFrame {
 		endtime.add(spinner3);
 		JSpinner spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
+		JRadioButton bandselect = new JRadioButton("Band-Unterricht");
+		endtime.add(bandselect);
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 	    tf.setEditable(false);
 	    getContentPane().add(starttime);
 	    getContentPane().add(endtime);
-	    DualListBox pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit");
-	    pList.addSourceElements(DataPersonal.getAllAcronymsFromPersonal().toArray());
+	    DualListBox pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit", PersonalComparator);
+	    pList.addSourceElements(DataPersonal.getAllPersonal().toArray());
 	    getContentPane().add(pList);
-	    DualListBox sIList = new DualListBox("Verfuegbare Stundeninhalte", " Stundeninhalte im Planungseinheit");
-	    sIList.addSourceElements(DataStundeninhalt.getAllAcronymsFromStundeninhalt().toArray());
+	    DualListBox sIList = new DualListBox("Verfuegbare Stundeninhalte", " Stundeninhalte im Planungseinheit", SIComparator);
+	    sIList.addSourceElements(DataStundeninhalt.getAllStundeninhalte().toArray());
 	    getContentPane().add(sIList);
-	    DualListBox scList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit");
-	    scList.addSourceElements(DataSchulklasse.getAllNameFromSchulklasse().toArray());
+	    DualListBox scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit", SCComparator);
+	    scList.addSourceElements(DataSchulklasse.getAllSchulklasse().toArray());
 	    getContentPane().add(scList);
-	    DualListBox roomList = new DualListBox("Verfuegbare Stundeninhalte", " Stundeninhalte im Planungseinheit");
-	    roomList.addSourceElements(DataRaum.getAllNameFromRaum().toArray());
+	    DualListBox roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit", RoomComparator);
+	    roomList.addSourceElements(DataRaum.getAllRaum().toArray());
 	    getContentPane().add(roomList);
 	    JLabel label = new JLabel("Hier koennen die Planungseinheiten bearbeitet werden");
 		JButton button = new JButton("Planungseinheiten speichern");
