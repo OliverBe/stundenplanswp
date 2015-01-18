@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
@@ -167,7 +168,19 @@ public class PEedit extends JFrame {
 				Iterator it = pList.destinationIterator();
 				while (it.hasNext()){
 					Personal pr = (Personal) it.next();
-					p.addPersonal(pr, new int[]{8,30,15,0});
+					if (PlanungseinheitManager.checkPersonPE(pr,
+							p.getStartHour(), p.getStartminute(),
+							p.getWeekday())
+							|| PlanungseinheitManager.checkPersonPE(pr,
+									p.getEndhour(), p.getEndminute(),
+									p.getWeekday())) {
+						JOptionPane.showMessageDialog(null,
+								"Personal " + pr.getName()
+										+ " ist schon zu dieser Zeit gebucht");
+						return;
+					} else {
+						p.addPersonal(pr, new int[] { 8, 30, 15, 0 });
+					}
 				}
 				it = sIList.destinationIterator();
 				while (it.hasNext()){
@@ -177,12 +190,36 @@ public class PEedit extends JFrame {
 				it = scList.destinationIterator();
 				while (it.hasNext()){
 					Schoolclass sc = (Schoolclass) it.next();
+					if (PlanungseinheitManager.checkScPE(sc,
+							p.getStartHour(), p.getStartminute(),
+							p.getWeekday())
+							|| PlanungseinheitManager.checkScPE(sc,
+									p.getEndhour(), p.getEndminute(),
+									p.getWeekday())) {
+						JOptionPane.showMessageDialog(null,
+								"Klasse " + sc.getName()
+										+ " ist schon zu dieser Zeit gebucht");
+						return;
+					} else {
 					p.addSchulklassen(sc);
+					}
 				}
 				it = roomList.destinationIterator();
 				while (it.hasNext()){
 					Room r = (Room) it.next();
+					if (PlanungseinheitManager.checkRoomPE(r,
+							p.getStartHour(), p.getStartminute(),
+							p.getWeekday())
+							|| PlanungseinheitManager.checkRoomPE(r,
+									p.getEndhour(), p.getEndminute(),
+									p.getWeekday())) {
+						JOptionPane.showMessageDialog(null,
+								"Raum " + r.getName()
+										+ " ist schon zu dieser Zeit gebucht");
+						return;
+					} else {
 					p.addRoom(r);
+					}
 				}
 				System.out.println("dur:"+p.duration());
 				System.out.println("day:"+p.getWeekday());
@@ -192,7 +229,6 @@ public class PEedit extends JFrame {
 				System.out.println("room"+p.roomstoString());
 				PlanungseinheitManager.addPlanungseinheitToDB(p);
 				System.out.println("room"+p.getId());
-				//PlanungseinheitManager.deletePlanungseinheitFromDB(p.getId());
 				dispose();
 			}
 		});

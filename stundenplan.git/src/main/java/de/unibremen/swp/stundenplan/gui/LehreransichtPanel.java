@@ -98,7 +98,7 @@ public class LehreransichtPanel extends JPanel {
 						for (String k : klassenInPlanungseinheit) {
 							HashMap<String, Integer> neuHash = inhaltKlasseStundenPerso
 									.get(s);
-							neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
+							//neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
 							inhaltKlasseStundenPerso.put(s, neuHash);
 						}
 					}
@@ -112,7 +112,7 @@ public class LehreransichtPanel extends JPanel {
 						reihe.add("-");
 					} else {
 
-						// Unterscheidung von Lehrer und Pädagoge
+						// Unterscheidung von Lehrer und Pï¿½dagoge
 						if (p.isLehrer()) {
 							reihe.add(k.getName()
 									+ ": "

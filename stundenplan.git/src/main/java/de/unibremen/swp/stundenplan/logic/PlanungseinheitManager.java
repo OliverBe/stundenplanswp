@@ -407,6 +407,41 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 	
+	/**prueft auf ueberschneidungen von PE fuer Personal
+	 * 
+	 * @return
+	 */
+	public static boolean checkPersonPE(final Personal p, final int hour, final int minute, final Weekday day ){
+		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(day, p);
+		for(Planungseinheit pl : pes){
+			if(checkPEandTime(pl, hour, minute))return true;
+		}
+		return false;
+	}
+	
+	/**prueft auf ueberschneidungen von PE fuer Personal
+	 * 
+	 * @return
+	 */
+	public static boolean checkRoomPE(final Room r, final int hour, final int minute, final Weekday day ){
+		ArrayList<Planungseinheit> pes = getPEForRoombyWeekday(day, r);
+		for(Planungseinheit pl : pes){
+			if(checkPEandTime(pl, hour, minute))return true;
+		}
+		return false;
+	}
+	
+	/**prueft auf ueberschneidungen von PE fuer Personal
+	 * 
+	 * @return
+	 */
+	public static boolean checkScPE(final Schoolclass sc, final int hour, final int minute, final Weekday day ){
+		ArrayList<Planungseinheit> pes = getPEForSchoolclassbyWeekday(day, sc);
+		for(Planungseinheit pl : pes){
+			if(checkPEandTime(pl, hour, minute))return true;
+		}
+		return false;
+	}
 	/**
 	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
 	 * 
