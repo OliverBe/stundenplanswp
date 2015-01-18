@@ -44,6 +44,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
@@ -129,8 +130,9 @@ public class BedarfPanel extends JPanel {
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(((Stundeninhalt) cb2.getSelectedItem()).getKuerzel(),
 							Integer.parseInt(bedField.getText()));
-					DataSchulklasse.addJahrgang(new Jahrgang((int) cb1
-							.getSelectedItem(), hm));
+							JahrgangsManager.addBedarfToJahrgang(new Jahrgang((int) cb1.getSelectedItem(), hm));
+//	@Rom				DataSchulklasse.addJahrgang(new Jahrgang((int) cb1
+//							.getSelectedItem(), hm));
 
 					updateList();
 
@@ -258,7 +260,8 @@ public class BedarfPanel extends JPanel {
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(stdi, Integer.parseInt(bedField2.getText()));
 					j.setStundenbedarf(hm);
-					DataSchulklasse.editJahrgang(j);
+					JahrgangsManager.editBedarfFromJahrgang(j);
+//@Rom					DataSchulklasse.editJahrgang(j);
 
 					updateList();
 					JFrame topFrame = (JFrame) SwingUtilities

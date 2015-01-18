@@ -114,6 +114,7 @@ public class MainFrame extends JFrame {
 			RoomPanel.updateList();
 			RaumfunktionPanel.updateList();
 			StundeninhaltPanel.updateList();
+			BedarfPanel.updateList();
 		}
 	}
 

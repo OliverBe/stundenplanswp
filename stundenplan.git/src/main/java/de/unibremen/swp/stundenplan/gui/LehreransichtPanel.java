@@ -68,6 +68,7 @@ public class LehreransichtPanel extends JPanel {
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
+			if(s.getRhythmustyp() == 0) continue;
 			model.addColumn(s.getKuerzel());
 			HashMap<String, Integer> hash = new HashMap<>();
 			inhaltKlasseStunden.put(s.getKuerzel(), hash);
@@ -126,6 +127,23 @@ public class LehreransichtPanel extends JPanel {
 				}
 			}
 		}
+		
+		ArrayList<String> kuerzelInAllenReihen = new ArrayList<String>();
+		for(int i= 0; i < model.getRowCount(); i++){
+			kuerzelInAllenReihen.add(model.getValueAt(i, 0).toString());
+		}
+		
+		for(Personal p : allPersonal){
+			ArrayList<String> reihe = new ArrayList<String>();
+			if(!kuerzelInAllenReihen.contains(p.getKuerzel())){
+				reihe.add(p.getKuerzel());
+				for(int i=0; i< model.getColumnCount(); i++){
+					reihe.add("-");
+				}
+				model.addRow(reihe.toArray());
+			}
+		}
+		
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(40);
 		JScrollPane pane = new JScrollPane(table);
