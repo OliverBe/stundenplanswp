@@ -170,7 +170,11 @@ public class DualListBox<E> extends JPanel {
   public Color getSelectionForeground() {
     return sourceList.getSelectionForeground();
   }
-
+  
+  public int getDestsize(){
+	  return destListModel.getSize();
+  }
+  
   private void clearSourceSelected() {
     Object selected[] = sourceList.getSelectedValues();
     for (int i = selected.length - 1; i >= 0; --i) {
@@ -186,6 +190,8 @@ public class DualListBox<E> extends JPanel {
     }
     destList.getSelectionModel().clearSelection();
   }
+  
+
 
   private void initScreen(Comparator pComp) {
     setBorder(BorderFactory.createEtchedBorder());

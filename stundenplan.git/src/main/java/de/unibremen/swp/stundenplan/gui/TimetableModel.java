@@ -87,7 +87,7 @@ public class TimetableModel extends AbstractTableModel {
             return "";
         }
         final int index = col - 1;
-        final Weekday[] weekdays = Weekday.values();
+        final Weekday[] weekdays = TimetableManager.validdays();
         if (index >= 0 && index < weekdays.length) {
             return weekdays[index].toString();
         }

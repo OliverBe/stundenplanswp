@@ -80,6 +80,7 @@ public final class Timeslot implements Serializable {
     private String personaltext = "";
     private String raumtext = "";
     private String klassetext = "";
+    private int pe = -1; 
     
     /**
      * Erzeugt eine neue Zeiteinheit.
@@ -156,6 +157,15 @@ public final class Timeslot implements Serializable {
     
     public void setKlassentext(final Planungseinheit pPE){
     	klassetext = pPE.schoolclassestoString();
+    }
+    
+    public void setpe(final int pPid){
+    	if(pPid<=0){throw new IllegalArgumentException("number must greater than 0");}
+    	pe = pPid;
+    }
+    
+    public int getpe(){
+    	return pe;
     }
     
     public static int timeslotlength(){

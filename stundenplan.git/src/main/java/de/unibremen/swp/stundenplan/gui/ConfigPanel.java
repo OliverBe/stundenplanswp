@@ -284,19 +284,19 @@ public class ConfigPanel extends JPanel {
 			CheckBoxList checkList = new CheckBoxList();
 			checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			JCheckBox[] boxes = { mo, di, mi, don, fr, sa, so };
-			if (Config.MONDAY == true)
+			if (Boolean.parseBoolean(Config.MONDAY) == true)
 				mo.setSelected(true);
-			if (Config.TUESDAY == true)
+			if (Boolean.parseBoolean(Config.TUESDAY) == true)
 				di.setSelected(true);
-			if (Config.WEDNESDAY == true)
+			if (Boolean.parseBoolean(Config.WEDNESDAY) == true)
 				mi.setSelected(true);
-			if (Config.THURSDAY == true)
+			if (Boolean.parseBoolean(Config.THURSDAY) == true)
 				don.setSelected(true);
-			if (Config.FRIDAY == true)
+			if (Boolean.parseBoolean(Config.FRIDAY) == true)
 				fr.setSelected(true);
-			if (Config.SATURDAY == true)
+			if (Boolean.parseBoolean(Config.SATURDAY) == true)
 				sa.setSelected(true);
-			if (Config.SUNDAY == true)
+			if (Boolean.parseBoolean(Config.SUNDAY) == true)
 				so.setSelected(true);
 			checkList.setListData(boxes);
 			add(checkList, c);
@@ -305,13 +305,20 @@ public class ConfigPanel extends JPanel {
 			add(button, c);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					Config.MONDAY = mo.isSelected() ? true : false;
-					Config.TUESDAY = di.isSelected() ? true : false;
-					Config.WEDNESDAY = mi.isSelected() ? true : false;
-					Config.THURSDAY = don.isSelected() ? true : false;
-					Config.FRIDAY = fr.isSelected() ? true : false;
-					Config.SATURDAY = sa.isSelected() ? true : false;
-					Config.SUNDAY = so.isSelected() ? true : false;
+					String monday = mo.isSelected() ? "true" : "false";
+					String tuesday = di.isSelected() ? "true" : "false";
+					String wednesday = mi.isSelected() ? "true" : "false";
+					String thursday = don.isSelected() ? "true" : "false";
+					String friday = fr.isSelected() ? "true" : "false";
+					String saturday = sa.isSelected() ? "true" : "false";
+					String sunday = so.isSelected() ? "true" : "false";
+					Config.setStringValue(Config.MONDAY_STRING, monday);
+					Config.setStringValue(Config.TUESDAY_STRING, tuesday);
+					Config.setStringValue(Config.WEDNESDAY_STRING, wednesday);
+					Config.setStringValue(Config.THURSDAY_STRING, thursday);
+					Config.setStringValue(Config.FRIDAY_STRING, friday);
+					Config.setStringValue(Config.SATURDAY_STRING, saturday);
+					Config.setStringValue(Config.SUNDAY_STRING, sunday);
 				}
 			});
 		}

@@ -15,6 +15,8 @@
  */
 package de.unibremen.swp.stundenplan.config;
 
+import java.io.IOException;
+
 
 /**
  * Eine Aufzählung von relevanten Wochentagen für einen Stundenplan.
@@ -27,37 +29,37 @@ public enum Weekday {
     /**
      * Der Wochentag Montag.
      */
-    MONDAY("Montag", 0, Config.MONDAY),
+    MONDAY("Montag", 0, Config.MONDAY_STRING ,Config.MONDAY),
 
     /**
      * Der Wochentag Dienstag.
      */
-    TUESDAY("Dienstag", 1, Config.TUESDAY),
+    TUESDAY("Dienstag", 1, Config.TUESDAY_STRING ,Config.TUESDAY),
 
     /**
      * Der Wochentag Mittwoch.
      */
-    WEDNESDAY("Mittwoch", 2, Config.WEDNESDAY),
+    WEDNESDAY("Mittwoch", 2, Config.WEDNESDAY_STRING ,Config.WEDNESDAY),
 
     /**
      * Der Wochentag Donnerstag.
      */
-    THURSDAY("Donnerstag", 3, Config.THURSDAY),
+    THURSDAY("Donnerstag", 3, Config.THURSDAY_STRING ,Config.THURSDAY),
 
     /**
      * Der Wochentag Freitag.
      */
-    FRIDAY("Freitag", 4, Config.FRIDAY),
+    FRIDAY("Freitag", 4, Config.FRIDAY_STRING, Config.FRIDAY),
     
     /**
      * Der Wochentag Samstag.
      */
-    SATURDAY("Samstag", 5, Config.SATURDAY),
+    SATURDAY("Samstag", 5, Config.SATURDAY_STRING, Config.SATURDAY),
     
     /**
      * Der Wochentag Sonntag.
      */
-    SUNDAY("Sonntag", 6, Config.SUNDAY);
+    SUNDAY("Sonntag", 6, Config.SUNDAY_STRING, Config.SUNDAY);
 
     /**
      * Der Anzeigename dieses Wochentages.
@@ -74,6 +76,10 @@ public enum Weekday {
      */
     private boolean isSchoolday;
     
+    private String daystring;
+    
+    private String dayvalue;
+    
     /**
      * Erzeugt einen neuen Wochentag mit dem gegebenen Anzeigenamen und der gegebenen Ordinalzahl. Da es sich um einen
      * privaten Konstruktor handelt, werden die Parameterwerte nicht auf Plausibilität geprüft.
@@ -83,10 +89,18 @@ public enum Weekday {
      * @param pOrdinal
      *            die Ordinalzahl für den neuen Wochentag
      */
-    private Weekday(final String pDisplayName, final int pOrdinal, final boolean pDay) {
+    private Weekday(final String pDisplayName, final int pOrdinal, final String pDaystring, final String pDayvalue) {
+    	try {
+			Config.init(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         displayName = pDisplayName;
         ordinal = pOrdinal;
-        isSchoolday = pDay;
+        daystring = pDaystring;
+        dayvalue = pDayvalue;
+        isSchoolday = Boolean.parseBoolean(Config.getString(pDaystring,pDayvalue));
     }
 
     @Override
@@ -107,7 +121,7 @@ public enum Weekday {
      *  Gibt zurück ob Tag verplant.
      */
     public boolean isSchoolday() {
-        return isSchoolday;
+    	return Boolean.parseBoolean(Config.getString(daystring,dayvalue));
     }
     
     public void switchDay(final boolean pDay){

@@ -42,20 +42,20 @@ public final class Config {
     /**
      * Zu verplanende Wochentage jeweils mit true,false angegeben
      */
-    public static boolean MONDAY = true;
-    public static String MONDAY_STRING = "Montag";
-    public static boolean TUESDAY = true;
-    public static String TUESDAY_STRING = "Dienstag";
-    public static boolean WEDNESDAY = true;
-    public static String WEDNESDAY_STRING = "Mittwoch";
-    public static boolean THURSDAY = true;
-    public static String THURSDAY_STRING = "Donnerstag";
-    public static boolean FRIDAY = true;
-    public static String FRIDAY_STRING = "Freitag";
-    public static boolean SATURDAY = false;
-    public static String SATURDAY_STRING = "Samstag";
-    public static boolean SUNDAY = false;
-    public static String SUNDAY_STRING = "Sonntag";
+    public static String MONDAY = "true";
+    public final static String MONDAY_STRING = "Montag";
+    public static String TUESDAY = "true";
+    public final static String TUESDAY_STRING = "Dienstag";
+    public static String WEDNESDAY = "true";
+    public final static String WEDNESDAY_STRING = "Mittwoch";
+    public static String THURSDAY = "true";
+    public final static String THURSDAY_STRING = "Donnerstag";
+    public static String FRIDAY = "true";
+    public final static String FRIDAY_STRING = "Freitag";
+    public static String SATURDAY = "false";
+    public final static String SATURDAY_STRING = "Samstag";
+    public static String SUNDAY = "false";
+    public final static String SUNDAY_STRING = "Sonntag";
     
 //    /**
 //     * Die Anzahl an Zeiteinheiten, die alle Tagespläne per Default haben. Kann durch einen Eintrag in der
@@ -217,6 +217,15 @@ public final class Config {
     }
     
     public static void setStringValue(final String pKey, final String pValue){
-    	propertiesConfig.addProperty(pKey, pValue);
+    	if((pKey == null || pKey.length() == 0))throw new IllegalArgumentException("There must be a key");
+    	if((pValue == null || pValue.length() == 0))throw new IllegalArgumentException("There must be a key");
+    	propertiesConfig.setProperty(pKey, pValue);
+    	try {
+			propertiesConfig.save();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println("saved");
     }
 }
