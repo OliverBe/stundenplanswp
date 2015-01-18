@@ -39,27 +39,24 @@ public final class Schoolclass extends Jahrgang{
     //primary
     private String name;
     
-    private int jahrgang;
-    
     private Room klassenraum;
     
-    private ArrayList<String> klassenlehrer;
+    private ArrayList<String> klassenlehrer = new ArrayList<String>();
     
     //falls die klasse einen speziellen bedarf hat
-    private HashMap<String, Integer> stundenbedarf;
+//    private HashMap<String, Integer> stundenbedarf = new HashMap<String, Integer>();
     
     private ArrayList<Planungseinheit> planungseinheiten;
     
     public Schoolclass() {
-    	
+    	super();
     }
 
     public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
-		name = pName;
-		jahrgang = pJahrgang;
+		super(pJahrgang, pStundenbedarf);
+    	name = pName;
 		klassenraum = pKlassenraum;
 		klassenlehrer=pKlassenlehrer;
-		stundenbedarf=pStundenbedarf;
 	}
 
 	/**
@@ -79,14 +76,6 @@ public final class Schoolclass extends Jahrgang{
      */
     public void setName(final String pName) {
         name = pName;
-    }
-    
-    public int getJahrgang() {
-    	return jahrgang;
-    }
-    
-    public void setJahrgang(int pJahrgang) {
-    	jahrgang = pJahrgang;
     }
     
     public Room getKlassenraum() {

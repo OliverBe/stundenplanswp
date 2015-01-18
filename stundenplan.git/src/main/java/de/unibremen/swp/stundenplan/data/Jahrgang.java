@@ -3,11 +3,9 @@ package de.unibremen.swp.stundenplan.data;
 import java.util.HashMap;
 
 public class Jahrgang {
-	
-	
     private int jahrgang;
     
-    private HashMap<String, Integer> stundenbedarf;
+    private HashMap<String, Integer> stundenbedarf = new HashMap<String, Integer>();
     
     public Jahrgang(){
     	

@@ -163,7 +163,7 @@ public class SchoolclassPanel extends JPanel{
 	    for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().entrySet()) {
 	    	for(int i=0;i<model.getRowCount();i++) {
 	    		if(model.getValueAt(i, 0).toString().equals(entry.getKey())) {
-	    			model.setValueAt(entry.getValue(), i, 1);
+	    			model.setValueAt(entry.getValue()+"", i, 1);
 	    		}
 	    	}
 		}
@@ -178,10 +178,10 @@ public class SchoolclassPanel extends JPanel{
 				for(int i=0;i<model.getRowCount();i++) {
 					model.setValueAt("0", i, 1);
 				}
-				for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang(jg.getSelectedIndex()+1).getStundenbedarf().entrySet()) {
+				for(Entry<String, Integer> entry : DataSchulklasse.getJahrgangByJahrgang((int) jg.getSelectedItem()).getStundenbedarf().entrySet()) {
 			    	for(int i=0;i<model.getRowCount();i++) {
 			    		if(model.getValueAt(i, 0).toString().equals(entry.getKey())) {
-			    			model.setValueAt(entry.getValue(), i, 1);
+			    			model.setValueAt(entry.getValue()+"", i, 1);
 			    		}
 			    	}
 				}
@@ -214,16 +214,13 @@ public class SchoolclassPanel extends JPanel{
 					}
 					
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
-
-					for (int i = 0; i < model.getRowCount(); i++) {		
-						hm.put((String) model.getValueAt(i, 0),Integer.parseInt((String) model.getValueAt(i, 1)));
-					};
+					for (int i=0;i<model.getRowCount();i++) {		
+						hm.put((String) model.getValueAt(i, 0), Integer.parseInt((String) model.getValueAt(i, 1)));
+					}
 					
-	//				DataSchulklasse.addSchulklasse(new Schoolclass(bezField.getText(), 
-	//				jg.getSelectedItem(), jcb.getSelectedItem(), kt, hm);
-					
-					updateList();				
-
+					DataSchulklasse.addSchulklasse(new Schoolclass((jg.getSelectedItem())+bezField.getText(), 
+							(int) jg.getSelectedItem(), (Room) jcb.getSelectedItem(), kt, hm));
+					updateList();
 				} catch (WrongInputException e) {
 					e.printStackTrace();
 				}
@@ -294,7 +291,7 @@ public class SchoolclassPanel extends JPanel{
 		
 		JComboBox<Object> jcb2;
 		Integer[] jahrgang2 = {1,2,3,4};
-		JComboBox<Object> jg2 = new JComboBox<Object>(jahrgang2);
+		final JComboBox<Object> jg2 = new JComboBox<Object>(jahrgang2);
 		
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
