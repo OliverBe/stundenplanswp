@@ -108,7 +108,11 @@ public class MenuBar extends JMenuBar{
 				  StundenplanPanel panel = (StundenplanPanel) obj;
 				  eTable = panel.getTable();
 				  ExportPDF.createPDF(eTable);
-				}
+				}else if(obj instanceof RaumbelegungsplanPanel) {
+					  RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
+					  eTable = panel.getTable();
+					  ExportPDF.createPDF(eTable);
+					}
 				
 			}
 		});
