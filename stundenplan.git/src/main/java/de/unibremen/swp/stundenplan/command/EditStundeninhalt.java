@@ -26,7 +26,7 @@ public class EditStundeninhalt implements Command {
 	@Override
 	public void undo() {
 		// TODO Auto-generated method stub
-		DataStundeninhalt.editStundeninhalt(bearbeitet.getName(), urspruenglich);
+		DataStundeninhalt.editStundeninhalt(bearbeitet.getKuerzel(), urspruenglich);
 	}
 
 }
