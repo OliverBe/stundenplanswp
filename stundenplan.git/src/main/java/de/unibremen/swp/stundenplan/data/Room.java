@@ -20,6 +20,10 @@ public final class Room{
     //name der rf
     private ArrayList<String> moeglicheFunktionen; 
 
+    public Room() {
+    	
+    }
+    
     public Room(String pName, int pGebaeude, ArrayList<String> pMoeglicheFunktionen){
     	name = pName;
     	gebaeude = pGebaeude;

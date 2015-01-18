@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
+import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
@@ -58,11 +59,25 @@ public class DataSchulklasse {
 			String name = rs.getString("name");
 			int jahrgang = rs.getInt("jahrgang");
 			String klassenraumName = rs.getString("klassenraumName");
-		//	return new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName));
+			Schoolclass sc = new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName), new ArrayList<String>(), new HashMap<String, Integer>());
+			sql = "SELECT * FROM klassenlehrer WHERE schulklasse_name = '" + sc.getName() + "'";
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String personal_kuerzel = rs.getString("personal_kuerzel");
+				sc.getKlassenlehrer().add(personal_kuerzel);
+			}
+			sql = "SELECT * FROM stundenbedarf WHERE schulklasse_name = '" + sc.getName() + "'";
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+				int bedarf = rs.getInt("bedarf");
+				sc.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+			}
+			return sc;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	public static ArrayList<Schoolclass> getAllSchulklasse() {
@@ -76,10 +91,25 @@ public class DataSchulklasse {
 				int jahrgang = rs.getInt("jahrgang");
 				String klassenraumName = rs.getString("klassenraumName");
 				klassenraumNamen.add(klassenraumName);
-			//	allSchulklasse.add(new Schoolclass(name, jahrgang, null));
+				allSchulklasse.add(new Schoolclass(name, jahrgang, new Room(), new ArrayList<String>(), new HashMap<String, Integer>()));
 			}
 			for(int i=0;i<allSchulklasse.size();i++) {
 				allSchulklasse.get(i).setKlassenraum(DataRaum.getRaumByName(klassenraumNamen.get(i)));
+			}
+			for(Schoolclass sc : allSchulklasse) {
+				sql = "SELECT * FROM klassenlehrer WHERE schulklasse_name = '" + sc.getName() + "'";
+				rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					String personal_kuerzel = rs.getString("personal_kuerzel");
+					sc.getKlassenlehrer().add(personal_kuerzel);
+				}
+				sql = "SELECT * FROM stundenbedarf WHERE schulklasse_name = '" + sc.getName() + "'";
+				rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					int bedarf = rs.getInt("bedarf");
+					sc.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

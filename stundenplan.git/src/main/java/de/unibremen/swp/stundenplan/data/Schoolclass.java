@@ -93,4 +93,9 @@ public final class Schoolclass extends Jahrgang{
     public void setKlassenlehrer(ArrayList<String> pKlassenlehrer) {
     	klassenlehrer = pKlassenlehrer;
     }
+    
+    @Override
+    public String toString() {
+    	return ("Name=" + name + ", Jahrgang=" + getJahrgang() + ", Klassenraum=(" + klassenraum + ")");
+    }
 }
