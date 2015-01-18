@@ -40,7 +40,6 @@ public class AddJahrgangToDB implements Command {
 				kuerzel = s;
 				DataSchulklasse.deleteJahrgangbedarfByJAndSkuerzel(
 						jrg.getJahrgang(), kuerzel);
-				CommandHistory.deleteLast();
 			}
 		}
 		if (kuerzel == null) {

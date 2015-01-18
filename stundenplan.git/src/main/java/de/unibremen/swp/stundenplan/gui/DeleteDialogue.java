@@ -24,6 +24,9 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.RaumManager;
+import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class DeleteDialogue extends JFrame {
@@ -58,7 +61,7 @@ public class DeleteDialogue extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if(o instanceof Raumfunktion) {
-					DataRaum.deleteRaumfunktionByName(((Raumfunktion) o).getName());
+					RaumManager.deleteRaumfunktionFromDB(((Raumfunktion) o).getName());
 					RaumfunktionPanel.updateList();
 				}
 				if(o instanceof Stundeninhalt) {
@@ -66,15 +69,15 @@ public class DeleteDialogue extends JFrame {
 					StundeninhaltPanel.updateList();
 				}
 				if(o instanceof Schoolclass) {
-					DataSchulklasse.deleteSchulklasseByName(((Schoolclass) o).getName());
+					SchulklassenManager.deleteSchulklasseFromDB(((Schoolclass) o).getName());
 					SchoolclassPanel.updateList();
 				}
 				if(o instanceof Room) {
-					DataRaum.deleteRaumByName(((Room) o).getName());
+					RaumManager.deleteRoomFromDB(((Room) o).getName());
 					RoomPanel.updateList();
 				}
 				if(o instanceof Personal) {
-					DataPersonal.deletePersonalByKuerzel(((Personal) o).getKuerzel());
+					PersonalManager.deletePersonalFromDB(((Personal) o).getKuerzel());
 					PersonalPanel.updateList();
 				}
 				if(o instanceof Jahrgang) {

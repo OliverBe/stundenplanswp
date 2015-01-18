@@ -28,7 +28,6 @@ public class EditJahrgangsBedarf implements Command {
 	@Override
 	public void undo() {
 		DataSchulklasse.addJahrgang(urspruenglich);
-		CommandHistory.deleteLast();
 	}
 
 }
