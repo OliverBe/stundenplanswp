@@ -38,7 +38,7 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener{
 	private static JMenuBar menuBar = new JMenuBar();
 	private static DefaultListModel rList;
 	private static JList roomList;
-	private static JLabel label1 =new JLabel("Räume");
+	private static JLabel label1 =new JLabel("Rï¿½ume");
 	
 	private static JButton show = new JButton("Anzeigen");
 	
@@ -113,6 +113,7 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener{
 				Room r = (Room) roomList.getSelectedValue();
 				System.out.println(r.getName());
 				table = new StundenplanTable(r).getTable();
+				table.setModel(new TimetableModel(r));
 				init();
 				
 				
