@@ -2,23 +2,28 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.EventQueue;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 
 import de.unibremen.swp.stundenplan.config.Config;
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
@@ -118,39 +123,75 @@ public class PEedit extends JFrame {
 		SpinnerModel ehourmodel = new SpinnerNumberModel(TimetableManager.startTimeHour() , TimetableManager.startTimeHour(),TimetableManager.endTimeHour(),1);
 		SpinnerModel minmodel = new SpinnerNumberModel(0 ,0,59,Timeslot.timeslotlength());
 		SpinnerModel eminmodel = new SpinnerNumberModel(0 ,0,59,Timeslot.timeslotlength());
-		JComboBox tag = new JComboBox(TimetableManager.validdays());
+		final JComboBox<Weekday> tag = new JComboBox<Weekday>(TimetableManager.validdays());
 		starttime.add(tag);
-		JSpinner spinner1 = new JSpinner(hourmodel);
+		final JSpinner spinner1 = new JSpinner(hourmodel);
 		starttime.add(spinner1);
-		JSpinner spinner2 = new JSpinner(minmodel);
+		final JSpinner spinner2 = new JSpinner(minmodel);
 		starttime.add(spinner2);
 		JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField();
 	    tf.setEditable(false);
-		JSpinner spinner3 = new JSpinner(ehourmodel);
+		final JSpinner spinner3 = new JSpinner(ehourmodel);
 		endtime.add(spinner3);
-		JSpinner spinner4 = new JSpinner(eminmodel);
+		final JSpinner spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
-		JRadioButton bandselect = new JRadioButton("Band-Unterricht");
+		JCheckBox bandselect = new JCheckBox("Band-Unterricht");
 		endtime.add(bandselect);
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 	    tf.setEditable(false);
 	    getContentPane().add(starttime);
 	    getContentPane().add(endtime);
-	    DualListBox pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit", PersonalComparator);
+	    final DualListBox pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit", PersonalComparator);
 	    pList.addSourceElements(DataPersonal.getAllPersonal().toArray());
 	    getContentPane().add(pList);
-	    DualListBox sIList = new DualListBox("Verfuegbare Stundeninhalte", " Stundeninhalte im Planungseinheit", SIComparator);
+	    final DualListBox sIList = new DualListBox("Verfuegbare Stundeninhalte", " Stundeninhalte im Planungseinheit", SIComparator);
 	    sIList.addSourceElements(DataStundeninhalt.getAllStundeninhalte().toArray());
 	    getContentPane().add(sIList);
-	    DualListBox scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit", SCComparator);
+	    final DualListBox scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit", SCComparator);
 	    scList.addSourceElements(DataSchulklasse.getAllSchulklasse().toArray());
 	    getContentPane().add(scList);
-	    DualListBox roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit", RoomComparator);
+	    final DualListBox roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit", RoomComparator);
 	    roomList.addSourceElements(DataRaum.getAllRaum().toArray());
 	    getContentPane().add(roomList);
 	    JLabel label = new JLabel("Hier koennen die Planungseinheiten bearbeitet werden");
 		JButton button = new JButton("Planungseinheiten speichern");
-	    getContentPane().add(label);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				Planungseinheit p = new Planungseinheit();
+				p.setStarthour((int) spinner1.getValue());
+				p.setStartminute((int) spinner2.getValue());
+				p.setEndhour((int)spinner3.getValue());
+				p.setEndminute((int) spinner4.getValue());
+				p.setWeekday((Weekday) tag.getSelectedItem());
+				Iterator it = pList.destinationIterator();
+				while (it.hasNext()){
+					Personal pr = (Personal) it.next();
+					p.addPersonal(pr, new int[]{8,30,15,0});
+				}
+				it = sIList.destinationIterator();
+				while (it.hasNext()){
+					Stundeninhalt si = (Stundeninhalt) it.next();
+					p.addStundeninhalt(si);
+				}
+				it = scList.destinationIterator();
+				while (it.hasNext()){
+					Schoolclass sc = (Schoolclass) it.next();
+					p.addSchulklassen(sc);
+				}
+				it = roomList.destinationIterator();
+				while (it.hasNext()){
+					Room r = (Room) it.next();
+					p.addRoom(r);
+				}
+				System.out.println("dur:"+p.duration());
+				System.out.println("day:"+p.getWeekday());
+				System.out.println("pers:"+p.personaltoString());
+				System.out.println("inhalte:"+p.stundenInhaltetoString());
+				System.out.println("classes:"+p.schoolclassestoString());
+				System.out.println("room"+p.roomstoString());
+			}
+		});
+		getContentPane().add(label);
 	    getContentPane().add(button);
 	    SpringUtilities.makeCompactGrid(getContentPane(),
                 5, 2, //rows, cols

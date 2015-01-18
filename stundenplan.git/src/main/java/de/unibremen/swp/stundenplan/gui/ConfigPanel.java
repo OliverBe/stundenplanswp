@@ -213,7 +213,7 @@ public class ConfigPanel extends JPanel {
 			c.gridx = 0;
 			c.gridy = 1;
 			add(button, c);
-			tf.setText("" + Config.TIMESLOT_LENGTH);
+			tf.setText("" + Timeslot.timeslotlength());
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					Config.TIMESLOT_LENGTH = Integer.parseInt(tf.getText());
@@ -251,6 +251,7 @@ public class ConfigPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					Config.BACKUPINTERVALL = Integer.parseInt(tf.getText());
 					System.out.println(Config.BACKUPINTERVALL);
+					Config.setIntValue(Config.BACKUPINTERVALL_STRING, Integer.parseInt(tf.getText()));
 				}
 			});
 		}

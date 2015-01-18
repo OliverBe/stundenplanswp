@@ -196,31 +196,31 @@ public class PersonalPanel extends JPanel {
 
 		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
 
-		if (Config.MONDAY) {
+		if (Weekday.MONDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.MONDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.MONDAY);
 		}
-		if (Config.TUESDAY) {
+		if (Weekday.TUESDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.TUESDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.TUESDAY);
 		}
-		if (Config.WEDNESDAY) {
+		if (Weekday.WEDNESDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.WEDNESDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.WEDNESDAY);
 		}
-		if (Config.THURSDAY) {
+		if (Weekday.THURSDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.THURSDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.THURSDAY);
 		}
-		if (Config.FRIDAY) {
+		if (Weekday.FRIDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.FRIDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.FRIDAY);
 		}
-		if (Config.SATURDAY) {
+		if (Weekday.SATURDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.SATURDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.SATURDAY);
 		}
-		if (Config.SUNDAY) {
+		if (Weekday.SUNDAY.isSchoolday()) {
 			model.addRow(new String[] { Config.SUNDAY_STRING, sh, sm, eh, em });
 			wds.add(Weekday.SUNDAY);
 		}
