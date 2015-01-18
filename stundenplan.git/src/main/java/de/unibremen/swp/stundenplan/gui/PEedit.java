@@ -31,6 +31,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class PEedit extends JFrame {
@@ -189,6 +190,10 @@ public class PEedit extends JFrame {
 				System.out.println("inhalte:"+p.stundenInhaltetoString());
 				System.out.println("classes:"+p.schoolclassestoString());
 				System.out.println("room"+p.roomstoString());
+				PlanungseinheitManager.addPlanungseinheitToDB(p);
+				System.out.println("room"+p.getId());
+				//PlanungseinheitManager.deletePlanungseinheitFromDB(p.getId());
+				dispose();
 			}
 		});
 		getContentPane().add(label);

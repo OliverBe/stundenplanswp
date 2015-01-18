@@ -128,7 +128,7 @@ public class Planungseinheit{
 	
 	public boolean containsClass(Schoolclass pSC){
 		if(pSC == null){throw new IllegalArgumentException("Argument must not be null");}
-		return schulklassen.contains(pSC);
+		return schulklassen.contains(pSC.getName());
 	}
 	
 	public ArrayList<String> getRooms(){
@@ -145,7 +145,7 @@ public class Planungseinheit{
 	
 	public boolean containsRoom(Room pRoom){
 		if(pRoom == null){throw new IllegalArgumentException("Argument must not be null or empty String");}
-		return raeume.contains(pRoom);
+		return raeume.contains(pRoom.getName());
 	}
 	
 	public HashMap<String, int[]> getPersonalMap(){
@@ -189,7 +189,7 @@ public class Planungseinheit{
 	
 	public boolean containsPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
-		if(personal.get(pPerson) != null){return true;}
+		if(personal.get(pPerson.getKuerzel()) != null){return true;}
 		return false;
 	}
 	
