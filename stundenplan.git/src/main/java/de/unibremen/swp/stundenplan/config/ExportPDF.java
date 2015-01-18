@@ -165,17 +165,28 @@ public class ExportPDF {
   
   public static void createCSV(JTable jTable) {
 	  
+	  
+	  
+	  
       
 	try {
-		FileWriter writer = new FileWriter("CSV Export");
+		FileWriter writer = new FileWriter(path + "plan.csv");
 		   for(int i = 0; i < jTable.getModel().getRowCount(); i++) {
 		    	  for(int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 		    		  Object obj = jTable.getModel().getValueAt(i, e);
 		    		  
 		    		   writer.append(obj.toString());
+		    		   writer.append(";");
 		    		   
 		    	  }
+		    	  writer.append("\r\n");
 		      }
+		   writer.flush();
+		   writer.close();
+		   
+		   Runtime.getRuntime().exec(
+					"cmd.exe /c " + path 
+							+ "plan.csv");
 		  
 	} catch (IOException e1) {
 		System.out.println("ExportFehler");

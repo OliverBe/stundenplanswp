@@ -121,7 +121,9 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener{
         }
 	}
 	
-
+	public static JTable getTable() {
+		return table;
+	}
 	
 	
 }
