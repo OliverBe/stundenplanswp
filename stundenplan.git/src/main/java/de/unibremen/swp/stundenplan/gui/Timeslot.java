@@ -159,9 +159,9 @@ public final class Timeslot implements Serializable {
     	klassetext = pPE.schoolclassestoString();
     }
     
-    public void setpe(final int pPid){
-    	if(pPid<=0){throw new IllegalArgumentException("number must greater than 0");}
-    	pe = pPid;
+    public void setpe(final Planungseinheit pPE){
+    	if(pPE== null){throw new IllegalArgumentException("number must greater than 0");}
+    	pe = pPE.getId();
     }
     
     public int getpe(){

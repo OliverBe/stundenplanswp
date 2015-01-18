@@ -219,6 +219,7 @@ public final class TimetableManager {
     		t.setPersonaltext(pPE);
     		t.setRaumtext(pPE);
     		t.setStundeninhalttext(pPE);
+    		t.setpe(pPE);
     		timeslots.add(t);
     		final Calendar newCal = Calendar.getInstance();
     		newCal.setTimeInMillis(cal.getTimeInMillis());

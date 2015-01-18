@@ -27,6 +27,7 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 
 public class StundenplanPanel extends JPanel implements ActionListener {
@@ -103,7 +104,12 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 
 					final int row = table.rowAtPoint(evt.getPoint());
 					final int col = table.columnAtPoint(evt.getPoint());
-					createPopup(row, col);
+					Timeslot t = null;
+					if(table.getValueAt(row, col) instanceof Timeslot){
+						t = (Timeslot) table.getValueAt(row, col);
+					}
+					if(t != null);
+					createPopup(t.getpe());
 				}
 			}
 		});
@@ -120,14 +126,14 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	 *            Die Spalte.
 	 * @return das neue Popup-Menu
 	 */
-	protected JPopupMenu createPopup(final int row, final int col) {
+	protected JPopupMenu createPopup(final int peid) {
 
 		if (popmen.isVisible()) {
 			popmen.setVisible(false);
 		}
 		popmen = new JPopupMenu();
 		final JMenuItem menu1 = new JMenuItem("Neue Planungseinheit");
-		final JMenuItem menu2 = new JMenuItem("Planungseinheit bearbeiten");
+		final JMenuItem menu2 = new JMenuItem("Planungseinheit entfernen");
 
 		menu1.addActionListener(new ActionListener() {
 			@Override
@@ -141,13 +147,13 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				JFrame frame = new PEedit();
-				frame.setVisible(true);
+				PlanungseinheitManager.deletePlanungseinheitFromDB(peid);
 			}
 		});
 		popmen.add(menu1);
+		if(peid!=-1){
 		popmen.add(menu2);
-
+		}
 		popmen.setLocation(eventX, eventY);
 		popmen.setVisible(true);
 		return popmen;
