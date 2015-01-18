@@ -72,6 +72,8 @@ public class SchoolclassPanel extends JPanel{
 	private JList<Schoolclass> list = new JList<Schoolclass>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 	
+	final static CheckBoxList checkList = new CheckBoxList();
+	
 	public SchoolclassPanel() {
 		setLayout(new GridBagLayout());
 		setLayout(new GridBagLayout());
@@ -134,7 +136,7 @@ public class SchoolclassPanel extends JPanel{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridheight = 2;
 		
-		final CheckBoxList checkList = new CheckBoxList();
+//		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		 for(Personal per : PersonalManager.getAllPersonalFromDB()){
 			 boxes.add(new JCheckBox(per.getKuerzel()));
@@ -477,7 +479,14 @@ public class SchoolclassPanel extends JPanel{
 		listModel.clear();
 		for (Schoolclass sc : DataSchulklasse.getAllSchulklasse()){
 			listModel.addElement(sc);
-		}	
+		}
+		
+		checkList.removeAll();
+		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
+		 for(Personal per : PersonalManager.getAllPersonalFromDB()){
+			 boxes.add(new JCheckBox(per.getKuerzel()));
+		 };
+		checkList.setListData(boxes.toArray());
 	}
 
 }

@@ -108,6 +108,13 @@ public class MainFrame extends JFrame {
 			paneLehrer.init();
 			System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
 		};
+		if(c instanceof DataPanel){
+			SchoolclassPanel.updateList();
+			PersonalPanel.updateList();
+			RoomPanel.updateList();
+			RaumfunktionPanel.updateList();
+			StundeninhaltPanel.updateList();
+		}
 	}
 
 	public static WarningPanel getWarning() {

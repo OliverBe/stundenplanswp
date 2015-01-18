@@ -56,6 +56,7 @@ public class DataPanel extends JPanel {
 	private JMenuItem mB = new JMenuItem("Bedarf an Stundeninhalten");
 
 	private RaumfunktionPanel raumfunktionPanel;
+
 	private PersonalPanel personalPanel;
 	private SchoolclassPanel schoolclassPanel;
 	private StundeninhaltPanel stundeninhaltPanel;
@@ -64,6 +65,30 @@ public class DataPanel extends JPanel {
 
 	public DataPanel() {
 		initComponents();
+	}
+	
+	public RaumfunktionPanel getRaumfunktionPanel() {
+		return raumfunktionPanel;
+	}
+	
+	public PersonalPanel getPersonalPanel() {
+		return personalPanel;
+	}
+	
+	public SchoolclassPanel getSchoolclassPanel() {
+		return schoolclassPanel;
+	}
+	
+	public StundeninhaltPanel getStundeninhaltPanel() {
+		return stundeninhaltPanel;
+	}
+	
+	public RoomPanel getRoomPanel() {
+		return roomPanel;
+	}
+	
+	public BedarfPanel getBedarfPanel() {
+		return bedarfPanel;
 	}
 
 	private void initComponents() {
