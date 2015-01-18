@@ -23,6 +23,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import de.unibremen.swp.stundenplan.gui.Timeslot;
+
 
 public class ExportPDF {
 	private static String path = System.getProperty("user.dir") + "/";
@@ -52,10 +54,16 @@ public class ExportPDF {
       for(int i = 0; i < jTable.getModel().getRowCount(); i++) {
     	  for(int e = 0; e < jTable.getModel().getColumnCount(); e++) {
     		  Object obj = jTable.getModel().getValueAt(i, e);
-    		  
+    		  if(obj instanceof Timeslot) {
+    			Timeslot ts = (Timeslot) obj;
+    			PdfPCell c1 = new PdfPCell(new Phrase(ts.getKlassentext() + ", \r\n" + ts.getPersonaltext() + ", \r\n" + ts.getRaeumetext() + ", \r\n" + ts.getStundeninhalttext()));
+      		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+      		    table.addCell(c1);
+    		  } else {
     		    PdfPCell c1 = new PdfPCell(new Phrase(obj.toString()));
     		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
     		    table.addCell(c1);
+    		  }
     	  }
       }
       
