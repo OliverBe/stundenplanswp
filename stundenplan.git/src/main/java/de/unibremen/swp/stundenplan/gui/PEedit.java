@@ -159,6 +159,11 @@ public class PEedit extends JFrame {
 		JButton button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				if(pList.getDestsize() == 0 || scList.getDestsize() == 0 || roomList.getDestsize() == 0){
+					JOptionPane.showMessageDialog(null,
+							"Es sind keine Personal, Klassen oder Raeume eingeplant");
+					return;
+				}
 				Planungseinheit p = new Planungseinheit();
 				p.setStarthour((int) spinner1.getValue());
 				p.setStartminute((int) spinner2.getValue());
