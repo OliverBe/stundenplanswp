@@ -116,6 +116,9 @@ public class MainFrame extends JFrame {
 			StundeninhaltPanel.updateList();
 			BedarfPanel.updateList();
 		}
+		if(c instanceof WochenplanPanel){
+			paneWochen.update();
+		};
 	}
 
 	public static WarningPanel getWarning() {
