@@ -21,6 +21,9 @@ import javax.swing.table.AbstractTableModel;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
@@ -84,8 +87,21 @@ public class TimetableModel extends AbstractTableModel {
     @Override
     public String getColumnName(final int col) {
         if (col == 0) {
-            return "";
-        }
+        	if(owner!=null){
+            if(owner instanceof Personal){
+            	Personal p = (Personal)owner; 
+            	return p.getName();
+            }else if(owner instanceof Room){
+            	Room r = (Room)owner;
+            	return r.getName();
+            }else if(owner instanceof Schoolclass){
+            	Schoolclass sc = (Schoolclass)owner;
+            	return sc.getName();
+        	}else{
+        	return "";
+        		}
+            }
+        	}
         final int index = col - 1;
         final Weekday[] weekdays = TimetableManager.validdays();
         if (index >= 0 && index < weekdays.length) {
