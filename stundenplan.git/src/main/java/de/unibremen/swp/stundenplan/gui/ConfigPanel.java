@@ -285,19 +285,19 @@ public class ConfigPanel extends JPanel {
 			CheckBoxList checkList = new CheckBoxList();
 			checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			JCheckBox[] boxes = { mo, di, mi, don, fr, sa, so };
-			if (Boolean.parseBoolean(Config.MONDAY) == true)
+			if (Weekday.MONDAY.isSchoolday()==true)
 				mo.setSelected(true);
-			if (Boolean.parseBoolean(Config.TUESDAY) == true)
+			if (Weekday.TUESDAY.isSchoolday() == true)
 				di.setSelected(true);
-			if (Boolean.parseBoolean(Config.WEDNESDAY) == true)
+			if (Weekday.WEDNESDAY.isSchoolday() == true)
 				mi.setSelected(true);
-			if (Boolean.parseBoolean(Config.THURSDAY) == true)
+			if (Weekday.THURSDAY.isSchoolday() == true)
 				don.setSelected(true);
-			if (Boolean.parseBoolean(Config.FRIDAY) == true)
+			if (Weekday.FRIDAY.isSchoolday() == true)
 				fr.setSelected(true);
-			if (Boolean.parseBoolean(Config.SATURDAY) == true)
+			if (Weekday.SATURDAY.isSchoolday() == true)
 				sa.setSelected(true);
-			if (Boolean.parseBoolean(Config.SUNDAY) == true)
+			if (Weekday.SUNDAY.isSchoolday() == true)
 				so.setSelected(true);
 			checkList.setListData(boxes);
 			add(checkList, c);
