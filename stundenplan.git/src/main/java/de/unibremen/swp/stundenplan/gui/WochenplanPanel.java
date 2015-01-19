@@ -38,5 +38,15 @@ public class WochenplanPanel extends JPanel {
 		add(tabPane);
 		
 	}
+	
+	public void update(){
+		montag.refresh();
+		dienstag.refresh();
+		mittwoch.refresh();
+		donnerstag.refresh();
+		freitag.refresh();
+		samstag.refresh();
+		System.out.println("Personaliste aktualisiert");
+	}
 
 }
