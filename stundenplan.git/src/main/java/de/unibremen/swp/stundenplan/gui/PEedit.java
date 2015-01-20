@@ -37,6 +37,7 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class PEedit extends JFrame {
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+	private StundenplanPanel parentframe;
 	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
 		public int compare(Personal p1, Personal p2) {
 			if (p1.getName() == null) {
@@ -86,33 +87,34 @@ public class PEedit extends JFrame {
 
 	};
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			Config.init(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PEedit frame = new PEedit();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		try {
+//			Config.init(null);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					PEedit frame = new PEedit();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public PEedit() {
+	public PEedit(final StundenplanPanel pParent) {
 		super("Planungseinheiten bearbeiten");
+		parentframe = pParent;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new SpringLayout());
 		JLabel lLabel1 = new JLabel("Startzeit : Stunde - Minute");
@@ -235,14 +237,8 @@ public class PEedit extends JFrame {
 					p.addRoom(r);
 					}
 				}
-				System.out.println("dur:"+p.duration());
-				System.out.println("day:"+p.getWeekday());
-				System.out.println("pers:"+p.personaltoString());
-				System.out.println("inhalte:"+p.stundenInhaltetoString());
-				System.out.println("classes:"+p.schoolclassestoString());
-				System.out.println("room"+p.roomstoString());
 				PlanungseinheitManager.addPlanungseinheitToDB(p);
-				System.out.println("room"+p.getId());
+				parentframe.updatetable();
 				dispose();
 			}
 		});
