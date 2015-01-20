@@ -2,15 +2,9 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,8 +29,8 @@ public class LehreransichtPanel extends JPanel {
 
 	private JTable table;
 
-	private JFileChooser chooser = new JFileChooser();
-	private JFrame f;
+//	private JFileChooser chooser = new JFileChooser();
+//	private JFrame f;
 
 	GridBagConstraints c = new GridBagConstraints();
 
