@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 
 public class DataStundeninhalt {
 
@@ -84,21 +85,35 @@ public class DataStundeninhalt {
 	
 	public static void deleteStundeninhaltByKuerzel(String pKuerzel) {
 		try {
-			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM stundenbedarf WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
+			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next() && DeleteException.delete("Der Stundeninhalt kann von einem oder mehreren Lehrern ausgeführt werden./n Soll der Stundeninhalt trotzdem gelöscht werden?")) {
+				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+				rs = stmt.executeQuery(sql);
+				if(rs.next()) {
+					if(DeleteException.delete("Der Stundeninhalt ist in einer Planungseinheit eingetragen./n Soll der Stundeninhalt trotzdem gelöscht werden?")) {
+						deleteSQL(pKuerzel);
+					}
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteSQL(String pKuerzel) throws SQLException {
+		sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM stundenbedarf WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {

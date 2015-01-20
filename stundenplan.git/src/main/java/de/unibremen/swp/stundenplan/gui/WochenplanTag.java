@@ -2,6 +2,7 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -29,7 +30,10 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 //Diese Klasse reprï¿½sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
@@ -70,18 +74,11 @@ public class WochenplanTag extends JPanel {
 	 * Erstellt das Layout und die Tabelle des Wochenplanes.
 	 */
 	public void init() {
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridx = 0;
-		c.gridy = 0;
+		setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		table = new JTable(model);
 		model.addColumn("Personal");
-		for (int i = (Config.DAY_STARTTIME_HOUR * 100); i <= (Config.DAY_ENDTIME_HOUR * 100); i += 10) {
+		for (int i = (TimetableManager.startTimeHour() * 100); i <= (TimetableManager.endTimeHour() * 100); i += Timeslot.timeslotlength()) {
 
 			String text = "" + i;
 			String c1 = "" + text.charAt(text.length() - 2);
@@ -100,20 +97,17 @@ public class WochenplanTag extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(50);
+		
 		TableColumn column = table.getColumnModel().getColumn(0);
 		column.setPreferredWidth(100);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
 		JScrollPane pane = new JScrollPane(table);
 
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = 4;
-		c.gridy = 0;
-		c.gridx = 1;
-
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		pane.setPreferredSize(new Dimension(1400, 700));
-		add(pane, c);
+		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		pane.setPreferredSize(new Dimension(1400,700));
+		add(pane);
 
 	}
 
@@ -141,18 +135,25 @@ public class WochenplanTag extends JPanel {
 	 * des Raumes an der besagten Zeit der Planungseinheit.
 	 */
 	public void calculateTime() {
-		for (Planungseinheit p : einheitsliste) {
+	
+		if(DataPlanungseinheit.getAllPlanungseinheit().size()<=0){
+			System.out.println("Keine Planungseinheiten zum Verplanen vorhanden");
+			return;
+		}
+		for (Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit() ) {
 			List<Personal> ppliste = new ArrayList<>();
 			ppliste = p.getPersonal();
 			int starthour = p.getStartHour();
 			int startminute = p.getStartminute();
 			int endminute = p.getEndminute();
 			int endhour = p.getEndhour();
-			StringBuilder raeume = new StringBuilder();
-
+			
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
-				String personalName = ppliste.get(0).getName();
+				String personalName ="";
+				if(ppliste.get(0)!=null){
+				for(int k = 0; k < ppliste.size(); k++){
+					 personalName = ppliste.get(k).getName();
 				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
@@ -161,24 +162,25 @@ public class WochenplanTag extends JPanel {
 					for (int j = 1; j < model.getColumnCount(); j++) {
 						String zeit = model.getColumnName(j);
 						String[] zeiten = zeit.split(":");
-						int stunde = Integer.parseInt(zeiten[0]);
-						int minute = Integer.parseInt(zeiten[1]);
-						if (stunde >= starthour && minute >= startminute) {
+						int tabStunde = Integer.parseInt(zeiten[0]);
+						int tabMinute = Integer.parseInt(zeiten[1]);
+						
+						if(tabStunde >= starthour && tabMinute >= startminute|| tabStunde>starthour && tabMinute<=startminute) {
+							
 							if (ausgabe.length() >= 70) {
 								TableColumn spalte = table.getColumnModel()
 										.getColumn(j);
 								spalte.setPreferredWidth(ausgabe.length() + 30);
 							}
-							if (stunde >= endhour && minute >= endminute) {
-								System.out.println("Ausgabe läenge"
+							if (tabStunde == endhour && tabMinute == endminute) {
+								System.out.println("Ausgabe läenge "
 										+ ausgabe.length());
-
-								model.setValueAt(ausgabe, i, j);
 
 								return;
 
 							} else {
 								model.setValueAt(ausgabe, i, j);
+								
 							}
 
 						}
@@ -187,6 +189,8 @@ public class WochenplanTag extends JPanel {
 				}
 
 			}
+		}
+	}
 
 		}
 	}
@@ -277,7 +281,8 @@ public class WochenplanTag extends JPanel {
 	 */
 	public void deleteAllPersonal() {
 
-		for (int i = 0; i < model.getRowCount(); i++) {
+		for (int i = 0; i <= model.getRowCount(); i++) {
+			System.out.println("Länge des TableModelLänge: "+model.getRowCount());
 			model.removeRow(i);
 		}
 	}
@@ -288,7 +293,8 @@ public class WochenplanTag extends JPanel {
 	 */
 	public void refresh() {
 		deleteAllPersonal();
-		addData();
+		
+		
 	}
 
 	/**

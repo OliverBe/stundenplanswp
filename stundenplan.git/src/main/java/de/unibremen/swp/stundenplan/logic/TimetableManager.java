@@ -91,8 +91,6 @@ public final class TimetableManager {
     private static DayTable createTimeslots(Weekday pWeekday) {
         final Calendar cal = Calendar.getInstance();
         DayTable dayTable = createTimeslotsForPES(PlanungseinheitManager.demomethod(pWeekday), pWeekday);
-        tscounter += 1 ;
-        System.out.println("ts:"+tscounter);
         return dayTable;
    }
     
@@ -116,7 +114,6 @@ public final class TimetableManager {
         DayTable dayTable = new DayTable(pWeekday);
         if(pPE.size() == 0 ){
         	dayTable.addTimeslot(filltoEnd(dayTable, cal));
-        	System.out.println("nothing");
         	return dayTable;
         }
         ArrayList<Planungseinheit> pE = pPE;
@@ -137,13 +134,9 @@ public final class TimetableManager {
         	dayTable.addTimeslot(ts);
             cal.add(Calendar.MINUTE, Timeslot.timeslotlength()*ts.size());
         }
-        System.out.println(dayTable.slotslength());
-        System.out.println(daytablelength());
         if(dayTable.slotslength()<daytablelength()){
         	dayTable.addTimeslot(filltoEnd(dayTable, cal));
         }
-        counter +=1;
-        System.out.println("Zaehler"+counter);
         return dayTable;
     
     }
@@ -177,8 +170,7 @@ public final class TimetableManager {
 			timeslot.add(t);
 			time.add(Calendar.MINUTE, Timeslot.timeslotlength());			
 		}
-        System.out.println("rest"+timeslot.size());
-    	return timeslot;
+        return timeslot;
 	}
 
 	/**
@@ -220,6 +212,7 @@ public final class TimetableManager {
     		t.setRaumtext(pPE);
     		t.setStundeninhalttext(pPE);
     		t.setpe(pPE);
+    		t.setrhytm(pPE);
     		timeslots.add(t);
     		final Calendar newCal = Calendar.getInstance();
     		newCal.setTimeInMillis(cal.getTimeInMillis());
@@ -297,7 +290,6 @@ public final class TimetableManager {
     public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
         DayTable dayTable;
         if(clazz instanceof Personal){
-        	System.out.println("Personal Time Table");
         	dayTable = createTimeslotsForPersonal(weekday, (Personal)clazz);
         }else if(clazz instanceof Schoolclass){
         	dayTable = createTimeslotsForSchoolclass(weekday, (Schoolclass)clazz);

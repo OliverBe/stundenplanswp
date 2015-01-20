@@ -57,169 +57,6 @@ public final class PlanungseinheitManager {
 		System.out.println("Planungseinheit ["+planungseinheitId+"]) deleted.");
 	}
 	
-	public static void preparedemo(){
-		for(final Weekday weekday : TimetableManager.validdays()){
-        	demoinit(weekday);
-        }
-	}
-	
-	private static void demoinit(Weekday pWeekday){
-		Planungseinheit p1 = new Planungseinheit();
-		Planungseinheit p2 = new Planungseinheit();
-		Personal per1 = new Personal();
-		Personal per2 = new Personal();
-
-		if (pWeekday.getOrdinal() == 0) {
-			Stundeninhalt s1 = new Stundeninhalt("Mathe", "MAT", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Deutsch", "DEU", 45, 0);
-			per1.setName("Max Mustermann");
-			per1.setKuerzel("MM");
-			per2.setName("Ned Stark");
-			per2.setKuerzel("NS");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(9);
-			p1.setStartminute(30);
-			p1.setEndhour(10);
-			p1.setEndminute(30);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(11);
-			p2.setStartminute(30);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 1) {
-			Stundeninhalt s1 = new Stundeninhalt("Westeroskunde", "WK", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Terrakunde", "TK", 45, 0);
-			per1.setName("Rhaegar Bodoh");
-			per1.setKuerzel("RB");
-			per2.setName("Horus Rhet");
-			per2.setKuerzel("HR");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(9);
-			p1.setStartminute(0);
-			p1.setEndhour(10);
-			p1.setEndminute(45);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(10);
-			p2.setStartminute(30);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 2) {
-			Stundeninhalt s1 = new Stundeninhalt("Valyrian Steel", "VS", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Emperor", "EMP", 45, 0);
-			per1.setName("Amuro Busk");
-			per1.setKuerzel("AB");
-			per2.setName("Grom Menethil");
-			per2.setKuerzel("GM");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(8);
-			p1.setStartminute(0);
-			p1.setEndhour(11);
-			p1.setEndminute(0);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(12);
-			p2.setStartminute(00);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 3) {
-			Stundeninhalt s1 = new Stundeninhalt("Winterfellkunde", "WF", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Padawan Sein", "PS", 45, 0);
-			per1.setName("Ana Kind");
-			per1.setKuerzel("AK");
-			per2.setName("Luke Skywalker");
-			per2.setKuerzel("LS");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(8);
-			p1.setStartminute(0);
-			p1.setEndhour(9);
-			p1.setEndminute(0);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(12);
-			p2.setStartminute(00);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 4) {
-			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
-			per1.setName("Bill Gates");
-			per1.setKuerzel("BG");
-			per2.setName("Darth Serious");
-			per2.setKuerzel("DS");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(9);
-			p1.setStartminute(0);
-			p1.setEndhour(9);
-			p1.setEndminute(30);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(12);
-			p2.setStartminute(00);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 5) {
-			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
-			per1.setName("Bill Gates");
-			per1.setKuerzel("BG");
-			per2.setName("Darth Serious");
-			per2.setKuerzel("DS");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(9);
-			p1.setStartminute(0);
-			p1.setEndhour(9);
-			p1.setEndminute(30);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(12);
-			p2.setStartminute(00);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		} else if (pWeekday.getOrdinal() == 6) {
-			Stundeninhalt s1 = new Stundeninhalt("TrollStudie", "TS", 45, 0);
-			Stundeninhalt s2 = new Stundeninhalt("Der Sith", "DS", 45, 0);
-			per1.setName("Bill Gates");
-			per1.setKuerzel("BG");
-			per2.setName("Darth Serious");
-			per2.setKuerzel("DS");
-			p1.addPersonal(per1, new int[] { 7, 0, 15, 0 });
-			p1.addStundeninhalt(s1);
-			p1.setStarthour(9);
-			p1.setStartminute(0);
-			p1.setEndhour(9);
-			p1.setEndminute(30);
-			p2.addPersonal(per2, new int[] { 7, 0, 15, 0 });
-			p2.addStundeninhalt(s2);
-			p2.setStarthour(12);
-			p2.setStartminute(00);
-			p2.setEndhour(12);
-			p2.setEndminute(30);
-			p1.setWeekday(pWeekday);
-			p2.setWeekday(pWeekday);		
-		}
-		addPlanungseinheitToDB(p1);
-		addPlanungseinheitToDB(p2);
-	} 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
 	 * zur�ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
@@ -255,8 +92,8 @@ public final class PlanungseinheitManager {
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsPersonal(pPerson) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsPersonal(pPerson)){
 				pes.add(p);
 				}
 		}
@@ -278,8 +115,8 @@ public final class PlanungseinheitManager {
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsClass(pSchoolclass) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsClass(pSchoolclass)){
 				pes.add(p);
 				}
 		}
@@ -302,8 +139,8 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
 		// hier muss die Liste geholt werden
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsRoom(pRoom) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsRoom(pRoom)){
 				pes.add(p);
 				}
 		}
@@ -311,22 +148,23 @@ public final class PlanungseinheitManager {
 		return pes;
 	}
 	
-	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
+	public static Planungseinheit timeslotToPE(Timeslot pTs, Object pOwner){
     	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zur�ck.
     	ArrayList<Planungseinheit> pes;
     	if(pOwner instanceof Personal){
-    		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex], (Personal)pOwner);
+    		pes = getPEForPersonalbyWeekday(pTs.getDay(), (Personal)pOwner);
     	}else if(pOwner instanceof Room){
-    		pes = getPEForRoombyWeekday(TimetableManager.validdays()[pDayIndex], (Room)pOwner);
+    		pes = getPEForRoombyWeekday(pTs.getDay(), (Room)pOwner);
     	}else if(pOwner instanceof Schoolclass){
-    		pes = getPEForSchoolclassbyWeekday(TimetableManager.validdays()[pDayIndex], (Schoolclass)pOwner);
+    		pes = getPEForSchoolclassbyWeekday(pTs.getDay(), (Schoolclass)pOwner);
     	}else{
     		return null;
     	}
+    	Planungseinheit thisismyPE = null;
     	for(Planungseinheit p : pes){
-    		
+    		if(checkPEandTime(p, pTs.getsHour(), pTs.getsMinute()));
     	}
-    	return null;
+    	return thisismyPE;
     }
 	
 	public static void orderByTime(List<Planungseinheit> pPE) {
@@ -453,7 +291,7 @@ public final class PlanungseinheitManager {
 			return true;
 		}else if(hour== p1.getStartHour() && minute >= p1.getStartminute()){
 				return true;
-		}else if(hour== p1.getEndhour() && minute <= p1.getEndminute()){
+		}else if(hour== p1.getEndhour() && minute < p1.getEndminute()){
 			return true;
 		}
 		return false;

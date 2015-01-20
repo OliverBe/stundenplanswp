@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
 public class DataPersonal {
@@ -27,7 +28,7 @@ public class DataPersonal {
 			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
 					+ "', '" + personal.getKuerzel() + "', "
-					+ personal.getSollZeit() + ", 0, 0, "
+					+ personal.getSollZeit() + ", 0, " + personal.getErsatzZeit() + ", "
 					+ (personal.isGependelt() ? 1:0) + ", "
 					+ (personal.isLehrer() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
@@ -172,17 +173,24 @@ public class DataPersonal {
 	
 	public static void deletePersonalByKuerzel(String pKuerzel) {
 		try {
-			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
+			sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) throw new DeleteException("Das Personal ist als Klassenlehrer einer Klasse eingetragen und kann dadurch nicht gelöscht werden.");
+			sql = "SELECT * FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+			rs = stmt.executeQuery(sql);
+			if(!rs.next() || rs.next() && DeleteException.delete("Das Personal ist in einer Planungseinheit eingetragen./n Soll das Personal trotzdem gelöscht werden?")) {
+				sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
+				stmt.executeUpdate(sql);
+			}
+		} catch (SQLException | DeleteException e) {
 			e.printStackTrace();
 		}
 	}

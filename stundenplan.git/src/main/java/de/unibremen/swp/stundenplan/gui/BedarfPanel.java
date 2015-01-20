@@ -289,6 +289,8 @@ public class BedarfPanel extends JPanel {
 	private boolean check(final JPanel p) {
 		if (textFieldsEmpty(p))
 			return false;
+		if(cb2.getSelectedItem() == null)
+			return false;
 		try {
 			for (Component c : p.getComponents()) {
 				if (c == bedField)

@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -13,39 +14,42 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 
 public class WochenplanPanel extends JPanel {
 
+	private JFrame f;
 	public JTabbedPane tabPane = new JTabbedPane();
-	private WochenplanTag montag = new WochenplanTag(Weekday.MONDAY);
-	private WochenplanTag dienstag = new WochenplanTag(Weekday.TUESDAY);
-	private WochenplanTag mittwoch = new WochenplanTag(Weekday.WEDNESDAY);
-	private WochenplanTag donnerstag = new WochenplanTag(Weekday.THURSDAY);
-	private WochenplanTag freitag = new WochenplanTag(Weekday.FRIDAY);
-	private WochenplanTag samstag = new WochenplanTag(Weekday.SATURDAY);
+	private WochenplanTag montag;
+	private WochenplanTag dienstag;
+	private WochenplanTag mittwoch;
+	private WochenplanTag donnerstag;
+	private WochenplanTag freitag;
+	private WochenplanTag samstag;
 	
 	
 	public WochenplanPanel(){
+		setLayout(new FlowLayout(FlowLayout.LEFT));
 		init();
 		
 	}
 	
 	public void init(){
-		setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		montag = new WochenplanTag(Weekday.MONDAY);
 		tabPane.add("Montag", montag);
+		dienstag = new WochenplanTag(Weekday.TUESDAY);
 		tabPane.add("Dienstag", dienstag);
+		mittwoch = new WochenplanTag(Weekday.WEDNESDAY);
 		tabPane.add("Mittwoch", mittwoch);
+		donnerstag = new WochenplanTag(Weekday.THURSDAY);
 		tabPane.add("Donnerstag", donnerstag);
+		freitag = new WochenplanTag(Weekday.FRIDAY);
 		tabPane.add("Freitag", freitag);
+		samstag = new WochenplanTag(Weekday.SATURDAY);
 		tabPane.add("Samstag",samstag);
 		add(tabPane);
-		
 	}
 	
 	public void update(){
-		montag.refresh();
-		dienstag.refresh();
-		mittwoch.refresh();
-		donnerstag.refresh();
-		freitag.refresh();
-		samstag.refresh();
+		tabPane.removeAll();
+		init();
 		System.out.println("Personaliste aktualisiert");
 	}
 

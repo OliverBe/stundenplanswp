@@ -55,11 +55,14 @@ public class PersonalPanel extends JPanel {
 	private Label lPrefTime = new Label("Zeitwunsch:");
 
 	private Label lTime = new Label("Zeitverpflichtung in h:");
+	private Label lErsatz = new Label("Ersatzzeit in h:");
 
 	public TextField nameField = new TextField(15);
 	public TextField kuerzField = new TextField(5);
 	private TextField timeField = new TextField(5);
 	private TextField timeField2 = new TextField(5);
+	private TextField ersatzField = new TextField(5);
+	private TextField ersatzField2 = new TextField(5);
 	
 	private JLabel lSubjects = new JLabel("Moegliche Stundeninhalte :");
 
@@ -96,6 +99,7 @@ public class PersonalPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
+	@SuppressWarnings("serial")
 	private JPanel createAddPanel(final JPanel p) {		
 		model = new DefaultTableModel(){
 		    @Override
@@ -129,8 +133,6 @@ public class PersonalPanel extends JPanel {
 		group.add(paedagogeB);
 		p.add(lehrerB, c);
 		c.gridx = 3;
-		p.add(new Label("oder"));
-		c.gridx = 4;
 		p.add(paedagogeB, c);
 
 		c.gridx = 0;
@@ -144,6 +146,10 @@ public class PersonalPanel extends JPanel {
 		p.add(lTime, c);
 		c.gridx = 1;
 		p.add(timeField, c);
+		c.gridx = 2;
+		p.add(lErsatz, c);
+		c.gridx = 3;
+		p.add(ersatzField, c);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 5;
@@ -291,7 +297,7 @@ public class PersonalPanel extends JPanel {
 					}
 					
 					Personal pe = new Personal(nameField.getText(), kuerzField
-							.getText(), Integer.parseInt(timeField.getText()),
+							.getText(), Integer.parseInt(timeField.getText()), Integer.parseInt(ersatzField.getText()),
 							lehrerB.isSelected(), stdi, wunsch);
 					
 					PersonalManager.addPersonalToDb(pe);
@@ -359,14 +365,16 @@ public class PersonalPanel extends JPanel {
 		return p;
 	}
 	
+	@SuppressWarnings("serial")
 	private JPanel createEditPanel(final JPanel p, final Personal pe) {
 		
 		Label lName2 = new Label("Name des Personals:");
 		Label lKuerz2 = new Label("Kuerzel:");
 		Label lPrefTime2 = new Label("Zeitwunsch:");
 		Label lTime2 = new Label("Zeitverpflichtung in h:");
-		TextField nameField2 = new TextField(15);
-		TextField kuerzField2 = new TextField(5);
+		Label lErsatz2 = new Label("Ersatzzeit in h:");
+		final TextField nameField2 = new TextField(15);
+		final TextField kuerzField2 = new TextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Speichern");
@@ -409,8 +417,6 @@ public class PersonalPanel extends JPanel {
 		group2.add(paedagogeB2);
 		p.add(lehrerB2, c);
 		c.gridx = 3;
-		p.add(new Label("oder"));
-		c.gridx = 4;
 		p.add(paedagogeB2, c);
 
 		c.gridx = 0;
@@ -426,6 +432,11 @@ public class PersonalPanel extends JPanel {
 		c.gridx = 1;
 		p.add(timeField2, c);
 		timeField2.setText(pe.getSollZeit()+"");
+		c.gridx = 2;
+		p.add(lErsatz2, c);
+		c.gridx = 3;
+		p.add(ersatzField2, c);
+		ersatzField2.setText(pe.getErsatzZeit()+"");
 		
 		c.gridx = 0;
 		c.gridy = 3;
@@ -545,7 +556,7 @@ public class PersonalPanel extends JPanel {
 					}
 					
 					PersonalManager.editPersonal(pe.getKuerzel(),new Personal(nameField2.getText(), kuerzField2
-							.getText(), Integer.parseInt(timeField2.getText()),
+							.getText(), Integer.parseInt(timeField2.getText()), Integer.parseInt(ersatzField2.getText()),
 							lehrerB2.isSelected(), stunden, wunsch));
 	
 					updateList();
@@ -605,6 +616,10 @@ public class PersonalPanel extends JPanel {
 					Integer.parseInt(timeField.getText());
 				if (c == timeField2)
 					Integer.parseInt(timeField2.getText());
+				if (c == ersatzField)
+					Integer.parseInt(ersatzField.getText());
+				if (c == ersatzField2)
+					Integer.parseInt(ersatzField2.getText());
 			}
 		} catch (NumberFormatException e) {
 			return false;

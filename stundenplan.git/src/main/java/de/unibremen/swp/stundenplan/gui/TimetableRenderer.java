@@ -121,8 +121,17 @@ public final class TimetableRenderer extends JLabel implements TableCellRenderer
         final String subjectText = timeslot.getStundeninhalttext();
         final String klasseText = timeslot.getKlassentext();
         final String raumText = timeslot.getRaeumetext();
-        String ausgabeText = "<html>"+subjectText+" <br/> "+text+" <br/> "+klasseText+" <br/> "+raumText+"</html>";
+        String ausgabeText = "<html><body><center>"+subjectText+" <br/> "+text+" <br/> "+klasseText+" <br/> "+raumText+"</body></center></html>";
         setText(ausgabeText);
+        if(timeslot.getrhytm() == 0){
+        	setBackground(Color.WHITE);
+        }else if(timeslot.getrhytm() == 1){
+        	setBackground(Color.GREEN);
+        }else if(timeslot.getrhytm() == 2){
+        	setBackground(Color.YELLOW);
+        }else{
+        	setBackground(Color.GRAY);
+        }
         return this;
     }
 
