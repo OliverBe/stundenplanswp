@@ -79,7 +79,7 @@ public final class Stundenplan {
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
             final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            Timer timer = new Timer(1000, new ActionListener() {
+            Timer timer = new Timer(60000, new ActionListener() {
             	@Override
                 public void actionPerformed(ActionEvent e) {
             		time++;
