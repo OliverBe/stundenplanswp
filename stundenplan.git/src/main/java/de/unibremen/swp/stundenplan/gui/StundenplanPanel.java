@@ -149,6 +149,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
 				PlanungseinheitManager.deletePlanungseinheitFromDB(peid);
+				updatetable();
 			}
 		});
 		popmen.add(menu1);
@@ -212,7 +213,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			}
 
 		}
-
+		updatetable();
 	}
 	
 	public JTable getTable() {

@@ -41,38 +41,23 @@ import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
  * Entspricht einer Zeiteinheit. Eine Zeiteinheit ist einem Tagesplan zugeordnet und hat eine startzeit. Die Dauer einer
  * solchen Zeiteinheit ist konfigurierbar und per Default auf {@linkplain Config#TIMESLOT_LENGTH_DEFAULT} festgelegt.
  * 
- * @author D. Lüdemann, K. Hölscher
+ * @author Fathan Vidjaja
  * @version 0.1
  * 
  */
-@Entity
 public final class Timeslot implements Serializable {
-
-    /**
-     * Die generierte serialVersionUID.
-     */
-    private static final long serialVersionUID = 4249954963688259056L;
 
     /**
      * Die Dauer aller Zeiteinheiten in Minuten.
      */
-    @Transient
     public static final int LENGTH = Config.getInt(Config.TIMESLOT_LENGTH_STRING,
             Config.TIMESLOT_LENGTH);
-
-    /**
-     * Die eindeutige, von der unterliegenden Persistenzschicht automatisch erzeugte ID.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
  
     /**
      * Die startzeit dieses Timeslots. Die Einträge für {@linkplain Calendar#HOUR} und {@linkplain Calendar#MINUTE}
      * müssen entsprechend gesetzt sein.
      */
-    @Temporal(TemporalType.TIME)
     private Calendar startzeit;
 
     private Weekday wochentag;
@@ -112,6 +97,18 @@ public final class Timeslot implements Serializable {
         if (pstartzeit != null) {
             startzeit = pstartzeit;
         }
+    }
+    
+    public Weekday getDay(){
+    	return wochentag;
+    }
+    
+    public int getsHour(){
+    	return startzeit.get(Calendar.HOUR_OF_DAY);
+    }
+    
+    public int getsMinute(){
+    	return startzeit.get(Calendar.MINUTE);
     }
     
     /**
