@@ -24,6 +24,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
@@ -83,7 +84,7 @@ public class DeleteDialogue extends JFrame {
 				if(o instanceof Jahrgang) {
 					Entry<String, Integer> ent = ((Jahrgang) o).getStundenbedarf().entrySet().iterator()
 							.next();
-					DataSchulklasse.deleteJahrgangbedarfByJAndSkuerzel(((Jahrgang)o).getJahrgang(),ent.getKey());
+					JahrgangsManager.deleteBedarfFromJahrgang(((Jahrgang)o),ent.getKey());
 					BedarfPanel.updateList();
 				}
 				dispose();	

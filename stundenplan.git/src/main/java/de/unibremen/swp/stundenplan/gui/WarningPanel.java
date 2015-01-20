@@ -37,7 +37,7 @@ public final class WarningPanel extends JPanel{
 		list.setCellRenderer(new SelectedListCellRenderer());
 	//	list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(Color.GREEN);
+		list.setBackground(new Color(143,188,143));
 	//	list.setPreferredSize(new Dimension(500,10));
 	//	listScroller.setPreferredSize(new Dimension(250, 200));
 		
