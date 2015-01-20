@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -13,6 +14,7 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 
 public class WochenplanPanel extends JPanel {
 
+	private JFrame f;
 	public JTabbedPane tabPane = new JTabbedPane();
 	private WochenplanTag montag;
 	private WochenplanTag dienstag;
@@ -43,7 +45,6 @@ public class WochenplanPanel extends JPanel {
 		samstag = new WochenplanTag(Weekday.SATURDAY);
 		tabPane.add("Samstag",samstag);
 		add(tabPane);
-		
 	}
 	
 	public void update(){

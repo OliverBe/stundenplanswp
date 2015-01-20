@@ -2,6 +2,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -53,7 +54,7 @@ public class MainFrame extends JFrame {
 		
 		setJMenuBar(menu);
 		add(tabpane);
-		add(paneWarning, BorderLayout.SOUTH);
+		add(paneWarning, BorderLayout.PAGE_END);
 		
 		tabpane.addChangeListener(new ChangeListener()
 	    {

@@ -140,7 +140,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				JFrame frame = new PEedit();
+				PEedit frame = getpFrame();
 				frame.setVisible(true);
 			}
 		});
@@ -149,6 +149,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
 				PlanungseinheitManager.deletePlanungseinheitFromDB(peid);
+				updatetable();
 			}
 		});
 		popmen.add(menu1);
@@ -159,6 +160,10 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		popmen.setVisible(true);
 		return popmen;
 
+	}
+	
+	private PEedit getpFrame(){
+		return new PEedit(this);
 	}
 
 	public static void updateLists() {
@@ -208,11 +213,15 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			}
 
 		}
-
+		updatetable();
 	}
 	
 	public JTable getTable() {
 		return table;
+	}
+
+	public void updatetable() {
+		table.repaint();
 	}
 	
 }

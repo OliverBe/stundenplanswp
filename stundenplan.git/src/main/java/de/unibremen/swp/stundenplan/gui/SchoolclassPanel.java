@@ -144,6 +144,7 @@ public class SchoolclassPanel extends JPanel {
 		}
 		;
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 
 		c.gridy = 6;
@@ -371,6 +372,7 @@ public class SchoolclassPanel extends JPanel {
 		}
 		;
 		checkList.setListData(boxes.toArray());
+		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList, c);
 
 		c.gridy = 6;
@@ -506,25 +508,23 @@ public class SchoolclassPanel extends JPanel {
 		} catch (NumberFormatException e) {
 			return false;
 		}
-
 		return true;
 	}
 
 	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
 		for (Component c : p.getComponents()) {
 			if (c instanceof TextField) {
 				TextField tf = (TextField) c;
 				if (!tf.getText().isEmpty())
-					b = false;
+					return false;
 			}
 			if (c instanceof JTextField) {
 				JTextField tf = (JTextField) c;
 				if (!tf.getText().isEmpty())
-					b = false;
+					return false;
 			}
 		}
-		return b;
+		return true;
 	}
 
 	public static void updateList() {

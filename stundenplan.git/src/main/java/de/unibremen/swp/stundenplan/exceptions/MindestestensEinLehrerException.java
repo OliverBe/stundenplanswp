@@ -26,9 +26,8 @@ public class MindestestensEinLehrerException extends Exception {
     }
     
     public MindestestensEinLehrerException() {
-        super();
-        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Sie müssen mindestens einen Lehrer im Team haben!");
-        
+        super();       
+        MainFrame.getWarning().setText("Sie müssen mindestens einen Lehrer im Team haben.");
     }
 
 }
