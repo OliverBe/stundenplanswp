@@ -50,6 +50,31 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	private static JList schoolclassList;
 	private static JLabel label1 = new JLabel("Lehrer");
 	private static JLabel label2 = new JLabel("Klassen");
+	private MouseAdapter mousefunc = new MouseAdapter() {
+		public void mousePressed(MouseEvent evt) {
+			eventX = evt.getXOnScreen();
+			eventY = evt.getYOnScreen();
+			eventXX = evt.getX();
+			eventYY = evt.getY();
+
+			if (SwingUtilities.isLeftMouseButton(evt)) {
+
+				popmen.setVisible(false);
+			}
+
+			if (SwingUtilities.isRightMouseButton(evt)) {
+
+				final int row = table.rowAtPoint(evt.getPoint());
+				final int col = table.columnAtPoint(evt.getPoint());
+				Timeslot t = null;
+				if(table.getValueAt(row, col) instanceof Timeslot){
+					t = (Timeslot) table.getValueAt(row, col);
+				}
+				if(t != null);
+				createPopup(t.getpe());
+			}
+		}
+	};
 
 	private static JButton show = new JButton("Anzeigen");
 
@@ -58,12 +83,13 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	JPopupMenu popmen = new JPopupMenu();
 
 	public StundenplanPanel() {
+		table = null;
 		init();
 		show.addActionListener(this);
 	}
 
 	public void init() {
-
+		removeAll();
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -78,7 +104,6 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
-		table = new StundenplanTable().getTable();
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
@@ -87,33 +112,9 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		c.gridy = 0;
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
-
-		table.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent evt) {
-				eventX = evt.getXOnScreen();
-				eventY = evt.getYOnScreen();
-				eventXX = evt.getX();
-				eventYY = evt.getY();
-
-				if (SwingUtilities.isLeftMouseButton(evt)) {
-
-					popmen.setVisible(false);
-				}
-
-				if (SwingUtilities.isRightMouseButton(evt)) {
-
-					final int row = table.rowAtPoint(evt.getPoint());
-					final int col = table.columnAtPoint(evt.getPoint());
-					Timeslot t = null;
-					if(table.getValueAt(row, col) instanceof Timeslot){
-						t = (Timeslot) table.getValueAt(row, col);
-					}
-					if(t != null);
-					createPopup(t.getpe());
-				}
-			}
-		});
-
+		if(table != null){
+		table.addMouseListener(mousefunc);
+		}
 	}
 
 	/**
@@ -195,14 +196,17 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			if (!personalList.isSelectionEmpty()) {
 				Personal p = (Personal) personalList.getSelectedValue();
 				System.out.println(p.getKuerzel());
+				table = new StundenplanTable().getTable();
 				table.setModel(new TimetableModel(p));
+				init();
 
 			} else if (!schoolclassList.isSelectionEmpty()) {
 				Schoolclass s = (Schoolclass) schoolclassList
 						.getSelectedValue();
 				System.out.println(s.getName());
+				table = new StundenplanTable().getTable();
 				table.setModel(new TimetableModel(s));
-
+				init();
 			}
 
 		}
