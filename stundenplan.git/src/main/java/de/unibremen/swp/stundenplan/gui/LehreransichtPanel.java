@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,6 +40,7 @@ public class LehreransichtPanel extends JPanel {
 
 	GridBagConstraints c = new GridBagConstraints();
 
+	ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
 	public JLabel warning = new JLabel();
 
 	public LehreransichtPanel() {
@@ -60,7 +63,6 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
 
-		ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
 		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
 				.getAllPlanungseinheit();
 		ArrayList<Personal> allPersonal = PersonalManager
@@ -68,14 +70,16 @@ public class LehreransichtPanel extends JPanel {
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
-			if(s.getRhythmustyp() == 0) continue;
+			if (s.getRhythmustyp() == 0)
+				continue;
 			model.addColumn(s.getKuerzel());
 			HashMap<String, Integer> hash = new HashMap<>();
 			inhaltKlasseStunden.put(s.getKuerzel(), hash);
 		}
 
 		for (Personal p : allPersonal) {
-			HashMap<String, HashMap<String, Integer>> inhaltKlasseStundenPerso = inhaltKlasseStunden;
+			System.out.println("PERSONAL WIRD BEARBEITET: "+ p.getName());
+			HashMap<String, HashMap<String, Integer>> inhaltKlasseStundenPerso = hashMapReset(inhaltKlasseStunden);
 			ArrayList<String> reihe = new ArrayList<>();
 			reihe.add(p.getKuerzel());
 			reihe.add(Integer.toString(p.getSollZeit()));
@@ -84,80 +88,142 @@ public class LehreransichtPanel extends JPanel {
 			} else {
 				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
 			}
-			if (planungseinheiten.size() == 0) model.addRow(reihe.toArray());
+			if (planungseinheiten.size() == 0)
+				model.addRow(reihe.toArray());
 			for (Planungseinheit pe : planungseinheiten) {
 				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
+					HashMap<String, Integer> kleineHashMap = new HashMap<>();
 					// TODO checken, ob die Reihenfolge bei der HashMap gleich
 					// bleibt,
 					// sonst stimmt die Anzahl der Stunden nicht mehr
-					ArrayList<String> inhalteInPlanungseinheit = pe.getStundeninhalte();
-					System.out.println("Stundeninhalte in Planungseinheit: "+pe.getStundeninhalte().toString());
-					ArrayList<String> klassenInPlanungseinheit = pe.getSchoolclasses();
+					ArrayList<String> inhalteInPlanungseinheit = pe
+							.getStundeninhalte();
+
+					ArrayList<String> klassenInPlanungseinheit = pe
+							.getSchoolclasses();
 
 					for (String s : inhalteInPlanungseinheit) {
-
 						for (String k : klassenInPlanungseinheit) {
-							HashMap<String, Integer> neuHash;
-							if(inhaltKlasseStundenPerso.get(s).get(k) != null) {
-								neuHash = inhaltKlasseStundenPerso.get(s);
-								neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
-							}else{
-								neuHash = new HashMap<>();
-								neuHash.put(k, pe.duration());
-							}					
-							System.out.println("s ist: "+s
-									+"\n"+ inhaltKlasseStundenPerso.toString());
 							System.out.println(inhaltKlasseStundenPerso.get(s).toString());
-							inhaltKlasseStundenPerso.put(s, neuHash);
+							if (inhaltKlasseStundenPerso.get(s).get(k) != null) {
+								kleineHashMap = inhaltKlasseStundenPerso.get(s);
+								kleineHashMap.put(k, inhaltKlasseStundenPerso
+										.get(s).get(k) + pe.duration());
+							} else {
+								kleineHashMap.put(k, pe.duration());
+							}
+							if(inhaltKlasseStundenPerso.get(s) == null){
+								inhaltKlasseStundenPerso.put(s, kleineHashMap);
+							}else{
+								HashMap<String,Integer> zwischenHash = inhaltKlasseStundenPerso.get(s);
+								zwischenHash.putAll(kleineHashMap);
+								inhaltKlasseStundenPerso.put(s, zwischenHash);
+							}
+							System.out.println("inhaltKlasseStundenPerso ist: "+inhaltKlasseStundenPerso.toString());
 						}
 					}
 				}
 			}
 			for (Stundeninhalt s : si) {
-				ArrayList<Schoolclass> klassen = DataSchulklasse.getAllSchulklasse();
+				ArrayList<Schoolclass> klassen = DataSchulklasse
+						.getAllSchulklasse();
+				int anzahlKlassenInZelle = 0;
+				if (s.getKuerzel() != null && s.getRhythmustyp() != 0&&inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
+					reihe.add("-");
+					System.out.println("Ein - eingfügt für: "+s.getKuerzel());
+				}
 				for (Schoolclass k : klassen) {
 
-					if (s.getKuerzel() != null){
-					if (inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
-						reihe.add("-");
-					} else {
+					if (s.getKuerzel() != null && s.getRhythmustyp() != 0) {
+						if (inhaltKlasseStundenPerso.get(s.getKuerzel()).containsKey(k.getName())) {
+							anzahlKlassenInZelle++;
+							System.out.println("Anzahl Klassen in Zelle: "+anzahlKlassenInZelle);
 
-						// Unterscheidung von Lehrer und Pï¿½dagoge
-						if (p.isLehrer()) {
-							reihe.add(k.getName()
-									+ ": "
-									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 45));
-						} else {
-							reihe.add(k.getName()
-									+ ":  "
-									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 60));
+							// Unterscheidung von Lehrer und Pï¿½dagoge
+							if (p.isLehrer()) {
+								System.out.println("s ist: " + s.getKuerzel()
+										+ "\nin inhaltKlasseStundenPerso ist: "
+										+ inhaltKlasseStundenPerso.toString());
+								System.out.println("Stundeninhalt ist: "
+										+ inhaltKlasseStundenPerso.get(s
+												.getKuerzel()));
+								System.out.println("Gefundener Wert für "
+										+ k.getName()
+										+ ": "
+										+ inhaltKlasseStundenPerso.get(
+												s.getKuerzel())
+												.get(k.getName()));
+								double ergebnisInMinuten = (inhaltKlasseStundenPerso
+										.get(s.getKuerzel()).get(k.getName()));
+								double ergebnisInStunden = Math
+										.round(((ergebnisInMinuten / 45) * 100));
+								ergebnisInStunden = ergebnisInStunden / 100;
+								if (anzahlKlassenInZelle > 1) {
+									String teilString = reihe.get(reihe.size()-1);
+									System.out.println("StringBuilder nimmt: "+reihe.get(reihe.size()-1));
+									StringBuilder builder = new StringBuilder(
+											teilString);
+									builder.append("  ||  " +k.getName()
+											+ ": "
+											+ Double.toString(ergebnisInStunden));
+									reihe.remove(reihe.size()-1);
+									reihe.add(builder.toString());
+									System.out.println(reihe.toString());
+								} else {
+									reihe.add(k.getName()
+											+ ": "
+											+ Double.toString(ergebnisInStunden));
+									System.out.println("Reihe erster Durchlauf: "+reihe.toString());
+								}
+							} else {
+								double ergebnisInMinuten = (inhaltKlasseStundenPerso
+										.get(s.getKuerzel()).get(k.getName()));
+								double ergebnisInStunden = Math
+										.round(((ergebnisInMinuten / 60) * 100));
+								ergebnisInStunden = ergebnisInStunden / 100;
+								reihe.add(k.getName() + ":  "
+										+ Double.toString(ergebnisInStunden));
+							}
 						}
 					}
-					}
-					model.addRow(reihe.toArray());
 				}
 			}
+			System.out.println("REIHE VOR EINFUEGEN: "+reihe.toString());
+			System.out.println("InhaltKlasseStunden ist: "+inhaltKlasseStunden.toString()
+					+"\n InhaltKlasseStundenPerso von "+ p.getName()+" ist: "+inhaltKlasseStundenPerso.toString());
+			model.addRow(reihe.toArray());
 		}
-		
+
 		ArrayList<String> kuerzelInAllenReihen = new ArrayList<String>();
-		for(int i= 0; i < model.getRowCount(); i++){
+		for (int i = 0; i < model.getRowCount(); i++) {
 			kuerzelInAllenReihen.add(model.getValueAt(i, 0).toString());
 		}
-		
-		for(Personal p : allPersonal){
+
+		for (Personal p : allPersonal) {
 			ArrayList<String> reihe = new ArrayList<String>();
-			if(!kuerzelInAllenReihen.contains(p.getKuerzel())){
+			if (!kuerzelInAllenReihen.contains(p.getKuerzel())) {
 				reihe.add(p.getKuerzel());
-				for(int i=0; i< model.getColumnCount(); i++){
+				for (int i = 0; i < model.getColumnCount(); i++) {
 					reihe.add("-");
 				}
 				model.addRow(reihe.toArray());
 			}
 		}
-		
+
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(40);
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
+	}
+	
+	private HashMap<String, HashMap<String,Integer>> hashMapReset(final HashMap<String, HashMap<String,Integer>> pInhaltKlasseStunden){
+		pInhaltKlasseStunden.clear();
+		for (Stundeninhalt s : si) {
+			if (s.getRhythmustyp() == 0)
+				continue;
+			HashMap<String, Integer> hash = new HashMap<>();
+			pInhaltKlasseStunden.put(s.getKuerzel(), hash);
+		}
+		return pInhaltKlasseStunden;
 	}
 }
