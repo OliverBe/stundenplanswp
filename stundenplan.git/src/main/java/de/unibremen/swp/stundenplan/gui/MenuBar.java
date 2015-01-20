@@ -54,7 +54,8 @@ public class MenuBar extends JMenuBar{
 	private JMenuItem neww = new JMenuItem("Neue Datei");
 	private JMenuItem open = new JMenuItem("�ffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
-	private JMenuItem export = new JMenuItem("Exportieren als PDF");
+	private JMenu export = new JMenu("Export");
+	private JMenuItem exportPDF = new JMenuItem("Exportieren als PDF");
 	private JMenuItem exportCSV = new JMenuItem("Exportieren als CSV");
 	private JMenuItem exportDOC = new JMenuItem("Exportieren als DOC");
 
@@ -72,13 +73,16 @@ public class MenuBar extends JMenuBar{
 	
 	private void initComponents() {
 		
+
+		export.add(exportPDF);
+		export.add(exportCSV);
+		export.add(exportDOC);
 		data.add(neww);
 		data.add(open);
 		data.add(save);
-		data.add(export);
-		data.add(exportCSV);
-		data.add(exportDOC);
+		
 		add(data);
+		add(export);
 		add(Box.createHorizontalGlue());
 		
 		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
@@ -101,7 +105,7 @@ public class MenuBar extends JMenuBar{
 		newClick(neww);
 		openClick(open);
 		saveClick(save);
-		exportClick(export);
+		exportPDFClick(exportPDF);
 		exportCSVClick(exportCSV);
 		exportDOCClick(exportDOC);
 		
@@ -110,7 +114,7 @@ public class MenuBar extends JMenuBar{
 		neww.setAccelerator(KeyStroke.getKeyStroke( 'N', InputEvent.CTRL_DOWN_MASK ));
 		open.setAccelerator(KeyStroke.getKeyStroke( 'O', InputEvent.CTRL_DOWN_MASK ));
 		save.setAccelerator(KeyStroke.getKeyStroke( 'S', InputEvent.CTRL_DOWN_MASK ));
-		export.setAccelerator(KeyStroke.getKeyStroke( 'E', InputEvent.CTRL_DOWN_MASK ));
+		exportPDF.setAccelerator(KeyStroke.getKeyStroke( 'E', InputEvent.CTRL_DOWN_MASK ));
 	}
 	
 	private void newClick(JMenuItem item) {
@@ -228,7 +232,7 @@ public class MenuBar extends JMenuBar{
 		});
 	}
 	
-	private void exportClick(JMenuItem item) {
+	private void exportPDFClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ae) {
