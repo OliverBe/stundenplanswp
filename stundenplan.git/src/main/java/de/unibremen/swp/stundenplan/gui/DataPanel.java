@@ -65,6 +65,7 @@ public class DataPanel extends JPanel {
 
 	public DataPanel() {
 		initComponents();
+		mStdi.doClick();
 	}
 	
 	public RaumfunktionPanel getRaumfunktionPanel() {
@@ -177,9 +178,9 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				add(stundeninhaltPanel, c);
 
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(stundeninhaltPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				if((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel) != null) SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel));
 			}
 		});
 
