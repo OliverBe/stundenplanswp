@@ -135,7 +135,7 @@ public class TimetableModel extends AbstractTableModel {
         } else {
             try {
             	if(owner==null){
-            	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row);
+            	return new Timeslot(TimetableManager.validdays()[col-1]);
             	}
             	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row, owner);
             } catch (DatasetException e) {
