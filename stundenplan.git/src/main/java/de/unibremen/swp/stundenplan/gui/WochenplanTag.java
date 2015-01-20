@@ -29,7 +29,9 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 
 //Diese Klasse reprï¿½sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
@@ -141,7 +143,12 @@ public class WochenplanTag extends JPanel {
 	 * des Raumes an der besagten Zeit der Planungseinheit.
 	 */
 	public void calculateTime() {
-		for (Planungseinheit p : einheitsliste) {
+	
+		if(DataPlanungseinheit.getAllPlanungseinheit().size()<=0){
+			System.out.println("Keine Planungseinheiten zum Verplanen vorhanden");
+			return;
+		}
+		for (Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit() ) {
 			List<Personal> ppliste = new ArrayList<>();
 			ppliste = p.getPersonal();
 			int starthour = p.getStartHour();
@@ -152,7 +159,10 @@ public class WochenplanTag extends JPanel {
 
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
-				String personalName = ppliste.get(0).getName();
+				String personalName ="";
+				if(ppliste.get(0)!=null){
+				for(int k = 0; k < ppliste.size(); k++){
+					 personalName = ppliste.get(k).getName();
 				if (tablePersoName.equals(personalName)
 						&& p.getWeekday().getOrdinal() == day.getOrdinal()) {
 
@@ -187,6 +197,8 @@ public class WochenplanTag extends JPanel {
 				}
 
 			}
+		}
+	}
 
 		}
 	}
@@ -277,7 +289,8 @@ public class WochenplanTag extends JPanel {
 	 */
 	public void deleteAllPersonal() {
 
-		for (int i = 0; i < model.getRowCount(); i++) {
+		for (int i = 0; i <= model.getRowCount(); i++) {
+			System.out.println("Länge des TableModelLänge: "+model.getRowCount());
 			model.removeRow(i);
 		}
 	}
@@ -288,7 +301,8 @@ public class WochenplanTag extends JPanel {
 	 */
 	public void refresh() {
 		deleteAllPersonal();
-		addData();
+		
+		
 	}
 
 	/**
