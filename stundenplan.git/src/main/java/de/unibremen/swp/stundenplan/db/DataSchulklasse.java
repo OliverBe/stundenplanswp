@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
 public class DataSchulklasse {
@@ -136,14 +137,18 @@ public class DataSchulklasse {
 	
 	public static void deleteSchulklasseByName(String pName) {
 		try {
-			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM planungseinheit WHERE schulklasse_name = '" + pName + "';";
-			stmt.executeUpdate(sql);
+			sql = "SELECT * FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next() && DeleteException.delete("Die Schulklasse ist in einer Planungseinheit eingetragen./n Soll die Schulklasse trotzdem gelöscht werden?")) {
+				sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -157,7 +162,7 @@ public class DataSchulklasse {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "UPDATE planungseinheit SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
+			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addSchulklasse(newSchulklasse);
 		} catch (SQLException e) {

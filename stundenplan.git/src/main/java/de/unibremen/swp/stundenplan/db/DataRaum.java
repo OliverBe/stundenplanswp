@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.RaumbelegungsplanPanel;
 
 public class DataRaum {
@@ -102,12 +103,16 @@ public class DataRaum {
 	
 	public static void deleteRaumByName(String pName) {
 		try {
-			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
-			stmt.executeUpdate(sql);
+			sql = "SELECT * FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next() || rs.next() && DeleteException.delete("Der Raum ist in einer Planungseinheit eingetragen./n Soll der Raum trotzdem gelöscht werden?")) {
+				sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -181,22 +186,26 @@ public class DataRaum {
 		}
 	}
 	
-	public static void deleteRaumfunktionByName(String name) {
+	public static void deleteRaumfunktionByName(String pName) {
 		try {
-			sql = "DELETE FROM Raumfunktion WHERE name = '" + name + "';";
-			stmt.executeUpdate(sql);
-			sql = "DELETE FROM raum_Raumfunktion WHERE raumfunktion_name = '" + name + "';";
-			stmt.executeUpdate(sql);
+			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next() || rs.next() && DeleteException.delete("Die Raumfunktion ist mit einem Raum verbunden./n Soll die Raumfunktion trotzdem gelöscht werden?")) {
+				sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+				sql = "DELETE FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
+				stmt.executeUpdate(sql);
+			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void editRaumfunktion(String name, Raumfunktion rf) {
+		
+	public static void editRaumfunktion(String pName, Raumfunktion rf) {
 		try {
-			sql = "DELETE FROM Raumfunktion WHERE name = '" + name + "';";
+			sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "UPDATE raum_Raumfunktion SET raumfunktion_name = '" + rf.getName() + "' WHERE raumfunktion_name = '" + name + "';";
+			sql = "UPDATE raum_Raumfunktion SET raumfunktion_name = '" + rf.getName() + "' WHERE raumfunktion_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addRaumfunktion(rf);
 		}catch(SQLException e) {

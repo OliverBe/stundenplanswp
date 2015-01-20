@@ -373,8 +373,8 @@ public class PersonalPanel extends JPanel {
 		Label lPrefTime2 = new Label("Zeitwunsch:");
 		Label lTime2 = new Label("Zeitverpflichtung in h:");
 		Label lErsatz2 = new Label("Ersatzzeit in h:");
-		TextField nameField2 = new TextField(15);
-		TextField kuerzField2 = new TextField(5);
+		final TextField nameField2 = new TextField(15);
+		final TextField kuerzField2 = new TextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Speichern");
