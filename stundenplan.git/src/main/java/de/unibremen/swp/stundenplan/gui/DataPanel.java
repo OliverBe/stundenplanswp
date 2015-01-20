@@ -65,6 +65,7 @@ public class DataPanel extends JPanel {
 
 	public DataPanel() {
 		initComponents();
+		mStdi.doClick();
 	}
 	
 	public RaumfunktionPanel getRaumfunktionPanel() {
@@ -128,7 +129,9 @@ public class DataPanel extends JPanel {
 				c.gridwidth = 1;
 				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 0;
+				c.gridy = 1;
+				c.weightx = 1.8;
+				c.weighty = 1.0;
 				add(personalPanel, c);
 
 				personalPanel.nameField.requestFocus();
@@ -175,9 +178,9 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				add(stundeninhaltPanel, c);
 
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(stundeninhaltPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				if((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel) != null) SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel));
 			}
 		});
 

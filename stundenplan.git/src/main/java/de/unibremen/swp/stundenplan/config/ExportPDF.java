@@ -56,7 +56,20 @@ public class ExportPDF {
     		  Object obj = jTable.getModel().getValueAt(i, e);
     		  if(obj instanceof Timeslot) {
     			Timeslot ts = (Timeslot) obj;
-    			PdfPCell c1 = new PdfPCell(new Phrase(ts.getKlassentext() + ", \r\n" + ts.getPersonaltext() + ", \r\n" + ts.getRaeumetext() + ", \r\n" + ts.getStundeninhalttext()));
+    			String text ="";
+    			if(!ts.getKlassentext().isEmpty()) {
+    				text = text + ts.getKlassentext() + "; \r\n";
+    			}
+    			if(!ts.getPersonaltext().isEmpty()) {
+    				text = text + ts.getPersonaltext() + "; \r\n";
+    			}
+    			if(!ts.getRaeumetext().isEmpty()) {
+    				text = text + ts.getRaeumetext() + "; \r\n";
+    			}
+    			if(!ts.getStundeninhalttext().isEmpty()) {
+    				text = text + ts.getStundeninhalttext() + ";";
+    			}
+    			PdfPCell c1 = new PdfPCell(new Phrase(text));
       		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
       		    table.addCell(c1);
     		  } else {
@@ -104,66 +117,7 @@ public class ExportPDF {
    
   }
 
-  private static void addContent(Document document) throws DocumentException {
-    Anchor anchor = new Anchor("Stundenplan von YYY", catFont);
-    anchor.setName("YYY");
-
-    Chapter catPart = new Chapter(new Paragraph(anchor), 1);
-
-    Paragraph paragraph = new Paragraph("", subFont);
-    addEmptyLine(paragraph, 2);
-    Section subCatPart = catPart.addSection(paragraph);
- 
-
-    // add a table
-    createTable(subCatPart);
-
-
-
-    document.add(catPart);
-
-  }
-
-  private static void createTable(Section subCatPart)
-      throws BadElementException {
-    PdfPTable table = new PdfPTable(6);
-
-    PdfPCell c1 = new PdfPCell(new Phrase("Montag"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-
-    c1 = new PdfPCell(new Phrase("Dienstag"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-
-    c1 = new PdfPCell(new Phrase("Mittwoch"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-    
-    c1 = new PdfPCell(new Phrase("Donnerstag"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-    
-    c1 = new PdfPCell(new Phrase("Freitag"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-    
-    c1 = new PdfPCell(new Phrase("Samstag"));
-    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    table.addCell(c1);
-    
-    table.setHeaderRows(1);
-
-    table.addCell("1.0");
-    table.addCell("1.1");
-    table.addCell("1.2");
-    table.addCell("1.3");
-    table.addCell("1.4");
-    table.addCell("1.5");
-
-    subCatPart.add(table);
-
-  }
+  
 
   private static void addEmptyLine(Paragraph paragraph, int number) {
     for (int i = 0; i < number; i++) {
@@ -178,13 +132,22 @@ public class ExportPDF {
 	  
       
 	try {
-		FileWriter writer = new FileWriter(path + "plan.csv");
+		FileWriter writer = new FileWriter(path + "Stundenplan.csv");
 		   for(int i = 0; i < jTable.getModel().getRowCount(); i++) {
 		    	  for(int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 		    		  Object obj = jTable.getModel().getValueAt(i, e);
+		    		  if(obj instanceof Timeslot) {
+		      			Timeslot ts = (Timeslot) obj;
+		      			writer.append(ts.getKlassentext() + ", \r" + ts.getPersonaltext() + ", \r" + ts.getRaeumetext() + ", \r" + ts.getStundeninhalttext());
+			    		writer.append(";");
+		      		  } else {
+		      		    writer.append(obj.toString());
+		      		    writer.append(";");
+		      		  }
 		    		  
-		    		   writer.append(obj.toString());
-		    		   writer.append(";");
+		    		  
+		    		  
+		    		   
 		    		   
 		    	  }
 		    	  writer.append("\r\n");
@@ -194,7 +157,7 @@ public class ExportPDF {
 		   
 		   Runtime.getRuntime().exec(
 					"cmd.exe /c " + path 
-							+ "plan.csv");
+							+ "Stundenplan.csv");
 		  
 	} catch (IOException e1) {
 		System.out.println("ExportFehler");

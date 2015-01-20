@@ -52,7 +52,8 @@ public class MainFrame extends JFrame {
 
 		initComponents();
 		pack();
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		setSize(1280, 1024);
+	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		
 		setVisible(true);
@@ -62,7 +63,7 @@ public class MainFrame extends JFrame {
 
 		// TODO bei click sollen sich die anderen closen, bzw der eine öffnen
 		tabpane.addTab("Daten", dataPanel);
-		tabpane.addTab("StundenplÃ¤ne", paneStundenplan);
+		tabpane.addTab("Stundenplaene", paneStundenplan);
 		tabpane.addTab("Lehreransicht", paneLehrer);
 		tabpane.addTab("Raumbelegungsplan", paneRaeume);
 		tabpane.addTab("Wochenplan", paneWochen);
