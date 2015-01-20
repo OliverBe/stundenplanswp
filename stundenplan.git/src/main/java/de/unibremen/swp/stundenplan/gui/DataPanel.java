@@ -128,7 +128,9 @@ public class DataPanel extends JPanel {
 				c.gridwidth = 1;
 				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 0;
+				c.gridy = 1;
+				c.weightx = 1.8;
+				c.weighty = 1.0;
 				add(personalPanel, c);
 
 				personalPanel.nameField.requestFocus();
