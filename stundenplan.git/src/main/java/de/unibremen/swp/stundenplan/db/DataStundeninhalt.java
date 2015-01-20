@@ -97,20 +97,40 @@ public class DataStundeninhalt {
 	}
 	
 	private static void delete0(String pKuerzel) throws SQLException {
-		sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-		ResultSet rs = stmt.executeQuery(sql);
-		if(rs.next()) {
-			boolean yes = DeleteException.delete("Der Stundeninhalt ist in einer Planungseinheit eingetragen.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
-			if(yes) delete1(pKuerzel);
-		}else delete1(pKuerzel);
-	}
-	
-	private static void delete1(String pKuerzel) throws SQLException {
 		sql = "SELECT * FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 		ResultSet rs = stmt.executeQuery(sql);
 		if(rs.next()) {
 			boolean yes = DeleteException.delete("Der Stundeninhalt ist in einer Raumfunktion eingetragen.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
-			if (yes) deleteSQL(pKuerzel);
+			if (yes) {
+				ArrayList<String> rfNames = new ArrayList<String>();
+				do {
+					String rfName = rs.getString("raumfunktion_name");
+					rfNames.add(rfName);
+				}while (rs.next());
+				delete1(pKuerzel, rfNames);
+			}
+		}else delete1(pKuerzel, new ArrayList<String>());
+	}
+	
+	private static void delete1(String pKuerzel, ArrayList<String> rfNames) throws SQLException {
+		sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			boolean yes = DeleteException.delete("Der Stundeninhalt ist in einer Planungseinheit eingetragen.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
+			if(yes) {
+				ArrayList<Integer> pIds = new ArrayList<Integer>();
+				do {
+					int pId = rs.getInt("planungseinheit_id");
+					pIds.add(pId);
+				}while (rs.next());
+				deleteSQL(pKuerzel);
+				for(int pId : pIds) {
+					DataPlanungseinheit.deleteIfEmpty(pId);
+				}
+				for(String rfName : rfNames) {
+					DataRaum.deleteRfIfEmtpy(rfName);
+				}
+			}
 		}else deleteSQL(pKuerzel);
 	}
 	
