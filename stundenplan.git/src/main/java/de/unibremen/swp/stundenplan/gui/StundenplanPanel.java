@@ -196,16 +196,14 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			if (!personalList.isSelectionEmpty()) {
 				Personal p = (Personal) personalList.getSelectedValue();
 				System.out.println(p.getKuerzel());
-				table = new StundenplanTable().getTable();
-				table.setModel(new TimetableModel(p));
+				table = new StundenplanTable(p).getTable();
 				init();
 
 			} else if (!schoolclassList.isSelectionEmpty()) {
 				Schoolclass s = (Schoolclass) schoolclassList
 						.getSelectedValue();
 				System.out.println(s.getName());
-				table = new StundenplanTable().getTable();
-				table.setModel(new TimetableModel(s));
+				table = new StundenplanTable(s).getTable();
 				init();
 			}
 

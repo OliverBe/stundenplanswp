@@ -137,7 +137,7 @@ public class PEedit extends JFrame {
 		endtime.add(spinner3);
 		final JSpinner spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
-		JCheckBox bandselect = new JCheckBox("Band-Unterricht");
+		final JCheckBox bandselect = new JCheckBox("Band-Unterricht");
 		endtime.add(bandselect);
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 	    tf.setEditable(false);
@@ -163,12 +163,21 @@ public class PEedit extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Es sind keine Personal, Klassen oder Raeume eingeplant");
 					return;
+				}else if((pList.getDestsize() > 1 || scList.getDestsize() > 1 || roomList.getDestsize() > 1)&& !bandselect.isSelected()){
+					JOptionPane.showMessageDialog(null,
+							"Nur Band-Unterricht kann mehrere Personal, Klassen und Raeume haben");
+					return;
 				}
 				Planungseinheit p = new Planungseinheit();
 				p.setStarthour((int) spinner1.getValue());
 				p.setStartminute((int) spinner2.getValue());
 				p.setEndhour((int)spinner3.getValue());
 				p.setEndminute((int) spinner4.getValue());
+				if((p.getStartHour() == p.getEndhour())&&(p.getStartminute() == p.getEndminute())){
+					JOptionPane.showMessageDialog(null,
+							"Planungseinheit darf nicht gleiche Startzeit und Endzeit haben");
+					return;
+				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
 				Iterator it = pList.destinationIterator();
 				while (it.hasNext()){

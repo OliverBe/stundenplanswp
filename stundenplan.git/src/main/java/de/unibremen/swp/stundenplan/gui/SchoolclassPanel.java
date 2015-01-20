@@ -310,7 +310,7 @@ public class SchoolclassPanel extends JPanel{
 		};
 		
 		p.setLayout(new GridBagLayout());
-		p.setBorder(BorderFactory.createTitledBorder("Neue Schulklasse hinzufuegen"));
+		p.setBorder(BorderFactory.createTitledBorder("Schulklasse editieren"));
 		c.insets=new Insets(8,5,1,1);
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx=0;
@@ -360,6 +360,10 @@ public class SchoolclassPanel extends JPanel{
 	    jcb2=new JComboBox<Object>(ro.toArray());
 		p.add(jcb2,c);
 	    
+		bezField2.setText(list.getSelectedValue().getName().substring(1, list.getSelectedValue().getName().length()));
+		
+		jg2.setSelectedIndex(list.getSelectedValue().getJahrgang()-1);
+		
 	    final DefaultTableModel model = new DefaultTableModel();
 	    model2.addColumn("Stundeninhalt");
 	    model2.addColumn("Bedarf");

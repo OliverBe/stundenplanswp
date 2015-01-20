@@ -112,7 +112,7 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener{
 			if(!roomList.isSelectionEmpty()) {
 				Room r = (Room) roomList.getSelectedValue();
 				System.out.println(r.getName());
-				table = new StundenplanTable(r).getTable();
+				table = new StundenplanTable().getTable();
 				table.setModel(new TimetableModel(r));
 				init();
 				
