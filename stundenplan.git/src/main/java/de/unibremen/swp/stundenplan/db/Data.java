@@ -179,4 +179,22 @@ public class Data {
 			System.out.println("DB - ERROR on closing Database");
 		}
 	}
+	
+	public static void backup() {
+		try {
+			stmt.executeUpdate("backup to backup.db");
+			System.out.println("DB - backup created");
+		}catch (Exception e) {
+			System.out.println("DB - ERROR on creating backup");
+		}
+	}
+	
+	public static void restore() {
+		try {
+			stmt.executeUpdate("restore from backup.db");
+			System.out.println("DB - successful restored");
+		}catch (Exception e) {
+			System.out.println("DB - ERROR on restoring from backup");
+		}
+	}
 }

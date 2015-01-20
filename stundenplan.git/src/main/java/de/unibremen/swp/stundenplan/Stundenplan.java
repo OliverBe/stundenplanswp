@@ -15,9 +15,12 @@
  */
 package de.unibremen.swp.stundenplan;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -43,6 +46,8 @@ public final class Stundenplan {
     private static final Logger LOGGER = Logger.getLogger(Stundenplan.class.getName());
     
     private static MainFrame main;
+    
+    private static int time = 0;
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
@@ -70,6 +75,18 @@ public final class Stundenplan {
      */
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
+            Timer timer = new Timer(1000, new ActionListener() {
+            	@Override
+                public void actionPerformed(ActionEvent e) {
+            		time++;
+            		System.out.println(time+"");
+            		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
+//            			Data.backup();
+            			time = 0;
+            		}
+                }
+            });
+            timer.start();
     }
     
     public static MainFrame getMain() {
