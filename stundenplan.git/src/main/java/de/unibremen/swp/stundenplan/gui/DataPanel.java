@@ -99,12 +99,9 @@ public class DataPanel extends JPanel {
 
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 1;
 		c.gridheight = 2;
-		c.weightx = 0.2;
-		c.weighty = 1.8;
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 0;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
@@ -131,9 +128,7 @@ public class DataPanel extends JPanel {
 				c.gridwidth = 1;
 				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
 				add(personalPanel, c);
 
 				personalPanel.nameField.requestFocus();

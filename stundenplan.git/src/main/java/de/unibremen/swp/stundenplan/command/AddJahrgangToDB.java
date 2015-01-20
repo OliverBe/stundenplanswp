@@ -25,7 +25,7 @@ public class AddJahrgangToDB implements Command {
 	}
 
 	public void execute(Jahrgang jahrgang) {
-		alt = DataSchulklasse.getJahrgangByJahrgang(jrg.getJahrgang());
+		alt = DataSchulklasse.getJahrgangByJahrgang(jahrgang.getJahrgang());
 		jrg = jahrgang;
 		DataSchulklasse.addJahrgang(jahrgang);
 		CommandHistory.addCommand(this);
