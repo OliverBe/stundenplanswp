@@ -78,14 +78,13 @@ public final class Stundenplan {
      */
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
-            final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd_HH:mm:ss");
-            final Date date = new Date();
+            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             Timer timer = new Timer(1000, new ActionListener() {
             	@Override
                 public void actionPerformed(ActionEvent e) {
             		time++;
-//            		System.out.println(time+"");
             		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
+                        final Date date = new Date();
 //            			Data.backup(dateFormat.format(date));
             			time = 0;
             		}

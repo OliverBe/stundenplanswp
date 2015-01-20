@@ -182,16 +182,17 @@ public class Data {
 	
 	public static void backup(String backupDate) {
 		try {
-			stmt.executeUpdate("backup to backup-" + backupDate + ".db");
+			System.out.println(backupDate);
+			stmt.executeUpdate("backup to backup_" + backupDate + ".db");
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on creating backup");
 		}
 	}
 	
-	public static void restore() {
+	public static void restore(String backupName) {
 		try {
-			stmt.executeUpdate("restore from backup.db");
+			stmt.executeUpdate("restore from " + backupName);
 			System.out.println("DB - successful restored");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on restoring from backup");
