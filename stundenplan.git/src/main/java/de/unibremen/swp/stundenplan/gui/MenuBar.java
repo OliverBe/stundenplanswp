@@ -31,6 +31,7 @@ public class MenuBar extends JMenuBar{
 	private JMenuItem save = new JMenuItem("Speichern");
 	private JMenuItem export = new JMenuItem("Exportieren als PDF");
 	private JMenuItem exportCSV = new JMenuItem("Exportieren als CSV");
+	private JMenuItem exportDOC = new JMenuItem("Exportieren als DOC");
 	
 	private JFileChooser chooser = new JFileChooser();
 	
@@ -49,6 +50,7 @@ public class MenuBar extends JMenuBar{
 		data.add(save);
 		data.add(export);
 		data.add(exportCSV);
+		data.add(exportDOC);
 		add(data);
 		edit.add(undo);
 		add(edit);
@@ -59,6 +61,7 @@ public class MenuBar extends JMenuBar{
 		saveClick(save);
 		exportClick(export);
 		exportCSVClick(exportCSV);
+		exportDOCClick(exportDOC);
 		undoClick(undo);
 		
 		
@@ -133,6 +136,27 @@ public class MenuBar extends JMenuBar{
 					  RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
 					  eTable = panel.getTable();
 					  ExportPDF.createCSV(eTable);
+					}
+				
+			}
+		});
+	}
+	
+	private void exportDOCClick(JMenuItem item) {
+		item.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent ae) {
+				JTable eTable = new JTable();
+				Object obj = Stundenplan.getMain().getTabPane().getComponentAt(Stundenplan.getMain().getTabPane().getSelectedIndex());
+				
+				if(obj instanceof StundenplanPanel) {
+				  StundenplanPanel panel = (StundenplanPanel) obj;
+				  eTable = panel.getTable();
+				  ExportPDF.createDOC(eTable);
+				} else if(obj instanceof RaumbelegungsplanPanel) {
+					  RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
+					  eTable = panel.getTable();
+					  ExportPDF.createDOC(eTable);
 					}
 				
 			}

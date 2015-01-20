@@ -167,5 +167,9 @@ public class TimetableModel extends AbstractTableModel {
     public Class getColumnClass(final int col) {
         return getValueAt(0, col).getClass();
     }
+    
+    public Object getOwner() {
+    	return owner;
+    }
 
 }
