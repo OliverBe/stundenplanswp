@@ -11,7 +11,6 @@ import javax.persistence.Id;
 
 
 public final class Room{
-    private int id;
 
     private String name;
     
@@ -53,14 +52,6 @@ public final class Room{
     public void setName(final String pName) {
         name = pName;
     }
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(final int pId) {
-		id = pId;
-	}
 
 	public int getGebaeude() {
 		return gebaeude;
