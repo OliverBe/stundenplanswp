@@ -311,9 +311,9 @@ public class SchoolclassPanel extends JPanel {
 		Label bez2 = new Label("Zusatzbezeichner: ");
 		JLabel lKt2 = new JLabel("Klassenteam: ");
 
-		JTextField bezField2 = new JTextField(5);
+		final JTextField bezField2 = new JTextField(5);
 
-		JComboBox<Object> jcb2;
+		final JComboBox<Object> jcb2;
 		Integer[] jahrgang2 = { 1, 2, 3, 4 };
 		final JComboBox<Object> jg2 = new JComboBox<Object>(jahrgang2);
 
@@ -401,6 +401,8 @@ public class SchoolclassPanel extends JPanel {
 			if(ro.get(i).getName().equals(sc.getKlassenraum().getName())) jcb2.setSelectedIndex(i);
 		}
 		p.add(jcb2, c);
+		
+		jg2.setSelectedItem(sc.getJahrgang());
 
 		model2.addColumn("Stundeninhalt");
 		model2.addColumn("Bedarf");
@@ -408,9 +410,7 @@ public class SchoolclassPanel extends JPanel {
 				.getAllStundeninhalteFromDB()) {
 			model2.addRow(new String[] { si.getKuerzel(), "0" });
 		}
-		for (Entry<String, Integer> entry : DataSchulklasse
-				.getJahrgangByJahrgang(jg.getSelectedIndex() + 1)
-				.getStundenbedarf().entrySet()) {
+		for (Entry<String, Integer> entry : sc.getStundenbedarf().entrySet()) {
 			for (int i = 0; i < model2.getRowCount(); i++) {
 				if (model2.getValueAt(i, 0).toString().equals(entry.getKey())) {
 					model2.setValueAt(entry.getValue(), i, 1);
@@ -428,13 +428,23 @@ public class SchoolclassPanel extends JPanel {
 				for (int i = 0; i < model2.getRowCount(); i++) {
 					model2.setValueAt("0", i, 1);
 				}
-				for (Entry<String, Integer> entry : DataSchulklasse
-						.getJahrgangByJahrgang(jg2.getSelectedIndex() + 1)
-						.getStundenbedarf().entrySet()) {
-					for (int i = 0; i < model2.getRowCount(); i++) {
-						if (model2.getValueAt(i, 0).toString()
-								.equals(entry.getKey())) {
-							model2.setValueAt(entry.getValue(), i, 1);
+				if((int)jg2.getSelectedItem() == sc.getJahrgang()) {
+					for (Entry<String, Integer> entry : sc.getStundenbedarf().entrySet()) {
+						for (int i = 0; i < model2.getRowCount(); i++) {
+							if (model2.getValueAt(i, 0).toString().equals(entry.getKey())) {
+								model2.setValueAt(entry.getValue(), i, 1);
+							}
+						}
+					}
+				}else {
+					for (Entry<String, Integer> entry : DataSchulklasse
+							.getJahrgangByJahrgang((int)jg2.getSelectedItem())
+							.getStundenbedarf().entrySet()) {
+						for (int i = 0; i < model2.getRowCount(); i++) {
+							if (model2.getValueAt(i, 0).toString()
+									.equals(entry.getKey())) {
+								model2.setValueAt(entry.getValue(), i, 1);
+							}
 						}
 					}
 				}
