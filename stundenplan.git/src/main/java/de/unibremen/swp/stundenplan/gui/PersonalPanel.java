@@ -499,9 +499,9 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 8;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
-				Font.PLAIN, nameField.getFont().getSize()));
-		p.add(lSubjects, c);
+		lSubjects2.setFont(new Font(nameField2.getFont().getFontName(),
+				Font.PLAIN, nameField2.getFont().getSize()));
+		p.add(lSubjects2, c);
 		
 		c.anchor = GridBagConstraints.WEST;
 		c.fill=GridBagConstraints.HORIZONTAL;
@@ -510,15 +510,15 @@ public class PersonalPanel extends JPanel {
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
-		 for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
+		for(Stundeninhalt s : StundeninhaltManager.getAllStundeninhalteFromDB()){
 			 boxes.add(new JCheckBox(s.getKuerzel()));
-		 };
+		}
 		 
-		 for(JCheckBox jcb : boxes){
-				for(String s : pe.getMoeglicheStundeninhalte()){
-					if(jcb.getText().equals(s)) jcb.setSelected(true);
-				}	
+		for(JCheckBox jcb : boxes){
+			for(String s : pe.getMoeglicheStundeninhalte()){
+				if(jcb.getText().equals(s)) jcb.setSelected(true);
 			}	
+		}	
 
 		checkList.setListData(boxes.toArray());
 		checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -534,8 +534,6 @@ public class PersonalPanel extends JPanel {
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				try {
-					listModel.clear();
-
 					if (!check(p))
 						throw new WrongInputException();
 					

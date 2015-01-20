@@ -56,7 +56,6 @@ public class StundeninhaltPanel extends JPanel {
 
 	public StundeninhaltPanel() {
 		setLayout(new GridBagLayout());
-		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
 		c2.gridwidth = 1;
