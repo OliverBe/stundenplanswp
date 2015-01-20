@@ -201,6 +201,7 @@ public class LehreransichtPanel extends JPanel {
 		}
 
 		table.setRowSelectionAllowed(true);
+		table.setEnabled(false);
 		table.setRowHeight(60);
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
