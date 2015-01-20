@@ -91,14 +91,23 @@ public class LehreransichtPanel extends JPanel {
 					// bleibt,
 					// sonst stimmt die Anzahl der Stunden nicht mehr
 					ArrayList<String> inhalteInPlanungseinheit = pe.getStundeninhalte();
+					System.out.println("Stundeninhalte in Planungseinheit: "+pe.getStundeninhalte().toString());
 					ArrayList<String> klassenInPlanungseinheit = pe.getSchoolclasses();
 
 					for (String s : inhalteInPlanungseinheit) {
 
 						for (String k : klassenInPlanungseinheit) {
-							HashMap<String, Integer> neuHash = inhaltKlasseStundenPerso
-									.get(s);
-							//neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
+							HashMap<String, Integer> neuHash;
+							if(inhaltKlasseStundenPerso.get(s).get(k) != null) {
+								neuHash = inhaltKlasseStundenPerso.get(s);
+								neuHash.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
+							}else{
+								neuHash = new HashMap<>();
+								neuHash.put(k, pe.duration());
+							}					
+							System.out.println("s ist: "+s
+									+"\n"+ inhaltKlasseStundenPerso.toString());
+							System.out.println(inhaltKlasseStundenPerso.get(s).toString());
 							inhaltKlasseStundenPerso.put(s, neuHash);
 						}
 					}
@@ -108,6 +117,7 @@ public class LehreransichtPanel extends JPanel {
 				ArrayList<Schoolclass> klassen = DataSchulklasse.getAllSchulklasse();
 				for (Schoolclass k : klassen) {
 
+					if (s.getKuerzel() != null){
 					if (inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
 						reihe.add("-");
 					} else {
@@ -122,6 +132,7 @@ public class LehreransichtPanel extends JPanel {
 									+ ":  "
 									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 60));
 						}
+					}
 					}
 					model.addRow(reihe.toArray());
 				}

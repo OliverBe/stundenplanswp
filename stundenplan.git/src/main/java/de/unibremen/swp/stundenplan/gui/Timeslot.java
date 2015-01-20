@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 /**
  * Entspricht einer Zeiteinheit. Eine Zeiteinheit ist einem Tagesplan zugeordnet und hat eine startzeit. Die Dauer einer
@@ -81,6 +82,7 @@ public final class Timeslot implements Serializable {
     private String raumtext = "";
     private String klassetext = "";
     private int pe = -1; 
+    private int rhytm = -1;
     
     /**
      * Erzeugt eine neue Zeiteinheit.
@@ -148,7 +150,7 @@ public final class Timeslot implements Serializable {
     }
     
     public void setRaumtext(final Planungseinheit pPE){
-    	stundeninhaltetext = pPE.roomstoString();
+    	raumtext = pPE.roomstoString();
     }
     
     public String getKlassentext(){
@@ -166,6 +168,16 @@ public final class Timeslot implements Serializable {
     
     public int getpe(){
     	return pe;
+    }
+    
+    public void setrhytm(final Planungseinheit pPE){
+    	if(pPE == null){throw new IllegalArgumentException("Argument must be not null");}
+    	if(pPE.getStundeninhalte().size()==0){return;}
+    	rhytm = DataStundeninhalt.getStundeninhaltByKuerzel(pPE.getStundeninhalte().get(0)).getRhythmustyp();
+    }
+    
+    public int getrhytm(){
+    	return rhytm;
     }
     
     public static int timeslotlength(){

@@ -127,8 +127,8 @@ public class SchoolclassPanel extends JPanel{
 		c.gridwidth = 2;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		lKt.setFont(new Font(jg.getFont().getFontName(),
-				Font.PLAIN, jg.getFont().getSize()));
+		lKt.setFont(new Font(bezField.getFont().getFontName(),
+				Font.PLAIN, bezField.getFont().getSize()));
 		p.add(lKt,c);
 		c.gridy=4;
 		

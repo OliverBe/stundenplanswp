@@ -111,7 +111,7 @@ public class DataPlanungseinheit {
 				rs = stmt.executeQuery(sql);
 				while(rs.next()) {
 					String raum_name = rs.getString("raum_name");
-					p.getStundeninhalte().add(raum_name);
+					p.getRooms().add(raum_name);
 				}
 			}
 			return allPlanungseinheit;

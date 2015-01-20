@@ -65,6 +65,7 @@ public class DataPanel extends JPanel {
 
 	public DataPanel() {
 		initComponents();
+		mStdi.doClick();
 	}
 	
 	public RaumfunktionPanel getRaumfunktionPanel() {
@@ -99,12 +100,9 @@ public class DataPanel extends JPanel {
 
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 1;
 		c.gridheight = 2;
-		c.weightx = 0.2;
-		c.weighty = 1.8;
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 0;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
@@ -180,9 +178,9 @@ public class DataPanel extends JPanel {
 				c.weighty = 1.0;
 				add(stundeninhaltPanel, c);
 
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(stundeninhaltPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				if((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel) != null) SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel));
 			}
 		});
 

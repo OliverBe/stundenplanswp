@@ -1,24 +1,13 @@
-package de.unibremen.swp.stundenplan.gui;
+ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -27,12 +16,8 @@ import javax.swing.event.ChangeListener;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	private MenuBar menu = new MenuBar(this);
 
@@ -52,7 +37,8 @@ public class MainFrame extends JFrame {
 
 		initComponents();
 		pack();
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		setSize(1280, 1024);
+	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		
 		setVisible(true);
@@ -62,7 +48,7 @@ public class MainFrame extends JFrame {
 
 		// TODO bei click sollen sich die anderen closen, bzw der eine öffnen
 		tabpane.addTab("Daten", dataPanel);
-		tabpane.addTab("StundenplÃ¤ne", paneStundenplan);
+		tabpane.addTab("Stundenplaene", paneStundenplan);
 		tabpane.addTab("Lehreransicht", paneLehrer);
 		tabpane.addTab("Raumbelegungsplan", paneRaeume);
 		tabpane.addTab("Wochenplan", paneWochen);
