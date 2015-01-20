@@ -179,6 +179,10 @@ public class PEedit extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Planungseinheit darf nicht gleiche Startzeit und Endzeit haben");
 					return;
+				}else if((p.getStartHour() > p.getEndhour())){
+					JOptionPane.showMessageDialog(null,
+							"Startzeit muss frueher als Endzeit sein");
+					return;
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
 				Iterator it = pList.destinationIterator();
