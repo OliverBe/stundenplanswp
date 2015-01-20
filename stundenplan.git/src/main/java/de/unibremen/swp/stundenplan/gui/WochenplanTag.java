@@ -155,8 +155,7 @@ public class WochenplanTag extends JPanel {
 			int startminute = p.getStartminute();
 			int endminute = p.getEndminute();
 			int endhour = p.getEndhour();
-			StringBuilder raeume = new StringBuilder();
-
+			
 			for (int i = 0; i < model.getRowCount(); i++) {
 				String tablePersoName = (String) model.getValueAt(i, 0);
 				String personalName ="";
@@ -171,24 +170,25 @@ public class WochenplanTag extends JPanel {
 					for (int j = 1; j < model.getColumnCount(); j++) {
 						String zeit = model.getColumnName(j);
 						String[] zeiten = zeit.split(":");
-						int stunde = Integer.parseInt(zeiten[0]);
-						int minute = Integer.parseInt(zeiten[1]);
-						if (stunde >= starthour && minute >= startminute) {
+						int tabStunde = Integer.parseInt(zeiten[0]);
+						int tabMinute = Integer.parseInt(zeiten[1]);
+						
+						if(tabStunde >= starthour && tabMinute >= startminute|| tabStunde>starthour && tabMinute<=startminute) {
+							
 							if (ausgabe.length() >= 70) {
 								TableColumn spalte = table.getColumnModel()
 										.getColumn(j);
 								spalte.setPreferredWidth(ausgabe.length() + 30);
 							}
-							if (stunde >= endhour && minute >= endminute) {
-								System.out.println("Ausgabe läenge"
+							if (tabStunde == endhour && tabMinute == endminute) {
+								System.out.println("Ausgabe läenge "
 										+ ausgabe.length());
-
-								model.setValueAt(ausgabe, i, j);
 
 								return;
 
 							} else {
 								model.setValueAt(ausgabe, i, j);
+								
 							}
 
 						}
