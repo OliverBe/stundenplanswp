@@ -59,6 +59,7 @@ public class ConfigPanel extends JPanel {
 
 	public ConfigPanel() {
 		init();
+		mP.doClick();
 	}
 
 	public void init() {
@@ -71,11 +72,7 @@ public class ConfigPanel extends JPanel {
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.weightx = 1.0;
-		c.weighty = 0.05;
+		 c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		label.setFont(new Font("Arial", Font.BOLD, 15));
@@ -83,10 +80,7 @@ public class ConfigPanel extends JPanel {
 
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 1;
 		c.gridheight = 2;
-		c.weightx = 0.2;
-		c.weighty = 1.8;
 		c.gridx = 0;
 		c.gridy = 1;
 
@@ -116,9 +110,11 @@ public class ConfigPanel extends JPanel {
 				c.weightx = 1.8;
 				c.weighty = 1.0;
 				add(plnConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(plnConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
+				if ((JFrame) SwingUtilities.getWindowAncestor(plnConfig) != null) {
+					SwingUtilities
+							.updateComponentTreeUI((JFrame) SwingUtilities
+									.getWindowAncestor(plnConfig));
+				}
 			}
 		});
 
@@ -184,10 +180,14 @@ public class ConfigPanel extends JPanel {
 	}
 
 	private void removeOld() {
-		if (plnConfig != null) remove(plnConfig);
-		if (bkpConfig != null) remove(bkpConfig);
-		if (wdConfig != null) remove(wdConfig);
-		if (dlConfig != null) remove(dlConfig);
+		if (plnConfig != null)
+			remove(plnConfig);
+		if (bkpConfig != null)
+			remove(bkpConfig);
+		if (wdConfig != null)
+			remove(wdConfig);
+		if (dlConfig != null)
+			remove(dlConfig);
 	}
 
 	public class PlanungsEinheitConfig extends JPanel {
@@ -217,7 +217,8 @@ public class ConfigPanel extends JPanel {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					Config.TIMESLOT_LENGTH = Integer.parseInt(tf.getText());
-					Config.setIntValue(Config.TIMESLOT_LENGTH_STRING, Integer.parseInt(tf.getText())) ;
+					Config.setIntValue(Config.TIMESLOT_LENGTH_STRING,
+							Integer.parseInt(tf.getText()));
 					System.out.println(Config.TIMESLOT_LENGTH);
 				}
 			});
@@ -251,7 +252,8 @@ public class ConfigPanel extends JPanel {
 				public void actionPerformed(ActionEvent ae) {
 					Config.BACKUPINTERVALL = Integer.parseInt(tf.getText());
 					System.out.println(Config.BACKUPINTERVALL);
-					Config.setIntValue(Config.BACKUPINTERVALL_STRING, Integer.parseInt(tf.getText()));
+					Config.setIntValue(Config.BACKUPINTERVALL_STRING,
+							Integer.parseInt(tf.getText()));
 				}
 			});
 		}
@@ -285,7 +287,7 @@ public class ConfigPanel extends JPanel {
 			CheckBoxList checkList = new CheckBoxList();
 			checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			JCheckBox[] boxes = { mo, di, mi, don, fr, sa, so };
-			if (Weekday.MONDAY.isSchoolday()==true)
+			if (Weekday.MONDAY.isSchoolday() == true)
 				mo.setSelected(true);
 			if (Weekday.TUESDAY.isSchoolday() == true)
 				di.setSelected(true);
@@ -340,63 +342,74 @@ public class ConfigPanel extends JPanel {
 			c.insets = new Insets(1, 1, 1, 1);
 			c.gridx = 0;
 			c.gridy = 0;
-			c.gridwidth=4;
+			c.gridwidth = 4;
 			add(lTime, c);
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridy = 1;
-			c.gridwidth=1;
-			add(new Label(
-					"Beginn :"),c);
+			c.gridwidth = 1;
+			add(new Label("Beginn :"), c);
 			c.gridx = 1;
-			add(start,c);
-			c.gridx= 2;
-			add(new Label(
-					"Ende :"),c);
+			add(start, c);
+			c.gridx = 2;
+			add(new Label("Ende :"), c);
 			c.gridx = 3;
-			add(end,c);
+			add(end, c);
 			c.gridy = 2;
-			c.gridwidth=4;
-			c.gridx=0;
+			c.gridwidth = 4;
+			c.gridx = 0;
 			add(button, c);
 			String sh;
 			String sm;
 			String eh;
 			String em;
-			if(Config.DAY_STARTTIME_HOUR<10){ 
-				sh="0"+Config.DAY_STARTTIME_HOUR;
-			}else{
-				sh=""+Config.DAY_STARTTIME_HOUR;
-			};		
-			if(Config.DAY_STARTTIME_MINUTE<10){ 
-				sm="0"+Config.DAY_STARTTIME_MINUTE;
-			}else{
-				sm=""+Config.DAY_STARTTIME_MINUTE;
-			};		
-			if(Config.DAY_ENDTIME_HOUR<10){ 
-				eh="0"+Config.DAY_ENDTIME_HOUR;
-			}else{
-				eh=""+Config.DAY_ENDTIME_HOUR;
-			};		
-			if(Config.DAY_ENDTIME_MINUTE<10){ 
-				em="0"+Config.DAY_ENDTIME_MINUTE;
-			}else{
-				em=""+Config.DAY_ENDTIME_MINUTE;
-			};		
-			start.setText(sh+":"+sm);
-			end.setText(eh+":"+em);
+			if (Config.DAY_STARTTIME_HOUR < 10) {
+				sh = "0" + Config.DAY_STARTTIME_HOUR;
+			} else {
+				sh = "" + Config.DAY_STARTTIME_HOUR;
+			}
+			;
+			if (Config.DAY_STARTTIME_MINUTE < 10) {
+				sm = "0" + Config.DAY_STARTTIME_MINUTE;
+			} else {
+				sm = "" + Config.DAY_STARTTIME_MINUTE;
+			}
+			;
+			if (Config.DAY_ENDTIME_HOUR < 10) {
+				eh = "0" + Config.DAY_ENDTIME_HOUR;
+			} else {
+				eh = "" + Config.DAY_ENDTIME_HOUR;
+			}
+			;
+			if (Config.DAY_ENDTIME_MINUTE < 10) {
+				em = "0" + Config.DAY_ENDTIME_MINUTE;
+			} else {
+				em = "" + Config.DAY_ENDTIME_MINUTE;
+			}
+			;
+			start.setText(sh + ":" + sm);
+			end.setText(eh + ":" + em);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					try {
-						Config.DAY_STARTTIME_HOUR=Integer.parseInt(start.getText(0,2));
-						Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING, Integer.parseInt(start.getText(0,2)));
-						Config.DAY_STARTTIME_MINUTE=Integer.parseInt(start.getText(3,2));
-						Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING, Integer.parseInt(start.getText(3,2)));
-						Config.DAY_ENDTIME_HOUR=Integer.parseInt(start.getText(0,2));
-						Config.setIntValue(Config.DAY_ENDTIME_HOUR_STRING, Integer.parseInt(end.getText(0,2)));
-						Config.DAY_ENDTIME_MINUTE=Integer.parseInt(start.getText(3,2));
-						Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING, Integer.parseInt(end.getText(3,2)));
+						Config.DAY_STARTTIME_HOUR = Integer.parseInt(start
+								.getText(0, 2));
+						Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING,
+								Integer.parseInt(start.getText(0, 2)));
+						Config.DAY_STARTTIME_MINUTE = Integer.parseInt(start
+								.getText(3, 2));
+						Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING,
+								Integer.parseInt(start.getText(3, 2)));
+						Config.DAY_ENDTIME_HOUR = Integer.parseInt(start
+								.getText(0, 2));
+						Config.setIntValue(Config.DAY_ENDTIME_HOUR_STRING,
+								Integer.parseInt(end.getText(0, 2)));
+						Config.DAY_ENDTIME_MINUTE = Integer.parseInt(start
+								.getText(3, 2));
+						Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING,
+								Integer.parseInt(end.getText(3, 2)));
 					} catch (NumberFormatException | BadLocationException e) {
-						System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+						System.err.println(e.getClass().getName() + ": "
+								+ e.getMessage());
 					}
 				}
 			});

@@ -75,12 +75,12 @@ public final class Personal {
     	lehrer = pLehrer;
     }
     
-    public Personal(String pName, String pKuerzel, int pSollZeit, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte, HashMap<Weekday,int[]> pWunschzeiten) {
+    public Personal(String pName, String pKuerzel, int pSollZeit, int pErsatzzeit, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte, HashMap<Weekday,int[]> pWunschzeiten) {
     	name = pName;
     	kuerzel = pKuerzel;
     	sollZeit = pSollZeit;
     	istZeit=0;
-    	ersatzZeit=0;
+    	ersatzZeit=pErsatzzeit;
     	gependelt=false;
     	lehrer = pLehrer;
     	wunschzeiten=pWunschzeiten;
