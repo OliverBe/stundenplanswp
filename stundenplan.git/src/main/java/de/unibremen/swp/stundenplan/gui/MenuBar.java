@@ -72,7 +72,7 @@ public class MenuBar extends JMenuBar{
 	}
 	
 	/**
-	 * Open Source Revert Button, Queller: https://openclipart.org/detail/181114/square-undo-or-back-button-by-barrettward-181114
+	 * Open Source Logo für Revert Button, Quelle: https://openclipart.org/detail/181114/square-undo-or-back-button-by-barrettward-181114
 	 */
 	private void initComponents() {
 		
