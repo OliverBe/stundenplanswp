@@ -92,8 +92,8 @@ public final class PlanungseinheitManager {
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsPersonal(pPerson) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsPersonal(pPerson)){
 				pes.add(p);
 				}
 		}
@@ -115,8 +115,8 @@ public final class PlanungseinheitManager {
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsClass(pSchoolclass) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsClass(pSchoolclass)){
 				pes.add(p);
 				}
 		}
@@ -139,8 +139,8 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
 		// hier muss die Liste geholt werden
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsRoom(pRoom) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsRoom(pRoom)){
 				pes.add(p);
 				}
 		}
@@ -148,22 +148,23 @@ public final class PlanungseinheitManager {
 		return pes;
 	}
 	
-	public static Planungseinheit timeslotToPE(Timeslot pTs,int pDayIndex, Object pOwner){
+	public static Planungseinheit timeslotToPE(Timeslot pTs, Object pOwner){
     	//TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet, und gibt diese zur�ck.
     	ArrayList<Planungseinheit> pes;
     	if(pOwner instanceof Personal){
-    		pes = getPEForPersonalbyWeekday(TimetableManager.validdays()[pDayIndex-1], (Personal)pOwner);
+    		pes = getPEForPersonalbyWeekday(pTs.getDay(), (Personal)pOwner);
     	}else if(pOwner instanceof Room){
-    		pes = getPEForRoombyWeekday(TimetableManager.validdays()[pDayIndex-1], (Room)pOwner);
+    		pes = getPEForRoombyWeekday(pTs.getDay(), (Room)pOwner);
     	}else if(pOwner instanceof Schoolclass){
-    		pes = getPEForSchoolclassbyWeekday(TimetableManager.validdays()[pDayIndex-1], (Schoolclass)pOwner);
+    		pes = getPEForSchoolclassbyWeekday(pTs.getDay(), (Schoolclass)pOwner);
     	}else{
     		return null;
     	}
+    	Planungseinheit thisismyPE = null;
     	for(Planungseinheit p : pes){
-    		
+    		if(checkPEandTime(p, pTs.getsHour(), pTs.getsMinute()));
     	}
-    	return null;
+    	return thisismyPE;
     }
 	
 	public static void orderByTime(List<Planungseinheit> pPE) {

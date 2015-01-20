@@ -85,7 +85,7 @@ public final class Stundenplan {
             		time++;
             		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
                         final Date date = new Date();
-//            			Data.backup(dateFormat.format(date));
+//            			Data.backup("backup_" + dateFormat.format(date));
             			time = 0;
             		}
                 }
