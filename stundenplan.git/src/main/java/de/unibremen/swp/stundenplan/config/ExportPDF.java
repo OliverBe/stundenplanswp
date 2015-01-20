@@ -21,22 +21,58 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 import de.unibremen.swp.stundenplan.gui.TimetableModel;
 
+/**
+ * Diese Klasse exportiert die Stundenpläne aus dem StundenplanPanel und dem
+ * RaumansichtsPanel in eine .csv, .pdf oder .doc Datei.
+ * 
+ * Die Exportmethode für pdf basiert auf dem itext-Tutorial
+ * http://itextpdf.com/examples/iia.php?id=12
+ * 
+ * Für das Exportieren wird die Itext API genutzt http://itextpdf.com/api
+ * 
+ * @author Fabian H.
+ *
+ */
 public class ExportPDF {
+
+	/**
+	 * der Systempfad in dem sich die zu öffnenden Dateien befinden
+	 */
 	private static String path = System.getProperty("user.dir") + "/";
 
+	/**
+	 * Name der Datei + dessen Pfad. Die Dateiendung wird sich nicht in diesem
+	 * String befinden
+	 * 
+	 */
 	private static String FILE;
-	
+
+	/**
+	 * planOwner ist der Name des Owners. Der Owner ist der Besitzer aus dem
+	 * JTable.
+	 */
 	private static String planOwner;
 
+	/**
+	 * Diese methode erzeugt eine neue PDF-Datei. In der Datei wird sich der
+	 * Inhalt des Parameters jTable befinden. Es wird ein document erstellt
+	 * dieses erhält zwei Paragraphen. Zum einen den String mit dem Namen des
+	 * Owners und zum anderen den Inhalt des JTables. Dieser Inhalt wird aus der
+	 * doppelten for-Schleife in ein PdfPTable gebracht.
+	 * 
+	 * erstellt mit itext API
+	 * 
+	 * @param jTable
+	 */
 	public static void createPDF(JTable jTable) {
 		try {
 			Document document = new Document(PageSize.A4.rotate());
 
 			setOwnerAndFile(jTable);
 
-			PdfWriter.getInstance(document, new FileOutputStream(FILE + ".pdf"));
+			PdfWriter
+					.getInstance(document, new FileOutputStream(FILE + ".pdf"));
 			document.open();
-
 
 			PdfPTable table = new PdfPTable(jTable.getModel().getColumnCount());
 
@@ -83,12 +119,26 @@ public class ExportPDF {
 		}
 	}
 
+	/**
+	 * fügt Leere Zeilen ein wobei number die Anzahl der leeren Zeilen angibt
+	 * und Paragraph den Paragraphen nennt in dem die Zeilen eingefügt werden.
+	 * 
+	 * @param paragraph
+	 * @param number
+	 */
 	private static void addEmptyLine(Paragraph paragraph, int number) {
 		for (int i = 0; i < number; i++) {
 			paragraph.add(new Paragraph(" "));
 		}
 	}
 
+	/**
+	 * erstellt eine comma-seperated-values Datei. Diese beinhaltet die Strings
+	 * der Objekte welche sich in dem JTable befinden. Das JTable ist der
+	 * Stundenplan.
+	 * 
+	 * @param jTable
+	 */
 	public static void createCSV(JTable jTable) {
 
 		try {
@@ -99,21 +149,21 @@ public class ExportPDF {
 			for (int i = 0; i < jTable.getModel().getRowCount(); i++) {
 				for (int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 					Object obj = jTable.getModel().getValueAt(i, e);
-					
+
 					if (obj instanceof Timeslot) {
 						Timeslot ts = (Timeslot) obj;
 						String text = "";
 						if (!ts.getKlassentext().isEmpty()) {
-							text = text + ts.getKlassentext() + "; \r\n";
+							text = text + ts.getKlassentext() + ",";
 						}
 						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + ts.getPersonaltext() + "; \r\n";
+							text = text + ts.getPersonaltext() + ",";
 						}
 						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + ts.getRaeumetext() + "; \r\n";
+							text = text + ts.getRaeumetext() + ",";
 						}
 						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + ts.getStundeninhalttext() + ";";
+							text = text + ts.getStundeninhalttext() + ",";
 						}
 						writer.append(text);
 						writer.append(";");
@@ -124,6 +174,7 @@ public class ExportPDF {
 
 				}
 				writer.append("\r\n");
+
 			}
 			writer.flush();
 			writer.close();
@@ -136,8 +187,12 @@ public class ExportPDF {
 		}
 
 	}
-	
-	
+
+	/**
+	 * erstellt eine .doc-Datei die den Inhalt des Stundenplan wiedergibt
+	 * 
+	 * @param jTable
+	 */
 	public static void createDOC(JTable jTable) {
 
 		try {
@@ -151,36 +206,37 @@ public class ExportPDF {
 					if (obj instanceof Timeslot) {
 						Timeslot ts = (Timeslot) obj;
 						String text = "";
-						text  = text  +jTable.getModel().getColumnName(e)+ "\n";
+						text = text + jTable.getModel().getColumnName(e);
 						if (!ts.getKlassentext().isEmpty()) {
-							text = text + "\n" +  ts.getKlassentext() + ";";
+							text = text + "\t" + "Klasse/n: "
+									+ ts.getKlassentext();
 						} else {
-							text = text + "\n" + "Keine Klasse ;"; 
+							text = text + "\t" + "Keine Klasse ";
 						}
 						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + "\r" + "Personal: \t" + ts.getPersonaltext() + ";";
-						}else {
-							text = text + "\r" + "Kein Personal ;"; 
+							text = text + " Personal: " + ts.getPersonaltext();
+						} else {
+							text = text + " Kein Personal ";
 						}
 						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + "\r" + "Raum: \t" + ts.getRaeumetext() + ";";
-						}else {
-							text = text + "\r" + "Kein Raum ;"; 
+							text = text + " Raum: " + ts.getRaeumetext();
+						} else {
+							text = text + " Kein Raum ";
 						}
 						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + "\r" + "Inhalt: \t" + ts.getStundeninhalttext() + ";";
-						}else {
-							text = text + "\r" + "Keine Inhalte ;"; 
+							text = text + " Inhalt: "
+									+ ts.getStundeninhalttext();
+						} else {
+							text = text + " Keine Inhalte";
 						}
 						writer.append(text);
-						writer.append(";");
 					} else {
+						writer.append("\n");
 						writer.append(obj.toString());
 						writer.append("\n");
 					}
-
+					writer.append("\r\n");
 				}
-				writer.append(" \r\n");
 			}
 			writer.flush();
 			writer.close();
@@ -193,9 +249,15 @@ public class ExportPDF {
 		}
 
 	}
-	
-	
 
+	/**
+	 * setzt die Strings FILE und planOwner fest, indem auf das jTable
+	 * zugegriffen wird und der Owner des JTables genutzt wird. Somit wird für
+	 * jede einzellene Schulklasse, Raum, Personal ein eigener Stundenplan
+	 * erstellt mit verschiedenen Namen.
+	 * 
+	 * @param jTable
+	 */
 	private static void setOwnerAndFile(JTable jTable) {
 		Object owner = jTable.getModel();
 		if (owner instanceof TimetableModel) {
@@ -206,13 +268,13 @@ public class ExportPDF {
 				owner = p.getName();
 			} else if (owner instanceof Schoolclass) {
 				Schoolclass sc = (Schoolclass) owner;
-				owner = sc.getJahrgang() + sc.getName();
+				owner = sc.getName();
 			} else if (owner instanceof Room) {
 				Room r = (Room) owner;
 				owner = r.getName();
 
 			}
-			FILE = path + "Stundenplan-" + owner.toString() ;
+			FILE = path + "Stundenplan-" + owner.toString();
 			planOwner = owner.toString();
 		} else {
 			FILE = path + "Stundenplan";
