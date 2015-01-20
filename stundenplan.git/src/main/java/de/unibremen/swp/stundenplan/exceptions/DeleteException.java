@@ -13,7 +13,6 @@ public class DeleteException extends Exception {
 	public DeleteException(final String message) {
         super(message);
         JOptionPane.showMessageDialog(Stundenplan.getMain(), message);
-        delete("WTF");
     }
 	
 	public static boolean delete(final String message) {

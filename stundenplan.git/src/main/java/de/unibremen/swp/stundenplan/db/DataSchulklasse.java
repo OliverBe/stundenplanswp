@@ -139,19 +139,24 @@ public class DataSchulklasse {
 		try {
 			sql = "SELECT * FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if(!rs.next() && DeleteException.delete("Die Schulklasse ist in einer Planungseinheit eingetragen./n Soll die Schulklasse trotzdem gelöscht werden?")) {
-				sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-			}
+			if(rs.next()) {
+				boolean yes = DeleteException.delete("Die Schulklasse ist in einer Planungseinheit eingetragen.\nSoll die Schulklasse trotzdem gelöscht werden?");
+				if(yes) deleteSQL(pName);
+			}else deleteSQL(pName);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteSQL(String pName) throws SQLException {
+		sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {

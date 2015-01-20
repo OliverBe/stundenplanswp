@@ -105,17 +105,22 @@ public class DataRaum {
 		try {
 			sql = "SELECT * FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if(!rs.next() || rs.next() && DeleteException.delete("Der Raum ist in einer Planungseinheit eingetragen./n Soll der Raum trotzdem gelöscht werden?")) {
-				sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-			}
+			if(rs.next()) {
+				boolean yes = DeleteException.delete("Der Raum ist in einer Planungseinheit eingetragen.\nSoll der Raum trotzdem gelöscht werden?");
+				if(yes) deleteRSQL(pName);
+			}else deleteRSQL(pName);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteRSQL(String pName) throws SQLException {
+		sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	public static void editRaum(String pName, Room newRaum) {
@@ -190,15 +195,20 @@ public class DataRaum {
 		try {
 			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if(!rs.next() || rs.next() && DeleteException.delete("Die Raumfunktion ist mit einem Raum verbunden./n Soll die Raumfunktion trotzdem gelöscht werden?")) {
-				sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
-				stmt.executeUpdate(sql);
-			}
+			if(rs.next()) {
+				boolean yes = DeleteException.delete("Die Raumfunktion ist mit einem Raum verbunden.\nSoll die Raumfunktion trotzdem gelöscht werden?");
+				if(yes) deleteRfSQL(pName);
+			}else deleteRfSQL(pName);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteRfSQL(String pName) throws SQLException {
+		sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
 	}
 		
 	public static void editRaumfunktion(String pName, Raumfunktion rf) {

@@ -178,21 +178,26 @@ public class DataPersonal {
 			if(rs.next()) throw new DeleteException("Das Personal ist als Klassenlehrer einer Klasse eingetragen und kann dadurch nicht gelöscht werden.");
 			sql = "SELECT * FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
 			rs = stmt.executeQuery(sql);
-			if(!rs.next() || rs.next() && DeleteException.delete("Das Personal ist in einer Planungseinheit eingetragen./n Soll das Personal trotzdem gelöscht werden?")) {
-				sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
-				stmt.executeUpdate(sql);
-				sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
-				stmt.executeUpdate(sql);
-			}
+			if(rs.next()) {
+				boolean yes = DeleteException.delete("Das Personal ist in einer Planungseinheit eingetragen.\nSoll das Personal trotzdem gelöscht werden?");
+				if(yes) deleteSQL(pKuerzel);
+			}else deleteSQL(pKuerzel);
 		} catch (SQLException | DeleteException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteSQL(String pKuerzel) throws SQLException {
+		sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM planungseinheit_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
+		sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
