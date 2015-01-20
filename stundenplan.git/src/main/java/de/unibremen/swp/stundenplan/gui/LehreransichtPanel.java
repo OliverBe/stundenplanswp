@@ -3,6 +3,7 @@ package de.unibremen.swp.stundenplan.gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -59,8 +60,12 @@ public class LehreransichtPanel extends JPanel {
 
 		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
 				.getAllPlanungseinheit();
-		ArrayList<Personal> allPersonal = PersonalManager
-				.getAllPersonalFromDB();
+		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
+		ArrayList<String> allPersoKuerzel = PersonalManager.getAllKuerzel();
+		Collections.sort(allPersoKuerzel);
+		for(int i = 0; i<allPersoKuerzel.size();i++){
+			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
+		}
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
