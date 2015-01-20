@@ -107,7 +107,17 @@ public class DataRaum {
 			ResultSet rs = stmt.executeQuery(sql);
 			if(rs.next()) {
 				boolean yes = DeleteException.delete("Der Raum ist in einer Planungseinheit eingetragen.\nSoll der Raum trotzdem gelöscht werden?");
-				if(yes) deleteRSQL(pName);
+				if(yes) {
+					ArrayList<Integer> pIds = new ArrayList<Integer>();
+					do {
+						int pId = rs.getInt("planungseinheit_id");
+						pIds.add(pId);
+					}while (rs.next());
+					deleteRSQL(pName);
+					for(int pId : pIds) {
+						DataPlanungseinheit.deleteIfEmpty(pId);
+					}
+				}
 			}else deleteRSQL(pName);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,6 +228,16 @@ public class DataRaum {
 			sql = "UPDATE raum_Raumfunktion SET raumfunktion_name = '" + rf.getName() + "' WHERE raumfunktion_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addRaumfunktion(rf);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void deleteRfIfEmtpy(String pName) {
+		try {
+			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next()) deleteRaumfunktionByName(pName);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

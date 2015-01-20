@@ -180,7 +180,17 @@ public class DataPersonal {
 			rs = stmt.executeQuery(sql);
 			if(rs.next()) {
 				boolean yes = DeleteException.delete("Das Personal ist in einer Planungseinheit eingetragen.\nSoll das Personal trotzdem gelöscht werden?");
-				if(yes) deleteSQL(pKuerzel);
+				if(yes) {
+					ArrayList<Integer> pIds = new ArrayList<Integer>();
+					do {
+						int pId = rs.getInt("planungseinheit_id");
+						pIds.add(pId);
+					}while (rs.next());
+					deleteSQL(pKuerzel);
+					for(int pId : pIds) {
+						DataPlanungseinheit.deleteIfEmpty(pId);
+					}
+				}
 			}else deleteSQL(pKuerzel);
 		} catch (SQLException | DeleteException e) {
 			e.printStackTrace();
