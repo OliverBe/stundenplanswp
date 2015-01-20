@@ -34,13 +34,10 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		initComponents();
 		pack();
 		setSize(1280, 1024);
-	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-
-		
+	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
 		setVisible(true);
 	}
 
@@ -53,22 +50,6 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Raumbelegungsplan", paneRaeume);
 		tabpane.addTab("Wochenplan", paneWochen);
 		tabpane.addTab("Einstellungen", paneConfig);
-
-		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
-		JButton button1 = new JButton(revert);
-		add(button1, BorderLayout.EAST);
-		button1.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try{
-					CommandHistory.getLast().undo();
-					CommandHistory.deleteLast();
-					checkSelectedTab();
-				}catch (StundenplanException e){
-					System.out.println("[COMMANDHISTORY]: Keine Befehle in History.");
-				}
-			}});
 		
 		setJMenuBar(menu);
 		add(tabpane);

@@ -1,9 +1,14 @@
 package de.unibremen.swp.stundenplan.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.image.BufferedImage;
 
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,7 +18,9 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
+import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.config.ExportPDF;
+import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
 public class MenuBar extends JMenuBar{
 
@@ -24,8 +31,6 @@ public class MenuBar extends JMenuBar{
 	private static final long serialVersionUID = 1L;
 	
 	private JMenu data = new JMenu("Datei");
-	private JMenu edit = new JMenu("Edit");
-	private JMenuItem undo = new JMenuItem("Rückgängig");
 	private JMenuItem neww = new JMenuItem("Neue Datei");
 	private JMenuItem open = new JMenuItem("Öffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
@@ -52,8 +57,23 @@ public class MenuBar extends JMenuBar{
 		data.add(exportCSV);
 		data.add(exportDOC);
 		add(data);
-		edit.add(undo);
-		add(edit);
+		add(Box.createHorizontalGlue());
+		
+		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
+		JButton button1 = new JButton(revert);
+		add(button1);
+		button1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					CommandHistory.getLast().undo();
+					CommandHistory.deleteLast();
+					((MainFrame) f).checkSelectedTab();
+				}catch (StundenplanException e){
+					System.out.println("[COMMANDHISTORY]: Keine Befehle in History.");
+				}
+			}});
 
 		
 		newClick(neww);
@@ -62,7 +82,6 @@ public class MenuBar extends JMenuBar{
 		exportClick(export);
 		exportCSVClick(exportCSV);
 		exportDOCClick(exportDOC);
-		undoClick(undo);
 		
 		
 		//Shortcuts
@@ -70,7 +89,6 @@ public class MenuBar extends JMenuBar{
 		open.setAccelerator(KeyStroke.getKeyStroke( 'O', InputEvent.CTRL_DOWN_MASK ));
 		save.setAccelerator(KeyStroke.getKeyStroke( 'S', InputEvent.CTRL_DOWN_MASK ));
 		export.setAccelerator(KeyStroke.getKeyStroke( 'E', InputEvent.CTRL_DOWN_MASK ));
-		undo.setAccelerator(KeyStroke.getKeyStroke('Z', InputEvent.CTRL_DOWN_MASK));
 	}
 	
 	private void newClick(JMenuItem item) {
