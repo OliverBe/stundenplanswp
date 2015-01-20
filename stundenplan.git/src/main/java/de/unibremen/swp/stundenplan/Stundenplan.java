@@ -18,6 +18,9 @@ package de.unibremen.swp.stundenplan;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -75,13 +78,15 @@ public final class Stundenplan {
      */
     public static void main(final String[] args) {
             final Stundenplan stundenplan= new Stundenplan();
+            final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd_HH:mm:ss");
+            final Date date = new Date();
             Timer timer = new Timer(1000, new ActionListener() {
             	@Override
                 public void actionPerformed(ActionEvent e) {
             		time++;
-            		System.out.println(time+"");
+//            		System.out.println(time+"");
             		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
-//            			Data.backup();
+//            			Data.backup(dateFormat.format(date));
             			time = 0;
             		}
                 }

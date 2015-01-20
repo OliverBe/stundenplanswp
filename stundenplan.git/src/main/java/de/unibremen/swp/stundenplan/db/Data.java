@@ -180,9 +180,9 @@ public class Data {
 		}
 	}
 	
-	public static void backup() {
+	public static void backup(String backupDate) {
 		try {
-			stmt.executeUpdate("backup to backup.db");
+			stmt.executeUpdate("backup to backup-" + backupDate + ".db");
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on creating backup");
