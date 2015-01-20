@@ -92,8 +92,8 @@ public final class PlanungseinheitManager {
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsPersonal(pPerson) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsPersonal(pPerson)){
 				pes.add(p);
 				}
 		}
@@ -115,8 +115,8 @@ public final class PlanungseinheitManager {
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsClass(pSchoolclass) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsClass(pSchoolclass)){
 				pes.add(p);
 				}
 		}
@@ -139,8 +139,8 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 
 		// hier muss die Liste geholt werden
-		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheit()){
-			if(p.containsRoom(pRoom) && p.isWeekday(pWeekday)){
+		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
+			if(p.containsRoom(pRoom)){
 				pes.add(p);
 				}
 		}

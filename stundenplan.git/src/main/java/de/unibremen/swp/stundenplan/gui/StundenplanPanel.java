@@ -50,7 +50,6 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	private static JList schoolclassList;
 	private static JLabel label1 = new JLabel("Lehrer");
 	private static JLabel label2 = new JLabel("Klassen");
-	private JFrame frame;
 	private MouseAdapter mousefunc = new MouseAdapter() {
 		public void mousePressed(MouseEvent evt) {
 			eventX = evt.getXOnScreen();
@@ -86,7 +85,6 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	public StundenplanPanel() {
 		table = null;
 		init();
-		 frame = new PEedit(this);
 		show.addActionListener(this);
 	}
 
@@ -142,6 +140,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
+				PEedit frame = getpFrame();
 				frame.setVisible(true);
 			}
 		});
@@ -160,6 +159,10 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		popmen.setVisible(true);
 		return popmen;
 
+	}
+	
+	private PEedit getpFrame(){
+		return new PEedit(this);
 	}
 
 	public static void updateLists() {
