@@ -108,6 +108,7 @@ public class LehreransichtPanel extends JPanel {
 				ArrayList<Schoolclass> klassen = DataSchulklasse.getAllSchulklasse();
 				for (Schoolclass k : klassen) {
 
+					if (s.getKuerzel() != null){
 					if (inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
 						reihe.add("-");
 					} else {
@@ -122,6 +123,7 @@ public class LehreransichtPanel extends JPanel {
 									+ ":  "
 									+ Integer.toString(inhaltKlasseStundenPerso.get(s.getKuerzel()).get(k.getName()) / 60));
 						}
+					}
 					}
 					model.addRow(reihe.toArray());
 				}
