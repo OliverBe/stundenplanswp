@@ -27,7 +27,7 @@ public class DataPersonal {
 			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
 					+ "', '" + personal.getKuerzel() + "', "
-					+ personal.getSollZeit() + ", 0, 0, "
+					+ personal.getSollZeit() + ", 0, " + personal.getErsatzZeit() + ", "
 					+ (personal.isGependelt() ? 1:0) + ", "
 					+ (personal.isLehrer() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
