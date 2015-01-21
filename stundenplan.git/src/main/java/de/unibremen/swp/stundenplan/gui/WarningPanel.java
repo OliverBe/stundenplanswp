@@ -3,6 +3,7 @@ package de.unibremen.swp.stundenplan.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +12,7 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -43,8 +45,9 @@ public final class WarningPanel extends JPanel{
 		list.setBackground(new Color(143,188,143));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		list.setFixedCellHeight(30);
-		list.setVisibleRowCount(20);
+		list.setFocusable(false);
+		listScroller.setPreferredSize(new Dimension(250,400));
+		list.setSize(100,500);
 		add(listScroller, c);
 		c.gridy=1;
 		c.fill=GridBagConstraints.HORIZONTAL;
