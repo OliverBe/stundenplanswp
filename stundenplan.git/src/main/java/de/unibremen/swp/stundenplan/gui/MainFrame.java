@@ -92,7 +92,7 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Einstellungen", paneConfig);
 		
 		setJMenuBar(menu);
-		add(tabpane);
+		add(tabpane, BorderLayout.PAGE_START);
 		add(paneWarning, BorderLayout.PAGE_END);
 		
 		tabpane.addChangeListener(new ChangeListener()

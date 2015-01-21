@@ -23,11 +23,6 @@ import de.unibremen.swp.stundenplan.logic.RaumManager;
 
 public class RaumbelegungsplanPanel extends JPanel implements ActionListener{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 201806456859333146L;
-	public DataPanel data = new DataPanel();
 	private JList<String> liste;
 	
 	private JFileChooser chooser = new JFileChooser();

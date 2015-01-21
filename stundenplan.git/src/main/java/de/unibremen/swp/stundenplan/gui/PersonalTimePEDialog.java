@@ -82,7 +82,18 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener{
 			}
 			if(PlanungseinheitManager.checkTimeInPE(pe, (int)ehspinner[i].getValue(), (int)emspinner[i].getValue())){
 				JOptionPane.showMessageDialog(null,
-						"Endzeit von "+p.getName()+" befindet sich nicht im Startzeit der Planungseinheit");
+						"Endzeit von "+p.getName()+" befindet sich nicht im End der Planungseinheit");
+				return;
+			}
+			if (((int)shspinner[i].getValue() == (int)smspinner[i].getValue())
+					&& ((int)ehspinner[i].getValue() == (int)emspinner[i].getValue())) {
+				JOptionPane
+						.showMessageDialog(null,
+								"Personal "+p.getName()+" darf nicht gleiche Startzeit und Endzeit haben");
+				return;
+			} else if ((int)shspinner[i].getValue() > (int)ehspinner[i].getValue()) {
+				JOptionPane.showMessageDialog(null,
+						"Startzeit von "+p.getName()+" muss frueher als Endzeit sein");
 				return;
 			}
 			pe.addPersonal(p, new int[] {(int)shspinner[i].getValue(),(int)smspinner[i].getValue(),(int)ehspinner[i].getValue(),(int)smspinner[i].getValue()});
