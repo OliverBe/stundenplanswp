@@ -218,4 +218,8 @@ public class LehreransichtPanel extends JPanel {
 		}
 		return pInhaltKlasseStunden;
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
 }
