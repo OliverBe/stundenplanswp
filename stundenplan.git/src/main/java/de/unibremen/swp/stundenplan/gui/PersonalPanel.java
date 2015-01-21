@@ -44,6 +44,7 @@ import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -584,6 +585,7 @@ public class PersonalPanel extends JPanel {
 	private boolean check(final JPanel p) {
 		if (textFieldsEmpty(p))
 			return false;
+		if (kuerzField.getText().length()>Data.MAX_KUERZEL_LEN) return false;
 		try {
 			if(model!=null){
 				for (int i = 0; i < model.getRowCount(); i++) {
