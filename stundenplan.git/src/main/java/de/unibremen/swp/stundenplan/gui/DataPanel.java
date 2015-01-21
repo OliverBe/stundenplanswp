@@ -96,7 +96,7 @@ public class DataPanel extends JPanel {
 		final GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 5, 5, 5);
 
-//		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.ipady=80;
 		c.gridx = 0;
@@ -120,7 +120,6 @@ public class DataPanel extends JPanel {
 		add(menuBar, c);
 		c.gridy=1;
 		c.ipady=0;
-		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.WEST;
 		add(warningPanel, c);
 
