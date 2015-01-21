@@ -65,7 +65,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * Panel fuer die Warnungen
 	 */
-	private static WarningPanel paneWarning = new WarningPanel();
+//	private static WarningPanel paneWarning = new WarningPanel();
 
 	/**
 	 * Konstruktor fuers Hauptfenster
@@ -92,8 +92,7 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Einstellungen", paneConfig);
 		
 		setJMenuBar(menu);
-		add(tabpane, BorderLayout.PAGE_START);
-		add(paneWarning, BorderLayout.PAGE_END);
+		add(tabpane);
 		
 		tabpane.addChangeListener(new ChangeListener()
 	    {
@@ -140,10 +139,6 @@ public class MainFrame extends JFrame {
 		if(c instanceof WochenplanPanel){
 			paneWochen.update();
 		};
-	}
-
-	public static WarningPanel getWarning() {
-		return paneWarning;
 	}
 	
 	public static JTabbedPane getTabPane() {

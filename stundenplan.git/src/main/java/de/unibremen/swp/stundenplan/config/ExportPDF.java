@@ -79,30 +79,36 @@ public class ExportPDF {
 			for (int i = 0; i < jTable.getModel().getRowCount(); i++) {
 				for (int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 					Object obj = jTable.getModel().getValueAt(i, e);
-					if (obj instanceof Timeslot) {
-						Timeslot ts = (Timeslot) obj;
-						String text = "";
-						if (!ts.getKlassentext().isEmpty()) {
-							text = text + ts.getKlassentext() + " \r\n";
-						}
-						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + ts.getPersonaltext() + " \r\n";
-						}
-						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + ts.getRaeumetext() + " \r\n";
-						}
-						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + ts.getStundeninhalttext();
-						}
-						PdfPCell c1 = new PdfPCell(new Phrase(text));
-						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-						table.addCell(c1);
+					if (obj == null) {
+
 					} else {
-						PdfPCell c1 = new PdfPCell(new Phrase(obj.toString()));
-						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-						table.addCell(c1);
+						if (obj instanceof Timeslot) {
+							Timeslot ts = (Timeslot) obj;
+							String text = "";
+							if (!ts.getKlassentext().isEmpty()) {
+								text = text + ts.getKlassentext() + " \r\n";
+							}
+							if (!ts.getPersonaltext().isEmpty()) {
+								text = text + ts.getPersonaltext() + " \r\n";
+							}
+							if (!ts.getRaeumetext().isEmpty()) {
+								text = text + ts.getRaeumetext() + " \r\n";
+							}
+							if (!ts.getStundeninhalttext().isEmpty()) {
+								text = text + ts.getStundeninhalttext();
+							}
+							PdfPCell c1 = new PdfPCell(new Phrase(text));
+							c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							table.addCell(c1);
+						} else {
+							PdfPCell c1 = new PdfPCell(new Phrase(
+									obj.toString()));
+							c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							table.addCell(c1);
+						}
 					}
 				}
+
 			}
 			Paragraph pot = new Paragraph("Stundenplan von " + planOwner);
 			addEmptyLine(pot, 2);
@@ -149,28 +155,31 @@ public class ExportPDF {
 			for (int i = 0; i < jTable.getModel().getRowCount(); i++) {
 				for (int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 					Object obj = jTable.getModel().getValueAt(i, e);
+					if (obj == null) {
 
-					if (obj instanceof Timeslot) {
-						Timeslot ts = (Timeslot) obj;
-						String text = "";
-						if (!ts.getKlassentext().isEmpty()) {
-							text = text + ts.getKlassentext() + ",";
-						}
-						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + ts.getPersonaltext() + ",";
-						}
-						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + ts.getRaeumetext() + ",";
-						}
-						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + ts.getStundeninhalttext() + ",";
-						}
-						writer.append(text);
 					} else {
-						writer.append(obj.toString());
-						writer.append(",");
-					}
+						if (obj instanceof Timeslot) {
+							Timeslot ts = (Timeslot) obj;
+							String text = "";
+							if (!ts.getKlassentext().isEmpty()) {
+								text = text + ts.getKlassentext() + ",";
+							}
+							if (!ts.getPersonaltext().isEmpty()) {
+								text = text + ts.getPersonaltext() + ",";
+							}
+							if (!ts.getRaeumetext().isEmpty()) {
+								text = text + ts.getRaeumetext() + ",";
+							}
+							if (!ts.getStundeninhalttext().isEmpty()) {
+								text = text + ts.getStundeninhalttext() + ",";
+							}
+							writer.append(text);
+						} else {
+							writer.append(obj.toString());
+							writer.append(",");
+						}
 
+					}
 				}
 				writer.append("\r\n");
 
@@ -202,37 +211,42 @@ public class ExportPDF {
 			for (int i = 0; i < jTable.getModel().getRowCount(); i++) {
 				for (int e = 0; e < jTable.getModel().getColumnCount(); e++) {
 					Object obj = jTable.getModel().getValueAt(i, e);
-					if (obj instanceof Timeslot) {
-						Timeslot ts = (Timeslot) obj;
-						String text = "";
-						text = text + jTable.getModel().getColumnName(e);
-						if (!ts.getKlassentext().isEmpty()) {
-							text = text + "\t" + "Klasse/n: "
-									+ ts.getKlassentext();
-						} else {
-							text = text + "\t" + "Keine Klasse ";
-						}
-						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + " Personal: " + ts.getPersonaltext();
-						} else {
-							text = text + " Kein Personal ";
-						}
-						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + " Raum: " + ts.getRaeumetext();
-						} else {
-							text = text + " Kein Raum ";
-						}
-						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + " Inhalt: "
-									+ ts.getStundeninhalttext();
-						} else {
-							text = text + " Keine Inhalte";
-						}
-						writer.append(text);
+					if (obj == null) {
+
 					} else {
-						writer.append("\n");
-						writer.append(obj.toString());
-						writer.append("\n");
+						if (obj instanceof Timeslot) {
+							Timeslot ts = (Timeslot) obj;
+							String text = "";
+							text = text + jTable.getModel().getColumnName(e);
+							if (!ts.getKlassentext().isEmpty()) {
+								text = text + "\t" + "Klasse/n: "
+										+ ts.getKlassentext();
+							} else {
+								text = text + "\t" + "Keine Klasse ";
+							}
+							if (!ts.getPersonaltext().isEmpty()) {
+								text = text + " Personal: "
+										+ ts.getPersonaltext();
+							} else {
+								text = text + " Kein Personal ";
+							}
+							if (!ts.getRaeumetext().isEmpty()) {
+								text = text + " Raum: " + ts.getRaeumetext();
+							} else {
+								text = text + " Kein Raum ";
+							}
+							if (!ts.getStundeninhalttext().isEmpty()) {
+								text = text + " Inhalt: "
+										+ ts.getStundeninhalttext();
+							} else {
+								text = text + " Keine Inhalte";
+							}
+							writer.append(text);
+						} else {
+							writer.append("\n");
+							writer.append(obj.toString());
+							writer.append("\n");
+						}
 					}
 					writer.append("\r\n");
 				}
@@ -260,32 +274,35 @@ public class ExportPDF {
 	public static void setOwnerAndFile(JTable jTable) {
 		if (planOwner != null && planOwner.equals("Personalplan")) {
 			FILE = path + "Personalplan";
+		} else if (planOwner != null && (planOwner.length() > 9 && planOwner.substring(0, 10).equals("Wochenplan"))) {
+			FILE = path + planOwner;
+			
 		} else {
-		Object owner = jTable.getModel();
-		if (owner instanceof TimetableModel) {
-			TimetableModel tm = (TimetableModel) owner;
-			owner = tm.getOwner();
-			if (owner instanceof Personal) {
-				Personal p = (Personal) owner;
-				owner = p.getName();
-			} else if (owner instanceof Schoolclass) {
-				Schoolclass sc = (Schoolclass) owner;
-				owner = sc.getName();
-			} else if (owner instanceof Room) {
-				Room r = (Room) owner;
-				owner = r.getName();
+			Object owner = jTable.getModel();
+			if (owner instanceof TimetableModel) {
+				TimetableModel tm = (TimetableModel) owner;
+				owner = tm.getOwner();
+				if (owner instanceof Personal) {
+					Personal p = (Personal) owner;
+					owner = p.getName();
+				} else if (owner instanceof Schoolclass) {
+					Schoolclass sc = (Schoolclass) owner;
+					owner = sc.getName();
+				} else if (owner instanceof Room) {
+					Room r = (Room) owner;
+					owner = r.getName();
 
+				}
+				FILE = path + "Stundenplan-" + owner.toString();
+				planOwner = owner.toString();
+
+			} else {
+				FILE = path + "Stundenplan";
+				planOwner = "";
 			}
-			FILE = path + "Stundenplan-" + owner.toString();
-			planOwner = owner.toString();
-		
-		} else {
-			FILE = path + "Stundenplan";
-			planOwner = "";
-		}
 		}
 	}
-	
+
 	public static void setOwner(String name) {
 		planOwner = name;
 	}

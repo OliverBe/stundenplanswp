@@ -15,7 +15,7 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 public class WochenplanPanel extends JPanel {
 
 	private JFrame f;
-	public JTabbedPane tabPane = new JTabbedPane();
+	public static JTabbedPane tabPane = new JTabbedPane();
 	private WochenplanTag montag;
 	private WochenplanTag dienstag;
 	private WochenplanTag mittwoch;
@@ -27,6 +27,8 @@ public class WochenplanPanel extends JPanel {
 	public WochenplanPanel(){
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		init();
+		
+		
 		
 	}
 	
@@ -48,9 +50,12 @@ public class WochenplanPanel extends JPanel {
 	}
 	
 	public void update(){
-		tabPane.removeAll();
+		tabPane.removeAll();  
 		init();
 		System.out.println("Personaliste aktualisiert");
 	}
 
+	public static JTabbedPane getTabPane() {
+		return tabPane;
+	}
 }
