@@ -67,10 +67,11 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 				final int row = table.rowAtPoint(evt.getPoint());
 				final int col = table.columnAtPoint(evt.getPoint());
 				Timeslot t = null;
-				if(table.getValueAt(row, col) instanceof Timeslot){
+				if (table.getValueAt(row, col) instanceof Timeslot) {
 					t = (Timeslot) table.getValueAt(row, col);
 				}
-				if(t != null);
+				if (t != null)
+					;
 				createPopup(t.getpe());
 			}
 		}
@@ -112,8 +113,8 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		c.gridy = 0;
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
-		if(table != null){
-		table.addMouseListener(mousefunc);
+		if (table != null) {
+			table.addMouseListener(mousefunc);
 		}
 	}
 
@@ -153,33 +154,37 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			}
 		});
 		popmen.add(menu1);
-		if(peid!=-1){
-		popmen.add(menu2);
+		if (peid != -1) {
+			popmen.add(menu2);
 		}
 		popmen.setLocation(eventX, eventY);
 		popmen.setVisible(true);
 		return popmen;
 
 	}
-	
-	private PEedit getpFrame(){
+
+	private PEedit getpFrame() {
 		return new PEedit(this);
 	}
 
 	public static void updateLists() {
-		Personal[] personalListe = new Personal[PersonalManager.getAllPersonalFromDB().size()];
-		Schoolclass[] schoolclassListe = new Schoolclass[SchulklassenManager.getAllSchulklassenFromDB().size()];
+		Personal[] personalListe = new Personal[PersonalManager
+				.getAllPersonalFromDB().size()];
+		Schoolclass[] schoolclassListe = new Schoolclass[SchulklassenManager
+				.getAllSchulklassenFromDB().size()];
 		pList = new DefaultListModel();
 		sList = new DefaultListModel();
 
-		for (int i = 0; i <PersonalManager.getAllPersonalFromDB().size(); i++) {
+		for (int i = 0; i < PersonalManager.getAllPersonalFromDB().size(); i++) {
 			personalListe[i] = PersonalManager.getAllPersonalFromDB().get(i);
 
 			pList.addElement(personalListe[i]);
 		}
 
-		for (int i = 0; i <SchulklassenManager.getAllSchulklassenFromDB().size(); i++) {
-			schoolclassListe[i] = SchulklassenManager.getAllSchulklassenFromDB().get(i);
+		for (int i = 0; i < SchulklassenManager.getAllSchulklassenFromDB()
+				.size(); i++) {
+			schoolclassListe[i] = SchulklassenManager
+					.getAllSchulklassenFromDB().get(i);
 
 			sList.addElement(schoolclassListe[i]);
 		}
@@ -197,25 +202,25 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource() == show) {
-			if (!personalList.isSelectionEmpty()) {
-				Personal p = (Personal) personalList.getSelectedValue();
-				System.out.println(p.getKuerzel());
-				table = new StundenplanTable(p).getTable();
-				init();
+		if (ae.getSource() == show && (!personalList.isSelectionEmpty())) {
 
-			} else if (!schoolclassList.isSelectionEmpty()) {
-				Schoolclass s = (Schoolclass) schoolclassList
-						.getSelectedValue();
-				System.out.println(s.getName());
-				table = new StundenplanTable(s).getTable();
-				init();
-			}
+			Personal p = (Personal) personalList.getSelectedValue();
+			System.out.println(p.getKuerzel());
+			table = new StundenplanTable(p).getTable();
+
+		} else if (ae.getSource() == show
+				&& (!schoolclassList.isSelectionEmpty())) {
+			Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
+			System.out.println(s.getName());
+			table = new StundenplanTable(s).getTable();
 
 		}
+
+		init();
 		updatetable();
+
 	}
-	
+
 	public JTable getTable() {
 		return table;
 	}
@@ -223,5 +228,5 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	public void updatetable() {
 		table.repaint();
 	}
-	
+
 }

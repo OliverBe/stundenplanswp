@@ -83,16 +83,16 @@ public class ExportPDF {
 						Timeslot ts = (Timeslot) obj;
 						String text = "";
 						if (!ts.getKlassentext().isEmpty()) {
-							text = text + ts.getKlassentext() + "; \r\n";
+							text = text + ts.getKlassentext() + " \r\n";
 						}
 						if (!ts.getPersonaltext().isEmpty()) {
-							text = text + ts.getPersonaltext() + "; \r\n";
+							text = text + ts.getPersonaltext() + " \r\n";
 						}
 						if (!ts.getRaeumetext().isEmpty()) {
-							text = text + ts.getRaeumetext() + "; \r\n";
+							text = text + ts.getRaeumetext() + " \r\n";
 						}
 						if (!ts.getStundeninhalttext().isEmpty()) {
-							text = text + ts.getStundeninhalttext() + ";";
+							text = text + ts.getStundeninhalttext();
 						}
 						PdfPCell c1 = new PdfPCell(new Phrase(text));
 						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -166,10 +166,9 @@ public class ExportPDF {
 							text = text + ts.getStundeninhalttext() + ",";
 						}
 						writer.append(text);
-						writer.append(";");
 					} else {
 						writer.append(obj.toString());
-						writer.append(";");
+						writer.append(",");
 					}
 
 				}
