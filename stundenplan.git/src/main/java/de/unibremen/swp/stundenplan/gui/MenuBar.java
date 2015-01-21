@@ -90,11 +90,13 @@ public class MenuBar extends JMenuBar {
 		add(Box.createHorizontalGlue());
 
 		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
+		ImageIcon revertG = new ImageIcon(getClass().getResource("revertGRUEN.png"));
 		JButton button1 = new JButton(revert);
 		button1.setBorderPainted(false);
 		button1.setBorder(null);
 		button1.setMargin(new Insets(0, 0, 0, 0));
 		button1.setContentAreaFilled(false);
+		button1.setPressedIcon(revertG);
 		add(button1);
 		button1.addActionListener(new ActionListener() {
 
@@ -274,7 +276,9 @@ public class MenuBar extends JMenuBar {
 				} else if (obj instanceof LehreransichtPanel) {
 					LehreransichtPanel panel = (LehreransichtPanel) obj;
 					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
 					ExportPDF.createPDF(eTable);
+					ExportPDF.setOwner("");
 				}
 
 			}
@@ -301,6 +305,13 @@ public class MenuBar extends JMenuBar {
 					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
 					eTable = panel.getTable();
 					ExportPDF.createCSV(eTable);
+				} else if (obj instanceof LehreransichtPanel) {
+					LehreransichtPanel panel = (LehreransichtPanel) obj;
+					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
+					ExportPDF.createCSV(eTable);
+					ExportPDF.setOwner("");
+					
 				}
 
 			}
@@ -327,6 +338,12 @@ public class MenuBar extends JMenuBar {
 					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
 					eTable = panel.getTable();
 					ExportPDF.createDOC(eTable);
+				} else if (obj instanceof LehreransichtPanel) {
+					LehreransichtPanel panel = (LehreransichtPanel) obj;
+					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
+					ExportPDF.createDOC(eTable);
+					ExportPDF.setOwner("");
 				}
 
 			}
