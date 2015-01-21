@@ -2,9 +2,12 @@
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,35 +20,77 @@ import javax.swing.event.ChangeListener;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
+/**
+ * Hauptfenster des Stundenplans
+ * @author Che
+ *
+ */
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
+	/**
+	 * Menubar des Hauptfensters
+	 */
 	private MenuBar menu = new MenuBar(this);
 
+	/**
+	 * Tabpane des Hauptfensters
+	 */
 	private static JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
 
-	private DataPanel dataPanel = new DataPanel();
+	/**
+	 * Panel zum Hinzufügen, Editieren, Loeschen von Daten aus der DB
+	 */
+	private DataPanel paneData = new DataPanel();
+	
+	/**
+	 * Panel zur Anzeige des Stundenplans, PE koennen hier hinzugefuegt werden.
+	 */
 	private StundenplanPanel paneStundenplan = new StundenplanPanel();
+	
+	/**
+	 * Panel zur Anzeige des Personaleinsatzplans
+	 */
 	private LehreransichtPanel paneLehrer = new LehreransichtPanel();
+	
+	/**
+	 * Panel zur Anzeige des Raumbelegungsplans
+	 */
 	private JPanel paneRaeume = new RaumbelegungsplanPanel();
+	
+	/**
+	 * Panel der Einstellungen
+	 */
 	private JPanel paneConfig = new ConfigPanel();
+	
+	/**
+	 * Panel zur Anzeige des Wochenplans
+	 */
 	private WochenplanPanel paneWochen = new WochenplanPanel();
+	
+	/**
+	 * Panel fuer die Warnungen
+	 */
 	private static WarningPanel paneWarning = new WarningPanel();
 
+	/**
+	 * Konstruktor fuers Hauptfenster
+	 */
 	public MainFrame() {
 		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		initComponents();
+		init();
 		pack();
-		setSize(1280, 1024);
+		setMinimumSize(new Dimension(1280,1024));
 	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
 		setVisible(true);
 	}
-
-	private void initComponents() {
-
-		// TODO bei click sollen sich die anderen closen, bzw der eine öffnen
-		tabpane.addTab("Daten", dataPanel);
+	
+	/**
+	 * Auslagerung der hinzuzufügenden Panels in diese Methode
+	 */
+	private void init() {
+		tabpane.addTab("Daten", paneData);
 		tabpane.addTab("Stundenplaene", paneStundenplan);
 		tabpane.addTab("Personaleinsatzplan", paneLehrer);
 		tabpane.addTab("Raumbelegungsplan", paneRaeume);
