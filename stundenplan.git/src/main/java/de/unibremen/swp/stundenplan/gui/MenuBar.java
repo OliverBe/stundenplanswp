@@ -90,11 +90,13 @@ public class MenuBar extends JMenuBar {
 		add(Box.createHorizontalGlue());
 
 		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
+		ImageIcon revertG = new ImageIcon(getClass().getResource("revertGRUEN.png"));
 		JButton button1 = new JButton(revert);
 		button1.setBorderPainted(false);
 		button1.setBorder(null);
 		button1.setMargin(new Insets(0, 0, 0, 0));
 		button1.setContentAreaFilled(false);
+		button1.setPressedIcon(revertG);
 		add(button1);
 		button1.addActionListener(new ActionListener() {
 
@@ -102,8 +104,8 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					CommandHistory.getLast().undo();
-					CommandHistory.deleteLast();
 					((MainFrame) f).checkSelectedTab();
+					CommandHistory.deleteLast();
 				} catch (StundenplanException e) {
 					System.out
 							.println("[COMMANDHISTORY]: Keine Befehle in History.");

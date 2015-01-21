@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 
-public class EditRaum implements Command {
+public class EditRaum implements Command, EditCommand {
 
 	private Room urspruenglich;
 	private Room bearbeitet;

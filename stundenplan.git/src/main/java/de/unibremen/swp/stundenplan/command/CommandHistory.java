@@ -12,6 +12,7 @@ import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
  */
 public class CommandHistory {
 
+	private static boolean lastIsEditCommand = false;
 	private static ArrayList<Command> commandHistory = new ArrayList<>();
 	
 	public CommandHistory(){
@@ -20,6 +21,7 @@ public class CommandHistory {
 	
 	public static void addCommand(Command c){
 		commandHistory.add(c);
+		if(c instanceof EditCommand) lastIsEditCommand = true;
 	}
 	
 	public static Command getLast() throws StundenplanException{
@@ -33,8 +35,13 @@ public class CommandHistory {
 	public static void deleteLast(){
 		try{
 			commandHistory.remove(CommandHistory.getLast());
+			if(getLast() instanceof EditCommand) lastIsEditCommand = true;
 		}catch(StundenplanException n){
 			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		}
+	}
+	
+	public static boolean isLastEditCommand(){
+		return lastIsEditCommand;
 	}
 }
