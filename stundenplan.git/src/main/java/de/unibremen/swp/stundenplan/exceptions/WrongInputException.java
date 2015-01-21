@@ -51,8 +51,7 @@ public class WrongInputException extends Exception {
     }
     
     public WrongInputException() {
-        super();
-        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Eine ihrer Angaben ist nicht zulässig.");
+        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Eine ihrer Angaben ist nicht zulaessig.");
         
     }
 

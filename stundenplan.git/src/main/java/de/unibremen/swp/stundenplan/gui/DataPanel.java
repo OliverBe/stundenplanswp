@@ -120,7 +120,7 @@ public class DataPanel extends JPanel {
 		add(menuBar, c);
 		c.gridy=1;
 		c.ipady=0;
-		c.anchor = GridBagConstraints.WEST;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
 		add(warningPanel, c);
 
 		// klick auf mP

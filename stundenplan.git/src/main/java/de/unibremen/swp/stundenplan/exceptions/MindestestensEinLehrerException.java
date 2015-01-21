@@ -20,15 +20,8 @@ public class MindestestensEinLehrerException extends Exception {
      * @param message
      *            die Nachricht der neuen Ausnahme
      */
-    public MindestestensEinLehrerException(final String message) {
-        super(message);
-        JOptionPane.showMessageDialog(Stundenplan.getMain(), message);
-        
-    }
-    
-    public MindestestensEinLehrerException() {
-        super();       
-        WarningPanel.setText("Sie müssen mindestens einen Lehrer im Team haben.");
+    public MindestestensEinLehrerException() {     
+        WarningPanel.setText("Sie muessen mindestens einen Lehrer im Team haben.");
     }
 
 }

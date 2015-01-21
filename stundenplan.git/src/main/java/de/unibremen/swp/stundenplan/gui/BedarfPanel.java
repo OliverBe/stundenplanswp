@@ -43,7 +43,10 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
+import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -123,22 +126,12 @@ public class BedarfPanel extends JPanel {
 		// add
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (!check(p))
-						throw new WrongInputException();
-					
+					if (!check(p))return;			
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(((Stundeninhalt) cb2.getSelectedItem()).getKuerzel(),
 							Integer.parseInt(bedField.getText()));
 							JahrgangsManager.addBedarfToJahrgang(new Jahrgang((int) cb1.getSelectedItem(), hm));
-//	@Rom				DataSchulklasse.addJahrgang(new Jahrgang((int) cb1
-//							.getSelectedItem(), hm));
-
 					updateList();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
-				}
 			}
 		});
 		return p;
@@ -254,23 +247,16 @@ public class BedarfPanel extends JPanel {
 		// edit
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (!check(p))
-						throw new WrongInputException();
+					if (!check(p))return;
 					HashMap<String, Integer> hm = new HashMap<String, Integer>();
 					hm.put(stdi, Integer.parseInt(bedField2.getText()));
 					j.setStundenbedarf(hm);
 					JahrgangsManager.editBedarfFromJahrgang(j);
-//@Rom					DataSchulklasse.editJahrgang(j);
-
+					
 					updateList();
 					JFrame topFrame = (JFrame) SwingUtilities
 							.getWindowAncestor(p);
 					topFrame.dispose();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
-				}
 			}
 		});
 
@@ -287,18 +273,23 @@ public class BedarfPanel extends JPanel {
 	}
 
 	private boolean check(final JPanel p) {
-		if (textFieldsEmpty(p))
+		if (textFieldsEmpty(p)){
+			new TextException();
+			return false;}
+		if(cb2.getSelectedItem() == null){
+			new StundeninhaltException();
 			return false;
-		if(cb2.getSelectedItem() == null)
-			return false;
+			}
 		try {
 			for (Component c : p.getComponents()) {
 				if (c == bedField)
 					Integer.parseInt(bedField.getText());
+					//if(bedField)
 				if (c == bedField2)
 					Integer.parseInt(bedField2.getText());
 			}
 		} catch (NumberFormatException e) {
+			new ZahlException();
 			return false;
 		}
 		return true;

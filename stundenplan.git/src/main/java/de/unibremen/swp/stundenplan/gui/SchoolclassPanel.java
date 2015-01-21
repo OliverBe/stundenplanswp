@@ -546,11 +546,8 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 	
-		try {
-			if (!b)
-				throw new MindestestensEinLehrerException();
-		} catch (MindestestensEinLehrerException e) {
-			e.printStackTrace();
+		if (!b){ 
+			new MindestestensEinLehrerException();
 			return false;
 		}
 

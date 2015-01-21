@@ -255,7 +255,6 @@ public class PersonalPanel extends JPanel {
 		c.gridwidth=1;
 		c.gridheight=8;
 		c.fill = GridBagConstraints.VERTICAL;
-	//	c.anchor = GridBagConstraints.NORTH;
 		p.add(new JSeparator(SwingConstants.VERTICAL),c);
 		
 		c.gridx= 6; 

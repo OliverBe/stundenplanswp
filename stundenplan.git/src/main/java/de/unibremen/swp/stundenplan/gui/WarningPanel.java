@@ -69,8 +69,8 @@ public final class WarningPanel extends JPanel{
 	     @Override
 	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	         
-             c.setBackground(new Color(245,110,110));
+	         c.setBackground(new Color(245,110,110));
+	         if(isSelected) c.setBackground(new Color(112,138,144));
 	         return c;
 	     }
 	}
