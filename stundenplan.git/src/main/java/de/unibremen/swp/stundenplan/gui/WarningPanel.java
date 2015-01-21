@@ -8,9 +8,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.TextComponent;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -31,27 +34,30 @@ public final class WarningPanel extends JPanel{
 	
 	
 	public String message="No Warning";
-	public TextField t=new TextField(300);
+	private JButton b=new JButton("Warnung loeschen");
 	
 	public WarningPanel(){
 		list.setCellRenderer(new SelectedListCellRenderer());
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBackground(new Color(143,188,143));
-		list.setPreferredSize(new Dimension(500,10));
-		listScroller.setPreferredSize(new Dimension(250, 200));
-		
-		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
-		c.anchor=GridBagConstraints.WEST;
+		GridBagConstraints c = new GridBagConstraints();
+		add(listScroller, c);
+		c.gridy=1;
 		c.fill=GridBagConstraints.HORIZONTAL;
-		c.gridwidth=2;
-		add(listScroller);
+		add(b, c);
+		b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				listModel.removeElement(list.getSelectedValue());
+			}
+		});
 	}
 	
-	public void setText(String pMessage) {
+	public static void setText(String pMessage) {
 		listModel.addElement(pMessage);
 	}
+	
 	
 	@SuppressWarnings("serial")
 	public class SelectedListCellRenderer extends DefaultListCellRenderer {

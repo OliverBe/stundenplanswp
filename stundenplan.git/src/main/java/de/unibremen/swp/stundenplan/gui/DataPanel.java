@@ -59,6 +59,7 @@ public class DataPanel extends JPanel {
 	private StundeninhaltPanel stundeninhaltPanel;
 	private RoomPanel roomPanel;
 	private BedarfPanel bedarfPanel;
+	private WarningPanel warningPanel = new WarningPanel();
 
 	public DataPanel() {
 		initComponents();
@@ -98,11 +99,10 @@ public class DataPanel extends JPanel {
 //		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.ipady=80;
-		c.gridheight = 2;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 0.05;
-		c.weighty = 1.0;
+//		c.weightx = 0.05;
+//		c.weighty = 0.5;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
@@ -118,6 +118,11 @@ public class DataPanel extends JPanel {
 		menuBar.add(mS);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
+		c.gridy=1;
+		c.ipady=0;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.anchor = GridBagConstraints.WEST;
+		add(warningPanel, c);
 
 		// klick auf mP
 		mP.addActionListener(new ActionListener() {
@@ -126,12 +131,11 @@ public class DataPanel extends JPanel {
 				personalPanel = new PersonalPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight=10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(personalPanel, c);
 
 				personalPanel.nameField.requestFocus();
@@ -149,12 +153,11 @@ public class DataPanel extends JPanel {
 				schoolclassPanel = new SchoolclassPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight=10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(schoolclassPanel, c);
 
 				JFrame frame = (JFrame) SwingUtilities
@@ -172,8 +175,9 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridwidth = 2;
+				c.gridheight=10;
 				c.weightx = 0.95;
+				c.weighty = 1;
 				add(stundeninhaltPanel, c);
 
 				if((JFrame) SwingUtilities
@@ -189,12 +193,11 @@ public class DataPanel extends JPanel {
 				roomPanel = new RoomPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight=10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(roomPanel, c);
 
 				JFrame frame = (JFrame) SwingUtilities
@@ -210,12 +213,11 @@ public class DataPanel extends JPanel {
 				raumfunktionPanel = new RaumfunktionPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight=10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(raumfunktionPanel, c);
 				JFrame frame = (JFrame) SwingUtilities
 						.getWindowAncestor(raumfunktionPanel);
@@ -230,12 +232,11 @@ public class DataPanel extends JPanel {
 				bedarfPanel = new BedarfPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight=10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(bedarfPanel, c);
 				JFrame frame = (JFrame) SwingUtilities
 						.getWindowAncestor(bedarfPanel);

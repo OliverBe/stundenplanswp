@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
+import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
 public class MindestestensEinLehrerException extends Exception {
 
@@ -27,7 +28,7 @@ public class MindestestensEinLehrerException extends Exception {
     
     public MindestestensEinLehrerException() {
         super();       
-        MainFrame.getWarning().setText("Sie müssen mindestens einen Lehrer im Team haben.");
+        WarningPanel.setText("Sie müssen mindestens einen Lehrer im Team haben.");
     }
 
 }
