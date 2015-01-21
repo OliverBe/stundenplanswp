@@ -127,11 +127,13 @@ public class WochenplanTag extends JPanel {
 				for(int k = 0; k < ppliste.size(); k++){
 					 personalName = ppliste.get(k).getName();
 					 int[]zeite = p.getTimesofPersonal(ppliste.get(k));	
+					 System.out.println("Starthour "+zeite[0]+ "Startminute "+zeite[1]+"endhour "+zeite[2]+"endminute "+zeite[3]);
 					 int starthour = zeite[0];
 					 int startminute = zeite[1];
-					 int endminute = zeite[2];
-					int endhour = zeite[3];
-						
+				
+					
+					 int endhour = zeite[2];
+				     int endminute = zeite[3];	
 					 
 					 
 					 
@@ -156,6 +158,7 @@ public class WochenplanTag extends JPanel {
 								TableColumn spalte = table.getColumnModel()
 										.getColumn(j);
 								spalte.setPreferredWidth(ausgabe.length() + 30);
+							
 							}
 							if (zweiteZeitTabStunde == endhour && zweiteZeitTabMinute >= endminute) {
 								System.out.println("zweiteZeitTabStunde: "+zweiteZeitTabStunde);

@@ -57,6 +57,11 @@ public class MenuBar extends JMenuBar {
 	private JScrollPane listScroller = new JScrollPane(list);
 
 	private JFrame f;
+	
+	private ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
+	private ImageIcon revertG = new ImageIcon(getClass().getResource("revertGRUEN.png"));
+
+	private JButton button1 = new JButton(revert);
 
 	public MenuBar(final JFrame frame) {
 		f = frame;
@@ -81,12 +86,8 @@ public class MenuBar extends JMenuBar {
 		add(data);
 		add(export);
 		add(Box.createHorizontalGlue());
-
-		ImageIcon revert = new ImageIcon(getClass().getResource("revert.png"));
-		ImageIcon revertG = new ImageIcon(getClass().getResource("revertGRUEN.png"));
-		JButton button1 = new JButton(revert);
+		
 		button1.setBorderPainted(false);
-		button1.setBorder(null);
 		button1.setMargin(new Insets(0, 0, 0, 0));
 		button1.setContentAreaFilled(false);
 		button1.setPressedIcon(revertG);
@@ -283,7 +284,7 @@ public class MenuBar extends JMenuBar {
 						ExportPDF.setOwner("");	
 					}
 					
-				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplï¿½nen, Raumbelegungsplï¿½nen, Lehreransicht und Wochenplanansicht mï¿½glich");
 
 			}
 		});
@@ -327,7 +328,7 @@ public class MenuBar extends JMenuBar {
 						ExportPDF.setOwner("");	
 					}
 					
-				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplï¿½nen, Raumbelegungsplï¿½nen, Lehreransicht und Wochenplanansicht mï¿½glich");
 
 
 			}
@@ -371,7 +372,7 @@ public class MenuBar extends JMenuBar {
 						ExportPDF.setOwner("");	
 					}
 					
-				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplï¿½nen, Raumbelegungsplï¿½nen, Lehreransicht und Wochenplanansicht mï¿½glich");
 
 
 			}
