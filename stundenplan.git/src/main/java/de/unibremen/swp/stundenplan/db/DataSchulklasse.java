@@ -171,6 +171,11 @@ public class DataSchulklasse {
 	
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
+			for(Schoolclass sc : getAllSchulklasse()) {
+				if(sc.getName().equals(newSchulklasse.getName())){ 
+					throw new SQLException("DB - ERROR Schulklasse already in Database");
+				}
+			}
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";

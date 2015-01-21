@@ -212,6 +212,11 @@ public class DataPersonal {
 	
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
 		try {
+			for(Personal pers : getAllPersonal()) {
+				if(pers.getKuerzel().equals(newPersonal.getKuerzel())){ 
+					throw new SQLException("DB - ERROR Personal already in Database");
+				}
+			}
 			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";

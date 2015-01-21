@@ -135,6 +135,11 @@ public class DataRaum {
 	
 	public static void editRaum(String pName, Room newRaum) {
 		try {
+			for(Room rm : getAllRaum()) {
+				if(rm.getName().equals(newRaum.getName())){ 
+					throw new SQLException("DB - ERROR Raum already in Database");
+				}
+			}
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM raum_Raumfunktion WHERE raum_name = '" + pName + "';";
@@ -149,6 +154,11 @@ public class DataRaum {
 	
 	public static void addRaumfunktion(Raumfunktion rf) {
 		try {
+			for(Raumfunktion rmf : getAllRaumfunktion()) {
+				if(rmf.getName().equals(rf.getName())){ 
+					throw new SQLException("DB - ERROR Raum already in Database");
+				}
+			}
 			for(int i=0;i<rf.getStundeninhalte().size();i++) {
 				sql = "INSERT INTO Raumfunktion "
 						+ "VALUES ('" + rf.getName() + "', '" + rf.getStundeninhalte().get(i) + "');";
@@ -223,6 +233,11 @@ public class DataRaum {
 		
 	public static void editRaumfunktion(String pName, Raumfunktion rf) {
 		try {
+			for(Raumfunktion rmf : getAllRaumfunktion()) {
+				if(rmf.getName().equals(rf.getName())){ 
+					throw new SQLException("DB - ERROR Raum already in Database");
+				}
+			}
 			sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE raum_Raumfunktion SET raumfunktion_name = '" + rf.getName() + "' WHERE raumfunktion_name = '" + pName + "';";

@@ -151,6 +151,11 @@ public class DataStundeninhalt {
 	
 	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {
 		try {
+			for(Stundeninhalt si : getAllStundeninhalte()) {
+				if(si.getKuerzel().equals(newStundeninhalt.getKuerzel())){ 
+					throw new SQLException("DB - ERROR Stundeninhalt already in Database");
+				}
+			}
 			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE moegliche_Stundeninhalte_Personal SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
