@@ -35,17 +35,17 @@ public final class WarningPanel extends JPanel{
 	
 	public WarningPanel(){
 		list.setCellRenderer(new SelectedListCellRenderer());
-	//	list.setLayoutOrientation(JList.VERTICAL);
+		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBackground(new Color(143,188,143));
-	//	list.setPreferredSize(new Dimension(500,10));
-	//	listScroller.setPreferredSize(new Dimension(250, 200));
+		list.setPreferredSize(new Dimension(500,10));
+		listScroller.setPreferredSize(new Dimension(250, 200));
 		
-//		GridBagConstraints c = new GridBagConstraints();
-//		setLayout(new GridBagLayout());
-//		c.anchor=GridBagConstraints.WEST;
-//		c.fill=GridBagConstraints.HORIZONTAL;
-//		c.gridwidth=2;
+		GridBagConstraints c = new GridBagConstraints();
+		setLayout(new GridBagLayout());
+		c.anchor=GridBagConstraints.WEST;
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.gridwidth=2;
 		add(listScroller);
 	}
 	

@@ -92,7 +92,7 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Einstellungen", paneConfig);
 		
 		setJMenuBar(menu);
-		add(tabpane);
+		add(tabpane, BorderLayout.PAGE_START);
 		add(paneWarning, BorderLayout.PAGE_END);
 		
 		tabpane.addChangeListener(new ChangeListener()
@@ -107,6 +107,14 @@ public class MainFrame extends JFrame {
 	/**
 	 * Checkt das ausgewählte Tab. Je nach Klasse des Tabs, führt es Updatemethoden
 	 * o.Ä. aus.
+	 * 
+	 * Im Falle des LehreransichtsPanels, prüft es zunächst, ob relevante Zielgroeßen verändert
+	 * wurden. Sind diese nicht verändert, ist kein Update noetig.
+	 * Außerdem wird überprüft, ob das letzte Command in der History ein Edit-Command ist, da
+	 * diese Commands keine unmittelbaren Änderungen an den Zielgroeßen bewirken, aber dennoch
+	 * Unterschiede ausmachen können (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
+	 * So wird verhindert, dass der Personaleinsatzplan immer weiter aktualisiert wird, obwohl der Plan
+	 * z.B. fertig ist und nicht mehr bearbeitet wird. Spart so dauerhaft Laufzeit, wenn Bearbeitung bereits abgeschlossen.
 	 */
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
