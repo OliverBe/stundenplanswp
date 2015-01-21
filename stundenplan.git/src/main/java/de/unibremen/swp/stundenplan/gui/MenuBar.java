@@ -274,7 +274,9 @@ public class MenuBar extends JMenuBar {
 				} else if (obj instanceof LehreransichtPanel) {
 					LehreransichtPanel panel = (LehreransichtPanel) obj;
 					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
 					ExportPDF.createPDF(eTable);
+					ExportPDF.setOwner("");
 				}
 
 			}
@@ -301,6 +303,13 @@ public class MenuBar extends JMenuBar {
 					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
 					eTable = panel.getTable();
 					ExportPDF.createCSV(eTable);
+				} else if (obj instanceof LehreransichtPanel) {
+					LehreransichtPanel panel = (LehreransichtPanel) obj;
+					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
+					ExportPDF.createCSV(eTable);
+					ExportPDF.setOwner("");
+					
 				}
 
 			}
@@ -327,6 +336,12 @@ public class MenuBar extends JMenuBar {
 					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
 					eTable = panel.getTable();
 					ExportPDF.createDOC(eTable);
+				} else if (obj instanceof LehreransichtPanel) {
+					LehreransichtPanel panel = (LehreransichtPanel) obj;
+					eTable = panel.getTable();
+					ExportPDF.setOwner("Personalplan");
+					ExportPDF.createDOC(eTable);
+					ExportPDF.setOwner("");
 				}
 
 			}

@@ -257,7 +257,10 @@ public class ExportPDF {
 	 * 
 	 * @param jTable
 	 */
-	private static void setOwnerAndFile(JTable jTable) {
+	public static void setOwnerAndFile(JTable jTable) {
+		if (planOwner != null && planOwner.equals("Personalplan")) {
+			FILE = path + "Personalplan";
+		} else {
 		Object owner = jTable.getModel();
 		if (owner instanceof TimetableModel) {
 			TimetableModel tm = (TimetableModel) owner;
@@ -275,9 +278,15 @@ public class ExportPDF {
 			}
 			FILE = path + "Stundenplan-" + owner.toString();
 			planOwner = owner.toString();
+		
 		} else {
 			FILE = path + "Stundenplan";
 			planOwner = "";
 		}
+		}
+	}
+	
+	public static void setOwner(String name) {
+		planOwner = name;
 	}
 }
