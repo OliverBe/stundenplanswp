@@ -297,6 +297,23 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 	
+	/**
+	 * TO-DO prueft ob Zeitpunkt nicht im PE befindet, im selben Tag.
+	 * 
+	 * @return
+	 */
+	public static boolean checkTimeInPE(final Planungseinheit p1,
+			final int hour, final int minute) {
+		if (hour < p1.getStartHour() && hour > p1.getEndhour()) {
+			return true;
+		}else if(hour== p1.getStartHour() && minute < p1.getStartminute()){
+				return true;
+		}else if(hour== p1.getEndhour() && minute > p1.getEndminute()){
+			return true;
+		}
+		return false;
+	}
+	
 	public static void checkPetimetest(){
 		Planungseinheit p1 = new Planungseinheit();
 		p1.setStarthour(9);

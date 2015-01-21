@@ -5,7 +5,7 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
-public class EditStundeninhalt implements Command {
+public class EditStundeninhalt implements Command, EditCommand {
 
 	private Stundeninhalt urspruenglich;
 	private Stundeninhalt bearbeitet;

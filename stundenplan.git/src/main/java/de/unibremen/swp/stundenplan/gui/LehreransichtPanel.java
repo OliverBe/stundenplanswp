@@ -35,7 +35,11 @@ public class LehreransichtPanel extends JPanel {
 
 	GridBagConstraints c = new GridBagConstraints();
 
-	ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
+	private ArrayList<Stundeninhalt> si;
+	private ArrayList<Planungseinheit> planungseinheiten;
+	private ArrayList<String> allPersoKuerzel;
+	
+	
 	public JLabel warning = new JLabel();
 
 	public LehreransichtPanel() {
@@ -58,16 +62,16 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
 
-		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
-				.getAllPlanungseinheit();
+		planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
 		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
-		ArrayList<String> allPersoKuerzel = PersonalManager.getAllKuerzel();
+		allPersoKuerzel = PersonalManager.getAllKuerzel();
 		Collections.sort(allPersoKuerzel);
 		for(int i = 0; i<allPersoKuerzel.size();i++){
 			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
 		}
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
-
+		si = DataStundeninhalt.getAllStundeninhalte();
+		
 		for (Stundeninhalt s : si) {
 			if (s.getRhythmustyp() == 0)
 				continue;
@@ -154,8 +158,8 @@ public class LehreransichtPanel extends JPanel {
 								ergebnisInStunden = Math
 										.round(((ergebnisInMinuten / 60) * 100));
 								ergebnisInStunden = ergebnisInStunden / 100;
-								reihe.add(k.getName() + ":  "
-										+ Double.toString(ergebnisInStunden));
+//								reihe.add(k.getName() + ":  "
+//										+ Double.toString(ergebnisInStunden));
 							}
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size()-1);
@@ -216,5 +220,21 @@ public class LehreransichtPanel extends JPanel {
 			pInhaltKlasseStunden.put(s.getKuerzel(), hash);
 		}
 		return pInhaltKlasseStunden;
+	}
+	
+	public JTable getTable() {
+		return table;
+	}
+	
+	public ArrayList<Stundeninhalt> getSi() {
+		return si;
+	}
+
+	public ArrayList<Planungseinheit> getPlanungseinheiten() {
+		return planungseinheiten;
+	}
+
+	public ArrayList<String> getAllPersoKuerzel() {
+		return allPersoKuerzel;
 	}
 }

@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 
-public class EditPersonal implements Command {
+public class EditPersonal implements Command, EditCommand {
 
 	private Personal urspruenglich;
 	private Personal bearbeitet;
