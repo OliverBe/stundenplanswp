@@ -97,6 +97,7 @@ public class PEedit extends JFrame {
 	private JLabel label = new JLabel(
 			"Hier koennen die Planungseinheiten bearbeitet werden");
 	private JButton button;
+	private Planungseinheit pe;
 	
 	
 
@@ -134,9 +135,10 @@ public class PEedit extends JFrame {
 	/**
 	 * erzeugt Editor fuer Erzeugung von einer Planungseinheit.
 	 */
-	public PEedit(final StundenplanPanel pParent, Planungseinheit p) {
+	public PEedit(final StundenplanPanel pParent, final int pPeid) {
 		super("Planungseinheiten bearbeiten");
 		parentframe = pParent;
+		pe = PlanungseinheitManager.getPlanungseinheitById(pPeid);
 		init();
 	}
 

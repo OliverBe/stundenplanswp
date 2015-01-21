@@ -184,7 +184,7 @@ public class Planungseinheit{
 	
 	public int[] getTimesofPersonal(final Personal pPerson){
 		if(pPerson == null ){new IllegalArgumentException("Argument must not be null");}
-		return personal.get(pPerson);
+		return personal.get(pPerson.getKuerzel());
 	}
 	
 	public boolean containsPersonal(final Personal pPerson){
@@ -197,6 +197,19 @@ public class Planungseinheit{
 		if(pWeekday == null){new IllegalArgumentException("Argument must not be null");}
 		if(day.getOrdinal()== pWeekday.getOrdinal()){return true;}
 		return false;
+	}
+	
+	/**
+	 * Methode nur von Planungseinheitmanager.getPEforPersonalAndWeekday zu nutzen
+	 * setzt die Zeiten der PE mit der Eingabe eines 4-elementigen Array.
+	 * @param time
+	 */
+	public void setTime(final int[] time){
+		if(time.length != 4){return;}
+		setStarthour(time[0]);
+		setStartminute(time[1]);
+		setEndhour(time[2]);
+		setEndminute(time[3]);
 	}
 	
 	public int getStartHour(){

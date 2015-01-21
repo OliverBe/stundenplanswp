@@ -50,6 +50,9 @@ public final class PlanungseinheitManager {
 		System.out.println("Planungseinheit ["+pl.getId()+"] edited.");
 	}
 	
+	public static Planungseinheit getPlanungseinheitById(final int pId){
+		return DataPlanungseinheit.getPlanungseinheitById(pId);
+	}
 	public static void deletePlanungseinheitFromDB(int planungseinheitId){
 		System.out.println("Deleting Planungseinheit ["+planungseinheitId+"] from DB...");
 		DeletePlanungseinheitFromDB deletePl = new DeletePlanungseinheitFromDB();
@@ -94,6 +97,7 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
 		for(Planungseinheit p : DataPlanungseinheit.getAllPlanungseinheitByWeekday(pWeekday)){
 			if(p.containsPersonal(pPerson)){
+				p.setTime(p.getTimesofPersonal(pPerson));
 				pes.add(p);
 				}
 		}
