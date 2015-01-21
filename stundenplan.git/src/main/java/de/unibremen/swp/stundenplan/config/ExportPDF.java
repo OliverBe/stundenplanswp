@@ -274,8 +274,9 @@ public class ExportPDF {
 	public static void setOwnerAndFile(JTable jTable) {
 		if (planOwner != null && planOwner.equals("Personalplan")) {
 			FILE = path + "Personalplan";
-		} else if (planOwner != null && planOwner.substring(0, 10).equals("Wochenplan")) {
+		} else if (planOwner != null && (planOwner.length() > 9 && planOwner.substring(0, 10).equals("Wochenplan"))) {
 			FILE = path + planOwner;
+			
 		} else {
 			Object owner = jTable.getModel();
 			if (owner instanceof TimetableModel) {

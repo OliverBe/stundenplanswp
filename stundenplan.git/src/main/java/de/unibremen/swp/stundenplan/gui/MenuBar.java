@@ -278,7 +278,7 @@ public class MenuBar extends JMenuBar {
 					if( obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						
-						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.setOwner("Wochenplan-" + wpT.day.toString());
 						ExportPDF.createPDF(wpT.getTable());
 						ExportPDF.setOwner("");	
 					}
@@ -322,7 +322,7 @@ public class MenuBar extends JMenuBar {
 					if( obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						
-						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.setOwner("Wochenplan-" + wpT.day.toString());
 						ExportPDF.createCSV(wpT.getTable());
 						ExportPDF.setOwner("");	
 					}
@@ -366,7 +366,7 @@ public class MenuBar extends JMenuBar {
 					if( obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						
-						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.setOwner("Wochenplan-" + wpT.day.toString());
 						ExportPDF.createDOC(wpT.getTable());
 						ExportPDF.setOwner("");	
 					}
