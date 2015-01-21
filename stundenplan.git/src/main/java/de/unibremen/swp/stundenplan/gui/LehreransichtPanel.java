@@ -67,7 +67,8 @@ public class LehreransichtPanel extends JPanel {
 			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
 		}
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
-
+		si = DataStundeninhalt.getAllStundeninhalte();
+		
 		for (Stundeninhalt s : si) {
 			if (s.getRhythmustyp() == 0)
 				continue;
@@ -154,8 +155,8 @@ public class LehreransichtPanel extends JPanel {
 								ergebnisInStunden = Math
 										.round(((ergebnisInMinuten / 60) * 100));
 								ergebnisInStunden = ergebnisInStunden / 100;
-								reihe.add(k.getName() + ":  "
-										+ Double.toString(ergebnisInStunden));
+//								reihe.add(k.getName() + ":  "
+//										+ Double.toString(ergebnisInStunden));
 							}
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size()-1);
