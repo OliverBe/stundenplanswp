@@ -52,9 +52,7 @@ public class WrongInputException extends Exception {
     
     public WrongInputException() {
         super();
-        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Eine ihrer Angaben ist nicht zulässig. "
-        		+ "Haben Sie vielleicht einen Buchstaben zu viel geschrieben "
-        		+ "oder eine Zeile leer gelassen?");
+        JOptionPane.showMessageDialog(Stundenplan.getMain(), "Eine ihrer Angaben ist nicht zulässig.");
         
     }
 
