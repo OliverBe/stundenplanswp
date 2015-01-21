@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
@@ -48,6 +49,7 @@ import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class PersonalPanel extends JPanel {
 
@@ -170,36 +172,46 @@ public class PersonalPanel extends JPanel {
 		model.addColumn("Von (min)");
 		model.addColumn("Bis (h)");
 		model.addColumn("Bis (min)");
+		
+		TableColumn column = null;
+		for (int i = 0; i < model.getColumnCount(); i++) {
+	        column = table.getColumnModel().getColumn(i);
+	        if (i == 0) {
+	            column.setPreferredWidth(100); 
+	        } else {
+	            column.setPreferredWidth(20);
+	        }
+	    } 
 
 		String sh;
 		String sm;
 		String eh;
 		String em;
 
-		if (Config.DAY_STARTTIME_HOUR < 10) {
-			sh = "0" + Config.DAY_STARTTIME_HOUR;
+		if (TimetableManager.startTimeHour() < 10) {
+			sh = "0" + TimetableManager.startTimeHour();
 		} else {
-			sh = "" + Config.DAY_STARTTIME_HOUR;
+			sh = "" + TimetableManager.startTimeHour();
 		}
-		;
-		if (Config.DAY_STARTTIME_MINUTE < 10) {
-			sm = "0" + Config.DAY_STARTTIME_MINUTE;
+		
+		if (TimetableManager.startTimeMinute() < 10) {
+			sm = "0" + TimetableManager.startTimeMinute();
 		} else {
-			sm = "" + Config.DAY_STARTTIME_MINUTE;
+			sm = "" + TimetableManager.startTimeMinute();
 		}
-		;
-		if (Config.DAY_ENDTIME_HOUR < 10) {
-			eh = "0" + Config.DAY_ENDTIME_HOUR;
+		
+		if (TimetableManager.endTimeHour() < 10) {
+			eh = "0" + TimetableManager.endTimeHour();
 		} else {
-			eh = "" + Config.DAY_ENDTIME_HOUR;
+			eh = "" + TimetableManager.endTimeHour();
 		}
-		;
-		if (Config.DAY_ENDTIME_MINUTE < 10) {
-			em = "0" + Config.DAY_ENDTIME_MINUTE;
+		
+		if (TimetableManager.endTimeMinute() < 10) {
+			em = "0" + TimetableManager.endTimeMinute();
 		} else {
-			em = "" + Config.DAY_ENDTIME_MINUTE;
+			em = "" + TimetableManager.endTimeMinute();
 		}
-		;
+		
 
 		final ArrayList<Weekday> wds = new ArrayList<Weekday>();
 
@@ -238,10 +250,16 @@ public class PersonalPanel extends JPanel {
 		p.add(table.getTableHeader(), c);
 		c.gridy = 6;
 		p.add(table, c);
-		c.gridy=7;
-		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
-
-		c.gridy = 8;
+		c.gridy=0;
+		c.gridx=5;
+		c.gridwidth=1;
+		c.gridheight=8;
+		c.fill = GridBagConstraints.VERTICAL;
+	//	c.anchor = GridBagConstraints.NORTH;
+		p.add(new JSeparator(SwingConstants.VERTICAL),c);
+		
+		c.gridx= 6; 
+		c.gridwidth=3;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
 		lSubjects.setFont(new Font(nameField.getFont().getFontName(),
@@ -249,9 +267,9 @@ public class PersonalPanel extends JPanel {
 		p.add(lSubjects, c);
 		
 		c.anchor = GridBagConstraints.WEST;
-		c.fill=GridBagConstraints.HORIZONTAL;
-		c.gridheight = 2;
-		c.gridy=9;
+		c.fill=GridBagConstraints.BOTH;
+		c.gridheight = 7;
+		c.gridy=1;
 		final CheckBoxList checkList = new CheckBoxList();
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 
@@ -264,8 +282,8 @@ public class PersonalPanel extends JPanel {
 		p.add(checkList, c);
 		
 		c.gridx = 0;
-		c.gridy = 11;
-		c.gridwidth = 5;
+		c.gridy = 7;
+		c.gridwidth = 9;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button, c);
 
