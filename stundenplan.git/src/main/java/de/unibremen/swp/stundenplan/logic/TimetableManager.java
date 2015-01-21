@@ -303,7 +303,7 @@ public final class TimetableManager {
     }
 
     /**
-     * Gibt eine Zeichenkette zur Anzeige in der UI für die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
+     * Gibt eine Zeichenkette zur Anzeige in der GUI für die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
      * befindet sich an Position 0.
      * 
      * @param position
