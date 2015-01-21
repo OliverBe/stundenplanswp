@@ -1,5 +1,6 @@
 package de.unibremen.swp.stundenplan.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -39,12 +40,8 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 
+@SuppressWarnings("serial")
 public class DataPanel extends JPanel {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	private JMenuBar menuBar = new JMenuBar();
 
@@ -98,11 +95,14 @@ public class DataPanel extends JPanel {
 		final GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 5, 5, 5);
 
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
+//		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.ipady=80;
 		c.gridheight = 2;
 		c.gridx = 0;
 		c.gridy = 0;
+		c.weightx = 0.05;
+		c.weighty = 1.0;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
@@ -170,12 +170,10 @@ public class DataPanel extends JPanel {
 				stundeninhaltPanel = new StundeninhaltPanel();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridwidth = 2;
+				c.weightx = 0.95;
 				add(stundeninhaltPanel, c);
 
 				if((JFrame) SwingUtilities

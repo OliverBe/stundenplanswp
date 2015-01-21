@@ -3,14 +3,6 @@
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -18,7 +10,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.unibremen.swp.stundenplan.command.CommandHistory;
-import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
+import de.unibremen.swp.stundenplan.db.DataPersonal;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 /**
  * Hauptfenster des Stundenplans
@@ -98,7 +92,7 @@ public class MainFrame extends JFrame {
 		tabpane.addTab("Einstellungen", paneConfig);
 		
 		setJMenuBar(menu);
-		add(tabpane);
+		add(tabpane, BorderLayout.PAGE_START);
 		add(paneWarning, BorderLayout.PAGE_END);
 		
 		tabpane.addChangeListener(new ChangeListener()
@@ -117,9 +111,15 @@ public class MainFrame extends JFrame {
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
 		if(c instanceof LehreransichtPanel){
-			paneLehrer.removeAll();
-			paneLehrer.init();
-			System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
+			if(   paneLehrer.getSi().size() != DataStundeninhalt.getAllStundeninhalte().size()
+			   || paneLehrer.getAllPersoKuerzel().size() != DataPersonal.getAllAcronymsFromPersonal().size()
+			   || paneLehrer.getPlanungseinheiten().size() != DataPlanungseinheit.getAllPlanungseinheit().size()
+			   || CommandHistory.isLastEditCommand()) {
+				
+					paneLehrer.removeAll();
+					paneLehrer.init();
+					System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
+			}
 		};
 		if(c instanceof DataPanel){
 			SchoolclassPanel.updateList();
