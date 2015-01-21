@@ -87,18 +87,51 @@ public class DataStundeninhalt {
 		try {
 			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if(!rs.next() && DeleteException.delete("Der Stundeninhalt kann von einem oder mehreren Lehrern ausgeführt werden./n Soll der Stundeninhalt trotzdem gelöscht werden?")) {
-				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
-				rs = stmt.executeQuery(sql);
-				if(rs.next()) {
-					if(DeleteException.delete("Der Stundeninhalt ist in einer Planungseinheit eingetragen./n Soll der Stundeninhalt trotzdem gelöscht werden?")) {
-						deleteSQL(pKuerzel);
-					}
-				}
-			}
+			if(rs.next()) {
+				boolean yes = DeleteException.delete("Der Stundeninhalt kann von einem oder mehreren Lehrern ausgeführt werden.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
+				if(yes) delete0(pKuerzel);
+			}else delete0(pKuerzel);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void delete0(String pKuerzel) throws SQLException {
+		sql = "SELECT * FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			boolean yes = DeleteException.delete("Der Stundeninhalt ist in einer Raumfunktion eingetragen.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
+			if (yes) {
+				ArrayList<String> rfNames = new ArrayList<String>();
+				do {
+					String rfName = rs.getString("raumfunktion_name");
+					rfNames.add(rfName);
+				}while (rs.next());
+				delete1(pKuerzel, rfNames);
+			}
+		}else delete1(pKuerzel, new ArrayList<String>());
+	}
+	
+	private static void delete1(String pKuerzel, ArrayList<String> rfNames) throws SQLException {
+		sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			boolean yes = DeleteException.delete("Der Stundeninhalt ist in einer Planungseinheit eingetragen.\nSoll der Stundeninhalt trotzdem gelöscht werden?");
+			if(yes) {
+				ArrayList<Integer> pIds = new ArrayList<Integer>();
+				do {
+					int pId = rs.getInt("planungseinheit_id");
+					pIds.add(pId);
+				}while (rs.next());
+				deleteSQL(pKuerzel);
+				for(int pId : pIds) {
+					DataPlanungseinheit.deleteIfEmpty(pId);
+				}
+				for(String rfName : rfNames) {
+					DataRaum.deleteRfIfEmtpy(rfName);
+				}
+			}
+		}else deleteSQL(pKuerzel);
 	}
 	
 	private static void deleteSQL(String pKuerzel) throws SQLException {

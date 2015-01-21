@@ -35,6 +35,10 @@ public class DataPlanungseinheit {
 						+ entry.getValue()[2] + ","
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
+				sql = "UPDATE Personal SET istZeit = istZeit + " 
+						+ ((entry.getValue()[2] - entry.getValue()[0])*60 + (entry.getValue()[3] - entry.getValue()[1])) 
+						+ " WHERE kuerzel = '" + entry.getKey() + "';";
+				stmt.executeUpdate(sql);
 			}
 			for(String kuerzel : planungseinheit.getStundeninhalte()) {
 				sql = "INSERT INTO planungseinheit_Stundeninhalt "
@@ -208,6 +212,21 @@ public class DataPlanungseinheit {
 	
 	public static void deletePlanungseinheitById(int id) {
 		try {
+			sql = "SELECT * FROM Planungseinheit WHERE id = " + id + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			int startHour = rs.getInt("startHour");
+			int startMin = rs.getInt("startMin");
+			int endHour = rs.getInt("endHour");
+			int endMin = rs.getInt("endMin");
+			int dif = (endHour - startHour)*60 + (endMin - startMin);
+			sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String personal_kuerzel = rs.getString("personal_kuerzel");
+				sql = "UPDATE Personal SET istZeit = istZeit - " + dif + " WHERE kuerzel = '" + personal_kuerzel + "';";
+				stmt.executeUpdate(sql);
+			}
 			sql = "DELETE FROM Planungseinheit WHERE id = " + id + ";";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
@@ -226,5 +245,27 @@ public class DataPlanungseinheit {
 	public static void editPlanungseinheit(int iD, Planungseinheit planungseinheit) {
 			deletePlanungseinheitById(iD);
 			addPlanungseinheit(planungseinheit);
+	}
+	
+	protected static void deleteIfEmpty(int id) {
+		try {
+			sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next()) {
+				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE planungseinheit_id = " + id + ";";
+				rs = stmt.executeQuery(sql);
+				if(!rs.next()) {
+					sql = "SELECT * FROM planungseinheit_Schulklasse WHERE planungseinheit_id = " + id + ";";
+					rs = stmt.executeQuery(sql);
+					if(!rs.next()) {
+						sql = "SELECT * FROM planungseinheit_Raum WHERE planungseinheit_id = " + id + ";";
+						rs = stmt.executeQuery(sql);
+						if(!rs.next()) deletePlanungseinheitById(id);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
