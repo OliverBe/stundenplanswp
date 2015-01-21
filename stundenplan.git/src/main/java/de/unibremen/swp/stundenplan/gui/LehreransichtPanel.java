@@ -2,15 +2,10 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,8 +30,8 @@ public class LehreransichtPanel extends JPanel {
 
 	private JTable table;
 
-	private JFileChooser chooser = new JFileChooser();
-	private JFrame f;
+//	private JFileChooser chooser = new JFileChooser();
+//	private JFrame f;
 
 	GridBagConstraints c = new GridBagConstraints();
 
@@ -65,8 +60,12 @@ public class LehreransichtPanel extends JPanel {
 
 		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
 				.getAllPlanungseinheit();
-		ArrayList<Personal> allPersonal = PersonalManager
-				.getAllPersonalFromDB();
+		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
+		ArrayList<String> allPersoKuerzel = PersonalManager.getAllKuerzel();
+		Collections.sort(allPersoKuerzel);
+		for(int i = 0; i<allPersoKuerzel.size();i++){
+			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
+		}
 		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 
 		for (Stundeninhalt s : si) {
@@ -140,52 +139,42 @@ public class LehreransichtPanel extends JPanel {
 							System.out.println("Anzahl Klassen in Zelle: "+anzahlKlassenInZelle);
 
 							// Unterscheidung von Lehrer und Pï¿½dagoge
+							double ergebnisInStunden=0;
+							double ergebnisInMinuten=0;
 							if (p.isLehrer()) {
-								System.out.println("s ist: " + s.getKuerzel()
-										+ "\nin inhaltKlasseStundenPerso ist: "
-										+ inhaltKlasseStundenPerso.toString());
-								System.out.println("Stundeninhalt ist: "
-										+ inhaltKlasseStundenPerso.get(s
-												.getKuerzel()));
-								System.out.println("Gefundener Wert für "
-										+ k.getName()
-										+ ": "
-										+ inhaltKlasseStundenPerso.get(
-												s.getKuerzel())
-												.get(k.getName()));
-								double ergebnisInMinuten = (inhaltKlasseStundenPerso
+								ergebnisInMinuten = (inhaltKlasseStundenPerso
 										.get(s.getKuerzel()).get(k.getName()));
-								double ergebnisInStunden = Math
+								ergebnisInStunden = Math
 										.round(((ergebnisInMinuten / 45) * 100));
 								ergebnisInStunden = ergebnisInStunden / 100;
-								if (anzahlKlassenInZelle > 1) {
-									String teilString = reihe.get(reihe.size()-1);
-									System.out.println("StringBuilder nimmt: "+reihe.get(reihe.size()-1));
-									StringBuilder builder = new StringBuilder(
-											teilString);
-									builder.append("  ||  " +k.getName()
-											+ ": "
-											+ Double.toString(ergebnisInStunden));
-									reihe.remove(reihe.size()-1);
-									reihe.add(builder.toString());
-									System.out.println(reihe.toString());
-								} else {
-									reihe.add(k.getName()
-											+ ": "
-											+ Double.toString(ergebnisInStunden));
-									System.out.println("Reihe erster Durchlauf: "+reihe.toString());
-								}
+								
 							} else {
-								double ergebnisInMinuten = (inhaltKlasseStundenPerso
+								ergebnisInMinuten = (inhaltKlasseStundenPerso
 										.get(s.getKuerzel()).get(k.getName()));
-								double ergebnisInStunden = Math
+								ergebnisInStunden = Math
 										.round(((ergebnisInMinuten / 60) * 100));
 								ergebnisInStunden = ergebnisInStunden / 100;
 								reihe.add(k.getName() + ":  "
 										+ Double.toString(ergebnisInStunden));
 							}
+							if (anzahlKlassenInZelle > 1) {
+								String teilString = reihe.get(reihe.size()-1);
+								reihe.remove(reihe.size()-1);
+								reihe.add(teilString+ "<br>"+k.getName()+": "+Double.toString(ergebnisInStunden));
+								System.out.println(reihe.toString());
+							} else {
+								reihe.add("<html><body><center>"+k.getName()
+										+ ": "
+										+ Double.toString(ergebnisInStunden));
+								System.out.println("Reihe erster Durchlauf: "+reihe.toString());
+							}
 						}
 					}
+				}
+				String substring = reihe.get(reihe.size()-1);
+				if(!substring.equals("-")){
+					reihe.remove(reihe.size()-1);
+					reihe.add(substring+"</center></body></html>");
 				}
 			}
 			System.out.println("REIHE VOR EINFUEGEN: "+reihe.toString());
@@ -207,11 +196,13 @@ public class LehreransichtPanel extends JPanel {
 					reihe.add("-");
 				}
 				model.addRow(reihe.toArray());
+
 			}
 		}
 
 		table.setRowSelectionAllowed(true);
-		table.setRowHeight(40);
+		table.setEnabled(false);
+		table.setRowHeight(60);
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
 	}

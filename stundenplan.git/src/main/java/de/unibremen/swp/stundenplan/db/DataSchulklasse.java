@@ -141,7 +141,17 @@ public class DataSchulklasse {
 			ResultSet rs = stmt.executeQuery(sql);
 			if(rs.next()) {
 				boolean yes = DeleteException.delete("Die Schulklasse ist in einer Planungseinheit eingetragen.\nSoll die Schulklasse trotzdem gelöscht werden?");
-				if(yes) deleteSQL(pName);
+				if(yes) {
+					ArrayList<Integer> pIds = new ArrayList<Integer>();
+					do {
+						int pId = rs.getInt("planungseinheit_id");
+						pIds.add(pId);
+					}while (rs.next());
+					deleteSQL(pName);
+					for(int pId : pIds) {
+						DataPlanungseinheit.deleteIfEmpty(pId);
+					}
+				}
 			}else deleteSQL(pName);
 		} catch (SQLException e) {
 			e.printStackTrace();

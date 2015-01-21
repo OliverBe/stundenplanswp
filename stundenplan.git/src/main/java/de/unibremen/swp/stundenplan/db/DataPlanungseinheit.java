@@ -246,4 +246,26 @@ public class DataPlanungseinheit {
 			deletePlanungseinheitById(iD);
 			addPlanungseinheit(planungseinheit);
 	}
+	
+	protected static void deleteIfEmpty(int id) {
+		try {
+			sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next()) {
+				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE planungseinheit_id = " + id + ";";
+				rs = stmt.executeQuery(sql);
+				if(!rs.next()) {
+					sql = "SELECT * FROM planungseinheit_Schulklasse WHERE planungseinheit_id = " + id + ";";
+					rs = stmt.executeQuery(sql);
+					if(!rs.next()) {
+						sql = "SELECT * FROM planungseinheit_Raum WHERE planungseinheit_id = " + id + ";";
+						rs = stmt.executeQuery(sql);
+						if(!rs.next()) deletePlanungseinheitById(id);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

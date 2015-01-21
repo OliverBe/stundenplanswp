@@ -17,7 +17,6 @@ public class DeleteException extends Exception {
 	
 	public static boolean delete(final String message) {
 		int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), message, "Warnung", JOptionPane.YES_NO_OPTION);
-		System.out.println("DELETEEXCEPTION");
 		return result == JOptionPane.YES_OPTION;
 	}
 }
