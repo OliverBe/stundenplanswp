@@ -78,7 +78,7 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String sc : schulklassen){
 			sb.append(sc);
-			sb.append(" ,");
+			sb.append(";");
 		}
 		return sb.toString();
 	}
@@ -87,7 +87,7 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String r : raeume){
 			sb.append(r);
-			sb.append(" ,");
+			sb.append(";");
 		}
 		return sb.toString();
 	}
@@ -96,7 +96,7 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String kuerzel : personal.keySet()){
 			sb.append(kuerzel);
-			sb.append(" ,");
+			sb.append(";");
 		}
 		return sb.toString();
 	}
@@ -105,7 +105,7 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String si : stundeninhalte){
 			sb.append(si);
-			sb.append(" ,");
+			sb.append(";");
 		}
 		return sb.toString();
 	}
