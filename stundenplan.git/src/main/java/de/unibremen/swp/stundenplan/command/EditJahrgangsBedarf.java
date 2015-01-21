@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
-public class EditJahrgangsBedarf implements Command {
+public class EditJahrgangsBedarf implements Command, EditCommand {
 
 	private Jahrgang urspruenglich;
 	private Jahrgang bearbeitet;

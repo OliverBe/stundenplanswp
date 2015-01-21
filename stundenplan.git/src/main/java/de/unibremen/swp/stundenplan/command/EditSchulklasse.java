@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
-public class EditSchulklasse implements Command {
+public class EditSchulklasse implements Command, EditCommand {
 
 	private Schoolclass urspruenglich;
 	private Schoolclass bearbeitet;

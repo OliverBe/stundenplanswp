@@ -35,7 +35,11 @@ public class LehreransichtPanel extends JPanel {
 
 	GridBagConstraints c = new GridBagConstraints();
 
-	ArrayList<Stundeninhalt> si = DataStundeninhalt.getAllStundeninhalte();
+	private ArrayList<Stundeninhalt> si;
+	private ArrayList<Planungseinheit> planungseinheiten;
+	private ArrayList<String> allPersoKuerzel;
+	
+	
 	public JLabel warning = new JLabel();
 
 	public LehreransichtPanel() {
@@ -58,10 +62,9 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
 
-		ArrayList<Planungseinheit> planungseinheiten = DataPlanungseinheit
-				.getAllPlanungseinheit();
+		planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
 		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
-		ArrayList<String> allPersoKuerzel = PersonalManager.getAllKuerzel();
+		allPersoKuerzel = PersonalManager.getAllKuerzel();
 		Collections.sort(allPersoKuerzel);
 		for(int i = 0; i<allPersoKuerzel.size();i++){
 			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
@@ -221,5 +224,17 @@ public class LehreransichtPanel extends JPanel {
 	
 	public JTable getTable() {
 		return table;
+	}
+	
+	public ArrayList<Stundeninhalt> getSi() {
+		return si;
+	}
+
+	public ArrayList<Planungseinheit> getPlanungseinheiten() {
+		return planungseinheiten;
+	}
+
+	public ArrayList<String> getAllPersoKuerzel() {
+		return allPersoKuerzel;
 	}
 }

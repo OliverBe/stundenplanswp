@@ -3,7 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 
-public class EditPlanungseinheit implements Command {
+public class EditPlanungseinheit implements Command, EditCommand {
 
 	private Planungseinheit urspruenglich;
 	private Planungseinheit bearbeitet;

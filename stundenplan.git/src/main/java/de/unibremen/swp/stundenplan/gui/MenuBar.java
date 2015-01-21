@@ -102,8 +102,8 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					CommandHistory.getLast().undo();
-					CommandHistory.deleteLast();
 					((MainFrame) f).checkSelectedTab();
+					CommandHistory.deleteLast();
 				} catch (StundenplanException e) {
 					System.out
 							.println("[COMMANDHISTORY]: Keine Befehle in History.");
