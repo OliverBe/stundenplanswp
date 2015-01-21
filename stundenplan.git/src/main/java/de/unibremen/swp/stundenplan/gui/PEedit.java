@@ -231,6 +231,11 @@ public class PEedit extends JFrame {
 							"Startzeit muss frueher als Endzeit sein");
 					return;
 				}
+				if(p.getEndhour() == TimetableManager.endTimeHour() && p.getEndminute()>TimetableManager.endTimeMinute()){
+					JOptionPane.showMessageDialog(null,
+							"Der Tag ist leider um "+p.getEndhour()+":"+p.getEndminute()+" schon zu Ende.");
+					return;
+				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
 				Iterator it = pList.destinationIterator();
 				ArrayList<Personal> listp = new ArrayList<Personal>();
