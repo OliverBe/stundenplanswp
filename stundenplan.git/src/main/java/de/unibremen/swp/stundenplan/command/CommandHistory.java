@@ -53,8 +53,8 @@ public class CommandHistory {
 	 */
 	public static void deleteLast(){
 		try{
-			if(getLast() instanceof EditCommand) lastIsEditCommand = true;
 			commandHistory.remove(CommandHistory.getLast());
+			if(commandHistory.size()>0) if(getLast() instanceof EditCommand) lastIsEditCommand = true;
 		}catch(StundenplanException n){
 			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
 		}
