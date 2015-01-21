@@ -32,6 +32,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener{
 	private JSpinner[] ehspinner;
 	private JSpinner[] smspinner;
 	private JSpinner[] emspinner;
+	private boolean saved = false;
 	
 	public PersonalTimePEDialog(final JFrame parent,final ArrayList<Personal> perList, final Planungseinheit pPE){
 		super(parent, "Zeiten einzelner Personal im Planungseinheit",true);
@@ -100,9 +101,13 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener{
 			i++;
 		}
 		PlanungseinheitManager.addPlanungseinheitToDB(pe);
+		saved=true;
 		dispose();
 	}
 	
+	public boolean getsaved(){
+		return saved;
+	}
 	private String[] giveLabelforPersonal(){
 		String[] labels = new String[pList.size()];
 		int i = 0;

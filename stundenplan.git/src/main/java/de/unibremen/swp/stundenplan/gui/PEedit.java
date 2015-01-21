@@ -292,10 +292,13 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
-				JDialog pdialog = new PersonalTimePEDialog(getmyFrame(),listp, p);
-				
+				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(getmyFrame(),listp, p);
+				if(pdialog.getsaved()){
 				parentframe.updatetable();
 				dispose();
+				}else{
+					return;
+				}
 			}
 		});
 		getContentPane().add(label);
