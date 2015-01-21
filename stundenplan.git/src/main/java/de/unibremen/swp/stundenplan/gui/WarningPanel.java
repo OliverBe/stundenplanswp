@@ -46,7 +46,7 @@ public final class WarningPanel extends JPanel{
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		list.setFocusable(false);
-		listScroller.setPreferredSize(new Dimension(250,400));
+		listScroller.setPreferredSize(new Dimension(160,330));
 		list.setSize(100,500);
 		add(listScroller, c);
 		c.gridy=1;

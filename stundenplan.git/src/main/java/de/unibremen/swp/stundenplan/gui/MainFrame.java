@@ -61,11 +61,6 @@ public class MainFrame extends JFrame {
 	 * Panel zur Anzeige des Wochenplans
 	 */
 	private WochenplanPanel paneWochen = new WochenplanPanel();
-	
-	/**
-	 * Panel fuer die Warnungen
-	 */
-//	private static WarningPanel paneWarning = new WarningPanel();
 
 	/**
 	 * Konstruktor fuers Hauptfenster
