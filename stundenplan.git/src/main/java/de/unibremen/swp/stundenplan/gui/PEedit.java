@@ -1,16 +1,16 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +21,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 
-import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
@@ -86,6 +85,20 @@ public class PEedit extends JFrame {
 		}
 
 	};
+	
+	private JLabel lLabel1 = new JLabel("Startzeit : Stunde - Minute");
+	private JLabel lLabel2 = new JLabel("Endzeit  : Stunde - Minute");
+	private JPanel starttime;
+	private JPanel endtime;
+	private DualListBox pList;
+	private DualListBox sIList;
+	private DualListBox scList;
+	private DualListBox roomList;
+	private JLabel label = new JLabel(
+			"Hier koennen die Planungseinheiten bearbeitet werden");
+	private JButton button;
+	
+	
 
 	// /**
 	// * Launch the application.
@@ -110,19 +123,32 @@ public class PEedit extends JFrame {
 	// }
 
 	/**
-	 * Create the frame.
+	 * erzeugt Editor fuer ERzeugung von einer Planungseinheit.
 	 */
 	public PEedit(final StundenplanPanel pParent) {
 		super("Planungseinheiten bearbeiten");
 		parentframe = pParent;
+		init();
+	}
+	
+	/**
+	 * erzeugt Editor fuer Erzeugung von einer Planungseinheit.
+	 */
+	public PEedit(final StundenplanPanel pParent, Planungseinheit p) {
+		super("Planungseinheiten bearbeiten");
+		parentframe = pParent;
+		init();
+	}
+
+
+
+	private void init() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new SpringLayout());
-		JLabel lLabel1 = new JLabel("Startzeit : Stunde - Minute");
 		getContentPane().add(lLabel1);
-		JLabel lLabel2 = new JLabel("Endzeit  : Stunde - Minute");
 		getContentPane().add(lLabel2);
-		JPanel starttime = new JPanel();
-		JPanel endtime = new JPanel();
+		starttime = new JPanel();
+		endtime = new JPanel();
 		SpinnerModel hourmodel = new SpinnerNumberModel(
 				TimetableManager.startTimeHour(),
 				TimetableManager.startTimeHour(),
@@ -155,27 +181,25 @@ public class PEedit extends JFrame {
 		tf.setEditable(false);
 		getContentPane().add(starttime);
 		getContentPane().add(endtime);
-		final DualListBox pList = new DualListBox("Alle Lehrer",
+		pList = new DualListBox("Alle Lehrer",
 				" Lehrer im Planungseinheit", PersonalComparator);
 		pList.addSourceElements(DataPersonal.getAllPersonal().toArray());
 		getContentPane().add(pList);
-		final DualListBox sIList = new DualListBox(
+		sIList = new DualListBox(
 				"Verfuegbare Stundeninhalte",
 				" Stundeninhalte im Planungseinheit", SIComparator);
 		sIList.addSourceElements(DataStundeninhalt.getAllStundeninhalte()
 				.toArray());
 		getContentPane().add(sIList);
-		final DualListBox scList = new DualListBox("Alle Klassen",
+		scList = new DualListBox("Alle Klassen",
 				" Klassen im Planungseinheit", SCComparator);
 		scList.addSourceElements(DataSchulklasse.getAllSchulklasse().toArray());
 		getContentPane().add(scList);
-		final DualListBox roomList = new DualListBox("Alle Raeume",
+		roomList = new DualListBox("Alle Raeume",
 				" Raeume im Planungseinheit", RoomComparator);
 		roomList.addSourceElements(DataRaum.getAllRaum().toArray());
 		getContentPane().add(roomList);
-		JLabel label = new JLabel(
-				"Hier koennen die Planungseinheiten bearbeitet werden");
-		JButton button = new JButton("Planungseinheiten speichern");
+		button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if (pList.getDestsize() == 0 || scList.getDestsize() == 0
@@ -209,6 +233,7 @@ public class PEedit extends JFrame {
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
 				Iterator it = pList.destinationIterator();
+				ArrayList<Personal> listp = new ArrayList<Personal>();
 				while (it.hasNext()) {
 					Personal pr = (Personal) it.next();
 					if (PlanungseinheitManager.checkPersonPE(pr,
@@ -222,7 +247,7 @@ public class PEedit extends JFrame {
 										+ " ist schon zu dieser Zeit gebucht");
 						return;
 					} else {
-						p.addPersonal(pr, new int[] { 8, 30, 15, 0 });
+						listp.add(pr);
 					}
 				}
 				it = sIList.destinationIterator();
@@ -262,7 +287,8 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
-				PlanungseinheitManager.addPlanungseinheitToDB(p);
+				JDialog pdialog = new PersonalTimePEDialog(getmyFrame(),listp, p);
+				
 				parentframe.updatetable();
 				dispose();
 			}
@@ -273,5 +299,9 @@ public class PEedit extends JFrame {
 				6, 6, // initX, initY
 				6, 6); // xPad, yPad
 		setSize(1000, 700);
+	}
+	
+	private JFrame getmyFrame(){
+		return this;
 	}
 }
