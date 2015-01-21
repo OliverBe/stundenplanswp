@@ -29,6 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
@@ -315,6 +316,7 @@ public class StundeninhaltPanel extends JPanel {
 	private boolean check(final JPanel p) {
 		if (textFieldsEmpty(p))
 			return false;
+		if (kuerzField.getText().length()>Data.MAX_KUERZEL_LEN) return false;
 		try {
 			for(Component c : p.getComponents()){
 				if(c==timeField)Integer.parseInt(timeField.getText());
