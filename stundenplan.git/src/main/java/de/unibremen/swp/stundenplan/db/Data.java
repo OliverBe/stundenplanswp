@@ -1,7 +1,12 @@
 package de.unibremen.swp.stundenplan.db;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.sql.*;
 
+import javax.swing.JOptionPane;
+
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.config.*;
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
@@ -9,11 +14,13 @@ public class Data {
 	private static Connection c = null;
     protected static Statement stmt = null;
     private static String sql;
+    private static boolean saved = false;
+    private static String lastRestoredFileName = null;
     
 	public static void start() {
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
-	    	c = DriverManager.getConnection("jdbc:sqlite:" + Config.DATABASE_UNIT_NAME_DEFAULT + ".db");
+	    	c = DriverManager.getConnection("jdbc:sqlite:temp.db");
 		    System.out.println("DB - Opened database successfully");
 		    
 	    	stmt = c.createStatement();
@@ -182,6 +189,24 @@ public class Data {
 	
 	public static void backup(String backupName) {
 		try {
+			File dir = new File(System.getProperty("user.dir"));
+			File[] files = dir.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String filename) {
+					return filename.endsWith(".db");
+				}
+			});
+			for (File file : files) {
+				if((backupName + ".db").equals(file.getName())) {
+					int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Die Datei existiert bereits.\nSoll die Datei überschrieben werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+					if(result == JOptionPane.YES_OPTION) {
+						if(file.delete()) {
+							stmt.executeUpdate("backup to " + backupName + ".db");
+							System.out.println("DB - database replaced");
+						}else System.out.println("DB - ERROR on deleting database");
+					}
+					return;
+				}
+			}
 			stmt.executeUpdate("backup to " + backupName + ".db");
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
@@ -192,6 +217,7 @@ public class Data {
 	public static void restore(String backupName) {
 		try {
 			stmt.executeUpdate("restore from " + backupName);
+			lastRestoredFileName = backupName;
 			System.out.println("DB - successful restored");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on restoring from backup");

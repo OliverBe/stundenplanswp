@@ -115,11 +115,6 @@ public final class Config {
     public static final String BACKUPINTERVALL_STRING = "backupintervall";
 
     /**
-     * Default-Wer für den Namen der Datenbankeinheit.
-     */
-    public static final String DATABASE_UNIT_NAME_DEFAULT = "stundenplan";
-
-    /**
      * Der Dateiname der Konfigurationsdatei.
      */
     private static final String PROPERTIES_FILE_NAME = "stundenplan.properties";
