@@ -7,14 +7,14 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.config.*;
+
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
 	public final static int MAX_NORMAL_STRING_LEN = 20;
 	private static Connection c = null;
     protected static Statement stmt = null;
     private static String sql;
-    private static boolean saved = false;
+    private static boolean saved = true;
     private static String lastRestoredFileName = null;
     
 	public static void start() {
@@ -208,6 +208,7 @@ public class Data {
 				}
 			}
 			stmt.executeUpdate("backup to " + backupName + ".db");
+			setSaved(true);
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on creating backup");
@@ -217,10 +218,27 @@ public class Data {
 	public static void restore(String backupName) {
 		try {
 			stmt.executeUpdate("restore from " + backupName);
-			lastRestoredFileName = backupName;
+			setLastRestoredFileName(backupName);
+			setSaved(true);
 			System.out.println("DB - successful restored");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on restoring from backup");
 		}
+	}
+	
+	public static boolean isSaved() {
+		return saved;
+	}
+	
+	public static void setSaved(boolean pSaved) {
+		saved = pSaved;
+	}
+
+	public static String getLastRestoredFileName() {
+		return lastRestoredFileName;
+	}
+
+	public static void setLastRestoredFileName(String lastRestoredFileName) {
+		Data.lastRestoredFileName = lastRestoredFileName;
 	}
 }

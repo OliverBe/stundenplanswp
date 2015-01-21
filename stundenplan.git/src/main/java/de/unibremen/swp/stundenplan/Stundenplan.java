@@ -22,18 +22,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
-import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
-import de.unibremen.swp.stundenplan.logic.TimetableManager;
 /**
  * Hauptklasse für den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
  * und die GUI und zeigt dann das Hauptfenster an.

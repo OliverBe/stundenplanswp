@@ -1,15 +1,31 @@
  package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FilenameFilter;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
@@ -33,7 +49,7 @@ public class MainFrame extends JFrame {
 	private static JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
 
 	/**
-	 * Panel zum Hinzufügen, Editieren, Loeschen von Daten aus der DB
+	 * Panel zum Hinzufï¿½gen, Editieren, Loeschen von Daten aus der DB
 	 */
 	private DataPanel paneData = new DataPanel();
 	
@@ -76,7 +92,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	/**
-	 * Auslagerung der hinzuzufügenden Panels in diese Methode
+	 * Auslagerung der hinzuzufï¿½genden Panels in diese Methode
 	 */
 	private void init() {
 		tabpane.addTab("Daten", paneData);
@@ -96,17 +112,84 @@ public class MainFrame extends JFrame {
 	        checkSelectedTab();
 	      }
 	    });
+		
+		addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if(!Data.isSaved()) {
+                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden VerÃ¤nderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+                	if(result==JOptionPane.YES_OPTION) {
+                		if(Data.getLastRestoredFileName()!=null) {
+                			Data.backup(Data.getLastRestoredFileName());
+                		}else {
+                			final JFrame backupFrame = new JFrame();
+            				GridBagConstraints c = new GridBagConstraints();
+            				JPanel backupChooser = new JPanel();
+            				final JTextField tf = new JTextField();
+            				JButton button = new JButton("Erstellen");
+            				JButton button2 = new JButton("Abbrechen");
+            				backupChooser.setLayout(new GridBagLayout());
+            				backupChooser.setBorder(BorderFactory
+            						.createTitledBorder("Backup erstellen"));
+            				c.fill = GridBagConstraints.BOTH;
+            				c.insets = new Insets(8, 5, 1, 1);
+            				c.anchor = GridBagConstraints.CENTER;
+            				c.gridx = 0;
+            				c.gridy = 0;
+            				c.gridwidth = 2;
+            				backupChooser.add(tf, c);
+            				c.gridy = 1;
+            				c.gridwidth = 1;
+            				c.weightx = 0.6;
+            				backupChooser.add(button, c);
+            				c.gridx = 1;
+            				c.weightx = 0.4;
+            				backupChooser.add(button2, c);
+            				backupFrame.add(backupChooser);
+            				backupFrame.setTitle("Backup");
+            				backupFrame.setLocation(MouseInfo.getPointerInfo()
+            						.getLocation().x, MouseInfo.getPointerInfo()
+            						.getLocation().y);
+            				backupFrame.pack();
+            				backupFrame.setVisible(true);
+
+            				button.addActionListener(new ActionListener() {
+            					public void actionPerformed(ActionEvent ae) {
+            						backupFrame.dispose();
+            						Data.backup(tf.getText());
+            					}
+            				});
+
+            				button2.addActionListener(new ActionListener() {
+            					public void actionPerformed(ActionEvent ae) {
+            						backupFrame.dispose();
+            					}
+            				});
+                		}
+                	}
+                }
+//                File dir = new File(System.getProperty("user.dir"));
+//    			File file = dir.listFiles(new FilenameFilter() {
+//    				public boolean accept(File dir, String filename) {
+//    					return filename.equals("temp.db");
+//    				}
+//    			})[0];
+//                file.deleteOnExit();
+            }
+        });
 	};
 	
 	/**
-	 * Checkt das ausgewählte Tab. Je nach Klasse des Tabs, führt es Updatemethoden
-	 * o.Ä. aus.
+	 * Checkt das ausgewï¿½hlte Tab. Je nach Klasse des Tabs, fï¿½hrt es Updatemethoden
+	 * o.ï¿½. aus.
 	 * 
-	 * Im Falle des LehreransichtsPanels, prüft es zunächst, ob relevante Zielgroeßen verändert
-	 * wurden. Sind diese nicht verändert, ist kein Update noetig.
-	 * Außerdem wird überprüft, ob das letzte Command in der History ein Edit-Command ist, da
-	 * diese Commands keine unmittelbaren Änderungen an den Zielgroeßen bewirken, aber dennoch
-	 * Unterschiede ausmachen können (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
+	 * Im Falle des LehreransichtsPanels, prï¿½ft es zunï¿½chst, ob relevante Zielgroeï¿½en verï¿½ndert
+	 * wurden. Sind diese nicht verï¿½ndert, ist kein Update noetig.
+	 * Auï¿½erdem wird ï¿½berprï¿½ft, ob das letzte Command in der History ein Edit-Command ist, da
+	 * diese Commands keine unmittelbaren ï¿½nderungen an den Zielgroeï¿½en bewirken, aber dennoch
+	 * Unterschiede ausmachen kï¿½nnen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
 	 * So wird verhindert, dass der Personaleinsatzplan immer weiter aktualisiert wird, obwohl der Plan
 	 * z.B. fertig ist und nicht mehr bearbeitet wird. Spart so dauerhaft Laufzeit, wenn Bearbeitung bereits abgeschlossen.
 	 */

@@ -173,7 +173,7 @@ public class MenuBar extends JMenuBar {
 				File dir = new File(System.getProperty("user.dir"));
 				File[] files = dir.listFiles(new FilenameFilter() {
 					public boolean accept(File dir, String filename) {
-						return filename.endsWith(".db");
+						return filename.endsWith(".db") && !filename.equals("temp.db");
 					}
 				});
 				listModel.clear();
@@ -204,7 +204,7 @@ public class MenuBar extends JMenuBar {
 				GridBagConstraints c = new GridBagConstraints();
 				JPanel backupChooser = new JPanel();
 				final JTextField tf = new JTextField();
-				JButton button = new JButton("Speichern");
+				JButton button = new JButton("Erstellen");
 				JButton button2 = new JButton("Abbrechen");
 				backupChooser.setLayout(new GridBagLayout());
 				backupChooser.setBorder(BorderFactory
