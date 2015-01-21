@@ -43,6 +43,8 @@ public final class WarningPanel extends JPanel{
 		list.setBackground(new Color(143,188,143));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
+		list.setFixedCellHeight(30);
+		list.setVisibleRowCount(20);
 		add(listScroller, c);
 		c.gridy=1;
 		c.fill=GridBagConstraints.HORIZONTAL;

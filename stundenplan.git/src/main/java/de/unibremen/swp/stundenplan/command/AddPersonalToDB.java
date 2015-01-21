@@ -18,7 +18,10 @@ public class AddPersonalToDB implements Command {
     }
     
     /**
-     * 
+     * Execute-Methode dieser Klasse. Fügt dieses Command- Objekt zur CommandHistory hinzu
+     * Speichert eingefügte Person als Attribut. Leitet Einfügen an Datenbank weiter.
+     * @param p
+     * 		Personal das hinzugefügt werden soll.
      */
 	public void execute(Personal p) {
 		DataPersonal.addPersonal(p);
@@ -26,10 +29,10 @@ public class AddPersonalToDB implements Command {
 		personal = p;
 	}
 
-	@Override
-	public void execute(){
-	}
 	
+	/**
+	 * Undo-Methoder dieser Klasse. Leitet Löschanfrage an Datenbank weiter.
+	 */
 	@Override
 	public void undo(){	
 		DataPersonal.deletePersonalByKuerzel(personal.getKuerzel());

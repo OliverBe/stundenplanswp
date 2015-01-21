@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
@@ -216,7 +217,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 			table = new StundenplanTable(s).getTable();
 
 		}
-
+		
 		init();
 		updatetable();
 
@@ -227,7 +228,9 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	}
 
 	public void updatetable() {
+		
 		table.repaint();
+		Stundenplan.getMain().validate();
 	}
 
 }
