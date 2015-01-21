@@ -123,7 +123,7 @@ public class WochenplanTag extends JPanel {
 				if(ppliste.get(0)!=null){
 				for(int k = 0; k < ppliste.size(); k++){
 					 personalName = ppliste.get(k).getName();
-				
+						System.out.println("personalName: "+personalName);
 						int starthour = p.getStartHour();
 						int startminute = p.getStartminute();
 						int endminute = p.getEndminute();
@@ -157,7 +157,7 @@ public class WochenplanTag extends JPanel {
 								System.out.println("Ausgabe läenge "
 										+ ausgabe.length());
 								model.setValueAt(ausgabe, i, j);
-								return;
+								break;
 
 							} else {
 								model.setValueAt(ausgabe, i, j);
