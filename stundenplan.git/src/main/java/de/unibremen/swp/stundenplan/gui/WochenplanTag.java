@@ -41,7 +41,7 @@ public class WochenplanTag extends JPanel {
 	Weekday day;
 	private JFileChooser chooser = new JFileChooser();
 	private JFrame f;
-	public JTable table;
+	public static JTable table;
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
 	
@@ -286,5 +286,8 @@ public class WochenplanTag extends JPanel {
 			}
 		});
 	}
-
+	
+	public static JTable getTable() {
+		return table;
+	}
 }

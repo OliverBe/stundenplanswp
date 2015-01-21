@@ -1,7 +1,5 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,7 +8,6 @@ import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -19,28 +16,24 @@ import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.config.ExportPDF;
-import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
-import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 
 public class MenuBar extends JMenuBar {
 
@@ -279,7 +272,18 @@ public class MenuBar extends JMenuBar {
 					ExportPDF.setOwner("Personalplan");
 					ExportPDF.createPDF(eTable);
 					ExportPDF.setOwner("");
-				}
+				} else if (obj instanceof WochenplanPanel) {
+					WochenplanPanel panel = (WochenplanPanel) obj;
+					obj = panel.getTabPane().getSelectedComponent();
+					if( obj instanceof WochenplanTag) {
+						WochenplanTag wpT = (WochenplanTag) obj;
+						
+						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.createPDF(wpT.getTable());
+						ExportPDF.setOwner("");	
+					}
+					
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
 
 			}
 		});
@@ -312,7 +316,19 @@ public class MenuBar extends JMenuBar {
 					ExportPDF.createCSV(eTable);
 					ExportPDF.setOwner("");
 					
-				}
+				} else if (obj instanceof WochenplanPanel) {
+					WochenplanPanel panel = (WochenplanPanel) obj;
+					obj = panel.getTabPane().getSelectedComponent();
+					if( obj instanceof WochenplanTag) {
+						WochenplanTag wpT = (WochenplanTag) obj;
+						
+						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.createCSV(wpT.getTable());
+						ExportPDF.setOwner("");	
+					}
+					
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
+
 
 			}
 		});
@@ -344,12 +360,23 @@ public class MenuBar extends JMenuBar {
 					ExportPDF.setOwner("Personalplan");
 					ExportPDF.createDOC(eTable);
 					ExportPDF.setOwner("");
-				}
+				} else if (obj instanceof WochenplanPanel) {
+					WochenplanPanel panel = (WochenplanPanel) obj;
+					obj = panel.getTabPane().getSelectedComponent();
+					if( obj instanceof WochenplanTag) {
+						WochenplanTag wpT = (WochenplanTag) obj;
+						
+						ExportPDF.setOwner("Wochenplan " + wpT.day.toString());
+						ExportPDF.createDOC(wpT.getTable());
+						ExportPDF.setOwner("");	
+					}
+					
+				} else JOptionPane.showMessageDialog(Stundenplan.getMain(), "Exportieren ist nur in Stundenplänen, Raumbelegungsplänen, Lehreransicht und Wochenplanansicht möglich");
+
 
 			}
 		});
 	}
-
 	private void undoClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
 
