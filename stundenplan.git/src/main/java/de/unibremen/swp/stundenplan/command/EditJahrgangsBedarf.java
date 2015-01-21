@@ -33,7 +33,7 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 	public void execute(Jahrgang neu) {
 		urspruenglich = DataSchulklasse.getJahrgangByJahrgang(neu.getJahrgang());
 		bearbeitet = neu;
-		DataSchulklasse.addJahrgang(bearbeitet);
+		DataSchulklasse.editJahrgang(bearbeitet);
 		CommandHistory.addCommand(this);
 	}
 
@@ -43,7 +43,7 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 	 */
 	@Override
 	public void undo() {
-		DataSchulklasse.addJahrgang(urspruenglich);
+		DataSchulklasse.editJahrgang(urspruenglich);
 	}
 
 }
