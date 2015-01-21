@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
@@ -74,6 +75,16 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		int i = 0;
 		for(Personal p : pList){
+			if(PlanungseinheitManager.checkTimeInPE(pe, (int)shspinner[i].getValue(), (int)smspinner[i].getValue())){
+				JOptionPane.showMessageDialog(null,
+						"Startzeit von "+p.getName()+" befindet sich nicht im Startzeit der Planungseinheit");
+				return;
+			}
+			if(PlanungseinheitManager.checkTimeInPE(pe, (int)ehspinner[i].getValue(), (int)emspinner[i].getValue())){
+				JOptionPane.showMessageDialog(null,
+						"Endzeit von "+p.getName()+" befindet sich nicht im Startzeit der Planungseinheit");
+				return;
+			}
 			pe.addPersonal(p, new int[] {(int)shspinner[i].getValue(),(int)smspinner[i].getValue(),(int)ehspinner[i].getValue(),(int)smspinner[i].getValue()});
 			i++;
 		}
