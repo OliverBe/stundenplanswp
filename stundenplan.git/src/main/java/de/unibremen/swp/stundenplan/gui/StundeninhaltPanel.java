@@ -39,18 +39,32 @@ import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, bearbeiten, loeschen und anzeigen von Stundeninhalten
+ * Repräsentiert das Panel zum Hinzufuegen, bearbeiten, loeschen und anzeigen
+ * von Stundeninhalten
+ * 
  * @author Oliver
  *
  */
 public class StundeninhaltPanel extends JPanel {
-	
-	private TextField nameField = new TextField(15);
-	private TextField kuerzField = new TextField(5);
-	private TextField timeField = new TextField(5);
-	private TextField timeField2 = new TextField(5);
+	/**
+	 * Textfeld fuer das Kerzel des Stundeninhalts beim adden
+	 */
+	private TextField kuerzField;
 
-	public JButton button = new JButton("Stundeninhalt hinzufuegen");
+	/**
+	 * Textfeld fuer das Kerzel des Stundeninhalts beim editen
+	 */
+	private TextField kuerzField2;
+
+	/**
+	 * Textfeld fuer die Regeldauer des Stundeninhalts beim adden
+	 */
+	private TextField timeField;
+
+	/**
+	 * Textfeld fuer die Regeldauer des Stundeninhalts beim editen
+	 */
+	private TextField timeField2;
 
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
@@ -80,10 +94,16 @@ public class StundeninhaltPanel extends JPanel {
 	/**
 	 * Erzeugt ein Panel auf dem man einen neuen Stundeninhalt hinzufuegen kann.
 	 * 
-	 * @param p uebergebenes Panel
+	 * @param p
+	 *            uebergebenes Panel
 	 * @return HinzufuegenPanel
 	 */
 	private JPanel createAddPanel(final JPanel p) {
+		timeField = new TextField(5);
+		kuerzField = new TextField(5);
+		TextField nameField = new TextField(15);
+		JButton button = new JButton("Stundeninhalt hinzufuegen");
+
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Neuen Stundeninhalt hinzufuegen"));
@@ -154,9 +174,15 @@ public class StundeninhaltPanel extends JPanel {
 			}
 		});
 		return p;
-
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man die Stundeninhaltliste angezeigt bekommt.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return HinzufuegenPanel
+	 */
 	private JPanel createListPanel(final JPanel p) {
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
@@ -218,6 +244,13 @@ public class StundeninhaltPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man einen Stundeninhalt editieren kann.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return HinzufuegenPanel
+	 */
 	private JPanel createEditPanel(final JPanel p, final Stundeninhalt si) {
 		System.out.println("Rythm" + si.getRhythmustyp());
 
@@ -226,8 +259,9 @@ public class StundeninhaltPanel extends JPanel {
 		Label ltime2 = new Label("Regeldauer in min:");
 		Label lPause2 = new Label("rythmischer Typ:");
 
-		final TextField nameField2 = new TextField(15);
-		final TextField kuerzField2 = new TextField(5);
+		TextField nameField2 = new TextField(15);
+		timeField2 = new TextField(5);
+		kuerzField2 = new TextField(5);
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
@@ -334,12 +368,26 @@ public class StundeninhaltPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Ueberprueft, ob es irgendwelche falsche EIngaben gibt. Zb Leere Felder,
+	 * Zahlen in Textfeldern, zu lange Kuerzel etc.
+	 * 
+	 * @param p
+	 *            uebergebenes panel
+	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
+	 */
 	private boolean check(final JPanel p) {
 		if (textFieldsEmpty(p)) {
 			new TextException();
 			return false;
 		}
-		if (kuerzField.getText().length() > Data.MAX_KUERZEL_LEN) {
+		if (kuerzField != null
+				&& kuerzField.getText().length() > Data.MAX_KUERZEL_LEN) {
+			new KuerzelException();
+			return false;
+		}
+		if (kuerzField2 != null
+				&& kuerzField2.getText().length() > Data.MAX_KUERZEL_LEN) {
 			new KuerzelException();
 			return false;
 		}
@@ -369,6 +417,14 @@ public class StundeninhaltPanel extends JPanel {
 
 	}
 
+	/**
+	 * Ueberprueft ob ein Textfeld leer ist
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return true, wenn ein Textfeld leer ist, false, wenn ein Textfeld nicht
+	 *         leer ist
+	 */
 	private boolean textFieldsEmpty(final JPanel p) {
 		boolean b = true;
 		for (Component c : p.getComponents()) {
