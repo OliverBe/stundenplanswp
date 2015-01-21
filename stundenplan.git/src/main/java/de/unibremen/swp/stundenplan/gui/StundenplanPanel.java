@@ -51,7 +51,7 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 	private static JLabel label1 = new JLabel("Lehrer");
 	private static JLabel label2 = new JLabel("Klassen");
 	private MouseAdapter mousefunc = new MouseAdapter() {
-		public void mouseClicked(MouseEvent evt) {
+		public void mousePressed(MouseEvent evt) {
 			eventX = evt.getXOnScreen();
 			eventY = evt.getYOnScreen();
 			eventXX = evt.getX();
