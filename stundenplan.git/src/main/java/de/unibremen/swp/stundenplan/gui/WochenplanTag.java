@@ -78,19 +78,9 @@ public class WochenplanTag extends JPanel {
 
 		table = new JTable(model);
 		model.addColumn("Personal");
-		for (int i = (TimetableManager.startTimeHour() * 100); i <= (TimetableManager.endTimeHour() * 100); i += Timeslot.timeslotlength()) {
-
-			String text = "" + i;
-			String c1 = "" + text.charAt(text.length() - 2);
-			int zahl = Integer.parseInt(c1);
-			if (zahl == 5) {
-				i += 40;
-			}
-			String text2 = text.substring(0, text.length() / 2);
-			String text3 = text.substring((text.length() - 2), text.length());
-
-			String ausgabe = text2 + ":" + text3;
-			model.addColumn(ausgabe);
+		for(int i= 1; i<TimetableManager.daytablelength(); i++){
+		
+			model.addColumn(TimetableManager.getTimeframeDisplay(i));
 
 		}
 
@@ -161,18 +151,22 @@ public class WochenplanTag extends JPanel {
 
 					for (int j = 1; j < model.getColumnCount(); j++) {
 						String zeit = model.getColumnName(j);
-						String[] zeiten = zeit.split(":");
-						int tabStunde = Integer.parseInt(zeiten[0]);
-						int tabMinute = Integer.parseInt(zeiten[1]);
+						String[] zeiten = zeit.split(" - ");
+						String[] ersteZeit = zeiten[0].split(":");
+						String[] zweiteZeit = zeiten[1].split(":");
+						int ersteZeitTabStunde = Integer.parseInt(ersteZeit[0]);
+						int ersteZeitTabMinute = Integer.parseInt(ersteZeit[1]);
+						int zweiteZeitTabStunde = Integer.parseInt(zweiteZeit[0]);
+						int zweiteZeitTabMinute = Integer.parseInt(zweiteZeit[1]);
 						
-						if(tabStunde >= starthour && tabMinute >= startminute|| tabStunde>starthour && tabMinute<=startminute) {
+						if(ersteZeitTabStunde >= starthour && ersteZeitTabMinute >= startminute|| ersteZeitTabStunde>starthour && ersteZeitTabMinute<=startminute) {
 							
 							if (ausgabe.length() >= 70) {
 								TableColumn spalte = table.getColumnModel()
 										.getColumn(j);
 								spalte.setPreferredWidth(ausgabe.length() + 30);
 							}
-							if (tabStunde == endhour && tabMinute == endminute) {
+							if (zweiteZeitTabStunde == endhour && zweiteZeitTabMinute == endminute) {
 								System.out.println("Ausgabe läenge "
 										+ ausgabe.length());
 
