@@ -233,8 +233,8 @@ public class MenuBar extends JMenuBar {
 
 				button.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						Data.backup(tf.getText());
 						backupFrame.dispose();
+						Data.backup(tf.getText());
 					}
 				});
 
