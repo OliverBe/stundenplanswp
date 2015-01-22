@@ -32,13 +32,8 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.exceptions.KuerzelException;
 import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
 import de.unibremen.swp.stundenplan.exceptions.TextException;
-import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
-import de.unibremen.swp.stundenplan.exceptions.ZahlException;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
@@ -60,17 +55,19 @@ public class RaumfunktionPanel extends JPanel {
 	 * Textfeld fuer den Namen der Raumfunktionen beim editpanel
 	 */
 	private JTextField tf2;
-	
+
 	/**
-	 *  checklist fuer die Stundeninhalte die in diesem Raum moeglich sind beim addpanel
+	 * checklist fuer die Stundeninhalte die in diesem Raum moeglich sind beim
+	 * addpanel
 	 */
 	private CheckBoxList checkList;
-	
+
 	/**
-	 *  checklist fuer die Stundeninhalte die in diesem Raum moeglich sind beim editpanel
+	 * checklist fuer die Stundeninhalte die in diesem Raum moeglich sind beim
+	 * editpanel
 	 */
 	private CheckBoxList checkList2;
-	
+
 	/**
 	 * GridBagConsraint fuer die add,edit,listpanel
 	 */
@@ -167,18 +164,18 @@ public class RaumfunktionPanel extends JPanel {
 		p.add(button, c);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				Raumfunktion rf;
-				if (!check(p)) return;
-					ArrayList<String> stdi = new ArrayList<String>();
-					for (int i = 0; i < checkList.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList.getModel()
-								.getElementAt(i);
-						if (cb.isSelected())
-							stdi.add(cb.getText());
-					}
-					rf = new Raumfunktion(tf.getText(), stdi);
-					RaumManager.addRaumfunktionToDB(rf);
-					updateList();
+				if (!check(p))
+					return;
+				ArrayList<String> stdi = new ArrayList<String>();
+				for (int i = 0; i < checkList.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						stdi.add(cb.getText());
+				}
+				RaumManager.addRaumfunktionToDB(new Raumfunktion(tf.getText(),
+						stdi));
+				updateList();
 			}
 		});
 
@@ -263,6 +260,7 @@ public class RaumfunktionPanel extends JPanel {
 	 *            zu editierendes Element
 	 * @return HinzuzufuegendesPanel
 	 */
+	@SuppressWarnings("unchecked")
 	private JPanel createEditPanel(final JPanel p, final Raumfunktion rf) {
 		c = new GridBagConstraints();
 		tf2 = new JTextField(20);
@@ -279,7 +277,7 @@ public class RaumfunktionPanel extends JPanel {
 		c.gridx = 1;
 		p.add(tf2, c);
 		tf2.setText(rf.getName());
-		
+
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridwidth = 2;
 		c.gridx = 0;
@@ -319,20 +317,19 @@ public class RaumfunktionPanel extends JPanel {
 		// edit
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				Raumfunktion rf2;
-					if (!check(p)) return;
-					ArrayList<String> stdi = new ArrayList<String>();
-					for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList2.getModel()
-								.getElementAt(i);
-						if (cb.isSelected())
-							stdi.add(cb.getText());
-					}
-
-					rf2 = new Raumfunktion(tf2.getText(), stdi);
-					RaumManager.editRaumfunktion(rf.getName(), rf2);
-					updateList();
-					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
+				if (!check(p))
+					return;
+				ArrayList<String> stdi = new ArrayList<String>();
+				for (int i = 0; i < checkList2.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList2.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						stdi.add(cb.getText());
+				}
+				RaumManager.editRaumfunktion(rf.getName(),
+						new Raumfunktion(tf2.getText(), stdi));
+				updateList();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 
 			}
 		});
@@ -347,6 +344,7 @@ public class RaumfunktionPanel extends JPanel {
 		});
 		return p;
 	}
+
 	/**
 	 * Ueberprueft, ob es irgendwelche falsche EIngaben gibt. Zb Leere Felder,
 	 * Zahlen in Textfeldern, zu lange Kuerzel etc.
@@ -360,20 +358,23 @@ public class RaumfunktionPanel extends JPanel {
 			new TextException();
 			return false;
 		}
-		boolean b=true;
-		if(checkList != null){
+		boolean b = true;
+		if (checkList != null) {
 			for (int i = 0; i < checkList.getModel().getSize(); i++) {
 				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
-				if (cb.isSelected()) b=false;
+				if (cb.isSelected())
+					b = false;
 			}
 		}
-		if(checkList2 != null){
+		if (checkList2 != null) {
 			for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-				JCheckBox cb = (JCheckBox) checkList2.getModel().getElementAt(i);
-				if (cb.isSelected()) b=false;
+				JCheckBox cb = (JCheckBox) checkList2.getModel()
+						.getElementAt(i);
+				if (cb.isSelected())
+					b = false;
 			}
 		}
-		if(b){
+		if (b) {
 			new StundeninhaltException();
 			return false;
 		}
@@ -406,7 +407,8 @@ public class RaumfunktionPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen Daten der Datenbank
+	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen
+	 * Daten der Datenbank
 	 */
 	public static void updateList() {
 		listModel.clear();

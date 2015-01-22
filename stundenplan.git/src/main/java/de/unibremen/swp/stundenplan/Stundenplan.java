@@ -51,8 +51,7 @@ public final class Stundenplan {
      */
     private Stundenplan() {
     	Data.start();
-    	final MainFrame mainFrame= new MainFrame();
-    	 main = mainFrame;
+    	main = new MainFrame();
     	try {
 			Config.init(null);
 		} catch (IOException e) {

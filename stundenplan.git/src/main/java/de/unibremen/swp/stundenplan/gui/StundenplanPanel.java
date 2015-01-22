@@ -33,8 +33,6 @@ import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 
 public class StundenplanPanel extends JPanel implements ActionListener {
 
-	public DataPanel data = new DataPanel();
-
 	private JFrame f;
 	private int eventX;
 	private int eventY;

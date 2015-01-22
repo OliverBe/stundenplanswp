@@ -34,13 +34,10 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataSchulklasse;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
 import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
-import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
@@ -157,7 +154,8 @@ public class BedarfPanel extends JPanel {
 		p.add(new Label("Stundeninhalt: "), c);
 		c.gridx = 1;
 		c.gridwidth = 3;
-		ArrayList<Stundeninhalt> si = StundeninhaltManager.getAllStundeninhalteFromDB();
+		ArrayList<Stundeninhalt> si = StundeninhaltManager
+				.getAllStundeninhalteFromDB();
 		cb2 = new JComboBox(si.toArray());
 		p.add(cb2, c);
 		c.gridx = 0;
@@ -236,7 +234,8 @@ public class BedarfPanel extends JPanel {
 					pop.edit.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							JFrame edit = new JFrame("Bedarf editieren");
-							edit.add(createEditPanel(new JPanel(),
+							edit.add(createEditPanel(
+									new JPanel(),
 									JahrgangsManager.getJahrgangByJundSkuerzelFromDB(
 											Integer.parseInt(arr.get(0)),
 											arr.get(1))));

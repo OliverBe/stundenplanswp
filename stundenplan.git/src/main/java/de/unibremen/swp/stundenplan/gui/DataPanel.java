@@ -59,7 +59,6 @@ public class DataPanel extends JPanel {
 	private StundeninhaltPanel stundeninhaltPanel;
 	private RoomPanel roomPanel;
 	private BedarfPanel bedarfPanel;
-	private WarningPanel warningPanel = new WarningPanel();
 
 	public DataPanel() {
 		initComponents();
@@ -121,7 +120,7 @@ public class DataPanel extends JPanel {
 		c.gridy=1;
 		c.ipady=0;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
-		add(warningPanel, c);
+		add(new WarningPanel(), c);
 
 		// klick auf mP
 		mP.addActionListener(new ActionListener() {

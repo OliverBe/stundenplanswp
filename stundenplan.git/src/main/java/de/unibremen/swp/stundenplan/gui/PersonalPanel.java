@@ -53,28 +53,19 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class PersonalPanel extends JPanel {
 
-	private Label lName = new Label("Name des Personals:");
-	private Label lKuerz = new Label("Kuerzel:");
-	private Label lPrefTime = new Label("Zeitwunsch:");
-
-	private Label lTime = new Label("Zeitverpflichtung in h:");
-	private Label lErsatz = new Label("Ersatzzeit in h:");
-
-	public TextField nameField = new TextField(15);
-	public TextField kuerzField = new TextField(5);
-	private TextField timeField = new TextField(5);
-	private TextField timeField2 = new TextField(5);
-	private TextField ersatzField = new TextField(5);
-	private TextField ersatzField2 = new TextField(5);
+	public JTextField nameField = new JTextField(15);
+	public JTextField kuerzField = new JTextField(5);
+	private JTextField timeField = new JTextField(5);
+	private JTextField timeField2 = new JTextField(5);
+	private JTextField ersatzField = new JTextField(5);
+	private JTextField ersatzField2 = new JTextField(5);
 	
 	private JLabel lSubjects = new JLabel("Moegliche Stundeninhalte :");
-
-	public JButton button = new JButton("Personal hinzufuegen");
 
 	private GridBagConstraints c = new GridBagConstraints();
 	private GridBagConstraints c2 = new GridBagConstraints();
 
-	private static DefaultListModel<Personal> listModel = new DefaultListModel();
+	private static DefaultListModel<Personal> listModel = new DefaultListModel<Personal>();
 	private JList<Personal> list = new JList<Personal>(listModel);
 	private JScrollPane listScroller = new JScrollPane(list);
 	
@@ -82,12 +73,8 @@ public class PersonalPanel extends JPanel {
 	
 	private DefaultTableModel model2;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1219589162309740553L;
-
 	public PersonalPanel() {
+		c2 = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -104,6 +91,8 @@ public class PersonalPanel extends JPanel {
 
 	@SuppressWarnings("serial")
 	private JPanel createAddPanel(final JPanel p) {		
+		c = new GridBagConstraints();
+		JButton button = new JButton("Personal hinzufuegen");
 		model = new DefaultTableModel(){
 		    @Override
 			public boolean isCellEditable(int row, int column)
@@ -124,7 +113,7 @@ public class PersonalPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName, c);
+		p.add(new Label("Name:"), c);
 		c.gridx = 1;
 		p.add(nameField, c);
 		c.gridx = 2;
@@ -140,17 +129,17 @@ public class PersonalPanel extends JPanel {
 
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lKuerz, c);
+		p.add(new Label("Kuerzel:"), c);
 		c.gridx = 1;
 		p.add(kuerzField, c);
 
 		c.gridx = 0;
 		c.gridy = 2;
-		p.add(lTime, c);
+		p.add(new Label("Zeitverpflichtung (Std):"), c);
 		c.gridx = 1;
 		p.add(timeField, c);
 		c.gridx = 2;
-		p.add(lErsatz, c);
+		p.add(new Label("Ersatzzeit (Std):"), c);
 		c.gridx = 3;
 		p.add(ersatzField, c);
 		c.gridx = 0;
@@ -161,7 +150,7 @@ public class PersonalPanel extends JPanel {
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
 		c.gridy=4;
-		p.add(lPrefTime, c);
+		p.add(new Label("Wunschzeiten:"), c);
 
 		JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
@@ -331,6 +320,7 @@ public class PersonalPanel extends JPanel {
 	}
 
 	private JPanel createListPanel(final JPanel p) {
+		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Existierendes Personal"));
 
@@ -385,14 +375,14 @@ public class PersonalPanel extends JPanel {
 	
 	@SuppressWarnings("serial")
 	private JPanel createEditPanel(final JPanel p, final Personal pe) {
-		
+		c = new GridBagConstraints();
 		Label lName2 = new Label("Name des Personals:");
 		Label lKuerz2 = new Label("Kuerzel:");
 		Label lPrefTime2 = new Label("Zeitwunsch:");
 		Label lTime2 = new Label("Zeitverpflichtung in h:");
 		Label lErsatz2 = new Label("Ersatzzeit in h:");
-		final TextField nameField2 = new TextField(15);
-		final TextField kuerzField2 = new TextField(5);
+		final JTextField nameField2 = new JTextField(15);
+		final JTextField kuerzField2 = new JTextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Speichern");

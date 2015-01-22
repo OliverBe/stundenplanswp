@@ -95,7 +95,7 @@ public class MainFrame extends JFrame {
 	 * Auslagerung der hinzuzuf�genden Panels in diese Methode
 	 */
 	private void init() {
-		tabpane.addTab("Daten", paneData);
+		tabpane.addTab("Daten",paneData);
 		tabpane.addTab("Stundenplaene", paneStundenplan);
 		tabpane.addTab("Personaleinsatzplan", paneLehrer);
 		tabpane.addTab("Raumbelegungsplan", paneRaeume);

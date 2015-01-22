@@ -30,10 +30,8 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
-import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.KuerzelException;
-import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
@@ -65,12 +63,12 @@ public class StundeninhaltPanel extends JPanel {
 	 * Textfeld fuer die Regeldauer des Stundeninhalts beim editen
 	 */
 	private JTextField dauerField2;
-	
+
 	/**
 	 * GridBagConsraint fuer die add,edit,listpanel
 	 */
 	private GridBagConstraints c;
-	
+
 	/**
 	 * GridBagConsraint fuer das gesamte Panel
 	 */
@@ -80,12 +78,12 @@ public class StundeninhaltPanel extends JPanel {
 	 * ListModel fuer die JList der Stundeninhalte
 	 */
 	private static DefaultListModel<Stundeninhalt> listModel = new DefaultListModel<Stundeninhalt>();
-	
+
 	/**
 	 * JList der Stundeninhalte
 	 */
 	private JList<Stundeninhalt> list = new JList<Stundeninhalt>(listModel);
-	
+
 	/**
 	 * Scroller fuer die JList der Stundeninhalte
 	 */
@@ -344,23 +342,22 @@ public class StundeninhaltPanel extends JPanel {
 		// edit Button
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-					int rythm = 0;
-					if (!check(p))
-						return;
-					if (pauseB2.isSelected())
-						rythm = 0;
-					if (leichtB2.isSelected())
-						rythm = 1;
-					if (schwerB2.isSelected())
-						rythm = 2;
-					Stundeninhalt si2 = new Stundeninhalt(titelField2.getText(),
-							kuerzField2.getText(), Integer.parseInt(dauerField2
-									.getText()), rythm);
-					StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
+				int rythm = 0;
+				if (!check(p))
+					return;
+				if (pauseB2.isSelected())
+					rythm = 0;
+				if (leichtB2.isSelected())
+					rythm = 1;
+				if (schwerB2.isSelected())
+					rythm = 2;
+				Stundeninhalt si2 = new Stundeninhalt(titelField2.getText(),
+						kuerzField2.getText(), Integer.parseInt(dauerField2
+								.getText()), rythm);
+				StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
 
-					updateList();
-					((JFrame)SwingUtilities
-					.getWindowAncestor(p)).dispose();
+				updateList();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 
@@ -448,11 +445,13 @@ public class StundeninhaltPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschlieﬂend wieder mit allen Daten der Datenbank
+	 * leert die Liste des Panels und fuellt sie anschlieﬂend wieder mit allen
+	 * Daten der Datenbank
 	 */
 	public static void updateList() {
 		listModel.clear();
-		for (Stundeninhalt sti : StundeninhaltManager.getAllStundeninhalteFromDB()) {
+		for (Stundeninhalt sti : StundeninhaltManager
+				.getAllStundeninhalteFromDB()) {
 			listModel.addElement(sti);
 		}
 	}
