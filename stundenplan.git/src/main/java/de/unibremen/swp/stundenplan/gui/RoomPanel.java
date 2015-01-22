@@ -39,25 +39,72 @@ import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 
+/**
+ * Repr‰sentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * von Raeumen
+ * 
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class RoomPanel extends JPanel {
 
-	private Label lName = new Label("Name des Raumes: ");
-	private Label lPos = new Label("In welchem Gebaeude: ");
-	private JLabel lSp = new JLabel("Spezieller Raum:");
-
-	private TextField nameField = new TextField(5);
+	/**
+	 * Textfeld um den Namen des Raumes im addpanel anzugeben
+	 */
+	private JTextField nameField;
+	
+	/**
+	 * Textfeld um den Namen des Raumes im editpanel anzugeben
+	 */
+	private JTextField nameField2;
+	
+	/**
+	 * ComboBox fuer die Gebdaudeauswahl beim addpanel
+	 */
+	@SuppressWarnings("rawtypes")
 	private JComboBox jcb;
+	
+	/**
+	 * ComboBox fuer die Gebdaudeauswahl beim editpanel
+	 */
+	@SuppressWarnings("rawtypes")
+	private JComboBox jcb2;
+	
+	/**
+	 * Gebaeudenummern fuer die comboboxen
+	 */
+	private Integer[] gebaeude = { 1, 2 };
 
-	public JButton button = new JButton("Raum Hinzufuegen");
+	/**
+	 * GridBagConsraint fuer die add,edit,listpanel
+	 */
+	private GridBagConstraints c;
 
-	private GridBagConstraints c = new GridBagConstraints();
-	private GridBagConstraints c2 = new GridBagConstraints();
+	/**
+	 * GridBagConsraint fuer das gesamte Panel
+	 */
+	private GridBagConstraints c2;
 
+	/**
+	 * ListModel fuer Raumliste
+	 */
 	private static DefaultListModel<Room> listModel = new DefaultListModel<Room>();
+	
+	/**
+	 * JList fuer Raeume
+	 */
 	private JList<Room> list = new JList<Room>(listModel);
+	
+	/**
+	 * Scrollbar fuer Jlist von Raeumen
+	 */
 	private JScrollPane listScroller = new JScrollPane(list);
 
+	/**
+	 * Konstruktor fuer Raumpanel
+	 */
 	public RoomPanel() {
+		c2 = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -72,21 +119,26 @@ public class RoomPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createAddPanel(final JPanel p) {
+		c = new GridBagConstraints();
+		nameField = new JTextField(5);
+		JLabel lSp = new JLabel("Spezieller Raum:");
+		JButton button = new JButton("Raum Hinzufuegen");
+		
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Neuen Raum hinzufuegen"));
 		c.insets = new Insets(8, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName, c);
+		p.add(new Label("Name des Raumes:"), c);
 		c.gridx = 1;
 		p.add(nameField, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lPos, c);
+		p.add(new Label("In welchem Gebaeude:"), c);
 		c.gridx = 1;
-		Integer[] gebaeude = { 1, 2 };
 		jcb = new JComboBox(gebaeude);
 		p.add(jcb, c);
 
@@ -100,8 +152,8 @@ public class RoomPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill=GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		lSp.setFont(new Font(lName.getFont().getFontName(),
-				Font.PLAIN, lName.getFont().getSize()));
+		lSp.setFont(new Font(nameField.getFont().getFontName(),
+				Font.PLAIN, nameField.getFont().getSize()));
 		p.add(lSp, c);
 		c.anchor = GridBagConstraints.WEST;
 		c.fill=GridBagConstraints.HORIZONTAL;
@@ -149,6 +201,7 @@ public class RoomPanel extends JPanel {
 	}
 
 	private JPanel createListPanel(final JPanel p) {
+		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Existierende Raeume"));
 
@@ -202,11 +255,11 @@ public class RoomPanel extends JPanel {
 		return p;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createEditPanel(final JPanel p, final Room ro) {
-		Label lName2 = new Label("Name des Raumes: ");
-		Label lPos2 = new Label("In welchem Gebaeude: ");
-
-		final TextField nameField2 = new TextField(5);
+		c = new GridBagConstraints();
+		nameField2 = new JTextField(5);
+		JLabel lSp = new JLabel("Spezieller Raum:");
 		final JComboBox jcb2;
 
 		JButton button2 = new JButton("Speichern");
@@ -219,21 +272,20 @@ public class RoomPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName2, c);
+		p.add(new Label("Name des Raumes:"), c);
 		c.gridx = 1;
 		p.add(nameField2, c);
 		nameField2.setText(ro.getName());
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lPos2, c);
+		p.add(new Label("In welchem Gebaeude:"), c);
 		c.gridx = 1;
-		Integer[] gebaeude = { 1, 2 };
 		jcb2 = new JComboBox(gebaeude);
 		p.add(jcb2, c);
 		jcb2.setSelectedItem(ro.getGebaeude());
 		c.gridx = 0;
 		c.gridy = 2;
-		p.add(new Label("Spezieller Raum:"), c);
+		p.add(lSp, c);
 		c.gridx = 1;
 		
 		final CheckBoxList checkList2 = new CheckBoxList();
@@ -275,8 +327,7 @@ public class RoomPanel extends JPanel {
 							.getSelectedItem(), rf2));
 
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-					topFrame.dispose();
+					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -291,8 +342,7 @@ public class RoomPanel extends JPanel {
 		// abbruch Button
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-				topFrame.dispose();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 		return p;
@@ -313,6 +363,9 @@ public class RoomPanel extends JPanel {
 		return b;
 	}
 
+	/**
+	 * leert die Liste des Panels und fuellt sie anschlieﬂend wieder mit allen Daten der Datenbank
+	 */
 	public static void updateList() {
 		listModel.clear();
 		for (Room r : DataRaum.getAllRaum()) {

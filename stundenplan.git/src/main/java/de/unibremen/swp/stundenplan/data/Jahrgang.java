@@ -31,4 +31,9 @@ public class Jahrgang {
 	public void setStundenbedarf(HashMap<String, Integer> stundenbedarf) {
 		this.stundenbedarf = stundenbedarf;
 	}
+	
+	@Override
+    public String toString() {
+    	return ("Jahrgang: " + jahrgang);
+    }
 }

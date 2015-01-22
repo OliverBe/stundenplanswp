@@ -576,8 +576,7 @@ public class PersonalPanel extends JPanel {
 							lehrerB2.isSelected(), stunden, wunsch));
 	
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-					topFrame.dispose();
+					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -592,8 +591,7 @@ public class PersonalPanel extends JPanel {
 		// abbruch Button
 				button3.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-						topFrame.dispose();
+						((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 					}
 				});
 		return p;

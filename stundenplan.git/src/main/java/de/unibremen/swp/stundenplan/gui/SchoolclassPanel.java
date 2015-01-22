@@ -494,9 +494,7 @@ public class SchoolclassPanel extends JPanel {
 					
 					
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities
-							.getWindowAncestor(p);
-					topFrame.dispose();
+					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -510,8 +508,7 @@ public class SchoolclassPanel extends JPanel {
 		// abbruch Button
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-				topFrame.dispose();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 		return p;

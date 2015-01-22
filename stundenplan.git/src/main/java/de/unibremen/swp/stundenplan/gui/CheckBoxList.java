@@ -2,21 +2,19 @@ package de.unibremen.swp.stundenplan.gui;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
 /**
  * code von http://www.devx.com/tips/Tip/5342
  */
-
+@SuppressWarnings({ "rawtypes", "serial" })
 public class CheckBoxList extends JList {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
+	@SuppressWarnings("unchecked")
 	public CheckBoxList() {
 		setCellRenderer(new CellRenderer());
 

@@ -33,50 +33,69 @@ import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.KuerzelException;
-import de.unibremen.swp.stundenplan.exceptions.MindestestensEinLehrerException;
 import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, bearbeiten, loeschen und anzeigen
+ * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * von Stundeninhalten
  * 
  * @author Oliver
- *
  */
+@SuppressWarnings("serial")
 public class StundeninhaltPanel extends JPanel {
+
 	/**
 	 * Textfeld fuer das Kerzel des Stundeninhalts beim adden
 	 */
-	private TextField kuerzField;
+	private JTextField kuerzField;
 
 	/**
 	 * Textfeld fuer das Kerzel des Stundeninhalts beim editen
 	 */
-	private TextField kuerzField2;
+	private JTextField kuerzField2;
 
 	/**
 	 * Textfeld fuer die Regeldauer des Stundeninhalts beim adden
 	 */
-	private TextField timeField;
+	private JTextField dauerField;
 
 	/**
 	 * Textfeld fuer die Regeldauer des Stundeninhalts beim editen
 	 */
-	private TextField timeField2;
+	private JTextField dauerField2;
+	
+	/**
+	 * GridBagConsraint fuer die add,edit,listpanel
+	 */
+	private GridBagConstraints c;
+	
+	/**
+	 * GridBagConsraint fuer das gesamte Panel
+	 */
+	private GridBagConstraints c2;
 
-	private GridBagConstraints c = new GridBagConstraints();
-	private GridBagConstraints c2 = new GridBagConstraints();
-
+	/**
+	 * ListModel fuer die JList der Stundeninhalte
+	 */
 	private static DefaultListModel<Stundeninhalt> listModel = new DefaultListModel<Stundeninhalt>();
+	
+	/**
+	 * JList der Stundeninhalte
+	 */
 	private JList<Stundeninhalt> list = new JList<Stundeninhalt>(listModel);
+	
+	/**
+	 * Scroller fuer die JList der Stundeninhalte
+	 */
 	private JScrollPane listScroller = new JScrollPane(list);
 
 	/**
-	 * Konstruktor des Stundeninhaltanels
+	 * Konstruktor des Stundeninhaltpanels
 	 */
 	public StundeninhaltPanel() {
+		c2 = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -99,9 +118,10 @@ public class StundeninhaltPanel extends JPanel {
 	 * @return HinzufuegenPanel
 	 */
 	private JPanel createAddPanel(final JPanel p) {
-		timeField = new TextField(5);
-		kuerzField = new TextField(5);
-		TextField nameField = new TextField(15);
+		c = new GridBagConstraints();
+		dauerField = new JTextField(5);
+		kuerzField = new JTextField(5);
+		JTextField titelField = new JTextField(15);
 		JButton button = new JButton("Stundeninhalt hinzufuegen");
 
 		p.setLayout(new GridBagLayout());
@@ -111,9 +131,9 @@ public class StundeninhaltPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(new Label("Titel der Aktivitaet:"), c);
+		p.add(new Label("Titel:"), c);
 		c.gridx = 1;
-		p.add(nameField, c);
+		p.add(titelField, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
@@ -123,13 +143,13 @@ public class StundeninhaltPanel extends JPanel {
 
 		c.gridx = 0;
 		c.gridy = 2;
-		p.add(new Label("Regeldauer in min:"), c);
+		p.add(new Label("Regeldauer (Min):"), c);
 		c.gridx = 1;
-		p.add(timeField, c);
+		p.add(dauerField, c);
 
 		c.gridx = 0;
 		c.gridy = 3;
-		p.add(new Label("rythmischer Typ:"), c);
+		p.add(new Label("Rythmustyp:"), c);
 		c.gridx = 1;
 		final JRadioButton pauseB = new JRadioButton("Pause");
 		pauseB.setSelected(true);
@@ -164,8 +184,8 @@ public class StundeninhaltPanel extends JPanel {
 				if (schwerB.isSelected())
 					rythm = 2;
 
-				Stundeninhalt si = new Stundeninhalt(nameField.getText(),
-						kuerzField.getText(), Integer.parseInt(timeField
+				Stundeninhalt si = new Stundeninhalt(titelField.getText(),
+						kuerzField.getText(), Integer.parseInt(dauerField
 								.getText()), rythm);
 
 				StundeninhaltManager.addStundeninhaltToDb(si);
@@ -181,9 +201,10 @@ public class StundeninhaltPanel extends JPanel {
 	 * 
 	 * @param p
 	 *            uebergebenes Panel
-	 * @return HinzufuegenPanel
+	 * @return HinzuzufuegendesPanel
 	 */
 	private JPanel createListPanel(final JPanel p) {
+		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Existierende Stundeninhalte"));
@@ -249,20 +270,15 @@ public class StundeninhaltPanel extends JPanel {
 	 * 
 	 * @param p
 	 *            uebergebenes Panel
-	 * @return HinzufuegenPanel
+	 * @param si
+	 *            zu editierendes Element
+	 * @return HinzuzufuegendesPanel
 	 */
 	private JPanel createEditPanel(final JPanel p, final Stundeninhalt si) {
-		System.out.println("Rythm" + si.getRhythmustyp());
-
-		Label lName2 = new Label("Titel der Aktivitaet:");
-		Label lKuerzel2 = new Label("Kuerzel:");
-		Label ltime2 = new Label("Regeldauer in min:");
-		Label lPause2 = new Label("rythmischer Typ:");
-
-		TextField nameField2 = new TextField(15);
-		timeField2 = new TextField(5);
-		kuerzField2 = new TextField(5);
-
+		c = new GridBagConstraints();
+		JTextField titelField2 = new JTextField(15);
+		dauerField2 = new JTextField(5);
+		kuerzField2 = new JTextField(5);
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
 
@@ -272,28 +288,28 @@ public class StundeninhaltPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName2, c);
+		p.add(new Label("Titel:"), c);
 		c.gridx = 1;
-		p.add(nameField2, c);
-		nameField2.setText(si.getName());
+		p.add(titelField2, c);
+		titelField2.setText(si.getName());
 
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lKuerzel2, c);
+		p.add(new Label("Kuerzel:"), c);
 		c.gridx = 1;
 		p.add(kuerzField2, c);
 		kuerzField2.setText(si.getKuerzel());
 
 		c.gridx = 0;
 		c.gridy = 2;
-		p.add(ltime2, c);
+		p.add(new Label("Regeldauer (Min):"), c);
 		c.gridx = 1;
-		p.add(timeField2, c);
-		timeField2.setText(si.getRegeldauer() + "");
+		p.add(dauerField2, c);
+		dauerField2.setText(si.getRegeldauer() + "");
 
 		c.gridx = 0;
 		c.gridy = 3;
-		p.add(lPause2, c);
+		p.add(new Label("Rythmustyp:"), c);
 		c.gridx = 1;
 		final JRadioButton pauseB2 = new JRadioButton("Pause");
 		final JRadioButton leichtB2 = new JRadioButton("Leicht");
@@ -328,31 +344,23 @@ public class StundeninhaltPanel extends JPanel {
 		// edit Button
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
 					int rythm = 0;
 					if (!check(p))
-						throw new WrongInputException();
+						return;
 					if (pauseB2.isSelected())
 						rythm = 0;
 					if (leichtB2.isSelected())
 						rythm = 1;
 					if (schwerB2.isSelected())
 						rythm = 2;
-
-					Stundeninhalt si2 = new Stundeninhalt(nameField2.getText(),
-							kuerzField2.getText(), Integer.parseInt(timeField2
+					Stundeninhalt si2 = new Stundeninhalt(titelField2.getText(),
+							kuerzField2.getText(), Integer.parseInt(dauerField2
 									.getText()), rythm);
-
 					StundeninhaltManager.editStundeninhalt(si.getKuerzel(), si2);
 
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities
-							.getWindowAncestor(p);
-					topFrame.dispose();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
-				}
+					((JFrame)SwingUtilities
+					.getWindowAncestor(p)).dispose();
 			}
 		});
 
@@ -360,8 +368,7 @@ public class StundeninhaltPanel extends JPanel {
 		p.add(button3, c);
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-				topFrame.dispose();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 
@@ -393,16 +400,16 @@ public class StundeninhaltPanel extends JPanel {
 		}
 		try {
 			for (Component c : p.getComponents()) {
-				if (c == timeField) {
-					Integer.parseInt(timeField.getText());
-					if (Integer.parseInt(timeField.getText()) < 1) {
+				if (c == dauerField) {
+					Integer.parseInt(dauerField.getText());
+					if (Integer.parseInt(dauerField.getText()) < 1) {
 						new ZahlException();
 						return false;
 					}
 				}
-				if (c == timeField2) {
-					Integer.parseInt(timeField2.getText());
-					if (Integer.parseInt(timeField2.getText()) < 1) {
+				if (c == dauerField2) {
+					Integer.parseInt(dauerField2.getText());
+					if (Integer.parseInt(dauerField2.getText()) < 1) {
 						new ZahlException();
 						return false;
 					}
@@ -412,9 +419,7 @@ public class StundeninhaltPanel extends JPanel {
 			new ZahlException();
 			return false;
 		}
-
 		return true;
-
 	}
 
 	/**
@@ -442,9 +447,12 @@ public class StundeninhaltPanel extends JPanel {
 		return b;
 	}
 
+	/**
+	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen Daten der Datenbank
+	 */
 	public static void updateList() {
 		listModel.clear();
-		for (Stundeninhalt sti : DataStundeninhalt.getAllStundeninhalte()) {
+		for (Stundeninhalt sti : StundeninhaltManager.getAllStundeninhalteFromDB()) {
 			listModel.addElement(sti);
 		}
 	}

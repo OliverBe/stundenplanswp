@@ -50,7 +50,7 @@ public class DataPanel extends JPanel {
 	private JMenuItem mStdi = new JMenuItem("Stundeninhalte");
 	private JMenuItem mR = new JMenuItem("Raeume");
 	private JMenuItem mRf = new JMenuItem("Raumfunktionen");
-	private JMenuItem mB = new JMenuItem("Bedarf an Stundeninhalten");
+	private JMenuItem mB = new JMenuItem("Jahrgangsbedarf");
 
 	private RaumfunktionPanel raumfunktionPanel;
 
@@ -137,11 +137,8 @@ public class DataPanel extends JPanel {
 				c.weighty = 1;
 				add(personalPanel, c);
 
-				personalPanel.nameField.requestFocus();
-
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(personalPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(personalPanel));
 			}
 		});
 
@@ -159,9 +156,8 @@ public class DataPanel extends JPanel {
 				c.weighty = 1;
 				add(schoolclassPanel, c);
 
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(schoolclassPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(schoolclassPanel));
 			}
 		});
 
@@ -199,9 +195,8 @@ public class DataPanel extends JPanel {
 				c.weighty = 1;
 				add(roomPanel, c);
 
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(roomPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(roomPanel));
 			}
 		});
 
@@ -218,9 +213,8 @@ public class DataPanel extends JPanel {
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(raumfunktionPanel, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(raumfunktionPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(raumfunktionPanel));
 			}
 		});
 		
@@ -237,13 +231,15 @@ public class DataPanel extends JPanel {
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(bedarfPanel, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(bedarfPanel);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(bedarfPanel));
 			}
 		});
 	}
 
+	/**
+	 * loescht alle panel, damit sich nichts ueberlappt
+	 */
 	private void removeOld() {
 		if (personalPanel != null)
 			remove(personalPanel);
@@ -258,42 +254,4 @@ public class DataPanel extends JPanel {
 		if (bedarfPanel != null)
 			remove(bedarfPanel);
 	}
-	//
-	// public static void updatepersonalList() {
-	// try {
-	// Collection<personal> personals = personalManager.getAllpersonals();
-	// personalListModel.clear();
-	// for (final personal personal : personals) {
-	// personalListModel.addpersonal(personal);
-	// }
-	// } catch (DatasetException e1) {
-	// e1.printStackTrace();
-	// }
-	// }
-	//
-	// public static void updateSchoolclassList() {
-	// try {
-	// Collection<Schoolclass> schoolclasses =
-	// SchoolclassManager.getAllSchoolclasses();
-	// schoolclassListModel.clear();
-	// for (final Schoolclass schoolclass : schoolclasses) {
-	// schoolclassListModel.addSchoolclass(schoolclass);
-	// }
-	// } catch (DatasetException e1) {
-	// e1.printStackTrace();
-	// }
-	// }
-	//
-	// public static void updatestundeninhaltList() {
-	// try {
-	// Collection<stundeninhalt> stundeninhalts =
-	// stundeninhaltManager.getAllstundeninhalts();
-	// stundeninhaltListModel.clear();
-	// for (final stundeninhalt stundeninhalt : stundeninhalts) {
-	// stundeninhaltListModel.addstundeninhalt(stundeninhalt);
-	// }
-	// } catch (DatasetException e1) {
-	// e1.printStackTrace();
-	// }
-	// }
 }
