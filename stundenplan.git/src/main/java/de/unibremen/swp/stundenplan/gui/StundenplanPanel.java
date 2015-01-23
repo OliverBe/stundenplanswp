@@ -1,13 +1,12 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -25,13 +24,11 @@ import javax.swing.SwingUtilities;
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
-import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 
-public class StundenplanPanel extends JPanel implements ActionListener {
+public class StundenplanPanel extends JPanel implements ActionListener, MouseListener {
 
 	private JFrame f;
 	private int eventX;
@@ -87,6 +84,8 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		table = null;
 		init();
 		show.addActionListener(this);
+		personalList.addMouseListener(this);
+		schoolclassList.addMouseListener(this);
 	}
 
 	public void init() {
@@ -102,7 +101,6 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 
 		updateLists();
 
-		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
 		c.fill = GridBagConstraints.BOTH;
@@ -192,12 +190,47 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		personalList = new JList(pList);
 		schoolclassList = new JList(sList);
 
+		JScrollPane paneList1 = new JScrollPane(personalList);
+		JScrollPane paneList2 = new JScrollPane(schoolclassList);
+		
 		menuBar.removeAll();
-		menuBar.add(label1);
-		menuBar.add(personalList);
-		menuBar.add(label2);
-		menuBar.add(schoolclassList);
-		menuBar.add(show);
+		GridBagLayout gbl = new GridBagLayout();
+		menuBar.setLayout(gbl);
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.fill =GridBagConstraints.REMAINDER;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 0.1;
+		gbl.setConstraints(label1, c);
+		menuBar.add(label1, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weighty = 0.3;
+		c.weightx = 1.0;
+		gbl.setConstraints(paneList1, c);
+		menuBar.add(paneList1, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weightx = 1.0;
+		c.weighty = 0.1;
+		gbl.setConstraints(label2, c);
+		menuBar.add(label2, c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weighty = 0.3;
+		c.weightx = 1.0;
+		gbl.setConstraints(paneList2, c);
+		menuBar.add(paneList2, c);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.weightx = 1.0;
+		c.weighty = 0.2;
+		gbl.setConstraints(show, c);
+		menuBar.add(show, c);
+		
 
 	}
 
@@ -218,7 +251,6 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		
 		init();
 		updatetable();
-
 	}
 
 	public JTable getTable() {
@@ -229,6 +261,44 @@ public class StundenplanPanel extends JPanel implements ActionListener {
 		
 		table.repaint();
 		Stundenplan.getMain().validate();
+		personalList.addMouseListener(this);
+		schoolclassList.addMouseListener(this);
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent evt) {
+		if (evt.getSource() == personalList) {
+			schoolclassList.clearSelection();
+		} else if ( evt.getSource() == schoolclassList) {
+			personalList.clearSelection();
+		}
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }
