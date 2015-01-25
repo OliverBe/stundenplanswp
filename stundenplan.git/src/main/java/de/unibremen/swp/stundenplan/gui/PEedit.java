@@ -243,7 +243,8 @@ public class PEedit extends JFrame {
 				while (it.hasNext()) {
 					Personal pr = (Personal) it.next();
 					if (PlanungseinheitManager.checkPersonPE(pr,
-							p, p.getWeekday())) {
+							p.getStartHour(), p.getStartminute(),
+							p.getEndhour(), p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Personal " + pr.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -260,7 +261,9 @@ public class PEedit extends JFrame {
 				it = scList.destinationIterator();
 				while (it.hasNext()) {
 					Schoolclass sc = (Schoolclass) it.next();
-					if (PlanungseinheitManager.checkScPE(sc, p, p.getWeekday())) {
+					if (PlanungseinheitManager.checkScPE(sc, p.getStartHour(),
+							p.getStartminute(), p.getEndhour(),
+							p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Klasse " + sc.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -272,7 +275,9 @@ public class PEedit extends JFrame {
 				it = roomList.destinationIterator();
 				while (it.hasNext()) {
 					Room r = (Room) it.next();
-					if (PlanungseinheitManager.checkRoomPE(r, p, p.getWeekday())) {
+					if (PlanungseinheitManager.checkRoomPE(r, p.getStartHour(),
+							p.getStartminute(), p.getEndhour(),
+							p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Raum " + r.getName()
 										+ " ist schon zu dieser Zeit gebucht");
