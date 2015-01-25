@@ -102,8 +102,8 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 										+ " befindet sich nicht im End der Planungseinheit");
 				return;
 			}
-			if (((int) shspinner[i].getValue() == (int) smspinner[i].getValue())
-					&& ((int) ehspinner[i].getValue() == (int) emspinner[i]
+			if (((int) shspinner[i].getValue() == (int) ehspinner[i].getValue())
+					&& ((int) smspinner[i].getValue() == (int) emspinner[i]
 							.getValue())) {
 				JOptionPane.showMessageDialog(null, "Personal " + p.getName()
 						+ " darf nicht gleiche Startzeit und Endzeit haben");
@@ -120,7 +120,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 					new int[] { (int) shspinner[i].getValue(),
 							(int) smspinner[i].getValue(),
 							(int) ehspinner[i].getValue(),
-							(int) smspinner[i].getValue() });
+							(int) emspinner[i].getValue() });
 			i++;
 		}
 		if (!isonefulltime()) {
@@ -143,11 +143,17 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		Iterator it = pe.getPersonalMap().values().iterator();
 		while (it.hasNext()) {
 			int[] time = (int[]) it.next();
-			if (time[0] == pe.getStartHour() && time[1] == pe.getStartminute()
-					&& time[2] == pe.getEndhour()
-					&& time[3] == pe.getEndminute()) {
+			if ((time[0] == pe.getStartHour() && time[1] == pe.getStartminute())
+					&& (time[2] == pe.getEndhour()
+					&& time[3] == pe.getEndminute())) {
 				return true;
 			}
+			System.out.println(time[0] == pe.getStartHour());
+			System.out.println(time[1] == pe.getStartminute());
+			System.out.println(time[2] == pe.getEndhour());
+			System.out.println(time[3] == pe.getEndminute());
+			System.out.println(time[3]);
+			System.out.println(pe.getEndminute());
 		}
 		return false;
 	}
