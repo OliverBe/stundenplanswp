@@ -85,7 +85,7 @@ public class PEedit extends JFrame {
 		}
 
 	};
-	
+
 	private JLabel lLabel1 = new JLabel("Startzeit : Stunde - Minute");
 	private JLabel lLabel2 = new JLabel("Endzeit  : Stunde - Minute");
 	private JPanel starttime;
@@ -98,8 +98,6 @@ public class PEedit extends JFrame {
 			"Hier koennen die Planungseinheiten bearbeitet werden");
 	private JButton button;
 	private Planungseinheit pe;
-	
-	
 
 	// /**
 	// * Launch the application.
@@ -131,7 +129,7 @@ public class PEedit extends JFrame {
 		parentframe = pParent;
 		init();
 	}
-	
+
 	/**
 	 * erzeugt Editor fuer Erzeugung von einer Planungseinheit.
 	 */
@@ -141,8 +139,6 @@ public class PEedit extends JFrame {
 		pe = PlanungseinheitManager.getPlanungseinheitById(pPeid);
 		init();
 	}
-
-
 
 	private void init() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -183,22 +179,21 @@ public class PEedit extends JFrame {
 		tf.setEditable(false);
 		getContentPane().add(starttime);
 		getContentPane().add(endtime);
-		pList = new DualListBox("Alle Lehrer",
-				" Lehrer im Planungseinheit", PersonalComparator);
+		pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit",
+				PersonalComparator);
 		pList.addSourceElements(DataPersonal.getAllPersonal().toArray());
 		getContentPane().add(pList);
-		sIList = new DualListBox(
-				"Verfuegbare Stundeninhalte",
+		sIList = new DualListBox("Verfuegbare Stundeninhalte",
 				" Stundeninhalte im Planungseinheit", SIComparator);
 		sIList.addSourceElements(DataStundeninhalt.getAllStundeninhalte()
 				.toArray());
 		getContentPane().add(sIList);
-		scList = new DualListBox("Alle Klassen",
-				" Klassen im Planungseinheit", SCComparator);
+		scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit",
+				SCComparator);
 		scList.addSourceElements(DataSchulklasse.getAllSchulklasse().toArray());
 		getContentPane().add(scList);
-		roomList = new DualListBox("Alle Raeume",
-				" Raeume im Planungseinheit", RoomComparator);
+		roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit",
+				RoomComparator);
 		roomList.addSourceElements(DataRaum.getAllRaum().toArray());
 		getContentPane().add(roomList);
 		button = new JButton("Planungseinheiten speichern");
@@ -210,8 +205,9 @@ public class PEedit extends JFrame {
 							.showMessageDialog(null,
 									"Es sind keine Personal, Klassen oder Raeume eingeplant");
 					return;
-				} else if ((sIList.getDestsize() > 1 || scList.getDestsize() > 1 || roomList
-						.getDestsize() > 1) && !bandselect.isSelected()) {
+				} else if ((sIList.getDestsize() > 1
+						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
+						&& !bandselect.isSelected()) {
 					JOptionPane
 							.showMessageDialog(null,
 									"Nur Band-Unterricht kann mehrere Stundeninhalte, Klassen und Raeume haben");
@@ -233,9 +229,12 @@ public class PEedit extends JFrame {
 							"Startzeit muss frueher als Endzeit sein");
 					return;
 				}
-				if(p.getEndhour() == TimetableManager.endTimeHour() && p.getEndminute()>TimetableManager.endTimeMinute()){
-					JOptionPane.showMessageDialog(null,
-							"Der Tag ist leider um "+p.getEndhour()+":"+p.getEndminute()+" schon zu Ende.");
+				if (p.getEndhour() == TimetableManager.endTimeHour()
+						&& p.getEndminute() > TimetableManager.endTimeMinute()) {
+					JOptionPane.showMessageDialog(
+							null,
+							"Der Tag ist leider um " + p.getEndhour() + ":"
+									+ p.getEndminute() + " schon zu Ende.");
 					return;
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
@@ -245,10 +244,7 @@ public class PEedit extends JFrame {
 					Personal pr = (Personal) it.next();
 					if (PlanungseinheitManager.checkPersonPE(pr,
 							p.getStartHour(), p.getStartminute(),
-							p.getWeekday())
-							|| PlanungseinheitManager.checkPersonPE(pr,
-									p.getEndhour(), p.getEndminute(),
-									p.getWeekday())) {
+							p.getEndhour(), p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Personal " + pr.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -266,10 +262,8 @@ public class PEedit extends JFrame {
 				while (it.hasNext()) {
 					Schoolclass sc = (Schoolclass) it.next();
 					if (PlanungseinheitManager.checkScPE(sc, p.getStartHour(),
-							p.getStartminute(), p.getWeekday())
-							|| PlanungseinheitManager.checkScPE(sc,
-									p.getEndhour(), p.getEndminute(),
-									p.getWeekday())) {
+							p.getStartminute(), p.getEndhour(),
+							p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Klasse " + sc.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -282,10 +276,8 @@ public class PEedit extends JFrame {
 				while (it.hasNext()) {
 					Room r = (Room) it.next();
 					if (PlanungseinheitManager.checkRoomPE(r, p.getStartHour(),
-							p.getStartminute(), p.getWeekday())
-							|| PlanungseinheitManager.checkRoomPE(r,
-									p.getEndhour(), p.getEndminute(),
-									p.getWeekday())) {
+							p.getStartminute(), p.getEndhour(),
+							p.getEndminute(), p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Raum " + r.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -294,11 +286,12 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
-				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(getmyFrame(),listp, p);
-				if(pdialog.getsaved()){
-				parentframe.updatetable();
-				dispose();
-				}else{
+				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
+						getmyFrame(), listp, p);
+				if (pdialog.getsaved()) {
+					parentframe.updatetable();
+					dispose();
+				} else {
 					return;
 				}
 			}
@@ -310,8 +303,8 @@ public class PEedit extends JFrame {
 				6, 6); // xPad, yPad
 		setSize(1000, 700);
 	}
-	
-	private JFrame getmyFrame(){
+
+	private JFrame getmyFrame() {
 		return this;
 	}
 }

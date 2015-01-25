@@ -253,10 +253,11 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return
 	 */
-	public static boolean checkPersonPE(final Personal p, final int hour, final int minute, final Weekday day ){
+	public static boolean checkPersonPE(final Personal p, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(day, p);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, hour, minute))return true;
+			if(checkPEandTime(pl, shour, sminute))return true;
+			if(checkPEandEndTime(pl, ehour, eminute))return true;
 		}
 		return false;
 	}
@@ -265,10 +266,11 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return
 	 */
-	public static boolean checkRoomPE(final Room r, final int hour, final int minute, final Weekday day ){
+	public static boolean checkRoomPE(final Room r, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForRoombyWeekday(day, r);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, hour, minute))return true;
+			if(checkPEandTime(pl, shour, sminute))return true;
+			if(checkPEandEndTime(pl, ehour, eminute))return true;
 		}
 		return false;
 	}
@@ -277,13 +279,15 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return
 	 */
-	public static boolean checkScPE(final Schoolclass sc, final int hour, final int minute, final Weekday day ){
+	public static boolean checkScPE(final Schoolclass sc, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForSchoolclassbyWeekday(day, sc);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, hour, minute))return true;
+			if(checkPEandTime(pl, shour, sminute))return true;
+			if(checkPEandEndTime(pl, ehour, eminute))return true;
 		}
 		return false;
 	}
+	
 	/**
 	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
 	 * 
@@ -296,6 +300,23 @@ public final class PlanungseinheitManager {
 		}else if(hour== p1.getStartHour() && minute >= p1.getStartminute()){
 				return true;
 		}else if(hour== p1.getEndhour() && minute < p1.getEndminute()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
+	 * 
+	 * @return
+	 */
+	public static boolean checkPEandEndTime(final Planungseinheit p1,
+			final int hour, final int minute) {
+		if (hour > p1.getStartHour() && hour < p1.getEndhour()) {
+			return true;
+		}else if(hour== p1.getStartHour() && minute > p1.getStartminute()){
+				return true;
+		}else if(hour== p1.getEndhour() && minute <= p1.getEndminute()){
 			return true;
 		}
 		return false;
@@ -317,6 +338,7 @@ public final class PlanungseinheitManager {
 		}
 		return false;
 	}
+	
 	
 	public static void checkPetimetest(){
 		Planungseinheit p1 = new Planungseinheit();

@@ -148,12 +148,6 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 					&& time[3] == pe.getEndminute())) {
 				return true;
 			}
-			System.out.println(time[0] == pe.getStartHour());
-			System.out.println(time[1] == pe.getStartminute());
-			System.out.println(time[2] == pe.getEndhour());
-			System.out.println(time[3] == pe.getEndminute());
-			System.out.println(time[3]);
-			System.out.println(pe.getEndminute());
 		}
 		return false;
 	}
