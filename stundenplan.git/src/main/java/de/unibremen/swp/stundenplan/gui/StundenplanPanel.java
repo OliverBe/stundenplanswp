@@ -32,47 +32,47 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		MouseListener {
 
 	/**
-	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgeführt
+	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgefï¿½hrt
 	 * wurde. Nicht jedes Event
 	 */
 	private int eventX;
 	/**
-	 * gibt den optischen Punkt der y-Achse an an welchem ein Event ausgeführt
+	 * gibt den optischen Punkt der y-Achse an an welchem ein Event ausgefï¿½hrt
 	 * wurde. Nicht jedes Event
 	 */
 	private int eventY;
 
 	/**
-	 * gibt den Punkt der x-Achse an an welchem ein Event ausgeführt wurde.
+	 * gibt den Punkt der x-Achse an an welchem ein Event ausgefï¿½hrt wurde.
 	 * Nicht jedes Event
 	 */
 	private int eventXX;
 
 	/**
-	 * gibt den Punkt der y-Achse an an welchem ein Event ausgeführt wurde.
+	 * gibt den Punkt der y-Achse an an welchem ein Event ausgefï¿½hrt wurde.
 	 * Nicht jedes Event
 	 */
 	private int eventYY;
 
 	/**
-	 * repräsentiert die Tabelle welche in dem Frame als Stundenplan angezeigt
+	 * reprï¿½sentiert die Tabelle welche in dem Frame als Stundenplan angezeigt
 	 * wird
 	 */
 	private static JTable table;
 
 	/**
-	 * die MenuBar ist die MenüLeiste im Pane welche die lehrer und Schulklassen
+	 * die MenuBar ist die Menï¿½Leiste im Pane welche die lehrer und Schulklassen
 	 * listen enthalten
 	 */
 	private static JMenuBar menuBar = new JMenuBar();
 
 	/**
-	 * ist das Model der Liste für das Personal
+	 * ist das Model der Liste fï¿½r das Personal
 	 */
 	private static DefaultListModel pList;
 
 	/**
-	 * ist das Model der Liste für die Schulklassen
+	 * ist das Model der Liste fï¿½r die Schulklassen
 	 */
 	private static DefaultListModel sList;
 
@@ -87,18 +87,18 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private static JList schoolclassList;
 
 	/**
-	 * Label für die Menübar
+	 * Label fï¿½r die Menï¿½bar
 	 */
 	private static JLabel label1 = new JLabel("Lehrer");
 
 	/**
-	 * Label für die Menübar
+	 * Label fï¿½r die Menï¿½bar
 	 */
 	private static JLabel label2 = new JLabel("Klassen");
 
 	/**
 	 * dieses MouseAdapter erzeugt bei rechtsklick auf die Tabelle ein popup
-	 * Menü welches das Planungseinheiten hinzufügen, oder bearbeiten kann
+	 * Menï¿½ welches das Planungseinheiten hinzufï¿½gen, oder bearbeiten kann
 	 */
 	private MouseAdapter mousefunc = new MouseAdapter() {
 		public void mousePressed(MouseEvent evt) {
@@ -123,14 +123,14 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 					}
 					if (t != null)
 						;
-					createPopup(t.getpe());
+					createPopup(t);
 				}
 			}
 		}
 	};
 
 	/**
-	 * repräsentiert den Button, welche beim drücken den ausgewählten
+	 * reprï¿½sentiert den Button, welche beim drï¿½cken den ausgewï¿½hlten
 	 * Stundenplan anzeigt
 	 */
 	private static JButton show = new JButton("Anzeigen");
@@ -141,8 +141,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	public JLabel warning = new JLabel();
 
 	/**
-	 * ist das Popup Menü welches erscheint, wenn in dem Stundenplan rechtsklick
-	 * ausgeführt wird
+	 * ist das Popup Menï¿½ welches erscheint, wenn in dem Stundenplan rechtsklick
+	 * ausgefï¿½hrt wird
 	 */
 	JPopupMenu popmen = new JPopupMenu();
 
@@ -160,7 +160,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * wird beim Initialisieren dieses Panes ausgeführt und intialisiert die
+	 * wird beim Initialisieren dieses Panes ausgefï¿½hrt und intialisiert die
 	 * GUI-Elemente deses Panes.
 	 */
 	public void init() {
@@ -201,7 +201,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	 *            Die Spalte.
 	 * @return das neue Popup-Menu
 	 */
-	protected JPopupMenu createPopup(final int peid) {
+	protected JPopupMenu createPopup(final Timeslot t) {
 
 		if (popmen.isVisible()) {
 			popmen.setVisible(false);
@@ -214,7 +214,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				PEedit frame = getpFrame();
+				PEedit frame = getpFrame(t);
 				frame.setVisible(true);
 			}
 		});
@@ -222,12 +222,12 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				PlanungseinheitManager.deletePlanungseinheitFromDB(peid);
+				PlanungseinheitManager.deletePlanungseinheitFromDB(t.getpe());
 				updatetable();
 			}
 		});
 		popmen.add(menu1);
-		if (peid != -1) {
+		if (t.getpe() != -1) {
 			popmen.add(menu2);
 		}
 		popmen.setLocation(eventX, eventY);
@@ -236,13 +236,13 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 
 	}
 
-	private PEedit getpFrame() {
-		return new PEedit(this);
+	private PEedit getpFrame(Timeslot pt) {
+		return new PEedit(this, pt);
 	}
 
 	/**
-	 * updated die GUI und die Listen. wird ausgeführt sobald eine relevante
-	 * Änderung in der Datenbank geschieht. Wird von anderen Klassen statisch
+	 * updated die GUI und die Listen. wird ausgefï¿½hrt sobald eine relevante
+	 * ï¿½nderung in der Datenbank geschieht. Wird von anderen Klassen statisch
 	 * ausgerufen.
 	 */
 	public static void updateLists() {
@@ -314,7 +314,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * stellt eine Aktion da. Sobald der Anzeigen Button gedrückt wird, wird von
+	 * stellt eine Aktion da. Sobald der Anzeigen Button gedrï¿½ckt wird, wird von
 	 * dem element in der JList der Stundenplan in Form eines JTables angezeigt
 	 * Danach wird die GUI aktualisiert
 	 * 
@@ -340,7 +340,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * gibt den aktuellen Stundenplan (die Tabelle) zurück
+	 * gibt den aktuellen Stundenplan (die Tabelle) zurï¿½ck
 	 * 
 	 * @return
 	 */
@@ -360,8 +360,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * Sobald ein Element in den J-Listen ausgewählt
-	 * wird, wird in der anderen JListe das ausgewählte Element "deselected".
+	 * Sobald ein Element in den J-Listen ausgewï¿½hlt
+	 * wird, wird in der anderen JListe das ausgewï¿½hlte Element "deselected".
 	 * @param evt
 	 */
 	@Override

@@ -37,6 +37,11 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 public class PEedit extends JFrame {
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 	private StundenplanPanel parentframe;
+	private JSpinner spinner1;
+	private JSpinner spinner2;
+	private JSpinner spinner3;
+	private JSpinner spinner4;
+	private JComboBox<Weekday> tag;
 	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
 		public int compare(Personal p1, Personal p2) {
 			if (p1.getName() == null) {
@@ -124,10 +129,15 @@ public class PEedit extends JFrame {
 	/**
 	 * erzeugt Editor fuer ERzeugung von einer Planungseinheit.
 	 */
-	public PEedit(final StundenplanPanel pParent) {
+	public PEedit(final StundenplanPanel pParent, Timeslot pTimeslot) {
 		super("Planungseinheiten bearbeiten");
 		parentframe = pParent;
 		init();
+		spinner1.setValue(pTimeslot.getsHour());
+		spinner2.setValue(pTimeslot.getsMinute());
+		spinner3.setValue(pTimeslot.geteHour());
+		spinner4.setValue(pTimeslot.geteMinute());
+		tag.setSelectedItem(pTimeslot.getDay());
 	}
 
 	/**
@@ -159,19 +169,19 @@ public class PEedit extends JFrame {
 				Timeslot.timeslotlength());
 		SpinnerModel eminmodel = new SpinnerNumberModel(0, 0, 59,
 				Timeslot.timeslotlength());
-		final JComboBox<Weekday> tag = new JComboBox<Weekday>(
+		tag = new JComboBox<Weekday>(
 				TimetableManager.validdays());
 		starttime.add(tag);
-		final JSpinner spinner1 = new JSpinner(hourmodel);
+		spinner1 = new JSpinner(hourmodel);
 		starttime.add(spinner1);
-		final JSpinner spinner2 = new JSpinner(minmodel);
+		spinner2 = new JSpinner(minmodel);
 		starttime.add(spinner2);
 		JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner2.getEditor())
 				.getTextField();
 		tf.setEditable(false);
-		final JSpinner spinner3 = new JSpinner(ehourmodel);
+		spinner3 = new JSpinner(ehourmodel);
 		endtime.add(spinner3);
-		final JSpinner spinner4 = new JSpinner(eminmodel);
+		spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
 		final JCheckBox bandselect = new JCheckBox("Band-Unterricht");
 		endtime.add(bandselect);

@@ -169,7 +169,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 			panels[i] = new JPanel();
 			SpinnerModel hourmodel = new SpinnerNumberModel(pe.getStartHour(),
 					pe.getStartHour(), pe.getEndhour(), 1);
-			SpinnerModel minmodel = new SpinnerNumberModel(0, 0, 59,
+			SpinnerModel minmodel = new SpinnerNumberModel(pe.getStartminute(), 0, 59,
 					Timeslot.timeslotlength());
 			shspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(shspinner[i]);
@@ -185,9 +185,9 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		int i = 0;
 		for (Personal p : pList) {
 			panels[i] = new JPanel();
-			SpinnerModel hourmodel = new SpinnerNumberModel(pe.getStartHour(),
+			SpinnerModel hourmodel = new SpinnerNumberModel(pe.getEndhour(),
 					pe.getStartHour(), pe.getEndhour(), 1);
-			SpinnerModel minmodel = new SpinnerNumberModel(0, 0, 59,
+			SpinnerModel minmodel = new SpinnerNumberModel(pe.getEndminute(), 0, 59,
 					Timeslot.timeslotlength());
 			ehspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(ehspinner[i]);

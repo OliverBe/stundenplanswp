@@ -111,6 +111,21 @@ public final class Timeslot implements Serializable {
     	return startzeit.get(Calendar.MINUTE);
     }
     
+    
+    public int geteHour(){
+    	final Calendar newCal = Calendar.getInstance();
+    	newCal.setTimeInMillis(startzeit.getTimeInMillis());
+        newCal.add(Calendar.MINUTE, timeslotlength());
+        return newCal.get(Calendar.HOUR_OF_DAY);
+    }
+    
+    public int geteMinute(){
+    	final Calendar newCal = Calendar.getInstance();
+    	newCal.setTimeInMillis(startzeit.getTimeInMillis());
+    	newCal.add(Calendar.MINUTE, timeslotlength());
+    	return newCal.get(Calendar.MINUTE);
+    }
+    
     /**
      * Gibt die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. führenden Nullen zurück oder einen
      * leeren String, falls die startzeit noch nicht initialisiert wurde.
