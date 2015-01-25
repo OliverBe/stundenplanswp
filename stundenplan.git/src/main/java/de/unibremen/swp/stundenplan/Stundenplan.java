@@ -22,18 +22,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
-import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
-import de.unibremen.swp.stundenplan.logic.TimetableManager;
 /**
  * Hauptklasse fÃ¼r den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
  * und die GUI und zeigt dann das Hauptfenster an.
@@ -48,16 +43,20 @@ public final class Stundenplan {
      */
     private static final Logger LOGGER = Logger.getLogger(Stundenplan.class.getName());
     
+    /**
+     * stellt das GUI-Hauptfenster dar 
+     */
     private static MainFrame main;
     
+    
     private static int time = 0;
+    
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
     	Data.start();
-    	final MainFrame mainFrame= new MainFrame();
-    	 main = mainFrame;
+    	main = new MainFrame();
     	try {
 			Config.init(null);
 		} catch (IOException e) {
@@ -93,6 +92,10 @@ public final class Stundenplan {
             timer.start();
     }
     
+    /**
+     * gibt die Mainframe zurück
+     * @return
+     */
     public static MainFrame getMain() {
     	return main;
     }

@@ -2,7 +2,6 @@ package de.unibremen.swp.stundenplan.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,7 +18,6 @@ import javax.swing.JTable;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 
 public class RaumbelegungsplanPanel extends JPanel implements ActionListener {
@@ -61,7 +59,6 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener {
 
 		updateLists();
 
-		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
 		c.fill = GridBagConstraints.BOTH;
@@ -86,12 +83,29 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener {
 		}
 
 		roomList = new JList(rList);
-
+		JScrollPane list1 = new JScrollPane(roomList);
 		menuBar.removeAll();
-		menuBar.add(label1);
-		menuBar.add(roomList);
-
-		menuBar.add(show);
+		GridBagLayout gbl = new GridBagLayout();
+		menuBar.setLayout(gbl);
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.fill =GridBagConstraints.REMAINDER;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 0.1;
+		menuBar.add(label1, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 1.0;
+		c.weighty = 0.3;
+		menuBar.add(list1, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weightx = 1.0;
+		c.weighty = 0.2;
+		menuBar.add(show,c);
 
 	}
 

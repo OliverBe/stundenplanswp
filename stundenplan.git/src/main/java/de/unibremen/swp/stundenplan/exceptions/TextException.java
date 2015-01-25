@@ -9,7 +9,8 @@ import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
-public class MindestestensEinLehrerException extends Exception {
+@SuppressWarnings("serial")
+public class TextException extends Exception {
 
     /**
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.
@@ -19,9 +20,9 @@ public class MindestestensEinLehrerException extends Exception {
      * 
      * @param message
      *            die Nachricht der neuen Ausnahme
-     */
-    public MindestestensEinLehrerException() {     
-        WarningPanel.setText("Sie muessen mindestens einen Lehrer im Team haben.");
+     */  
+    public TextException() {
+        WarningPanel.setText("Ein Feld ist leer.");
     }
 
 }

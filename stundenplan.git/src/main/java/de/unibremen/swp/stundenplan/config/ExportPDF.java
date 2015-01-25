@@ -303,6 +303,10 @@ public class ExportPDF {
 		}
 	}
 
+	/**
+	 * ändert den Owner-Namen zu dem Strin der in dem Parameter enthalten ist
+	 * @param name
+	 */
 	public static void setOwner(String name) {
 		planOwner = name;
 	}

@@ -38,6 +38,7 @@ import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class ConfigPanel extends JPanel {
 
@@ -362,30 +363,30 @@ public class ConfigPanel extends JPanel {
 			String sm;
 			String eh;
 			String em;
-			if (Config.DAY_STARTTIME_HOUR < 10) {
-				sh = "0" + Config.DAY_STARTTIME_HOUR;
+			if (TimetableManager.startTimeHour() < 10) {
+				sh = "0" + TimetableManager.startTimeHour();
 			} else {
-				sh = "" + Config.DAY_STARTTIME_HOUR;
+				sh = "" + TimetableManager.startTimeHour();
 			}
-			;
-			if (Config.DAY_STARTTIME_MINUTE < 10) {
-				sm = "0" + Config.DAY_STARTTIME_MINUTE;
+			
+			if (TimetableManager.startTimeMinute() < 10) {
+				sm = "0" + TimetableManager.startTimeMinute();
 			} else {
-				sm = "" + Config.DAY_STARTTIME_MINUTE;
+				sm = "" + TimetableManager.startTimeMinute();
 			}
-			;
-			if (Config.DAY_ENDTIME_HOUR < 10) {
-				eh = "0" + Config.DAY_ENDTIME_HOUR;
+			
+			if (TimetableManager.endTimeHour() < 10) {
+				eh = "0" + TimetableManager.endTimeHour();
 			} else {
-				eh = "" + Config.DAY_ENDTIME_HOUR;
+				eh = "" + TimetableManager.endTimeHour();
 			}
-			;
-			if (Config.DAY_ENDTIME_MINUTE < 10) {
-				em = "0" + Config.DAY_ENDTIME_MINUTE;
+			
+			if (TimetableManager.endTimeMinute() < 10) {
+				em = "0" + TimetableManager.endTimeMinute();
 			} else {
-				em = "" + Config.DAY_ENDTIME_MINUTE;
+				em = "" + TimetableManager.endTimeMinute();
 			}
-			;
+			
 			start.setText(sh + ":" + sm);
 			end.setText(eh + ":" + em);
 			button.addActionListener(new ActionListener() {

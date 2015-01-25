@@ -35,29 +35,86 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
+import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 
+/**
+ * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * von Raeumen
+ * 
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class RoomPanel extends JPanel {
 
-	private Label lName = new Label("Name des Raumes: ");
-	private Label lPos = new Label("In welchem Gebaeude: ");
-	private JLabel lSp = new JLabel("Spezieller Raum:");
+	/**
+	 * Textfeld um den Namen des Raumes im addpanel anzugeben
+	 */
+	private JTextField nameField;
 
-	private TextField nameField = new TextField(5);
+	/**
+	 * Textfeld um den Namen des Raumes im editpanel anzugeben
+	 */
+	private JTextField nameField2;
+
+	/**
+	 * ComboBox fuer die Gebdaudeauswahl beim addpanel
+	 */
+	@SuppressWarnings("rawtypes")
 	private JComboBox jcb;
 
-	public JButton button = new JButton("Raum Hinzufuegen");
+	/**
+	 * ComboBox fuer die Gebdaudeauswahl beim editpanel
+	 */
+	@SuppressWarnings({ "rawtypes" })
+	private JComboBox jcb2;
 
-	private GridBagConstraints c = new GridBagConstraints();
-	private GridBagConstraints c2 = new GridBagConstraints();
+	/**
+	 * Gebaeudenummern fuer die comboboxen
+	 */
+	private Integer[] gebaeude = { 1, 2 };
 
+	/**
+	 * checklist fuer die Raumfunktionen beim addpanel
+	 */
+	private CheckBoxList checkList;
+
+	/**
+	 * checklist fuer die Raumfunktionen beim editpanel
+	 */
+	private CheckBoxList checkList2;
+
+	/**
+	 * GridBagConsraint fuer die add,edit,listpanel
+	 */
+	private GridBagConstraints c;
+
+	/**
+	 * GridBagConsraint fuer das gesamte Panel
+	 */
+	private GridBagConstraints c2;
+
+	/**
+	 * ListModel fuer Raumliste
+	 */
 	private static DefaultListModel<Room> listModel = new DefaultListModel<Room>();
+
+	/**
+	 * JList fuer Raeume
+	 */
 	private JList<Room> list = new JList<Room>(listModel);
+
+	/**
+	 * Scrollbar fuer Jlist von Raeumen
+	 */
 	private JScrollPane listScroller = new JScrollPane(list);
 
+	/**
+	 * Konstruktor fuer Raumpanel
+	 */
 	public RoomPanel() {
+		c2 = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -72,45 +129,50 @@ public class RoomPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createAddPanel(final JPanel p) {
+		c = new GridBagConstraints();
+		nameField = new JTextField(5);
+		JLabel lSp = new JLabel("Spezieller Raum:");
+		JButton button = new JButton("Raum Hinzufuegen");
+		checkList = new CheckBoxList();
+
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Neuen Raum hinzufuegen"));
 		c.insets = new Insets(8, 5, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName, c);
+		p.add(new Label("Name des Raumes:"), c);
 		c.gridx = 1;
 		p.add(nameField, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lPos, c);
+		p.add(new Label("Gebaeude:"), c);
 		c.gridx = 1;
-		Integer[] gebaeude = { 1, 2 };
 		jcb = new JComboBox(gebaeude);
 		p.add(jcb, c);
 
 		c.gridx = 0;
-		c.gridy=2;
+		c.gridy = 2;
 		c.gridwidth = 2;
-		c.fill=GridBagConstraints.HORIZONTAL;
-		p.add(new JSeparator(SwingConstants.HORIZONTAL),c);
-			
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL), c);
+
 		c.gridy = 3;
 		c.gridwidth = 2;
-		c.fill=GridBagConstraints.NONE;
+		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		lSp.setFont(new Font(lName.getFont().getFontName(),
-				Font.PLAIN, lName.getFont().getSize()));
+		lSp.setFont(new Font(nameField.getFont().getFontName(), Font.PLAIN,
+				nameField.getFont().getSize()));
 		p.add(lSp, c);
 		c.anchor = GridBagConstraints.WEST;
-		c.fill=GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridheight = 2;
 		c.gridy = 4;
-		
-		final CheckBoxList checkList = new CheckBoxList();
+
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
-		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
+		for (Raumfunktion rf : RaumManager.getAllRaumfunktionFromDB()) {
 			boxes.add(new JCheckBox(rf.getName()));
 		}
 		;
@@ -125,30 +187,27 @@ public class RoomPanel extends JPanel {
 		// add
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (textFieldsEmpty(p))
-						throw new WrongInputException();
-
-					ArrayList<String> rf = new ArrayList<String>();
-					for (int i = 0; i < checkList.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
-						if(cb.isSelected()) rf.add(cb.getText());
-					}
-
-					RaumManager.addRaumToDB(new Room(nameField.getText(), (int) jcb
-							.getSelectedItem(), rf));
-
-					updateList();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
+				if (!check(p))
+					return;
+				ArrayList<String> rf = new ArrayList<String>();
+				for (int i = 0; i < checkList.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						rf.add(cb.getText());
 				}
+
+				RaumManager.addRaumToDB(new Room(nameField.getText(), (int) jcb
+						.getSelectedItem(), rf));
+
+				updateList();
 			}
 		});
 		return p;
 	}
 
 	private JPanel createListPanel(final JPanel p) {
+		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Existierende Raeume"));
 
@@ -182,8 +241,11 @@ public class RoomPanel extends JPanel {
 				pop.edit.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
 						JFrame edit = new JFrame("Raum editieren");
-						edit.add(createEditPanel(new JPanel(),list.getSelectedValue()));
-						edit.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
+						edit.add(createEditPanel(new JPanel(),
+								list.getSelectedValue()));
+						edit.setLocation(MouseInfo.getPointerInfo()
+								.getLocation().x, MouseInfo.getPointerInfo()
+								.getLocation().y);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -191,8 +253,11 @@ public class RoomPanel extends JPanel {
 				pop.delete.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						DeleteDialogue deleteD = new DeleteDialogue(list.getSelectedValue());
-						deleteD.setLocation(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
+						DeleteDialogue deleteD = new DeleteDialogue(list
+								.getSelectedValue());
+						deleteD.setLocation(MouseInfo.getPointerInfo()
+								.getLocation().x, MouseInfo.getPointerInfo()
+								.getLocation().y);
 						deleteD.setVisible(true);
 					}
 				});
@@ -202,58 +267,72 @@ public class RoomPanel extends JPanel {
 		return p;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createEditPanel(final JPanel p, final Room ro) {
-		Label lName2 = new Label("Name des Raumes: ");
-		Label lPos2 = new Label("In welchem Gebaeude: ");
-
-		final TextField nameField2 = new TextField(5);
-		final JComboBox jcb2;
-
+		c = new GridBagConstraints();
+		nameField2 = new JTextField(5);
+		JLabel lSp = new JLabel("Spezieller Raum:");
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
-		
-		
+		checkList2 = new CheckBoxList();
+
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Raum editieren"));
 		c.insets = new Insets(1, 1, 1, 1);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(lName2, c);
+		p.add(new Label("Name des Raumes:"), c);
 		c.gridx = 1;
 		p.add(nameField2, c);
 		nameField2.setText(ro.getName());
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(lPos2, c);
+		p.add(new Label("Gebaeude:"), c);
 		c.gridx = 1;
-		Integer[] gebaeude = { 1, 2 };
 		jcb2 = new JComboBox(gebaeude);
 		p.add(jcb2, c);
 		jcb2.setSelectedItem(ro.getGebaeude());
+		
 		c.gridx = 0;
 		c.gridy = 2;
-		p.add(new Label("Spezieller Raum:"), c);
-		c.gridx = 1;
-		
-		final CheckBoxList checkList2 = new CheckBoxList();
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		p.add(new JSeparator(SwingConstants.HORIZONTAL), c);
+
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.NORTH;
+		lSp.setFont(new Font(nameField.getFont().getFontName(), Font.PLAIN,
+				nameField.getFont().getSize()));
+		p.add(lSp, c);
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridheight = 2;
+		c.gridy = 4;
+
 		ArrayList<JCheckBox> boxes2 = new ArrayList<JCheckBox>();
-		
-		for (Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
+
+		for (Raumfunktion rf : RaumManager.getAllRaumfunktionFromDB()) {
 			boxes2.add(new JCheckBox(rf.getName()));
-		};
-		
-		for(JCheckBox jcb : boxes2){
+		}
+		;
+
+		for (JCheckBox jcb : boxes2) {
 			for (String rf : ro.getMoeglicheFunktionen()) {
-				if(jcb.getText().equals(rf)) jcb.setSelected(true);
-			};
-		};
+				if (jcb.getText().equals(rf))
+					jcb.setSelected(true);
+			}
+			;
+		}
+		;
 		checkList2.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		checkList2.setListData(boxes2.toArray());
 		p.add(checkList2, c);
-		
+
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 6;
 		c.gridwidth = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		p.add(button2, c);
@@ -261,26 +340,23 @@ public class RoomPanel extends JPanel {
 		// edit
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (textFieldsEmpty(p))
-						throw new WrongInputException();
-
-					ArrayList<String> rf2 = new ArrayList<String>();
-					for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList2.getModel().getElementAt(i);
-						if(cb.isSelected()) rf2.add(cb.getText());
-					}
-
-					DataRaum.editRaum(ro.getName(),new Room(nameField2.getText(), (int) jcb2
-							.getSelectedItem(), rf2));
-
-					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-					topFrame.dispose();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
+				if (!check(p))
+					return;
+				ArrayList<String> rf2 = new ArrayList<String>();
+				for (int i = 0; i < checkList2.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList2.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						rf2.add(cb.getText());
 				}
+
+				RaumManager.editRaum(
+						ro.getName(),
+						new Room(nameField2.getText(), (int) jcb2
+								.getSelectedItem(), rf2));
+
+				updateList();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 
@@ -291,31 +367,72 @@ public class RoomPanel extends JPanel {
 		// abbruch Button
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-				topFrame.dispose();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 		return p;
 	}
 
-	private boolean textFieldsEmpty(final JPanel p){
-		boolean b=true;
-		for(Component c : p.getComponents()){
-			if(c instanceof TextField){
-				TextField tf = (TextField) c;
-				if(!tf.getText().isEmpty()) b=false;
+	/**
+	 * Ueberprueft, ob es irgendwelche falsche EIngaben gibt. Zb Leere Felder,
+	 * Zahlen in Textfeldern, zu lange Kuerzel etc.
+	 * 
+	 * @param p
+	 *            uebergebenes panel
+	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
+	 */
+	private boolean check(final JPanel p) {
+		if (textFieldsEmpty(p)) {
+			new TextException();
+			return false;
+		}
+		boolean b = true;
+		if (checkList != null) {
+			for (int i = 0; i < checkList.getModel().getSize(); i++) {
+				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
+				if (cb.isSelected())
+					b = false;
 			}
-			if(c instanceof JTextField ){
+		}
+		if (checkList2 != null) {
+			for (int i = 0; i < checkList2.getModel().getSize(); i++) {
+				JCheckBox cb = (JCheckBox) checkList2.getModel()
+						.getElementAt(i);
+				if (cb.isSelected())
+					b = false;
+			}
+		}
+		if (b) {
+			new StundeninhaltException();
+			return false;
+		}
+		return true;
+	}
+
+	private boolean textFieldsEmpty(final JPanel p) {
+		boolean b = true;
+		for (Component c : p.getComponents()) {
+			if (c instanceof TextField) {
+				TextField tf = (TextField) c;
+				if (!tf.getText().isEmpty())
+					b = false;
+			}
+			if (c instanceof JTextField) {
 				JTextField tf = (JTextField) c;
-				if(!tf.getText().isEmpty()) b=false;
+				if (!tf.getText().isEmpty())
+					b = false;
 			}
 		}
 		return b;
 	}
 
+	/**
+	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen
+	 * Daten der Datenbank
+	 */
 	public static void updateList() {
 		listModel.clear();
-		for (Room r : DataRaum.getAllRaum()) {
+		for (Room r : RaumManager.getAllRoomsFromDB()) {
 			listModel.addElement(r);
 		}
 	}

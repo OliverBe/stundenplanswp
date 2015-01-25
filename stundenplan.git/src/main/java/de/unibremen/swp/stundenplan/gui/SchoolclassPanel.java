@@ -494,9 +494,7 @@ public class SchoolclassPanel extends JPanel {
 					
 					
 					updateList();
-					JFrame topFrame = (JFrame) SwingUtilities
-							.getWindowAncestor(p);
-					topFrame.dispose();
+					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 
 				} catch (WrongInputException e) {
 					e.printStackTrace();
@@ -510,8 +508,7 @@ public class SchoolclassPanel extends JPanel {
 		// abbruch Button
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(p);
-				topFrame.dispose();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
 			}
 		});
 		return p;
@@ -546,11 +543,8 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 	
-		try {
-			if (!b)
-				throw new MindestestensEinLehrerException();
-		} catch (MindestestensEinLehrerException e) {
-			e.printStackTrace();
+		if (!b){ 
+			new MindestestensEinLehrerException();
 			return false;
 		}
 

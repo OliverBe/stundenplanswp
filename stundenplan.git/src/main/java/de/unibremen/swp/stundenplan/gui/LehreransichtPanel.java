@@ -20,7 +20,15 @@ import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
+/**
+ * Realisiert den Personaleinsatzplan als GUI-Element in der MainFrame. Heißt 'Lehreransicht', da es anfangs
+ * Verständnisprobleme in der Gruppe gab, was mit 'Personaleinsatzplan' gemeint war. Benennung wurde aufgrund
+ * existierender Verbindungen beibehalten, never change a running system.
+ * @author Roman
+ *
+ */
 public class LehreransichtPanel extends JPanel {
 
 	/**
@@ -110,10 +118,19 @@ public class LehreransichtPanel extends JPanel {
 							System.out.println(inhaltKlasseStundenPerso.get(s).toString());
 							if (inhaltKlasseStundenPerso.get(s).get(k) != null) {
 								kleineHashMap = inhaltKlasseStundenPerso.get(s);
-								kleineHashMap.put(k, inhaltKlasseStundenPerso
-										.get(s).get(k) + pe.duration());
+								int[] zeitPersonInPE  = pe.getTimesofPersonal(p);
+//								kleineHashMap.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
+								kleineHashMap.put(k, inhaltKlasseStundenPerso.get(s).get(k) + 
+												TimetableManager.duration(zeitPersonInPE[0]
+													, zeitPersonInPE[1]		
+													, zeitPersonInPE[2]
+													, zeitPersonInPE[3]));
 							} else {
-								kleineHashMap.put(k, pe.duration());
+								int[] zeitPersonInPE  = pe.getTimesofPersonal(p);
+								kleineHashMap.put(k, TimetableManager.duration(zeitPersonInPE[0]
+										, zeitPersonInPE[1]		
+										, zeitPersonInPE[2]
+										, zeitPersonInPE[3]));
 							}
 							if(inhaltKlasseStundenPerso.get(s) == null){
 								inhaltKlasseStundenPerso.put(s, kleineHashMap);
@@ -211,6 +228,17 @@ public class LehreransichtPanel extends JPanel {
 		add(pane, c);
 	}
 	
+	/**
+	 * Setzt die übergebene HashMap auf den Anfangswert zurück, der für die init()-Methode pro Person benötigt wird.
+	 * Da die HashMap 'inhaltKlasseStunden', in der zum Start der init()-Methode alle Stundeninhalte eingefügt werden, stets
+	 * von allen Schleifen-Durchläufen modifiziert wird, wurde diese Methode angelegt, damit die HashMap jeweils auf den
+	 * benötigten Anfangsbestand zurück gesetzt wird. Es werden nur die Stundeninhalte als Keys gebraucht und eine
+	 * leere HashMap als Value 'hash', die anschließend von jeder Person mit den entsprechenden Klassen und Stunden befüllt wird.
+	 * 
+	 * @param pInhaltKlasseStunden Die HashMap, die auf den Anfangszustand gesetzt werden soll
+	 * @return
+	 * 	 Die HashMap in ihrem gewollten Anfangszustand
+	 */
 	private HashMap<String, HashMap<String,Integer>> hashMapReset(final HashMap<String, HashMap<String,Integer>> pInhaltKlasseStunden){
 		pInhaltKlasseStunden.clear();
 		for (Stundeninhalt s : si) {
