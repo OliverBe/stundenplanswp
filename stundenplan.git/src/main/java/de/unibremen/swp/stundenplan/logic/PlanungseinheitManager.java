@@ -166,7 +166,7 @@ public final class PlanungseinheitManager {
     	}
     	Planungseinheit thisismyPE = null;
     	for(Planungseinheit p : pes){
-    		if(checkPEandTime(p, pTs.getsHour(), pTs.getsMinute()));
+    		if(checkPEandStartTime(p, pTs.getsHour(), pTs.getsMinute()));
     	}
     	return thisismyPE;
     }
@@ -233,57 +233,67 @@ public final class PlanungseinheitManager {
 	/**
 	 * TO-DO prueft ob zwei Planungseinheiten sich ueberschneiden im selben Tag.
 	 * 
-	 * @return
+	 * @return gibt true zurück wenn die PEs sich überlappen
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
-		if(checkPEandTime(p1,p2.getStartHour(), p2.getStartminute())){
+		if(checkPEandStartTime(p1,p2.getStartHour(), p2.getStartminute())){
 			return true;
-		}else if(checkPEandTime(p1,p2.getEndhour(), p2.getEndminute())){
+		}else if(checkPEandEndTime(p1,p2.getEndhour(), p2.getEndminute())){
 			return true;
-		}else if(checkPEandTime(p2,p1.getStartHour(), p1.getStartminute())){
+		}else if(checkPEandStartTime(p2,p1.getStartHour(), p1.getStartminute())){
 			return true;
-		}else if(checkPEandTime(p2,p1.getEndhour(), p1.getEndminute())){
+		}else if(checkPEandEndTime(p2,p1.getEndhour(), p1.getEndminute())){
 			return true;
 		}
 		return false;
 	}
 	
+	private static boolean checkPEandTime(final Planungseinheit p1, final int hour,
+			final int minute) {
+		if (hour > p1.getStartHour() && hour < p1.getEndhour()) {
+			return true;
+		}else if(hour== p1.getStartHour() && minute > p1.getStartminute()){
+				return true;
+		}else if(hour== p1.getEndhour() && minute < p1.getEndminute()){
+			return true;
+		}
+		return false;
+	
+	}
+
 	/**prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return
+	 * @return gibt true zurück wenn die PEs sich überlappen
 	 */
-	public static boolean checkPersonPE(final Personal p, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
+	public static boolean checkPersonPE(final Personal p, final Planungseinheit pe, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(day, p);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, shour, sminute))return true;
-			if(checkPEandEndTime(pl, ehour, eminute))return true;
+			if(checktwoPEs(pl, pe))return true;
 		}
 		return false;
 	}
 	
 	/**prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return
+	 * @return gibt true zurück wenn die PEs sich überlappen
 	 */
-	public static boolean checkRoomPE(final Room r, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
+	public static boolean checkRoomPE(final Room r, final Planungseinheit pe, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForRoombyWeekday(day, r);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, shour, sminute))return true;
-			if(checkPEandEndTime(pl, ehour, eminute))return true;
-		}
+			if(checktwoPEs(pl, pe))return true;
+			}
 		return false;
 	}
 	
 	/**prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return
+	 * @return gibt true zurück wenn die PEs sich überlappen
 	 */
-	public static boolean checkScPE(final Schoolclass sc, final int shour, final int sminute, final int ehour, final int eminute, final Weekday day ){
+	public static boolean checkScPE(final Schoolclass sc, final Planungseinheit pe, final Weekday day ){
 		ArrayList<Planungseinheit> pes = getPEForSchoolclassbyWeekday(day, sc);
 		for(Planungseinheit pl : pes){
-			if(checkPEandTime(pl, shour, sminute))return true;
-			if(checkPEandEndTime(pl, ehour, eminute))return true;
+			if(checktwoPEs(pl, pe))return true;
 		}
 		return false;
 	}
@@ -293,7 +303,7 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return
 	 */
-	public static boolean checkPEandTime(final Planungseinheit p1,
+	public static boolean checkPEandStartTime(final Planungseinheit p1,
 			final int hour, final int minute) {
 		if (hour > p1.getStartHour() && hour < p1.getEndhour()) {
 			return true;
