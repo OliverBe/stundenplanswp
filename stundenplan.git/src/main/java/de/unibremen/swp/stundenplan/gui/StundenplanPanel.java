@@ -28,58 +28,129 @@ import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 
-public class StundenplanPanel extends JPanel implements ActionListener, MouseListener {
+public class StundenplanPanel extends JPanel implements ActionListener,
+		MouseListener {
 
-	private JFrame f;
+	/**
+	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgeführt
+	 * wurde. Nicht jedes Event
+	 */
 	private int eventX;
+	/**
+	 * gibt den optischen Punkt der y-Achse an an welchem ein Event ausgeführt
+	 * wurde. Nicht jedes Event
+	 */
 	private int eventY;
 
+	/**
+	 * gibt den Punkt der x-Achse an an welchem ein Event ausgeführt wurde.
+	 * Nicht jedes Event
+	 */
 	private int eventXX;
+
+	/**
+	 * gibt den Punkt der y-Achse an an welchem ein Event ausgeführt wurde.
+	 * Nicht jedes Event
+	 */
 	private int eventYY;
 
+	/**
+	 * repräsentiert die Tabelle welche in dem Frame als Stundenplan angezeigt
+	 * wird
+	 */
 	private static JTable table;
 
+	/**
+	 * die MenuBar ist die MenüLeiste im Pane welche die lehrer und Schulklassen
+	 * listen enthalten
+	 */
 	private static JMenuBar menuBar = new JMenuBar();
+
+	/**
+	 * ist das Model der Liste für das Personal
+	 */
 	private static DefaultListModel pList;
+
+	/**
+	 * ist das Model der Liste für die Schulklassen
+	 */
 	private static DefaultListModel sList;
+
+	/**
+	 * ist die Liste, in dem das gesammte Personal erfasst wird
+	 */
 	private static JList personalList;
+
+	/**
+	 * ist die Liste in der alle Klassen erfasst werden
+	 */
 	private static JList schoolclassList;
+
+	/**
+	 * Label für die Menübar
+	 */
 	private static JLabel label1 = new JLabel("Lehrer");
+
+	/**
+	 * Label für die Menübar
+	 */
 	private static JLabel label2 = new JLabel("Klassen");
+
+	/**
+	 * dieses MouseAdapter erzeugt bei rechtsklick auf die Tabelle ein popup
+	 * Menü welches das Planungseinheiten hinzufügen, oder bearbeiten kann
+	 */
 	private MouseAdapter mousefunc = new MouseAdapter() {
 		public void mousePressed(MouseEvent evt) {
-			eventX = evt.getXOnScreen();
-			eventY = evt.getYOnScreen();
-			eventXX = evt.getX();
-			eventYY = evt.getY();
+			if (evt.getSource() == table) {
+				eventX = evt.getXOnScreen();
+				eventY = evt.getYOnScreen();
+				eventXX = evt.getX();
+				eventYY = evt.getY();
 
-			
-			if (SwingUtilities.isLeftMouseButton(evt)) {
-				
-				popmen.setVisible(false);
-			}
+				if (SwingUtilities.isLeftMouseButton(evt)) {
 
-			if (SwingUtilities.isRightMouseButton(evt)) {
-
-				final int row = table.rowAtPoint(evt.getPoint());
-				final int col = table.columnAtPoint(evt.getPoint());
-				Timeslot t = null;
-				if (table.getValueAt(row, col) instanceof Timeslot) {
-					t = (Timeslot) table.getValueAt(row, col);
+					popmen.setVisible(false);
 				}
-				if (t != null)
-					;
-				createPopup(t.getpe());
+
+				if (SwingUtilities.isRightMouseButton(evt)) {
+
+					final int row = table.rowAtPoint(evt.getPoint());
+					final int col = table.columnAtPoint(evt.getPoint());
+					Timeslot t = null;
+					if (table.getValueAt(row, col) instanceof Timeslot) {
+						t = (Timeslot) table.getValueAt(row, col);
+					}
+					if (t != null)
+						;
+					createPopup(t.getpe());
+				}
 			}
 		}
 	};
 
+	/**
+	 * repräsentiert den Button, welche beim drücken den ausgewählten
+	 * Stundenplan anzeigt
+	 */
 	private static JButton show = new JButton("Anzeigen");
 
+	/**
+	 * WarningLabel
+	 */
 	public JLabel warning = new JLabel();
 
+	/**
+	 * ist das Popup Menü welches erscheint, wenn in dem Stundenplan rechtsklick
+	 * ausgeführt wird
+	 */
 	JPopupMenu popmen = new JPopupMenu();
 
+	/**
+	 * der Konstrukter vom StundenplanPanel. die ActionListener werden den
+	 * GUI-Elementen zugeordnet und die Tablle wird auf null gesetzt, sodass zu
+	 * Beginn keine Tabelle ersichtlich ist.
+	 */
 	public StundenplanPanel() {
 		table = null;
 		init();
@@ -88,6 +159,10 @@ public class StundenplanPanel extends JPanel implements ActionListener, MouseLis
 		schoolclassList.addMouseListener(this);
 	}
 
+	/**
+	 * wird beim Initialisieren dieses Panes ausgeführt und intialisiert die
+	 * GUI-Elemente deses Panes.
+	 */
 	public void init() {
 		removeAll();
 		setLayout(new GridBagLayout());
@@ -165,6 +240,11 @@ public class StundenplanPanel extends JPanel implements ActionListener, MouseLis
 		return new PEedit(this);
 	}
 
+	/**
+	 * updated die GUI und die Listen. wird ausgeführt sobald eine relevante
+	 * Änderung in der Datenbank geschieht. Wird von anderen Klassen statisch
+	 * ausgerufen.
+	 */
 	public static void updateLists() {
 		Personal[] personalListe = new Personal[PersonalManager
 				.getAllPersonalFromDB().size()];
@@ -192,14 +272,14 @@ public class StundenplanPanel extends JPanel implements ActionListener, MouseLis
 
 		JScrollPane paneList1 = new JScrollPane(personalList);
 		JScrollPane paneList2 = new JScrollPane(schoolclassList);
-		
+
 		menuBar.removeAll();
 		GridBagLayout gbl = new GridBagLayout();
 		menuBar.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
-		
-		c.fill =GridBagConstraints.REMAINDER;
-		
+
+		c.fill = GridBagConstraints.REMAINDER;
+
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1.0;
@@ -230,10 +310,16 @@ public class StundenplanPanel extends JPanel implements ActionListener, MouseLis
 		c.weighty = 0.2;
 		gbl.setConstraints(show, c);
 		menuBar.add(show, c);
-		
 
 	}
 
+	/**
+	 * stellt eine Aktion da. Sobald der Anzeigen Button gedrückt wird, wird von
+	 * dem element in der JList der Stundenplan in Form eines JTables angezeigt
+	 * Danach wird die GUI aktualisiert
+	 * 
+	 * @param ae
+	 */
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == show && (!personalList.isSelectionEmpty())) {
 
@@ -248,57 +334,68 @@ public class StundenplanPanel extends JPanel implements ActionListener, MouseLis
 			table = new StundenplanTable(s).getTable();
 
 		}
-		
+
 		init();
 		updatetable();
 	}
 
+	/**
+	 * gibt den aktuellen Stundenplan (die Tabelle) zurück
+	 * 
+	 * @return
+	 */
 	public JTable getTable() {
 		return table;
 	}
 
+	/**
+	 * 
+	 */
 	public void updatetable() {
-		
+
 		table.repaint();
 		Stundenplan.getMain().validate();
 		personalList.addMouseListener(this);
 		schoolclassList.addMouseListener(this);
 	}
 
+	/**
+	 * Sobald ein Element in den J-Listen ausgewählt
+	 * wird, wird in der anderen JListe das ausgewählte Element "deselected".
+	 * @param evt
+	 */
 	@Override
 	public void mouseClicked(MouseEvent evt) {
 		if (evt.getSource() == personalList) {
 			schoolclassList.clearSelection();
-		} else if ( evt.getSource() == schoolclassList) {
+		} else if (evt.getSource() == schoolclassList) {
 			personalList.clearSelection();
 		}
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
+	}
 
 }

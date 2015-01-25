@@ -43,9 +43,14 @@ public final class Stundenplan {
      */
     private static final Logger LOGGER = Logger.getLogger(Stundenplan.class.getName());
     
+    /**
+     * stellt das GUI-Hauptfenster dar 
+     */
     private static MainFrame main;
     
+    
     private static int time = 0;
+    
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
@@ -87,6 +92,10 @@ public final class Stundenplan {
             timer.start();
     }
     
+    /**
+     * gibt die Mainframe zurück
+     * @return
+     */
     public static MainFrame getMain() {
     	return main;
     }
