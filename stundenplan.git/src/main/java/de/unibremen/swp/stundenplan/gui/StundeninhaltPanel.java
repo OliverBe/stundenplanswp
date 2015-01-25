@@ -36,7 +36,7 @@ import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * Reprï¿½sentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * von Stundeninhalten
  * 
  * @author Oliver
@@ -119,7 +119,7 @@ public class StundeninhaltPanel extends JPanel {
 		c = new GridBagConstraints();
 		dauerField = new JTextField(5);
 		kuerzField = new JTextField(5);
-		JTextField titelField = new JTextField(15);
+		final JTextField titelField = new JTextField(15);
 		JButton button = new JButton("Stundeninhalt hinzufuegen");
 
 		p.setLayout(new GridBagLayout());
@@ -274,7 +274,7 @@ public class StundeninhaltPanel extends JPanel {
 	 */
 	private JPanel createEditPanel(final JPanel p, final Stundeninhalt si) {
 		c = new GridBagConstraints();
-		JTextField titelField2 = new JTextField(15);
+		final JTextField titelField2 = new JTextField(15);
 		dauerField2 = new JTextField(5);
 		kuerzField2 = new JTextField(5);
 		JButton button2 = new JButton("Speichern");
@@ -445,7 +445,7 @@ public class StundeninhaltPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen
+	 * leert die Liste des Panels und fuellt sie anschlieï¿½end wieder mit allen
 	 * Daten der Datenbank
 	 */
 	public static void updateList() {
