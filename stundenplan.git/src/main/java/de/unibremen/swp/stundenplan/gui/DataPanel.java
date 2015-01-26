@@ -1,95 +1,135 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Collection;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JToolBar;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
-
+/**
+ * DatenPanel auf dem alle Editierungen des Datenbestandes vorgenommen werden
+ * 
+ * @author Oliver
+ *
+ */
 @SuppressWarnings("serial")
 public class DataPanel extends JPanel {
 
+	/**
+	 * Menuebar auf der alle Panels anklickbar sind
+	 */
 	private JMenuBar menuBar = new JMenuBar();
 
-	private JMenuItem mP = new JMenuItem("Personal");
-	private JMenuItem mS = new JMenuItem("Schulklassen");
-	private JMenuItem mStdi = new JMenuItem("Stundeninhalte");
-	private JMenuItem mR = new JMenuItem("Raeume");
-	private JMenuItem mRf = new JMenuItem("Raumfunktionen");
-	private JMenuItem mB = new JMenuItem("Jahrgangsbedarf");
+	/**
+	 * MenuItem des Personals
+	 */
+	private JMenuItem mP;
 
+	/**
+	 * MenuItem der Schulklasse
+	 */
+	private JMenuItem mS;
+
+	/**
+	 * MenuItem des Stundeninhalts
+	 */
+	private JMenuItem mStdi;
+
+	/**
+	 * MenuItem des Raumes
+	 */
+	private JMenuItem mR;
+
+	/**
+	 * MenuItem der Raumfunktion
+	 */
+	private JMenuItem mRf;
+
+	/**
+	 * MenuItem Bedarfs der Jahrgaenge
+	 */
+	private JMenuItem mB;
+
+	/**
+	 * Raumfunktionspanel
+	 */
 	private RaumfunktionPanel raumfunktionPanel;
 
+	/**
+	 * Personalpanel
+	 */
 	private PersonalPanel personalPanel;
-	private SchoolclassPanel schoolclassPanel;
-	private StundeninhaltPanel stundeninhaltPanel;
-	private RoomPanel roomPanel;
-	private BedarfPanel bedarfPanel;
 
+	/**
+	 * Schulklassenpanel
+	 */
+	private SchoolclassPanel schoolclassPanel;
+
+	/**
+	 * Stundeninhaltpanel
+	 */
+	private StundeninhaltPanel stundeninhaltPanel;
+
+	/**
+	 * Raumpanel
+	 */
+	private RoomPanel roomPanel;
+
+	/**
+	 * Bedarfspanel
+	 */
+	private BedarfPanel bedarfPanel;
+	
+	/**
+	 * Konstruktor des Datenpanel
+	 */
 	public DataPanel() {
 		initComponents();
 		mStdi.doClick();
 	}
-	
+
 	public RaumfunktionPanel getRaumfunktionPanel() {
 		return raumfunktionPanel;
 	}
-	
+
 	public PersonalPanel getPersonalPanel() {
 		return personalPanel;
 	}
-	
+
 	public SchoolclassPanel getSchoolclassPanel() {
 		return schoolclassPanel;
 	}
-	
+
 	public StundeninhaltPanel getStundeninhaltPanel() {
 		return stundeninhaltPanel;
 	}
-	
+
 	public RoomPanel getRoomPanel() {
 		return roomPanel;
 	}
-	
+
 	public BedarfPanel getBedarfPanel() {
 		return bedarfPanel;
 	}
 
+	/**
+	 * Initialisierungsauslagerung um Konstruktor nicht zu verstopfen
+	 */
 	private void initComponents() {
+		mP = new JMenuItem("Personal");
+		mS = new JMenuItem("Schulklassen");
+		mStdi = new JMenuItem("Stundeninhalte");
+		mR = new JMenuItem("Raeume");
+		mRf = new JMenuItem("Raumfunktionen");
+		mB = new JMenuItem("Jahrgangsbedarf");
 
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
@@ -97,11 +137,11 @@ public class DataPanel extends JPanel {
 
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_START;
-		c.ipady=80;
+		c.ipady = 80;
 		c.gridx = 0;
 		c.gridy = 0;
-//		c.weightx = 0.05;
-//		c.weighty = 0.5;
+		// c.weightx = 0.05;
+		// c.weighty = 0.5;
 		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mS.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mStdi.setBorder(BorderFactory.createRaisedSoftBevelBorder());
@@ -117,8 +157,8 @@ public class DataPanel extends JPanel {
 		menuBar.add(mS);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
-		c.gridy=1;
-		c.ipady=0;
+		c.gridy = 1;
+		c.ipady = 0;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		add(new WarningPanel(), c);
 
@@ -131,7 +171,7 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(personalPanel, c);
@@ -150,7 +190,7 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(schoolclassPanel, c);
@@ -169,14 +209,16 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(stundeninhaltPanel, c);
 
-				if((JFrame) SwingUtilities
-						.getWindowAncestor(stundeninhaltPanel) != null) SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
-						.getWindowAncestor(stundeninhaltPanel));
+				if ((JFrame) SwingUtilities
+						.getWindowAncestor(stundeninhaltPanel) != null)
+					SwingUtilities
+							.updateComponentTreeUI((JFrame) SwingUtilities
+									.getWindowAncestor(stundeninhaltPanel));
 			}
 		});
 
@@ -189,7 +231,7 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(roomPanel, c);
@@ -208,7 +250,7 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(raumfunktionPanel, c);
@@ -216,7 +258,7 @@ public class DataPanel extends JPanel {
 						.getWindowAncestor(raumfunktionPanel));
 			}
 		});
-		
+
 		// klick auf mB
 		mB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -226,7 +268,7 @@ public class DataPanel extends JPanel {
 				c.anchor = GridBagConstraints.EAST;
 				c.gridx = 1;
 				c.gridy = 0;
-				c.gridheight=10;
+				c.gridheight = 10;
 				c.weightx = 0.95;
 				c.weighty = 1;
 				add(bedarfPanel, c);

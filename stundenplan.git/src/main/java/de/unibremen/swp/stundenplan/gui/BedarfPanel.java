@@ -41,7 +41,7 @@ import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * Repraesentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * vom Jahrgangsbedarf
  * 
  * @author Oliver
@@ -123,7 +123,7 @@ public class BedarfPanel extends JPanel {
 	 * 
 	 * @param p
 	 *            uebergebenes Panel
-	 * @return HinzufuegenPanel
+	 * @return HinzuzufuegendesPanel
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createAddPanel(final JPanel p) {
@@ -186,7 +186,7 @@ public class BedarfPanel extends JPanel {
 	 * 
 	 * @param p
 	 *            uebergebenes Panel
-	 * @return HinzufuegenPanel
+	 * @return Hinzufuegendes Panel
 	 */
 	private JPanel createListPanel(final JPanel p) {
 		c = new GridBagConstraints();
@@ -273,7 +273,7 @@ public class BedarfPanel extends JPanel {
 	 *            uebergebenes Panel
 	 * @param j
 	 *            zu editierender Jahrgang
-	 * @return HinzufuegenPanel
+	 * @return Hinzufuegendes Panel
 	 */
 	private JPanel createEditPanel(final JPanel p, final Jahrgang j) {
 		c = new GridBagConstraints();
@@ -340,40 +340,39 @@ public class BedarfPanel extends JPanel {
 	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
 	 */
 	private boolean check(final JPanel p) {
+		boolean b=true;
 		if (textFieldsEmpty(p)) {
 			new TextException();
-			return false;
+			b=false;
 		}
 		if (cb1 != null && cb1.getSelectedItem() == null) {
 			new StundeninhaltException();
-			return false;
+			b=false;
 		}
 		if (cb2 != null && cb2.getSelectedItem() == null) {
 			new StundeninhaltException();
-			return false;
+			b=false;
 		}
 		try {
 			for (Component c : p.getComponents()) {
 				if (c == bedField) {
-					Integer.parseInt(bedField.getText());
-					if (Integer.parseInt(bedField.getText()) < 1) {
+					if (Integer.parseInt(bedField.getText()) < 0) {
 						new ZahlException();
-						return false;
+						b=false;
 					}
 				}
 				if (c == bedField2) {
-					Integer.parseInt(bedField2.getText());
-					if (Integer.parseInt(bedField2.getText()) < 1) {
+					if (Integer.parseInt(bedField2.getText()) < 0) {
 						new ZahlException();
-						return false;
+						b=false;
 					}
 				}
 			}
 		} catch (NumberFormatException e) {
 			new ZahlException();
-			return false;
+			b=false;
 		}
-		return true;
+		return b;
 	}
 
 	/**
@@ -385,20 +384,17 @@ public class BedarfPanel extends JPanel {
 	 *         leer ist
 	 */
 	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
 		for (Component c : p.getComponents()) {
 			if (c instanceof TextField) {
-				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((TextField) c).getText().isEmpty())
+					return true;
 			}
 			if (c instanceof JTextField) {
-				JTextField tf = (JTextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((JTextField) c).getText().isEmpty())
+					return true;
 			}
 		}
-		return b;
+		return false;
 	}
 
 	/**

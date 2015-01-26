@@ -1,14 +1,12 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald ein Textfeld leer ist
+ * @author Oliver
+ */
 @SuppressWarnings("serial")
 public class TextException extends Exception {
 
@@ -22,7 +20,7 @@ public class TextException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public TextException() {
-        WarningPanel.setText("Ein Feld ist leer.");
+    	WarningPanel.setText("Feld ist leer");
     }
 
 }

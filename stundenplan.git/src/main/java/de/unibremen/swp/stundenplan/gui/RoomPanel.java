@@ -40,7 +40,7 @@ import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * Repraesentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * von Raeumen
  * 
  * @author Oliver
@@ -129,6 +129,13 @@ public class RoomPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man einen neuen Raum hinzufuegen kann.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return HinzuzufuegendesPanel
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createAddPanel(final JPanel p) {
 		c = new GridBagConstraints();
@@ -206,6 +213,13 @@ public class RoomPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man die Raumliste angezeigt bekommt.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return Hinzufuegendes Panel
+	 */
 	private JPanel createListPanel(final JPanel p) {
 		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
@@ -267,6 +281,15 @@ public class RoomPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man einen Raum editieren kann.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @param ro
+	 *            zu editierender Raum
+	 * @return Hinzufuegendes Panel
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createEditPanel(final JPanel p, final Room ro) {
 		c = new GridBagConstraints();
@@ -382,16 +405,17 @@ public class RoomPanel extends JPanel {
 	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
 	 */
 	private boolean check(final JPanel p) {
+		boolean b=true;
 		if (textFieldsEmpty(p)) {
 			new TextException();
-			return false;
+			b=false;
 		}
-		boolean b = true;
+		boolean b2 = true;
 		if (checkList != null) {
 			for (int i = 0; i < checkList.getModel().getSize(); i++) {
 				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
 				if (cb.isSelected())
-					b = false;
+					b2 = false;
 			}
 		}
 		if (checkList2 != null) {
@@ -399,31 +423,36 @@ public class RoomPanel extends JPanel {
 				JCheckBox cb = (JCheckBox) checkList2.getModel()
 						.getElementAt(i);
 				if (cb.isSelected())
-					b = false;
+					b2 = false;
 			}
 		}
-		if (b) {
+		if (b2) {
 			new StundeninhaltException();
-			return false;
-		}
-		return true;
-	}
-
-	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
-		for (Component c : p.getComponents()) {
-			if (c instanceof TextField) {
-				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
-			}
-			if (c instanceof JTextField) {
-				JTextField tf = (JTextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
-			}
+			b=false;
 		}
 		return b;
+	}
+
+	/**
+	 * Ueberprueft ob ein Textfeld leer ist
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return true, wenn ein Textfeld leer ist, false, wenn ein Textfeld nicht
+	 *         leer ist
+	 */
+	private boolean textFieldsEmpty(final JPanel p) {
+		for (Component c : p.getComponents()) {
+			if (c instanceof TextField) {
+				if (((TextField) c).getText().isEmpty())
+					return true;
+			}
+			if (c instanceof JTextField) {
+				if (((JTextField) c).getText().isEmpty())
+					return true;
+			}
+		}
+		return false;
 	}
 
 	/**

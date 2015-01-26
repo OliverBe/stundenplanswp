@@ -38,7 +38,7 @@ import de.unibremen.swp.stundenplan.logic.RaumManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * Repraesentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * von Raumfunktionen
  * 
  * @author Oliver
@@ -354,16 +354,17 @@ public class RaumfunktionPanel extends JPanel {
 	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
 	 */
 	private boolean check(final JPanel p) {
+		boolean b=true;
 		if (textFieldsEmpty(p)) {
 			new TextException();
-			return false;
+			b=false;
 		}
-		boolean b = true;
+		boolean b2 = true;
 		if (checkList != null) {
 			for (int i = 0; i < checkList.getModel().getSize(); i++) {
 				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
 				if (cb.isSelected())
-					b = false;
+					b2 = false;
 			}
 		}
 		if (checkList2 != null) {
@@ -371,14 +372,14 @@ public class RaumfunktionPanel extends JPanel {
 				JCheckBox cb = (JCheckBox) checkList2.getModel()
 						.getElementAt(i);
 				if (cb.isSelected())
-					b = false;
+					b2 = false;
 			}
 		}
-		if (b) {
+		if (b2) {
 			new StundeninhaltException();
-			return false;
+			b=false;
 		}
-		return true;
+		return b;
 	}
 
 	/**
@@ -390,20 +391,17 @@ public class RaumfunktionPanel extends JPanel {
 	 *         leer ist
 	 */
 	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
 		for (Component c : p.getComponents()) {
 			if (c instanceof TextField) {
-				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((TextField) c).getText().isEmpty())
+					return true;
 			}
 			if (c instanceof JTextField) {
-				JTextField tf = (JTextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((JTextField) c).getText().isEmpty())
+					return true;
 			}
 		}
-		return b;
+		return false;
 	}
 
 	/**

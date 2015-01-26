@@ -1,12 +1,6 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
 @SuppressWarnings("serial")
@@ -22,7 +16,6 @@ public class BereitsVorhandenException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public BereitsVorhandenException() {
-        WarningPanel.setText("Bereits vorhanden.");
+    	WarningPanel.setText("Bereits vorhanden.");
     }
-
 }

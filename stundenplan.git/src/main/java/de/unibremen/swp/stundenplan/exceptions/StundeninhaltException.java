@@ -1,14 +1,13 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald kein Stundeninhalt gewaehlt wurde
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class StundeninhaltException extends Exception {
 
     /**
@@ -21,7 +20,7 @@ public class StundeninhaltException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public StundeninhaltException() {
-        WarningPanel.setText("Kein Stundeninhalt gewaehlt.");
+    	WarningPanel.setText("Kein Stundeninhalt gewaehlt");
     }
 
 }

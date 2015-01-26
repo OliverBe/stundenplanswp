@@ -1,14 +1,13 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald kein Lehrer im Lehrerteam ist
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class MindestestensEinLehrerException extends Exception {
 
     /**
@@ -21,7 +20,7 @@ public class MindestestensEinLehrerException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */
     public MindestestensEinLehrerException() {     
-        WarningPanel.setText("Sie muessen mindestens einen Lehrer im Team haben.");
+    	WarningPanel.setText("Kein Lehrer im Team");
     }
 
 }

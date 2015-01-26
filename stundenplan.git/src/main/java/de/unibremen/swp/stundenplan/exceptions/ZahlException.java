@@ -1,14 +1,13 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald keine Zahl oder eine Zahl < 0 oder 1 angegeben wird
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class ZahlException extends Exception {
 
     /**
@@ -21,7 +20,7 @@ public class ZahlException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public ZahlException() {
-        WarningPanel.setText("Ein Feld benoetigt eine positive Zahl");
+    	WarningPanel.setText("Feld benoetigt (positive) Zahl");
     }
 
 }

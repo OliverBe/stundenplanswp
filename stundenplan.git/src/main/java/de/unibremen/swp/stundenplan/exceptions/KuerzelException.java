@@ -1,14 +1,13 @@
 
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
-import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald Kuerzel zu lang ist
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class KuerzelException extends Exception {
 
     /**
@@ -21,7 +20,7 @@ public class KuerzelException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public KuerzelException() {
-        WarningPanel.setText("Das Kuerzel ist zu lang.");
+        WarningPanel.setText("Kuerzel zu lang");
     }
 
 }

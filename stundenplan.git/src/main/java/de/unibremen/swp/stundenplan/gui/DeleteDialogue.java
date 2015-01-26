@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Personal;
@@ -20,24 +19,44 @@ import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
-import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.db.DataSchulklasse;
-import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.JahrgangsManager;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
+/**
+ * Repräsentiert das Pop-Up-Fenster zum Loeschen von Daten
+ * 
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class DeleteDialogue extends JFrame {
 	
-	private JPanel panel = new JPanel();
-	public JButton okButton = new JButton("Ja");
-	public JButton noButton = new JButton("Nein");	
-	private GridBagConstraints c = new GridBagConstraints();	
+	/**
+	 * Panel fuers Fenster
+	 */
+	private JPanel panel;
+	
+	/**
+	 * Ja/Bestaetigungs Button
+	 */
+	public JButton okButton;
+	
+	/**
+	 * Nein/Abbruchbutton
+	 */
+	public JButton noButton;	
+	
+	/**
+	 * Uebergebenes Objekt, welches geloescht werden soll
+	 */
 	private Object o;
 		
+	/**
+	 * Konstruktor des DeletePopUpFensters
+	 * @param pO
+	 */
 	public DeleteDialogue(final Object pO){
 		super("Löschen");
 		o=pO;
@@ -45,13 +64,17 @@ public class DeleteDialogue extends JFrame {
 		pack();
 	}
 	private void init(){
+		panel=new JPanel();
+		okButton = new JButton("Ja");
+		noButton = new JButton("Nein");
+		GridBagConstraints c = new GridBagConstraints();	
 		panel.setLayout(new GridBagLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("Loeschen"));
 		c.insets=new Insets(20,5,1,1);
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx=0;
 		c.gridy=0;
-		JLabel loeschen = new JLabel("Möchten Sie wirklich loeschen?");
+		JLabel loeschen = new JLabel("Möchten Sie [ "+o.toString() +" ] wirklich loeschen?");
 		panel.add(loeschen,c);
 		
 		c.gridx=0;

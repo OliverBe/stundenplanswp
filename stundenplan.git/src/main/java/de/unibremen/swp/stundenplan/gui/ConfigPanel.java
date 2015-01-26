@@ -1,6 +1,5 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,59 +9,94 @@ import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.naming.InvalidNameException;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
-import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.exceptions.WochentagException;
+import de.unibremen.swp.stundenplan.exceptions.ZahlException;
+import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
+/**
+ * Konfigurationspanel zur Einstellung von Wochenplantage, BackupInvertallen etc
+ * 
+ * @author Oliver
+ *
+ */
+@SuppressWarnings("serial")
 public class ConfigPanel extends JPanel {
 
 	/**
-	 * 
+	 * Menuebar mit einzelnen Einstellungspunkten
 	 */
-	private static final long serialVersionUID = 3384783527067309086L;
-	private JLabel label = new JLabel("Einstellungen");
 	private JMenuBar menuBar = new JMenuBar();
 
-	private JMenuItem mP = new JMenuItem("Dauer Planungseinheit");
-	private JMenuItem mBI = new JMenuItem("Back-Up Intervall");
-	private JMenuItem mWD = new JMenuItem("Zu verplanende Wochentage");
-	private JMenuItem mDL = new JMenuItem("Dauer eines Wochentags");
-	private JPanel plnConfig;
+	/**
+	 * Menuitem fuer die Dauer eines Timeslots
+	 */
+	private JMenuItem mT;
+
+	/**
+	 * Menuitem fuer das Backupintervall
+	 */
+	private JMenuItem mBI;
+
+	/**
+	 * Menuitem fuer die zu verplanenenden Wochentage
+	 */
+	private JMenuItem mWD;
+
+	/**
+	 * Menuitem fuer die Tagesdauer
+	 */
+	private JMenuItem mDL;
+
+	/**
+	 * Timeslotpanel
+	 */
+	private JPanel tsConfig;
+
+	/**
+	 * Backuppanel
+	 */
 	private JPanel bkpConfig;
+
+	/**
+	 * Wochentagpanel
+	 */
 	private JPanel wdConfig;
+
+	/**
+	 * Tageslaengepanel
+	 */
 	private JPanel dlConfig;
 
+	/**
+	 * Konstruktor des Einstellungspanels
+	 */
 	public ConfigPanel() {
 		init();
-		mP.doClick();
+		mT.doClick();
 	}
 
+	/**
+	 * Auslagerung der Initialisierung
+	 */
 	public void init() {
 		try {
 			Config.init(null);
@@ -70,52 +104,55 @@ public class ConfigPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		mT = new JMenuItem("Timeslotdauer");
+		mBI = new JMenuItem("Back-Up-Intervall");
+		mWD = new JMenuItem("Zu verplanende Wochentage");
+		mDL = new JMenuItem("Dauer eines Wochentages");
+
 		setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.WEST;
-		 c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 5, 5, 5);
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.fill = GridBagConstraints.BOTH;
+		c.ipady = 80;
 		c.gridx = 0;
 		c.gridy = 0;
-		label.setFont(new Font("Arial", Font.BOLD, 15));
-		add(label, c);
 
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridheight = 2;
-		c.gridx = 0;
-		c.gridy = 1;
-
-		mP.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		mT.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mBI.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mWD.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		mDL.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 
-		menuBar.add(mP);
+		menuBar.add(mT);
 		menuBar.add(mBI);
 		menuBar.add(mWD);
 		menuBar.add(mDL);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
 
-		// klick auf mP
-		mP.addActionListener(new ActionListener() {
+		c.gridy = 1;
+		c.ipady = 0;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		add(new WarningPanel(), c);
+
+		// klick auf mT
+		mT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				removeOld();
-				plnConfig = new PlanungsEinheitConfig();
+				tsConfig = new TimeslotConfig();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
-				add(plnConfig, c);
-				if ((JFrame) SwingUtilities.getWindowAncestor(plnConfig) != null) {
+				c.gridy = 0;
+				c.gridheight = 10;
+				c.weightx = 0.95;
+				c.weighty = 1;
+				add(tsConfig, c);
+				if ((JFrame) SwingUtilities.getWindowAncestor(tsConfig) != null)
 					SwingUtilities
 							.updateComponentTreeUI((JFrame) SwingUtilities
-									.getWindowAncestor(plnConfig));
-				}
+									.getWindowAncestor(tsConfig));
+
 			}
 		});
 
@@ -126,16 +163,14 @@ public class ConfigPanel extends JPanel {
 				bkpConfig = new BackUpConfig();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight = 10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(bkpConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(bkpConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(bkpConfig));
 			}
 		});
 
@@ -146,16 +181,14 @@ public class ConfigPanel extends JPanel {
 				wdConfig = new WeekdayConfig();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight = 10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(wdConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(wdConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(wdConfig));
 			}
 		});
 
@@ -166,23 +199,24 @@ public class ConfigPanel extends JPanel {
 				dlConfig = new DaylengthConfig();
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.EAST;
-				c.gridwidth = 1;
-				c.gridheight = 1;
 				c.gridx = 1;
-				c.gridy = 1;
-				c.weightx = 1.8;
-				c.weighty = 1.0;
+				c.gridy = 0;
+				c.gridheight = 10;
+				c.weightx = 0.95;
+				c.weighty = 1;
 				add(dlConfig, c);
-				JFrame frame = (JFrame) SwingUtilities
-						.getWindowAncestor(dlConfig);
-				SwingUtilities.updateComponentTreeUI(frame);
+				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
+						.getWindowAncestor(dlConfig));
 			}
 		});
 	}
 
+	/**
+	 * Loeschte alle panel um Ueberlappung zu verhindern
+	 */
 	private void removeOld() {
-		if (plnConfig != null)
-			remove(plnConfig);
+		if (tsConfig != null)
+			remove(tsConfig);
 		if (bkpConfig != null)
 			remove(bkpConfig);
 		if (wdConfig != null)
@@ -191,13 +225,19 @@ public class ConfigPanel extends JPanel {
 			remove(dlConfig);
 	}
 
-	public class PlanungsEinheitConfig extends JPanel {
+	/**
+	 * Panel fuer die Timeslotdauereinstellung
+	 * 
+	 * @author Oliver
+	 *
+	 */
+	public class TimeslotConfig extends JPanel {
 		private Label lTime = new Label("Dauer einer Planungseinheit:");
 		private JTextField tf = new JTextField(2);
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
 
-		public PlanungsEinheitConfig() {
+		public TimeslotConfig() {
 			setLayout(new GridBagLayout());
 			setBorder(BorderFactory
 					.createTitledBorder("Dauer einer Planungseinheit"));
@@ -217,15 +257,29 @@ public class ConfigPanel extends JPanel {
 			tf.setText("" + Timeslot.timeslotlength());
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					Config.TIMESLOT_LENGTH = Integer.parseInt(tf.getText());
-					Config.setIntValue(Config.TIMESLOT_LENGTH_STRING,
-							Integer.parseInt(tf.getText()));
-					System.out.println(Config.TIMESLOT_LENGTH);
+					try {
+						if (Integer.parseInt(tf.getText()) > 0) {
+							Config.TIMESLOT_LENGTH = Integer.parseInt(tf
+									.getText());
+							Config.setIntValue(Config.TIMESLOT_LENGTH_STRING,
+									Integer.parseInt(tf.getText()));
+						} else {
+							new ZahlException();
+						}
+					} catch (NumberFormatException e) {
+						new ZahlException();
+					}
 				}
 			});
 		}
 	}
 
+	/**
+	 * Panel fuer das Backupintervall
+	 * 
+	 * @author Oliver
+	 *
+	 */
 	public class BackUpConfig extends JPanel {
 		private Label lTime = new Label("Backup alle");
 		private JTextField tf = new JTextField(2);
@@ -251,21 +305,34 @@ public class ConfigPanel extends JPanel {
 			tf.setText("" + Config.BACKUPINTERVALL);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					Config.BACKUPINTERVALL = Integer.parseInt(tf.getText());
-					System.out.println(Config.BACKUPINTERVALL);
-					Config.setIntValue(Config.BACKUPINTERVALL_STRING,
-							Integer.parseInt(tf.getText()));
+					try {
+						if (Integer.parseInt(tf.getText()) > 0) {
+							Config.BACKUPINTERVALL = Integer.parseInt(tf
+									.getText());
+							Config.setIntValue(Config.BACKUPINTERVALL_STRING,
+									Integer.parseInt(tf.getText()));
+						} else {
+							new ZahlException();
+						}
+					} catch (NumberFormatException e) {
+						new ZahlException();
+					}
 				}
 			});
 		}
 	}
 
+	/**
+	 * Panel die Wochentagverplanungseinstellung
+	 * 
+	 * @author Oliver
+	 *
+	 */
 	public class WeekdayConfig extends JPanel {
 		private Label lTime = new Label(
 				"Waehlen sie die Wochentage des Stundenplans");
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
-		private JComboBox jcb = new JComboBox();
 
 		JCheckBox mo = new JCheckBox("Montag");
 		JCheckBox di = new JCheckBox("Dienstag");
@@ -275,6 +342,7 @@ public class ConfigPanel extends JPanel {
 		JCheckBox sa = new JCheckBox("Samstag");
 		JCheckBox so = new JCheckBox("Sonntag");
 
+		@SuppressWarnings("unchecked")
 		public WeekdayConfig() {
 			setLayout(new GridBagLayout());
 			setBorder(BorderFactory
@@ -304,30 +372,45 @@ public class ConfigPanel extends JPanel {
 				so.setSelected(true);
 			checkList.setListData(boxes);
 			add(checkList, c);
-			add(jcb, c);
 			c.gridy = 2;
 			add(button, c);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					String monday = mo.isSelected() ? "true" : "false";
-					String tuesday = di.isSelected() ? "true" : "false";
-					String wednesday = mi.isSelected() ? "true" : "false";
-					String thursday = don.isSelected() ? "true" : "false";
-					String friday = fr.isSelected() ? "true" : "false";
-					String saturday = sa.isSelected() ? "true" : "false";
-					String sunday = so.isSelected() ? "true" : "false";
-					Config.setStringValue(Config.MONDAY_STRING, monday);
-					Config.setStringValue(Config.TUESDAY_STRING, tuesday);
-					Config.setStringValue(Config.WEDNESDAY_STRING, wednesday);
-					Config.setStringValue(Config.THURSDAY_STRING, thursday);
-					Config.setStringValue(Config.FRIDAY_STRING, friday);
-					Config.setStringValue(Config.SATURDAY_STRING, saturday);
-					Config.setStringValue(Config.SUNDAY_STRING, sunday);
+					boolean b=false;
+					for (int i = 0; i < checkList.getModel().getSize(); i++) {
+						JCheckBox cb = (JCheckBox) checkList.getModel()
+								.getElementAt(i);
+						if (cb.isSelected()) b=true;
+					}
+					if(!b) {
+						new WochentagException();
+					}else{
+						String monday = mo.isSelected() ? "true" : "false";
+						String tuesday = di.isSelected() ? "true" : "false";
+						String wednesday = mi.isSelected() ? "true" : "false";
+						String thursday = don.isSelected() ? "true" : "false";
+						String friday = fr.isSelected() ? "true" : "false";
+						String saturday = sa.isSelected() ? "true" : "false";
+						String sunday = so.isSelected() ? "true" : "false";
+						Config.setStringValue(Config.MONDAY_STRING, monday);
+						Config.setStringValue(Config.TUESDAY_STRING, tuesday);
+						Config.setStringValue(Config.WEDNESDAY_STRING, wednesday);
+						Config.setStringValue(Config.THURSDAY_STRING, thursday);
+						Config.setStringValue(Config.FRIDAY_STRING, friday);
+						Config.setStringValue(Config.SATURDAY_STRING, saturday);
+						Config.setStringValue(Config.SUNDAY_STRING, sunday);
+					}
 				}
 			});
 		}
 	}
 
+	/**
+	 * Panel fuer die Tageslaengeneinstellung
+	 * 
+	 * @author Oliver
+	 *
+	 */
 	public class DaylengthConfig extends JPanel {
 		private Label lTime = new Label(
 				"Waehlen sie die Laenge eines Wochentages");
@@ -368,49 +451,60 @@ public class ConfigPanel extends JPanel {
 			} else {
 				sh = "" + TimetableManager.startTimeHour();
 			}
-			
+
 			if (TimetableManager.startTimeMinute() < 10) {
 				sm = "0" + TimetableManager.startTimeMinute();
 			} else {
 				sm = "" + TimetableManager.startTimeMinute();
 			}
-			
+
 			if (TimetableManager.endTimeHour() < 10) {
 				eh = "0" + TimetableManager.endTimeHour();
 			} else {
 				eh = "" + TimetableManager.endTimeHour();
 			}
-			
+
 			if (TimetableManager.endTimeMinute() < 10) {
 				em = "0" + TimetableManager.endTimeMinute();
 			} else {
 				em = "" + TimetableManager.endTimeMinute();
 			}
-			
+
 			start.setText(sh + ":" + sm);
 			end.setText(eh + ":" + em);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					try {
-						Config.DAY_STARTTIME_HOUR = Integer.parseInt(start
-								.getText(0, 2));
-						Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING,
-								Integer.parseInt(start.getText(0, 2)));
-						Config.DAY_STARTTIME_MINUTE = Integer.parseInt(start
-								.getText(3, 2));
-						Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING,
-								Integer.parseInt(start.getText(3, 2)));
-						Config.DAY_ENDTIME_HOUR = Integer.parseInt(start
-								.getText(0, 2));
-						Config.setIntValue(Config.DAY_ENDTIME_HOUR_STRING,
-								Integer.parseInt(end.getText(0, 2)));
-						Config.DAY_ENDTIME_MINUTE = Integer.parseInt(start
-								.getText(3, 2));
-						Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING,
-								Integer.parseInt(end.getText(3, 2)));
+						if(Integer.parseInt(start.getText(0, 2)) >= 0 
+								&& Integer.parseInt(start .getText(0, 2)) <= 23
+								&&Integer.parseInt(start.getText(3, 2)) >= 0 
+								&& Integer.parseInt(start .getText(3, 2)) <= 59
+								&& Integer.parseInt(end.getText(0, 2)) >= 0 
+								&& Integer.parseInt(end.getText(0, 2)) <= 23
+								&& Integer.parseInt(end.getText(3, 2)) >= 0 
+								&& Integer.parseInt(end.getText(3, 2)) <= 59
+										){
+							Config.DAY_STARTTIME_HOUR = Integer.parseInt(start
+									.getText(0, 2));
+							Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING,
+									Integer.parseInt(start.getText(0, 2)));
+							Config.DAY_STARTTIME_MINUTE = Integer.parseInt(start
+									.getText(3, 2));
+							Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING,
+									Integer.parseInt(start.getText(3, 2)));
+							Config.DAY_ENDTIME_HOUR = Integer.parseInt(start
+									.getText(0, 2));
+							Config.setIntValue(Config.DAY_ENDTIME_HOUR_STRING,
+									Integer.parseInt(end.getText(0, 2)));
+							Config.DAY_ENDTIME_MINUTE = Integer.parseInt(start
+									.getText(3, 2));
+							Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING,
+									Integer.parseInt(end.getText(3, 2)));
+						}else{
+							new ZahlException();
+						};
 					} catch (NumberFormatException | BadLocationException e) {
-						System.err.println(e.getClass().getName() + ": "
-								+ e.getMessage());
+						new ZahlException();
 					}
 				}
 			});

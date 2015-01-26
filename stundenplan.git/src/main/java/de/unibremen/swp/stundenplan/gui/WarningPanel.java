@@ -1,31 +1,21 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.TextComponent;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
 
 /**
  * Warnungspanel, enthaelt alle Exceptions, die vom User gesehen werden sollen
@@ -33,7 +23,7 @@ import de.unibremen.swp.stundenplan.logic.PersonalManager;
  *
  */
 @SuppressWarnings("serial")
-public final class WarningPanel extends JPanel{
+public class WarningPanel extends JPanel{
 
 	/**
 	 * ListModel der JList im Warnungspanel
@@ -50,11 +40,26 @@ public final class WarningPanel extends JPanel{
 	 */
 	private JScrollPane listScroller = new JScrollPane(list);
 	
+	/**
+	 * Standartanzeige : No Warning
+	 */
 	public static String message="No Warning";
+	
+	/**
+	 * Button um eine Warnung zu loeschen
+	 */
 	private JButton b1=new JButton("Warnung loeschen");
+	
+	/**
+	 * Button um alle Warnungen zu loeschen
+	 */
 	private JButton b2=new JButton("Alle Warnungen loeschen");
 	
+	/**
+	 * Konstruktor des Warnungspanels
+	 */
 	public WarningPanel(){
+		System.out.println("--------- WARN -------");
 		list.setCellRenderer(new SelectedListCellRenderer());
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -84,17 +89,24 @@ public final class WarningPanel extends JPanel{
 				listModel.clear();
 				listModel.addElement(message);
 			}
-		});
-		
+		});		
+		try{
+			if((listModel.elementAt(0).equals(message))) listModel.removeElement(message);
+		}catch(ArrayIndexOutOfBoundsException e){
+		}
 		listModel.addElement(message);
 	}
 	
 	public static void setText(String pMessage) {
-	//	if(listModel.elementAt(0).equals(message)) listModel.removeElement(message);
+		if(listModel.elementAt(0).equals(message)) listModel.removeElement(message);
 		listModel.addElement(pMessage);
 	}
 	
-	
+	/**
+	 * Anpassung des ListCellRenderers auf unser Konzept
+	 * @author Oliver
+	 *
+	 */
 	public class SelectedListCellRenderer extends DefaultListCellRenderer {
 	     @Override
 	     public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -105,10 +117,4 @@ public final class WarningPanel extends JPanel{
 	         return c;
 	     }
 	}
-//	public static void updateList() {
-//		listModel.clear();
-//		for (Personal per : PersonalManager.getAllPersonalFromDB()){
-//			 listModel.addElement(per);
-//		 }
-//	}
 }

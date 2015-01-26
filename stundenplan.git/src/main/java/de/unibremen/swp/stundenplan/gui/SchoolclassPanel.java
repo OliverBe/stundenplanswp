@@ -41,45 +41,113 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.exceptions.KuerzelException;
 import de.unibremen.swp.stundenplan.exceptions.MindestestensEinLehrerException;
-import de.unibremen.swp.stundenplan.exceptions.WrongInputException;
+import de.unibremen.swp.stundenplan.exceptions.RaumException;
+import de.unibremen.swp.stundenplan.exceptions.TextException;
+import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
+/**
+ * Repraesentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * von Schulklassen
+ * 
+ * @author Oliver
+ */
+@SuppressWarnings("serial")
 public class SchoolclassPanel extends JPanel {
 
-	private Label jahr = new Label("Jahrgang: ");
-	private Label bez = new Label("Zusatzbezeichner: ");
-	private JLabel lKt = new JLabel("Klassenteam: ");
+	/**
+	 * Jahrgangsbezeichnerfeld im Addpanel
+	 */
+	private JTextField bezField;
+	
+	/**
+	 * Jahrgangsbezeichnerfeld im Editpanel
+	 */
+	private JTextField bezField2;
 
-	public JTextField bezField = new JTextField(5);
+	/**
+	 * Moegliche Jahrgaenge
+	 */
+	private Integer[] jahrgang = { 1, 2, 3, 4 };
+	
+	/**
+	 * Klassenraumcombobox beim Addpanel
+	 */
+	private JComboBox<Object> cb1;
+	
+	/**
+	 * Klassenraumcombobox beim Editpanel
+	 */
+	private JComboBox<Object> cb2;
+	
+	/**
+	 * Jahrgangscombobox beim Addpanel
+	 */
+	private JComboBox<Object> jg;
+	
+	/**
+	 * Jahrgangscombobox beim Editpanel
+	 */
+	private JComboBox<Object> jg2;
 
-	private JComboBox<Object> jcb;
-	public Integer[] jahrgang = { 1, 2, 3, 4 };
-	private JComboBox<Object> jg = new JComboBox<Object>(jahrgang);
+	/**
+	 * checklist fuer die Personalteams beim addpanel
+	 */
+	private CheckBoxList checkList;
 
-	public JButton button = new JButton("Klasse hinzufuegen");
-	public JButton bTeam = new JButton("+");
+	/**
+	 * checklist fuer die Personalteams beim editpanel
+	 */
+	private CheckBoxList checkList2;
 
-	private DefaultTableModel model;
-	private DefaultTableModel model2;
+	/**
+	 * GridBagConsraint fuer die add,edit,listpanel
+	 */
+	private GridBagConstraints c;
 
-	private GridBagConstraints c = new GridBagConstraints();
-	private GridBagConstraints c2 = new GridBagConstraints();
+	/**
+	 * GridBagConsraint fuer das gesamte Panel
+	 */
+	private GridBagConstraints c2;
 
+	/**
+	 * ListModel fuer Schulklassenliste
+	 */
 	private static DefaultListModel<Schoolclass> listModel = new DefaultListModel<Schoolclass>();
+
+	/**
+	 * JList fuer Schulklassen
+	 */
 	private JList<Schoolclass> list = new JList<Schoolclass>(listModel);
+
+	/**
+	 * Scrollbar fuer Jlist von Schulklassen
+	 */
 	private JScrollPane listScroller = new JScrollPane(list);
 
-	final CheckBoxList checkList = new CheckBoxList();
-	final CheckBoxList checkList2 = new CheckBoxList();
+	/**
+	 * TableModel fuer den Bedarf beim addpanel
+	 */
+	private DefaultTableModel model;
 
+	/**
+	 * TableModel fuer den Bedarf beim editpanel
+	 */
+	private DefaultTableModel model2;
+
+	/**
+	 * Konstruktor vom SchoolclassPanel
+	 */
 	public SchoolclassPanel() {
-		setLayout(new GridBagLayout());
+		c2 = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		c2.fill = GridBagConstraints.BOTH;
 		c2.anchor = GridBagConstraints.EAST;
@@ -94,7 +162,22 @@ public class SchoolclassPanel extends JPanel {
 		add(createListPanel(new JPanel()), c2);
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man einee neue Schulklasse hinzufuegen kann.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return Hinzuzufuegendes Panel
+	 */
+	@SuppressWarnings("unchecked")
 	private JPanel createAddPanel(final JPanel p) {
+		c = new GridBagConstraints();
+		JLabel lKt = new JLabel("Klassenteam:");
+		bezField = new JTextField(5);
+		jg = new JComboBox<Object>(jahrgang);
+		JButton button = new JButton("Klasse hinzufuegen");
+		checkList = new CheckBoxList();
+
 		model = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -113,12 +196,12 @@ public class SchoolclassPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(jahr, c);
+		p.add(new Label("Jahrgang:"), c);
 		c.gridx = 1;
 		p.add(jg, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(bez, c);
+		p.add(new Label("Zusatzbezeichner:"), c);
 		c.gridx = 1;
 		p.add(bezField, c);
 		c.gridx = 0;
@@ -156,8 +239,8 @@ public class SchoolclassPanel extends JPanel {
 		c.gridx = 1;
 
 		ArrayList<Room> ro = DataRaum.getAllRaum();
-		jcb = new JComboBox<Object>(ro.toArray());
-		p.add(jcb, c);
+		cb1 = new JComboBox<Object>(ro.toArray());
+		p.add(cb1, c);
 
 		model.addColumn("Stundeninhalt");
 		model.addColumn("Bedarf");
@@ -213,39 +296,44 @@ public class SchoolclassPanel extends JPanel {
 		p.add(button, c);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (!check(p))
-						throw new WrongInputException();
-
-					ArrayList<String> kt = new ArrayList<String>();
-					for (int i = 0; i < checkList.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList.getModel()
-								.getElementAt(i);
-						if (cb.isSelected())
-							kt.add(cb.getText());
-					}
-
-					HashMap<String, Integer> hm = new HashMap<String, Integer>();
-					for (int i = 0; i < model.getRowCount(); i++) {
-						hm.put((String) model.getValueAt(i, 0), Integer
-								.parseInt((String) model.getValueAt(i, 1)));
-					}
-
-					DataSchulklasse.addSchulklasse(new Schoolclass((jg
-							.getSelectedItem()) + bezField.getText(), (int) jg
-							.getSelectedItem(), (Room) jcb.getSelectedItem(),
-							kt, hm));
-					updateList();
-				} catch (WrongInputException e) {
-					e.printStackTrace();
+				if (table.getCellEditor() != null)
+					table.getCellEditor().stopCellEditing();
+				if (!check(p))
+					return;
+				ArrayList<String> kt = new ArrayList<String>();
+				for (int i = 0; i < checkList.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						kt.add(cb.getText());
 				}
+
+				HashMap<String, Integer> hm = new HashMap<String, Integer>();
+				for (int i = 0; i < model.getRowCount(); i++) {
+					hm.put((String) model.getValueAt(i, 0),
+							Integer.parseInt((String) model.getValueAt(i, 1)));
+				}
+
+				DataSchulklasse.addSchulklasse(new Schoolclass((jg
+						.getSelectedItem()) + bezField.getText(), (int) jg
+						.getSelectedItem(), (Room) cb1.getSelectedItem(), kt,
+						hm));
+				updateList();
 			}
 		});
 		return p;
 
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man die Schulklassenliste angezeigt bekommt.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return HinzuzufuegendesPanel
+	 */
 	private JPanel createListPanel(final JPanel p) {
+		c = new GridBagConstraints();
 		p.setLayout(new GridBagLayout());
 		p.setBorder(BorderFactory
 				.createTitledBorder("Existierende Schulklassen"));
@@ -305,17 +393,22 @@ public class SchoolclassPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Erzeugt ein Panel auf dem man eine Schulklasse editieren kann.
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @param sc
+	 *            zu editierende Schulklasse
+	 * @return Hinzuzufuegendes Panel
+	 */
+	@SuppressWarnings("unchecked")
 	private JPanel createEditPanel(final JPanel p, final Schoolclass sc) {
-
-		Label jahr2 = new Label("Jahrgang: ");
-		Label bez2 = new Label("Zusatzbezeichner: ");
-		JLabel lKt2 = new JLabel("Klassenteam: ");
-
-		final JTextField bezField2 = new JTextField(5);
-
-		final JComboBox<Object> jcb2;
-		Integer[] jahrgang2 = { 1, 2, 3, 4 };
-		final JComboBox<Object> jg2 = new JComboBox<Object>(jahrgang2);
+		c = new GridBagConstraints();
+		JLabel lKt2 = new JLabel("Klassenteam:");
+		checkList2 = new CheckBoxList();
+		bezField2 = new JTextField(5);
+		jg2 = new JComboBox<Object>(jahrgang);
 
 		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
@@ -338,13 +431,13 @@ public class SchoolclassPanel extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		p.add(jahr2, c);
+		p.add(new Label("Jahrgang:"), c);
 		c.gridx = 1;
 		p.add(jg2, c);
-		
+
 		c.gridx = 0;
 		c.gridy = 1;
-		p.add(bez2, c);
+		p.add(new Label("Zusatzbezeichner:"), c);
 		c.gridx = 1;
 		p.add(bezField2, c);
 		bezField2.setText(sc.getName().substring(1, sc.getName().length()));
@@ -358,8 +451,8 @@ public class SchoolclassPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.NORTH;
-		lKt2.setFont(new Font(bezField2.getFont().getFontName(), Font.PLAIN, bezField2
-				.getFont().getSize()));
+		lKt2.setFont(new Font(bezField2.getFont().getFontName(), Font.PLAIN,
+				bezField2.getFont().getSize()));
 		p.add(lKt2, c);
 		c.gridy = 4;
 
@@ -370,15 +463,16 @@ public class SchoolclassPanel extends JPanel {
 		ArrayList<JCheckBox> boxes = new ArrayList<JCheckBox>();
 		for (Personal per : PersonalManager.getAllPersonalFromDB()) {
 			boxes.add(new JCheckBox(per.getKuerzel()));
-		};
-		
-		for(JCheckBox jcb : boxes){
-			for(String s : sc.getKlassenlehrer()){
-				if(jcb.getText().equals(s)) jcb.setSelected(true);
-			}	
-		}	
+		}
+		;
 
-		
+		for (JCheckBox jcb : boxes) {
+			for (String s : sc.getKlassenlehrer()) {
+				if (jcb.getText().equals(s))
+					jcb.setSelected(true);
+			}
+		}
+
 		checkList2.setListData(boxes.toArray());
 		checkList2.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		p.add(checkList2, c);
@@ -390,18 +484,21 @@ public class SchoolclassPanel extends JPanel {
 		c.gridx = 1;
 
 		ArrayList<Room> ro = RaumManager.getAllRoomsFromDB();
-		jcb2 = new JComboBox<Object>(ro.toArray());
-		
-		for(Room r : ro){
-			System.out.println("++ Klassenraum:  "+r.getName());
-			System.out.println("++ Klassenraum: !"+sc.getKlassenraum().getName());
-			if(r.getName().equals(sc.getKlassenraum().getName()))System.out.println("++ Yes"+sc.getKlassenraum().getName());
+		cb2 = new JComboBox<Object>(ro.toArray());
+
+		for (Room r : ro) {
+			System.out.println("++ Klassenraum:  " + r.getName());
+			System.out.println("++ Klassenraum: !"
+					+ sc.getKlassenraum().getName());
+			if (r.getName().equals(sc.getKlassenraum().getName()))
+				System.out.println("++ Yes" + sc.getKlassenraum().getName());
 		}
-		for(int i=0; i<ro.size(); i++){
-			if(ro.get(i).getName().equals(sc.getKlassenraum().getName())) jcb2.setSelectedIndex(i);
+		for (int i = 0; i < ro.size(); i++) {
+			if (ro.get(i).getName().equals(sc.getKlassenraum().getName()))
+				cb2.setSelectedIndex(i);
 		}
-		p.add(jcb2, c);
-		
+		p.add(cb2, c);
+
 		jg2.setSelectedItem(sc.getJahrgang());
 
 		model2.addColumn("Stundeninhalt");
@@ -418,27 +515,29 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 
-		JTable table = new JTable(model2);
-		table.setColumnSelectionAllowed(false);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.getTableHeader().setResizingAllowed(false);
+		JTable table2 = new JTable(model2);
+		table2.setColumnSelectionAllowed(false);
+		table2.getTableHeader().setReorderingAllowed(false);
+		table2.getTableHeader().setResizingAllowed(false);
 
 		jg2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				for (int i = 0; i < model2.getRowCount(); i++) {
 					model2.setValueAt("0", i, 1);
 				}
-				if((int)jg2.getSelectedItem() == sc.getJahrgang()) {
-					for (Entry<String, Integer> entry : sc.getStundenbedarf().entrySet()) {
+				if ((int) jg2.getSelectedItem() == sc.getJahrgang()) {
+					for (Entry<String, Integer> entry : sc.getStundenbedarf()
+							.entrySet()) {
 						for (int i = 0; i < model2.getRowCount(); i++) {
-							if (model2.getValueAt(i, 0).toString().equals(entry.getKey())) {
+							if (model2.getValueAt(i, 0).toString()
+									.equals(entry.getKey())) {
 								model2.setValueAt(entry.getValue(), i, 1);
 							}
 						}
 					}
-				}else {
+				} else {
 					for (Entry<String, Integer> entry : DataSchulklasse
-							.getJahrgangByJahrgang((int)jg2.getSelectedItem())
+							.getJahrgangByJahrgang((int) jg2.getSelectedItem())
 							.getStundenbedarf().entrySet()) {
 						for (int i = 0; i < model2.getRowCount(); i++) {
 							if (model2.getValueAt(i, 0).toString()
@@ -455,11 +554,11 @@ public class SchoolclassPanel extends JPanel {
 		c.gridy = 7;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		p.add(table.getTableHeader(), c);
+		p.add(table2.getTableHeader(), c);
 
 		c.gridy = 8;
 		c.gridx = 0;
-		p.add(table, c);
+		p.add(table2, c);
 
 		c.gridwidth = 1;
 		c.gridy = 9;
@@ -469,36 +568,34 @@ public class SchoolclassPanel extends JPanel {
 		// edit Button
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				try {
-					if (!check(p))
-						throw new WrongInputException();
-
-					
-					ArrayList<String> kt = new ArrayList<String>();
-					for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-						JCheckBox cb = (JCheckBox) checkList2.getModel()
-								.getElementAt(i);
-						if (cb.isSelected())
-							kt.add(cb.getText());
-					}
-
-					HashMap<String, Integer> hm = new HashMap<String, Integer>();
-					for (int i = 0; i < model2.getRowCount(); i++) {
-						hm.put((String) model2.getValueAt(i, 0), (Integer) model2.getValueAt(i, 1));
-					}
-
-					SchulklassenManager.editSchoolclass(sc.getName(), new Schoolclass((jg2
-							.getSelectedItem()) + bezField2.getText(), (int) jg2
-							.getSelectedItem(), (Room) jcb2.getSelectedItem(),
-							kt, hm));
-					
-					
-					updateList();
-					((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
-
-				} catch (WrongInputException e) {
-					e.printStackTrace();
+				if (table2.getCellEditor() != null)
+					table2.getCellEditor().stopCellEditing();
+				if (!check(p))
+					return;
+				ArrayList<String> kt = new ArrayList<String>();
+				for (int i = 0; i < checkList2.getModel().getSize(); i++) {
+					JCheckBox cb = (JCheckBox) checkList2.getModel()
+							.getElementAt(i);
+					if (cb.isSelected())
+						kt.add(cb.getText());
 				}
+
+				HashMap<String, Integer> hm = new HashMap<String, Integer>();
+				for (int i = 0; i < model2.getRowCount(); i++) {
+					hm.put((String) model2.getValueAt(i, 0),
+							(Integer) model2.getValueAt(i, 1));
+				}
+
+				SchulklassenManager.editSchoolclass(
+						sc.getName(),
+						new Schoolclass((jg2.getSelectedItem())
+								+ bezField2.getText(), (int) jg2
+								.getSelectedItem(), (Room) cb2
+								.getSelectedItem(), kt, hm));
+
+				updateList();
+				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
+
 			}
 		});
 
@@ -514,11 +611,33 @@ public class SchoolclassPanel extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Ueberprueft, ob es irgendwelche falsche EIngaben gibt. Zb Leere Felder,
+	 * Zahlen in Textfeldern, zu lange Kuerzel etc.
+	 * 
+	 * @param p
+	 *            uebergebenes panel
+	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
+	 */
 	private boolean check(final JPanel p) {
-		if (textFieldsEmpty(p)) return false;
+		boolean b = true;
+		if (textFieldsEmpty(p)) {
+			new TextException();
+			b = false;
+		}
+		if (bezField != null
+				&& bezField.getText().length() > Data.MAX_KUERZEL_LEN) {
+			new KuerzelException();
+			b = false;
+		}
+		if (bezField2 != null
+				&& bezField2.getText().length() > Data.MAX_KUERZEL_LEN) {
+			new KuerzelException();
+			b = false;
+		}
 
-		boolean b = false;
-		if(checkList != null){
+		boolean b2 = false;
+		if (checkList != null) {
 			ArrayList<String> kt = new ArrayList<String>();
 			for (int i = 0; i < checkList.getModel().getSize(); i++) {
 				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
@@ -527,60 +646,84 @@ public class SchoolclassPanel extends JPanel {
 			}
 			for (String s : kt) {
 				if (PersonalManager.getPersonalByKuerzel(s).isLehrer())
-					b = true;
+					b2 = true;
 			}
 		}
-		if(checkList2 != null){
+		if (checkList2 != null) {
 			ArrayList<String> kt = new ArrayList<String>();
 			for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-				JCheckBox cb = (JCheckBox) checkList2.getModel().getElementAt(i);
+				JCheckBox cb = (JCheckBox) checkList2.getModel()
+						.getElementAt(i);
 				if (cb.isSelected())
 					kt.add(cb.getText());
 			}
 			for (String s : kt) {
 				if (PersonalManager.getPersonalByKuerzel(s).isLehrer())
-					b = true;
+					b2 = true;
 			}
 		}
-	
-		if (!b){ 
+		if (!b2) {
 			new MindestestensEinLehrerException();
-			return false;
+			b = false;
 		}
-
+		if (cb1 != null && cb1.getSelectedItem() == null) {
+			new RaumException();
+			b = false;
+		}
+		if (cb2 != null && cb2.getSelectedItem() == null) {
+			new RaumException();
+			b = false;
+		}
 		try {
 			if (model != null) {
 				for (int i = 0; i < model.getRowCount(); i++) {
-					Integer.parseInt((String) model.getValueAt(i, 1));
+					if (Integer.parseInt((String) model.getValueAt(i, 1)) < 0) {
+						new ZahlException();
+						b = false;
+					}
 				}
 			}
 			if (model2 != null) {
 				for (int i = 0; i < model.getRowCount(); i++) {
-					Integer.parseInt((String) model.getValueAt(i, 1));
+					if (Integer.parseInt((String) model2.getValueAt(i, 1)) < 0) {
+						new ZahlException();
+						b = false;
+					}
 				}
 			}
 		} catch (NumberFormatException e) {
-			return false;
+			new ZahlException();
+			b = false;
 		}
-		return true;
+		return b;
 	}
 
+	/**
+	 * Ueberprueft ob ein Textfeld leer ist
+	 * 
+	 * @param p
+	 *            uebergebenes Panel
+	 * @return true, wenn ein Textfeld leer ist, false, wenn ein Textfeld nicht
+	 *         leer ist
+	 */
 	private boolean textFieldsEmpty(final JPanel p) {
 		for (Component c : p.getComponents()) {
 			if (c instanceof TextField) {
-				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					return false;
+				if (((TextField) c).getText().isEmpty())
+					return true;
 			}
 			if (c instanceof JTextField) {
-				JTextField tf = (JTextField) c;
-				if (!tf.getText().isEmpty())
-					return false;
+				if (((JTextField) c).getText().isEmpty())
+					return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
+	/**
+	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen
+	 * Daten der Datenbank
+	 */
 	public static void updateList() {
 		listModel.clear();
 		for (Schoolclass sc : DataSchulklasse.getAllSchulklasse()) {

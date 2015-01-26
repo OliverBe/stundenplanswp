@@ -36,7 +36,7 @@ import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repr�sentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
+ * Repraesentiert das Panel zum Hinzufuegen, Bearbeiten, Loeschen und Anzeigen
  * von Stundeninhalten
  * 
  * @author Oliver
@@ -113,7 +113,7 @@ public class StundeninhaltPanel extends JPanel {
 	 * 
 	 * @param p
 	 *            uebergebenes Panel
-	 * @return HinzufuegenPanel
+	 * @return Hinzuzufuegendes Panel
 	 */
 	private JPanel createAddPanel(final JPanel p) {
 		c = new GridBagConstraints();
@@ -373,7 +373,7 @@ public class StundeninhaltPanel extends JPanel {
 	}
 
 	/**
-	 * Ueberprueft, ob es irgendwelche falsche EIngaben gibt. Zb Leere Felder,
+	 * Ueberprueft, ob es irgendwelche falsche Eingaben gibt. Zb Leere Felder,
 	 * Zahlen in Textfeldern, zu lange Kuerzel etc.
 	 * 
 	 * @param p
@@ -381,19 +381,20 @@ public class StundeninhaltPanel extends JPanel {
 	 * @return true, wenn alles ok ist, false, wenn eine Eingabe falsch ist
 	 */
 	private boolean check(final JPanel p) {
+		boolean b=true;
 		if (textFieldsEmpty(p)) {
 			new TextException();
-			return false;
+			b=false;
 		}
 		if (kuerzField != null
 				&& kuerzField.getText().length() > Data.MAX_KUERZEL_LEN) {
 			new KuerzelException();
-			return false;
+			b=false;
 		}
 		if (kuerzField2 != null
 				&& kuerzField2.getText().length() > Data.MAX_KUERZEL_LEN) {
 			new KuerzelException();
-			return false;
+			b=false;
 		}
 		try {
 			for (Component c : p.getComponents()) {
@@ -401,22 +402,22 @@ public class StundeninhaltPanel extends JPanel {
 					Integer.parseInt(dauerField.getText());
 					if (Integer.parseInt(dauerField.getText()) < 1) {
 						new ZahlException();
-						return false;
+						b=false;
 					}
 				}
 				if (c == dauerField2) {
 					Integer.parseInt(dauerField2.getText());
 					if (Integer.parseInt(dauerField2.getText()) < 1) {
 						new ZahlException();
-						return false;
+						b=false;
 					}
 				}
 			}
 		} catch (NumberFormatException e) {
 			new ZahlException();
-			return false;
+			b=false;
 		}
-		return true;
+		return b;
 	}
 
 	/**
@@ -428,20 +429,17 @@ public class StundeninhaltPanel extends JPanel {
 	 *         leer ist
 	 */
 	private boolean textFieldsEmpty(final JPanel p) {
-		boolean b = true;
 		for (Component c : p.getComponents()) {
 			if (c instanceof TextField) {
-				TextField tf = (TextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((TextField) c).getText().isEmpty())
+					return true;
 			}
 			if (c instanceof JTextField) {
-				JTextField tf = (JTextField) c;
-				if (!tf.getText().isEmpty())
-					b = false;
+				if (((JTextField) c).getText().isEmpty())
+					return true;
 			}
 		}
-		return b;
+		return false;
 	}
 
 	/**
