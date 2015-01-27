@@ -1,16 +1,10 @@
 package de.unibremen.swp.stundenplan.logic;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import de.unibremen.swp.stundenplan.command.AddJahrgangToDB;
 import de.unibremen.swp.stundenplan.command.DeleteJahrgangsBedarfFromDB;
 import de.unibremen.swp.stundenplan.command.EditJahrgangsBedarf;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
 public class JahrgangsManager {
