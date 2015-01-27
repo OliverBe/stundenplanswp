@@ -353,7 +353,7 @@ public class ConfigPanel extends JPanel {
 			add(lTime, c);
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridy = 1;
-			CheckBoxList checkList = new CheckBoxList();
+			final CheckBoxList checkList = new CheckBoxList();
 			checkList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			JCheckBox[] boxes = { mo, di, mi, don, fr, sa, so };
 			if (Weekday.MONDAY.isSchoolday() == true)

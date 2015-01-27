@@ -258,7 +258,7 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 
-		JTable table = new JTable(model);
+		final JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
@@ -515,7 +515,7 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 
-		JTable table2 = new JTable(model2);
+		final JTable table2 = new JTable(model2);
 		table2.setColumnSelectionAllowed(false);
 		table2.getTableHeader().setReorderingAllowed(false);
 		table2.getTableHeader().setResizingAllowed(false);
