@@ -10,7 +10,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
  * Verwaltet das Personal
  * 
  * @author Rom
- * @version 0.1
+ * @version 0.8
  * 
  */
 public class PersonalManager {

@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 	private static JTabbedPane tabpane = new JTabbedPane(JTabbedPane.TOP);
 
 	/**
-	 * Panel zum Hinzuf�gen, Editieren, Loeschen von Daten aus der DB
+	 * Panel zum Hinzuf���gen, Editieren, Loeschen von Daten aus der DB
 	 */
 	private DataPanel paneData = new DataPanel();
 	
@@ -90,7 +90,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	/**
-	 * Auslagerung der hinzuzuf�genden Panels in diese Methode
+	 * Auslagerung der hinzuzuf���genden Panels in diese Methode
 	 */
 	private void init() {
 		tabpane.addTab("Daten",paneData);
@@ -117,7 +117,7 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 if(!Data.isSaved()) {
-                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veränderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Ver��nderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
                 	if(result==JOptionPane.YES_OPTION) {
                 		if(Data.getLastRestoredFileName()!=null) {
                 			Data.backup(Data.getLastRestoredFileName());
@@ -180,14 +180,14 @@ public class MainFrame extends JFrame {
 	};
 	
 	/**
-	 * Checkt das ausgew�hlte Tab. Je nach Klasse des Tabs, f�hrt es Updatemethoden
-	 * o.�. aus.
+	 * Checkt das ausgew���hlte Tab. Je nach Klasse des Tabs, f���hrt es Updatemethoden
+	 * o.���. aus.
 	 * 
-	 * Im Falle des LehreransichtsPanels, pr�ft es zun�chst, ob relevante Zielgroe�en ver�ndert
-	 * wurden. Sind diese nicht ver�ndert, ist kein Update noetig.
-	 * Au�erdem wird �berpr�ft, ob das letzte Command in der History ein Edit-Command ist, da
-	 * diese Commands keine unmittelbaren �nderungen an den Zielgroe�en bewirken, aber dennoch
-	 * Unterschiede ausmachen k�nnen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
+	 * Im Falle des LehreransichtsPanels, pr���ft es zun���chst, ob relevante Zielgroe���en ver���ndert
+	 * wurden. Sind diese nicht ver���ndert, ist kein Update noetig.
+	 * Au���erdem wird ���berpr���ft, ob das letzte Command in der History ein Edit-Command ist, da
+	 * diese Commands keine unmittelbaren ���nderungen an den Zielgroe���en bewirken, aber dennoch
+	 * Unterschiede ausmachen k���nnen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
 	 * So wird verhindert, dass der Personaleinsatzplan immer weiter aktualisiert wird, obwohl der Plan
 	 * z.B. fertig ist und nicht mehr bearbeitet wird. Spart so dauerhaft Laufzeit, wenn Bearbeitung bereits abgeschlossen.
 	 */
