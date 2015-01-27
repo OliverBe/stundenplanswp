@@ -310,6 +310,11 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		c.weighty = 0.2;
 		gbl.setConstraints(show, c);
 		menuBar.add(show, c);
+		
+		c.gridy = 5;
+		c.ipady = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		menuBar.add(new WarningPanel(), c);
 
 	}
 
