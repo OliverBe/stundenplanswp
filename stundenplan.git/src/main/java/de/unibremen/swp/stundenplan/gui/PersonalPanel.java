@@ -167,7 +167,7 @@ public class PersonalPanel extends JPanel {
 	@SuppressWarnings({ "unchecked" })
 	private JPanel createAddPanel(final JPanel p) {
 		c = new GridBagConstraints();
-		JTextField nameField = new JTextField(15);
+		final JTextField nameField = new JTextField(15);
 		kuerzField = new JTextField(5);
 		pflichtField = new JTextField(5);
 		ersatzField = new JTextField(5);
@@ -241,7 +241,7 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 4;
 		p.add(new Label("Wunschzeiten:"), c);
 
-		JTable table = new JTable(model);
+		final JTable table = new JTable(model);
 		table.setColumnSelectionAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		model.addColumn("Wochentag");
@@ -474,7 +474,7 @@ public class PersonalPanel extends JPanel {
 	@SuppressWarnings({ "unchecked" })
 	private JPanel createEditPanel(final JPanel p, final Personal pe) {
 		c = new GridBagConstraints();
-		JTextField nameField2 = new JTextField(15);
+		final JTextField nameField2 = new JTextField(15);
 		kuerzField2 = new JTextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
@@ -550,7 +550,7 @@ public class PersonalPanel extends JPanel {
 		c.gridy = 4;
 		p.add(new Label("Wunschzeiten:"), c);
 
-		JTable table2 = new JTable(model2);
+		final JTable table2 = new JTable(model2);
 		table2.setColumnSelectionAllowed(false);
 
 		model2.addColumn("Wochentag");
