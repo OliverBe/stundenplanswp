@@ -60,7 +60,7 @@ public class WochenplanTag extends JPanel {
 
 		table = new JTable(model);
 		model.addColumn("Personal");
-		for(int i= 1; i<TimetableManager.daytablelength(); i++){
+		for(int i= 0; i<TimetableManager.daytablelength(); i++){
 		
 			model.addColumn(TimetableManager.getTimeframeDisplay(i));
 
