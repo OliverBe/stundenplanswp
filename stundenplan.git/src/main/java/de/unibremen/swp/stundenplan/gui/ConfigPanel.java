@@ -1,6 +1,5 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -9,14 +8,11 @@ import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -29,7 +25,6 @@ import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.exceptions.WochentagException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 /**
@@ -232,7 +227,7 @@ public class ConfigPanel extends JPanel {
 	 *
 	 */
 	public class TimeslotConfig extends JPanel {
-		private Label lTime = new Label("Dauer einer Planungseinheit:");
+		private Label lTime = new Label("Dauer eines Timeslots:");
 		private JTextField tf = new JTextField(2);
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");

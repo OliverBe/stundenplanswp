@@ -796,26 +796,6 @@ public class PersonalPanel extends JPanel {
 			new ZahlException();
 			b = false;
 		}
-		boolean b2 = true;
-		if (checkList != null) {
-			for (int i = 0; i < checkList.getModel().getSize(); i++) {
-				JCheckBox cb = (JCheckBox) checkList.getModel().getElementAt(i);
-				if (cb.isSelected())
-					b2 = false;
-			}
-		}
-		if (checkList2 != null) {
-			for (int i = 0; i < checkList2.getModel().getSize(); i++) {
-				JCheckBox cb = (JCheckBox) checkList2.getModel()
-						.getElementAt(i);
-				if (cb.isSelected())
-					b2 = false;
-			}
-		}
-		if (b2) {
-			new StundeninhaltException();
-			b = false;
-		}
 		return b;
 	}
 
