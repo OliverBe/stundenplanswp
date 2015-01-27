@@ -50,7 +50,6 @@ public class WochenplanTag extends JPanel {
 		init();
 		addData();
 		calculateTime();
-		//deleteAllPlanungseinheiten();
 	}
 
 	/**

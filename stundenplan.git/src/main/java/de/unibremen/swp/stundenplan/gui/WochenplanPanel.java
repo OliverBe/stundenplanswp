@@ -14,7 +14,6 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 
 public class WochenplanPanel extends JPanel {
 
-	private JFrame f;
 	public static JTabbedPane tabPane = new JTabbedPane();
 	private WochenplanTag montag;
 	private WochenplanTag dienstag;

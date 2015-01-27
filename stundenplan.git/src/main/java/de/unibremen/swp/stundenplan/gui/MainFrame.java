@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
 		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		init();
-		pack();
+	//	pack();
 		setMinimumSize(new Dimension(1280,1024));
 	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
 		setVisible(true);
