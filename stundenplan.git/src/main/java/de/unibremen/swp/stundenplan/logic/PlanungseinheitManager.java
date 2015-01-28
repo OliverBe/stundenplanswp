@@ -264,16 +264,17 @@ public final class PlanungseinheitManager {
 	}
 	
 	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
-		for(Personal p : pPe.getPersonal()){
-			if(p.getMoeglicheStundeninhalte().size() ==0){
-				continue;
-			}
+		System.out.println("check si pers");
+		
+			System.out.println(pPe.getStundeninhalte().size());
 			for(String si : pPe.getStundeninhalte()){
-			if(!p.getMoeglicheStundeninhalte().contains(si)){
+				System.out.println(si);
+				System.out.println(pPer.getMoeglicheStundeninhalte().contains(si));
+				if(!pPer.getMoeglicheStundeninhalte().contains(si)){
 				System.out.println("im inside");
 				return true;
 			}	
-		}
+		
 		}
 		return false;
 	}
