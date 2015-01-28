@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.AddPlanungseinheitToDB;
 import de.unibremen.swp.stundenplan.command.DeletePlanungseinheitFromDB;
 import de.unibremen.swp.stundenplan.command.EditPlanungseinheit;
@@ -16,6 +15,7 @@ import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
+import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
@@ -36,14 +36,14 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Bearbeitet eine Planungseinheit aus der DB. Bearbeiten findet im
-	 * w�rtlichen Sinne nicht statt, das ausgew�hlte Objekt wird mit einem neuen
-	 * �berschrieben.
+	 * w���rtlichen Sinne nicht statt, das ausgew���hlte Objekt wird mit einem neuen
+	 * ���berschrieben.
 	 * 
 	 * @param pId
 	 *            Die ID der Planungseinheit, die bearbeitet werden soll.
 	 * @param pl
 	 *            Die Planungseinheit, mit der die alte Planungseinheit
-	 *            �berschrieben wird.
+	 *            ���berschrieben wird.
 	 */
 	public static void editPlanungseinheit(int pId, Planungseinheit pl) {
 		System.out.println("Editing Planungseinheit [" + pId + "].");
@@ -67,7 +67,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur�ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -89,7 +89,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur�ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -113,7 +113,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur�ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -137,7 +137,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
-	 * zur�ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -162,7 +162,7 @@ public final class PlanungseinheitManager {
 
 	public static Planungseinheit timeslotToPE(Timeslot pTs, Object pOwner) {
 		// TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet,
-		// und gibt diese zur�ck.
+		// und gibt diese zur���ck.
 		ArrayList<Planungseinheit> pes;
 		if (pOwner instanceof Personal) {
 			pes = getPEForPersonalbyWeekday(pTs.getDay(), (Personal) pOwner);
@@ -241,11 +241,54 @@ public final class PlanungseinheitManager {
 		orderByTime(p);
 		return p;
 	}
-
+	
+	/**
+	 * Zaehlt wiviel mal eine Person am Tag die Gebaeude wechselt
+	 * @param pers Personal
+	 * @param pDay Tag
+	 * @return gibt die Anzahl von Wechsel
+	 */
+	public static int pendelCounter( final Personal pers, final Weekday pDay){
+		int counter = 0;
+		int gebnr = -1;
+		for(Planungseinheit p : getPEForPersonalbyWeekday(pDay, pers)){
+			if(p.getRooms().size() != 0){
+			Room r = DataRaum.getRaumByName(p.getRooms().get(0));
+			if(gebnr != -1 && gebnr != r.getGebaeude()){
+				counter ++;
+			}
+			gebnr = r.getGebaeude();
+			}
+		}
+		return counter;
+	}
+	
+	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
+		for(Personal p : pPe.getPersonal()){
+			if(p.getMoeglicheStundeninhalte().size() ==0){
+				continue;
+			}
+			for(String si : pPe.getStundeninhalte()){
+			if(!p.getMoeglicheStundeninhalte().contains(si)){
+				System.out.println("im inside");
+				return true;
+			}	
+		}
+		}
+		return false;
+	}
+	
+	public static boolean overtimePers(final Personal pPers){
+		if(pPers.getIstZeit()>pPers.getSollZeit()){
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * TO-DO prueft ob zwei Planungseinheiten sich ueberschneiden im selben Tag.
 	 * 
-	 * @return gibt true zurück wenn die PEs sich überlappen
+	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
@@ -278,7 +321,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zurück wenn die PEs sich überlappen
+	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
 	 */
 	public static boolean checkPersonPE(final Personal p,
 			final Planungseinheit pe, final Weekday day) {
@@ -293,7 +336,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zurück wenn die PEs sich überlappen
+	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
 	 */
 	public static boolean checkRoomPE(final Room r, final Planungseinheit pe,
 			final Weekday day) {
@@ -308,7 +351,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zurück wenn die PEs sich überlappen
+	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
 	 */
 	public static boolean checkScPE(final Schoolclass sc,
 			final Planungseinheit pe, final Weekday day) {

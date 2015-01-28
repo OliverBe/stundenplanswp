@@ -41,6 +41,7 @@ public class PEedit extends JFrame {
 	private JSpinner spinner2;
 	private JSpinner spinner3;
 	private JSpinner spinner4;
+	private String[] options = new String[2];
 	private JComboBox<Weekday> tag;
 	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
 		public int compare(Personal p1, Personal p2) {
@@ -155,6 +156,9 @@ public class PEedit extends JFrame {
 		getContentPane().setLayout(new SpringLayout());
 		getContentPane().add(lLabel1);
 		getContentPane().add(lLabel2);
+		final String[] options = new String[2];
+		options[0] = new String("weiter");
+		options[1] = new String("abbrechen");
 		starttime = new JPanel();
 		endtime = new JPanel();
 		SpinnerModel hourmodel = new SpinnerNumberModel(
@@ -184,7 +188,9 @@ public class PEedit extends JFrame {
 		spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
 		final JCheckBox bandselect = new JCheckBox("Band-Unterricht");
+		final JCheckBox teamzeit = new JCheckBox("Teamzeit");
 		endtime.add(bandselect);
+		endtime.add(teamzeit);
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 		tf.setEditable(false);
 		getContentPane().add(starttime);
@@ -209,11 +215,11 @@ public class PEedit extends JFrame {
 		button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (pList.getDestsize() == 0 || scList.getDestsize() == 0
+				if (pList.getDestsize() == 0
 						|| roomList.getDestsize() == 0) {
 					JOptionPane
 							.showMessageDialog(null,
-									"Es sind keine Personal, Klassen oder Raeume eingeplant");
+									"Es sind keine Personal oder Raeume eingeplant");
 					return;
 				} else if ((sIList.getDestsize() > 1
 						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
@@ -267,6 +273,13 @@ public class PEedit extends JFrame {
 					Stundeninhalt si = (Stundeninhalt) it.next();
 					p.addStundeninhalt(si);
 				}
+				
+				if(scList.getDestsize() == 0 && !teamzeit.isSelected()){
+					JOptionPane.showMessageDialog(null,
+							"Nur Teamzeit kann keine Klassen haben");
+					return;
+				}
+				
 				it = scList.destinationIterator();
 				while (it.hasNext()) {
 					Schoolclass sc = (Schoolclass) it.next();
@@ -289,6 +302,16 @@ public class PEedit extends JFrame {
 						return;
 					} else {
 						p.addRoom(r);
+					}
+				}
+				for(Personal pers : listp){
+					if(PlanungseinheitManager.personalsiCheck(pers, p)){
+						int result = JOptionPane.showOptionDialog(null, "Personal "+pers.getName()+" ist nicht fuer die geplante Stundeninhalte eingetragen", "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
+						if(result == 0){
+							//add Warningpanel
+						}else{
+							return;
+						}
 					}
 				}
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
