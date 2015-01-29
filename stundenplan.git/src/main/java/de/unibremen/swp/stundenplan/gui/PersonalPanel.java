@@ -476,6 +476,8 @@ public class PersonalPanel extends JPanel {
 		c = new GridBagConstraints();
 		final JTextField nameField2 = new JTextField(15);
 		kuerzField2 = new JTextField(5);
+		pflichtField2 = new JTextField(5);
+		ersatzField2 = new JTextField(5);
 		JLabel lSubjects2 = new JLabel(
 				"<html><body>Moegliche<br>Stundeninhalte :</body></html>");
 		JButton button2 = new JButton("Speichern");
