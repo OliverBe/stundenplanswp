@@ -157,7 +157,7 @@ public class PEedit extends JFrame {
 		getContentPane().add(lLabel1);
 		getContentPane().add(lLabel2);
 		final String[] options = new String[2];
-		options[0] = new String("weiter");
+		options[0] = new String("fortfahren");
 		options[1] = new String("abbrechen");
 		starttime = new JPanel();
 		endtime = new JPanel();
@@ -271,6 +271,14 @@ public class PEedit extends JFrame {
 				it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
+					if(si.getRegeldauer() != p.duration()){
+						int result = JOptionPane.showOptionDialog(null, "Dauer von Planungseinheit ist anders als die Regeldauer von "+si.getName()+"\n Dauer von Planungseinheit in min:"+p.duration()+"\n Regeldauer von "+si.getName()+" :"+si.getRegeldauer(), "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
+						if(result == 0){
+							//add Warningpanel
+						}else{
+							return;
+						}
+					}
 					p.addStundeninhalt(si);
 				}
 				
@@ -306,7 +314,7 @@ public class PEedit extends JFrame {
 				}
 				for(Personal pers : listp){
 					if(PlanungseinheitManager.personalsiCheck(pers, p)){
-						int result = JOptionPane.showOptionDialog(null, "Personal "+pers.getName()+" ist nicht fuer die geplante Stundeninhalte eingetragen", "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
+						int result = JOptionPane.showOptionDialog(null, "Personal "+pers.getName()+" ist nicht fuer die geplante Stundeninhalte eingetragen. \n Stundeninhalte von Personal : "+pers.getmSI()+" \n Stundeninhalte im Planung "+p.stundenInhaltetoString(), "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
 						if(result == 0){
 							//add Warningpanel
 						}else{

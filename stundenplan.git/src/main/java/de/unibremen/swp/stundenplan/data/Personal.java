@@ -25,7 +25,7 @@ public final class Personal {
     // schon einmal am tag gependelt true
     private boolean gependelt;
     
-    //lehrer true, p�dagoge false
+    //lehrer true, p���dagoge false
     private boolean lehrer;
     
     //integer referenziert zu stundeninhalt
@@ -35,7 +35,7 @@ public final class Personal {
     private HashMap<Weekday, int[]> wunschzeiten = new HashMap<Weekday,int[]>();
  
     /**
-     * Gibt den Namen dieses Lehrers zurück.
+     * Gibt den Namen dieses Lehrers zur��ck.
      * 
      * @return den Namen dieses Lehrers
      */
@@ -44,14 +44,14 @@ public final class Personal {
     }
 
     /**
-     * Konstruktor f�r Personal.
+     * Konstruktor f���r Personal.
      *
      */
     public Personal(){
     }
     
     /**
-     * Konstruktor f�r Personal.
+     * Konstruktor f���r Personal.
      *
      */
     public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte) {
@@ -88,9 +88,9 @@ public final class Personal {
     }
     
     /**
-     * Setzt den Namen dieser LehrerIn auf den übergebenen Namen. Falls der Name länger als
-     * {@linkplain Data#MAX_NORMAL_STRING_LEN} Zeichen ist, wird er entsprechend gekürzt. Führende und folgende
-     * Leerzeichen werden entfernt. Löst eine {@link IllegalArgumentException} aus, falls der Name leer ist.
+     * Setzt den Namen dieser LehrerIn auf den ��bergebenen Namen. Falls der Name l��nger als
+     * {@linkplain Data#MAX_NORMAL_STRING_LEN} Zeichen ist, wird er entsprechend gek��rzt. F��hrende und folgende
+     * Leerzeichen werden entfernt. L��st eine {@link IllegalArgumentException} aus, falls der Name leer ist.
      * 
      * @param pName
      *            der neue Name dieser LehrerIn
@@ -103,27 +103,27 @@ public final class Personal {
     }
 
     /**
-     * Gibt das Kürzel dieser LehrerIn zurück.
+     * Gibt das K��rzel dieser LehrerIn zur��ck.
      * 
-     * @return das Kürzel dieses LehrerIn
+     * @return das K��rzel dieses LehrerIn
      */
     public String getKuerzel() {
         return kuerzel;
     }
 
     /**
-     * Setzt das Kürzel dieser LehrerIn auf das übergebene Kürzel. Falls das Kürzel länger als
-     * {@linkplain Data#MAX_kuerzel_LEN} Zeichen ist, wird es entsprechend gekürzt. Führende und folgende
-     * Leerzeichen werden entfernt. Löst eine {@link IllegalArgumentException} aus, falls das Kürzel leer ist.
+     * Setzt das K��rzel dieser LehrerIn auf das ��bergebene K��rzel. Falls das K��rzel l��nger als
+     * {@linkplain Data#MAX_kuerzel_LEN} Zeichen ist, wird es entsprechend gek��rzt. F��hrende und folgende
+     * Leerzeichen werden entfernt. L��st eine {@link IllegalArgumentException} aus, falls das K��rzel leer ist.
      * 
-     * Die systemweite Eindeutigkeit des Kürzels wird hier NICHT geprüft!
+     * Die systemweite Eindeutigkeit des K��rzels wird hier NICHT gepr��ft!
      * 
      * @param pkuerzel
-     *            das neue Kürzel dieser LehrerIn
+     *            das neue K��rzel dieser LehrerIn
      */
     public void setKuerzel(final String pKuerzel) {
         if (pKuerzel == null || pKuerzel.trim().isEmpty()) {
-            throw new IllegalArgumentException("Kürzel der LehrerIn ist leer");
+            throw new IllegalArgumentException("K��rzel der LehrerIn ist leer");
         }
         kuerzel = pKuerzel.trim().substring(0, Math.min(Data.MAX_KUERZEL_LEN, pKuerzel.length()));
     }
@@ -182,6 +182,15 @@ public final class Personal {
 	
 	public ArrayList<String> getMoeglicheStundeninhalte() {
 		return moeglicheStundeninhalte;
+	}
+	
+	public String getmSI(){
+		StringBuilder sb = new StringBuilder();
+	    for (String st : moeglicheStundeninhalte) { 
+	        sb.append('\'').append(st).append('\'').append(',');
+	    }
+	    if (moeglicheStundeninhalte.size() != 0){ sb.deleteCharAt(sb.length()-1);}
+	    return sb.toString();
 	}
 
 	public void setMoeglicheStundeninhalte(final ArrayList<String> pMoeglicheStundeninhalte) {

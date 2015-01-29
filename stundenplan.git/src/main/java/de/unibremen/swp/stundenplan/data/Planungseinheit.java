@@ -78,8 +78,9 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String sc : schulklassen){
 			sb.append(sc);
-			sb.append(";");
+			sb.append(",");
 		}
+		if (schulklassen.size() != 0){ sb.deleteCharAt(sb.length()-1);}
 		return sb.toString();
 	}
 	
@@ -87,8 +88,9 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String r : raeume){
 			sb.append(r);
-			sb.append(";");
+			sb.append(",");
 		}
+		if (raeume.size() != 0){ sb.deleteCharAt(sb.length()-1);}
 		return sb.toString();
 	}
 	
@@ -96,17 +98,21 @@ public class Planungseinheit{
 		StringBuilder sb = new StringBuilder();
 		for(String kuerzel : personal.keySet()){
 			sb.append(kuerzel);
-			sb.append(";");
+			sb.append(",");
 		}
+		if (personal.keySet().size() != 0){ sb.deleteCharAt(sb.length()-1);}
 		return sb.toString();
 	}
 	
 	public String stundenInhaltetoString(){
+		if(stundeninhalte.size() == 0){return "Teamzeit";}
 		StringBuilder sb = new StringBuilder();
+		if(stundeninhalte.size() > 1){sb.append("Band :");}
 		for(String si : stundeninhalte){
 			sb.append(si);
-			sb.append(";");
+			sb.append(",");
 		}
+		if (stundeninhalte.size() != 0){ sb.deleteCharAt(sb.length()-1);}
 		return sb.toString();
 	}
 	
@@ -161,7 +167,7 @@ public class Planungseinheit{
 	}
 	
 	/*
-	 * gibt Personal fuer eine Name oder Kuerzel zurück.
+	 * gibt Personal fuer eine Name oder Kuerzel zur��ck.
 	 */
 	public Personal getPersonalbyKuerzel(final String pKuerzel){
 		if(pKuerzel == null || pKuerzel.length()<= 0){new IllegalArgumentException("Argument must not be null or empty String");}
@@ -250,7 +256,7 @@ public class Planungseinheit{
 	
 	/**
 	 *  Rechnet die Dauer des Planungseinheit aus
-	 * @return gib die Dauer der Planungseinheit in Minuten zurück
+	 * @return gib die Dauer der Planungseinheit in Minuten zur��ck
 	 */
 	public int duration(){
 		int dur = TimetableManager.duration(startHour, startMin, endHour, endMin);
