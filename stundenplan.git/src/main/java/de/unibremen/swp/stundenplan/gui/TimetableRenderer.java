@@ -44,12 +44,12 @@ public final class TimetableRenderer extends JLabel implements TableCellRenderer
     private static final Logger LOGGER = Logger.getLogger(TimetableRenderer.class.getName());
 
     /**
-     * Border für die Tabellendarstellung. Wird in getTableCellRendererComponent initialisiert.
+     * Border f��r die Tabellendarstellung. Wird in getTableCellRendererComponent initialisiert.
      */
     private Border unselectedBorder;
 
     /**
-     * Border für die Tabellendarstellung. Wird in getTableCellRendererComponent initialisiert.
+     * Border f��r die Tabellendarstellung. Wird in getTableCellRendererComponent initialisiert.
      */
     private Border selectedBorder;
 
@@ -64,17 +64,17 @@ public final class TimetableRenderer extends JLabel implements TableCellRenderer
     private static final int MATTE_BORDER_WIDTH = 5;
 
     /**
-     * Höhe des Rahmens in Pixel bei selektierten Zellen.
+     * H��he des Rahmens in Pixel bei selektierten Zellen.
      */
     private static final int MATTE_BORDER_HEIGHT = 2;
 
     /**
-     * Die eineindeutige Kennzeichnung für Serialisierung.
+     * Die eineindeutige Kennzeichnung f��r Serialisierung.
      */
     private static final long serialVersionUID = -1699503640667039767L;
 
     /**
-     * Der Konstruktor für den TimetableRenderer.
+     * Der Konstruktor f��r den TimetableRenderer.
      */
     public TimetableRenderer() {
         super();
@@ -121,7 +121,7 @@ public final class TimetableRenderer extends JLabel implements TableCellRenderer
         final String subjectText = timeslot.getStundeninhalttext();
         final String klasseText = timeslot.getKlassentext();
         final String raumText = timeslot.getRaeumetext();
-        String ausgabeText = "<html><body><center>"+subjectText+" <br/> "+text+" <br/> "+klasseText+" <br/> "+raumText+"</body></center></html>";
+        String ausgabeText = "<html><body>"+subjectText+" <br/> "+text+" <br/> "+klasseText+" <br/> "+raumText+"</body></html>";
         setText(ausgabeText);
         if(timeslot.getrhytm() == 0){
         	setBackground(Color.WHITE);

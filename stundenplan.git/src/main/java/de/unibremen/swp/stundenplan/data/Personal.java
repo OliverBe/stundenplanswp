@@ -44,14 +44,14 @@ public final class Personal {
     }
 
     /**
-     * Konstruktor f���r Personal.
+     * Konstruktor fuer Personal.
      *
      */
     public Personal(){
     }
     
     /**
-     * Konstruktor f���r Personal.
+     * Konstruktor fuer Personal.
      *
      */
     public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit, int pErsatzZeit, boolean pGependelt, boolean pLehrer, ArrayList<String> pMoeglicheStundeninhalte) {
@@ -110,6 +110,7 @@ public final class Personal {
     public String getKuerzel() {
         return kuerzel;
     }
+    
 
     /**
      * Setzt das K��rzel dieser LehrerIn auf das ��bergebene K��rzel. Falls das K��rzel l��nger als
@@ -187,7 +188,7 @@ public final class Personal {
 	public String getmSI(){
 		StringBuilder sb = new StringBuilder();
 	    for (String st : moeglicheStundeninhalte) { 
-	        sb.append('\'').append(st).append('\'').append(',');
+	        sb.append(',');
 	    }
 	    if (moeglicheStundeninhalte.size() != 0){ sb.deleteCharAt(sb.length()-1);}
 	    return sb.toString();
@@ -200,7 +201,11 @@ public final class Personal {
 	public HashMap<Weekday,int[]> getWunschzeiten() {
 		return wunschzeiten;
 	}
-
+	
+	 public int[] getWunschzeitForWeekday(Weekday pWeekday){
+		 return wunschzeiten.get(pWeekday);
+	 }
+	
 	public void setWunschZeiten(final HashMap<Weekday, int[]> pWunschzeiten) {
 		wunschzeiten = pWunschzeiten;
 	}

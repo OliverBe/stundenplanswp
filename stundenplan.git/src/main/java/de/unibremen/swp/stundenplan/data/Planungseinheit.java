@@ -86,6 +86,7 @@ public class Planungseinheit{
 	
 	public String roomstoString(){
 		StringBuilder sb = new StringBuilder();
+		if(raeume.size() > 1){sb.append("Band:");}
 		for(String r : raeume){
 			sb.append(r);
 			sb.append(",");
@@ -107,7 +108,6 @@ public class Planungseinheit{
 	public String stundenInhaltetoString(){
 		if(stundeninhalte.size() == 0){return "Teamzeit";}
 		StringBuilder sb = new StringBuilder();
-		if(stundeninhalte.size() > 1){sb.append("Band :");}
 		for(String si : stundeninhalte){
 			sb.append(si);
 			sb.append(",");

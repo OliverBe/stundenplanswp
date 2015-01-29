@@ -55,8 +55,8 @@ public final class Timeslot implements Serializable {
 
  
     /**
-     * Die startzeit dieses Timeslots. Die Einträge für {@linkplain Calendar#HOUR} und {@linkplain Calendar#MINUTE}
-     * müssen entsprechend gesetzt sein.
+     * Die startzeit dieses Timeslots. Die Eintr��ge f��r {@linkplain Calendar#HOUR} und {@linkplain Calendar#MINUTE}
+     * m��ssen entsprechend gesetzt sein.
      */
     private Calendar startzeit;
 
@@ -85,12 +85,12 @@ public final class Timeslot implements Serializable {
     }
 
     /**
-     * Setzt die startzeit dieser Zeiteineit auf den übergebenen Wert. Die Einträge für {@linkplain Calendar#HOUR} und
-     * {@linkplain Calendar#MINUTE} müssen entsprechend gesetzt sein. Der Parameterwert wird nicht auf Plausibilität
-     * geprüft - {@code null} wird allerdings ignoriert.
+     * Setzt die startzeit dieser Zeiteineit auf den ��bergebenen Wert. Die Eintr��ge f��r {@linkplain Calendar#HOUR} und
+     * {@linkplain Calendar#MINUTE} m��ssen entsprechend gesetzt sein. Der Parameterwert wird nicht auf Plausibilit��t
+     * gepr��ft - {@code null} wird allerdings ignoriert.
      * 
      * @param pstartzeit
-     *            startzeit dieser Zeiteinheit (es sind nur die Einträge für {@linkplain Calendar#HOUR} und
+     *            startzeit dieser Zeiteinheit (es sind nur die Eintr��ge f��r {@linkplain Calendar#HOUR} und
      *            {@linkplain Calendar#MINUTE} relevant
      */
     public void setstartzeit(final Calendar pstartzeit) {
@@ -127,10 +127,10 @@ public final class Timeslot implements Serializable {
     }
     
     /**
-     * Gibt die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. führenden Nullen zurück oder einen
+     * Gibt die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. f��hrenden Nullen zur��ck oder einen
      * leeren String, falls die startzeit noch nicht initialisiert wurde.
      * 
-     * @return die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. führenden Nullen
+     * @return die startzeit dieser Zeiteinheit im Format <stunde>:<minute> mit evtl. f��hrenden Nullen
      */
     public String getTimeDisplay() {
         if (startzeit == null) {
@@ -188,6 +188,9 @@ public final class Timeslot implements Serializable {
     	rhytm = DataStundeninhalt.getStundeninhaltByKuerzel(pPE.getStundeninhalte().get(0)).getRhythmustyp();
     }
     
+    public void setrpause(){
+    	rhytm = 0;
+    }
     public int getrhytm(){
     	return rhytm;
     }

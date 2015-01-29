@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 
 /**
- * Diese Utility-Klasse verwaltet die Tagespläne.
+ * Diese Utility-Klasse verwaltet die Tagespl��ne.
  * 
  * @author Fathan Vidjaja
  * @version 0.1
@@ -66,7 +66,7 @@ public final class TimetableManager {
     }
 
 //    /**
-//     * Erzeugt einen neuen Tagesplan für den angegebenen Wochentag und gibt ihn zurück.
+//     * Erzeugt einen neuen Tagesplan f��r den angegebenen Wochentag und gibt ihn zur��ck.
 //     * 
 //     * @param weekday
 //     *            der Wochentag des neuen Tagesplans
@@ -83,10 +83,10 @@ public final class TimetableManager {
     }
 
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tagesplan.
+     * Erzeugt Zeiteinheiten f��r den gegebenen Tagesplan.
      * 
      * @param dayTable
-     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslots(Weekday pWeekday) {
         final Calendar cal = Calendar.getInstance();
@@ -101,10 +101,10 @@ public final class TimetableManager {
     } 
 
     /**
-     * erzeugt eine Tagestabelle für eine Liste von Planungseinheiten
+     * erzeugt eine Tagestabelle f��r eine Liste von Planungseinheiten
      * @param pPE Liste von Planungseinheiten
-     * @param pWeekday den Tag für die Tabelle
-     * @return gibt eine DayTable zurück
+     * @param pWeekday den Tag f��r die Tabelle
+     * @return gibt eine DayTable zur��ck
      */
     private static DayTable createTimeslotsForPES(ArrayList<Planungseinheit> pPE,Weekday pWeekday){
         final Calendar cal = Calendar.getInstance();
@@ -141,10 +141,10 @@ public final class TimetableManager {
     
     }
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tag und Person.
+     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Person.
      * 
      * @param dayTable
-     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
         ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
@@ -153,7 +153,7 @@ public final class TimetableManager {
     }
     
     /**
-     * füll eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
+     * f��ll eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
      * @param pdt Tagesplan
      * @return Liste mit restlichen leeren Timeslots
      */
@@ -174,10 +174,10 @@ public final class TimetableManager {
 	}
 
 	/**
-     * Erzeugt Zeiteinheiten für den gegebenen Tag und Schulklasse.
+     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Schulklasse.
      * 
      * @param dayTable
-     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForSchoolclass(Weekday pWeekday, Schoolclass pSC) {
     	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pWeekday, pSC);
@@ -186,10 +186,10 @@ public final class TimetableManager {
         }
     
     /**
-     * Erzeugt Zeiteinheiten für den gegebenen Tag und Raum.
+     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Raum.
      * 
      * @param dayTable
-     *            der Tagesplan, für den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForRoom(Weekday pWeekday,Room pRoom) {
     	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForRoombyWeekday(pWeekday, pRoom);
@@ -213,6 +213,9 @@ public final class TimetableManager {
     		t.setStundeninhalttext(pPE);
     		t.setpe(pPE);
     		t.setrhytm(pPE);
+    		if(pPE.getStundeninhalte().size()==0){
+    			t.setrpause();
+    		}
     		timeslots.add(t);
     		final Calendar newCal = Calendar.getInstance();
     		newCal.setTimeInMillis(cal.getTimeInMillis());
@@ -252,14 +255,14 @@ public final class TimetableManager {
     
 
     /**
-     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
-     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
+     * Gibt die Zeiteinheit an der gegebenen Position f��r den gegebenen Wochentag zur��ck. Falls die Index-Angaben
+     * au��erhalb der jeweils g��ltigen Bereiche liegen, wird {@code null} zur��ckgegeben.
      * 
      * @param weekday
      *            der Wochentag der gesuchten Zeiteinheit
      * @param position
      *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte ��bergeben wurden
      * @throws DatasetException
      *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
      *             inkonsistent ist
@@ -275,14 +278,14 @@ public final class TimetableManager {
     
     
     /**
-     * Gibt die Zeiteinheit an der gegebenen Position für den gegebenen Wochentag zurück. Falls die Index-Angaben
-     * außerhalb der jeweils gültigen Bereiche liegen, wird {@code null} zurückgegeben.
+     * Gibt die Zeiteinheit an der gegebenen Position f��r den gegebenen Wochentag zur��ck. Falls die Index-Angaben
+     * au��erhalb der jeweils g��ltigen Bereiche liegen, wird {@code null} zur��ckgegeben.
      * 
      * @param weekday
      *            der Wochentag der gesuchten Zeiteinheit
      * @param position
      *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte übergeben wurden
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte ��bergeben wurden
      * @throws DatasetException
      *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
      *             inkonsistent ist
@@ -303,7 +306,7 @@ public final class TimetableManager {
     }
 
     /**
-     * Gibt eine Zeichenkette zur Anzeige in der GUI für die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
+     * Gibt eine Zeichenkette zur Anzeige in der GUI f��r die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
      * befindet sich an Position 0.
      * 
      * @param position
@@ -382,7 +385,7 @@ public final class TimetableManager {
 	}
 
 //    /**
-//     * Aktualisiert die Werte für die gegebene Zeiteinheit im Datenbestand.
+//     * Aktualisiert die Werte f��r die gegebene Zeiteinheit im Datenbestand.
 //     * 
 //     * @param pTimeslot
 //     *            die zu aktualisierende Zeiteinheit
@@ -395,9 +398,9 @@ public final class TimetableManager {
 //    }
 	
 	///**
-	// * Repräsentiert einen Tagesplan eines Stundenplans an einem bestimmten Wochentag. Verwaltet eine Liste von
+	// * Repr��sentiert einen Tagesplan eines Stundenplans an einem bestimmten Wochentag. Verwaltet eine Liste von
 	// * Zeiteinheiten. Jeder Tagesplan verwaltet innerhalb eines Stundenplans die gleiche Anzahl von Zeiteinheiten. Diese
-	// * Anzahl ist konfigurierbar und per Default auf {@linkplain Config#DAYTABLE_LENGTH_DEFAULT} festgelegt. Alle Tagespläne
+	// * Anzahl ist konfigurierbar und per Default auf {@linkplain Config#DAYTABLE_LENGTH_DEFAULT} festgelegt. Alle Tagespl��ne
 	// * beginnen zur gleichen konfigurierbaren Uhrzeit. Diese Startzeit ist per Default festgelegt auf die Stunde
 	// * {@linkplain Config#DAYTABLE_STARTTIME_HOUR_DEFAULT} und die Minute
 	// * {@linkplain Config#DAYTABLE_STARTTIME_MINUTE_DEFAULT}. Die Endzeit des Tagesplans ergibt sich dann aus der Startzeit
@@ -430,11 +433,11 @@ public final class TimetableManager {
 	    }
 		    
 //	    /**
-//	     * Fügt die übergebene Zeiteinheit zu diesem Tagesplan hinzu. Löst eine {@link IllegalArgumentException} aus, falls
-//	     * die übergebene Zeiteinheit {@code null} ist
+//	     * F��gt die ��bergebene Zeiteinheit zu diesem Tagesplan hinzu. L��st eine {@link IllegalArgumentException} aus, falls
+//	     * die ��bergebene Zeiteinheit {@code null} ist
 //	     * 
 //	     * @param pTimeslot
-//	     *            die hinzuzufügende Zeiteinheit
+//	     *            die hinzuzuf��gende Zeiteinheit
 //	     */
 	    public void addTimeslot(final Timeslot pTimeslot) {
 	        if (pTimeslot == null) {
@@ -444,11 +447,11 @@ public final class TimetableManager {
 	    }
 
 //	    /**
-//	     * Fügt die übergebene Zeiteinheit zu diesem Tagesplan hinzu. Löst eine {@link IllegalArgumentException} aus, falls
-//	     * die übergebene Zeiteinheit {@code null} ist
+//	     * F��gt die ��bergebene Zeiteinheit zu diesem Tagesplan hinzu. L��st eine {@link IllegalArgumentException} aus, falls
+//	     * die ��bergebene Zeiteinheit {@code null} ist
 //	     * 
 //	     * @param pTimeslot
-//	     *            die hinzuzufügende Zeiteinheit
+//	     *            die hinzuzuf��gende Zeiteinheit
 //	     */
 	    public void addTimeslot(final ArrayList<Timeslot> pTimeslots) {
 	        if (pTimeslots == null || pTimeslots.size() == 0) {
@@ -458,7 +461,7 @@ public final class TimetableManager {
 	    }
 	    
 //	    /**
-//	     * Gibt den Wochentag dieses Tagesplans zurück.
+//	     * Gibt den Wochentag dieses Tagesplans zur��ck.
 //	     * 
 //	     * @return den Wochentag dieses Tagesplans
 //	     */
@@ -471,12 +474,12 @@ public final class TimetableManager {
 	    }
 	
 //	    /**
-//	     * Gibt die Zeiteinheit am gegebenen Positionsindex zurück oder {@code null} falls ein ungültiger Positionsindex
-//	     * zurückgegeben wurde. Die erste Zeiteinheit des Tagesplans beginnt bei Index 0.
+//	     * Gibt die Zeiteinheit am gegebenen Positionsindex zur��ck oder {@code null} falls ein ung��ltiger Positionsindex
+//	     * zur��ckgegeben wurde. Die erste Zeiteinheit des Tagesplans beginnt bei Index 0.
 //	     * 
 //	     * @param position
 //	     *            die Position der gesuchten Zeiteinheit
-//	     * @return die gesuchte Zeiteinheit oder {@code null}, falls eine ungültige Position übergeben wurde
+//	     * @return die gesuchte Zeiteinheit oder {@code null}, falls eine ung��ltige Position ��bergeben wurde
 //	     */
 	    public Timeslot getTimeslot(final int position) {
 	        if (position >= 0 && position < timeslots.size()) {

@@ -263,6 +263,20 @@ public final class PlanungseinheitManager {
 		return counter;
 	}
 	
+	public static boolean personalWZCheck(final Personal pPer,
+			final Planungseinheit pPe) {
+		int[] wunschzeiten = pPer.getWunschzeitForWeekday(pPe.getWeekday());
+		Planungseinheit p = new Planungseinheit();
+		p.setStarthour(wunschzeiten[0]);
+		p.setStartminute(wunschzeiten[1]);
+		p.setEndhour(wunschzeiten[2]);
+		p.setEndminute(wunschzeiten[3]);
+		if (!checktwoPEs(pPe, p)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
 		if(pPe.getStundeninhalte().size() == 0){return false;}
 			for(String si : pPe.getStundeninhalte()){
@@ -274,8 +288,13 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 	
-	public static boolean overtimePers(final Personal pPers){
-		if(pPers.getIstZeit()>pPers.getSollZeit()){
+	public static int newTimeforPers(final int oldtime, final int newtimemin){
+		return oldtime + (newtimemin/60);
+	}
+	
+	public static boolean overtimePers(final Personal pPers, final int newtimemin){
+		int newizeit = newTimeforPers(pPers.getIstZeit(), newtimemin);
+		if(newizeit>pPers.getSollZeit()){
 			return true;
 		}
 		return false;

@@ -173,8 +173,7 @@ public class PEedit extends JFrame {
 				Timeslot.timeslotlength());
 		SpinnerModel eminmodel = new SpinnerNumberModel(0, 0, 59,
 				Timeslot.timeslotlength());
-		tag = new JComboBox<Weekday>(
-				TimetableManager.validdays());
+		tag = new JComboBox<Weekday>(TimetableManager.validdays());
 		starttime.add(tag);
 		spinner1 = new JSpinner(hourmodel);
 		starttime.add(spinner1);
@@ -215,11 +214,9 @@ public class PEedit extends JFrame {
 		button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (pList.getDestsize() == 0
-						|| roomList.getDestsize() == 0) {
-					JOptionPane
-							.showMessageDialog(null,
-									"Es sind keine Personal oder Raeume eingeplant");
+				if (pList.getDestsize() == 0 || roomList.getDestsize() == 0) {
+					JOptionPane.showMessageDialog(null,
+							"Es sind keine Personal oder Raeume eingeplant");
 					return;
 				} else if ((sIList.getDestsize() > 1
 						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
@@ -258,8 +255,8 @@ public class PEedit extends JFrame {
 				ArrayList<Personal> listp = new ArrayList<Personal>();
 				while (it.hasNext()) {
 					Personal pr = (Personal) it.next();
-					if (PlanungseinheitManager.checkPersonPE(pr,
-							p, p.getWeekday())) {
+					if (PlanungseinheitManager.checkPersonPE(pr, p,
+							p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Personal " + pr.getName()
 										+ " ist schon zu dieser Zeit gebucht");
@@ -271,23 +268,37 @@ public class PEedit extends JFrame {
 				it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
-					if(si.getRegeldauer() != p.duration()){
-						int result = JOptionPane.showOptionDialog(null, "Dauer von Planungseinheit ist anders als die Regeldauer von "+si.getName()+"\n Dauer von Planungseinheit in min:"+p.duration()+"\n Regeldauer von "+si.getName()+" :"+si.getRegeldauer(), "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
-						if(result == 0){
-							//add Warningpanel
-						}else{
+					if (si.getRegeldauer() != p.duration()) {
+						int result = JOptionPane
+								.showOptionDialog(
+										null,
+										"Dauer von Planungseinheit ist anders als die Regeldauer von "
+												+ si.getName()
+												+ "\n Dauer von Planungseinheit in min:"
+												+ p.duration()
+												+ "\n Regeldauer von "
+												+ si.getName() + " :"
+												+ si.getRegeldauer(),
+										"Warnung", 0,
+										JOptionPane.YES_NO_OPTION, null,
+										options, null);
+						if (result == 0) {
+							WarningPanel
+									.setText("Konflikt : Regeldauer mit Planung von "
+											+ si.getName());
+						} else {
 							return;
 						}
 					}
 					p.addStundeninhalt(si);
 				}
-				
-				if(scList.getDestsize() == 0 && !teamzeit.isSelected()){
+
+				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {
 					JOptionPane.showMessageDialog(null,
 							"Nur Teamzeit kann keine Klassen haben");
 					return;
 				}
-				
+
 				it = scList.destinationIterator();
 				while (it.hasNext()) {
 					Schoolclass sc = (Schoolclass) it.next();
@@ -312,15 +323,66 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
-				for(Personal pers : listp){
-					if(PlanungseinheitManager.personalsiCheck(pers, p)){
-						int result = JOptionPane.showOptionDialog(null, "Personal "+pers.getName()+" ist nicht fuer die geplante Stundeninhalte eingetragen. \n Stundeninhalte von Personal : "+pers.getmSI()+" \n Stundeninhalte im Planung "+p.stundenInhaltetoString(), "Warnung", 0,JOptionPane.YES_NO_OPTION,null,options,null);
-						if(result == 0){
-							//add Warningpanel
-						}else{
+				for (Personal pers : listp) {
+					if (PlanungseinheitManager.personalsiCheck(pers, p)) {
+						int result = JOptionPane.showOptionDialog(
+								null,
+								"Personal "
+										+ pers.getName()
+										+ " ist nicht fuer die geplante Stundeninhalte eingetragen. \n Stundeninhalte von Personal : "
+										+ pers.getmSI()
+										+ " \n Stundeninhalte im Planung "
+										+ p.stundenInhaltetoString(),
+								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
+								options, null);
+						if (result == 0) {
+							WarningPanel.setText("Konflikt : inkompatibles SI "
+									+ pers.getName());
+						} else {
 							return;
 						}
 					}
+
+					if (PlanungseinheitManager.personalWZCheck(pers, p)) {
+						int result = JOptionPane.showOptionDialog(
+								null,
+								"Personal "
+										+ pers.getName()
+										+ " ist zum geplanten Zeitspanne nicht verfügbar",
+								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
+								options, null);
+						if (result == 0) {
+							// add Warningpanel
+							WarningPanel.setText("Konflikt : Wunschzeit "
+									+ pers.getName());
+						} else {
+							return;
+						}
+					}
+
+					if (PlanungseinheitManager.overtimePers(pers, p.duration())) {
+						int result = JOptionPane.showOptionDialog(
+								null,
+								"Istzeit von Personal "
+										+ pers.getName()
+										+ " wird mit der Planung die Sollzeit übersteigen \n Sollzeit :"
+										+ pers.getSollZeit()
+										+ "\n neue Istzeit :"
+										+ PlanungseinheitManager
+												.newTimeforPers(
+														pers.getIstZeit(),
+														p.duration()),
+								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
+								options, null);
+						if (result == 0) {
+							// add Warningpanel
+							WarningPanel.setText("Konflikt : Ueberstunden "
+									+ pers.getName());
+						} else {
+							return;
+						}
+					}
+
 				}
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
 						getmyFrame(), listp, p);

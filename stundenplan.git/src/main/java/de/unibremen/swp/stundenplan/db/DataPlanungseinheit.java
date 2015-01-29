@@ -36,7 +36,7 @@ public class DataPlanungseinheit {
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 				sql = "UPDATE Personal SET istZeit = istZeit + " 
-						+ ((entry.getValue()[2] - entry.getValue()[0])*60 + (entry.getValue()[3] - entry.getValue()[1])) 
+						+ planungseinheit.duration()/60 
 						+ " WHERE kuerzel = '" + entry.getKey() + "';";
 				stmt.executeUpdate(sql);
 			}
