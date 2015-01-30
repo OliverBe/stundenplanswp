@@ -181,13 +181,13 @@ public class MainFrame extends JFrame {
 	};
 	
 	/**
-	 * Checkt das ausgew���hlte Tab. Je nach Klasse des Tabs, f���hrt es Updatemethoden
-	 * o.���. aus.
+	 * Checkt das ausgewaehlte Tab. Je nach Klasse des Tabs, fuehrt es Updatemethoden
+	 * o.Ae. aus.
 	 * 
-	 * Im Falle des LehreransichtsPanels, pr���ft es zun���chst, ob relevante Zielgroe���en ver���ndert
-	 * wurden. Sind diese nicht ver���ndert, ist kein Update noetig.
-	 * Au���erdem wird ���berpr���ft, ob das letzte Command in der History ein Edit-Command ist, da
-	 * diese Commands keine unmittelbaren ���nderungen an den Zielgroe���en bewirken, aber dennoch
+	 * Im Falle des LehreransichtsPanels, prueft es zunaechst, ob relevante Zielgroessen veraendert
+	 * wurden. Sind diese nicht veraendert, ist kein Update noetig.
+	 * Ausserdem wird ueberprueft, ob das letzte Command in der History ein Edit-Command ist, da
+	 * diese Commands keine unmittelbaren Aenderungen an den Zielgrossen bewirken, aber dennoch
 	 * Unterschiede ausmachen k���nnen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
 	 * So wird verhindert, dass der Personaleinsatzplan immer weiter aktualisiert wird, obwohl der Plan
 	 * z.B. fertig ist und nicht mehr bearbeitet wird. Spart so dauerhaft Laufzeit, wenn Bearbeitung bereits abgeschlossen.
