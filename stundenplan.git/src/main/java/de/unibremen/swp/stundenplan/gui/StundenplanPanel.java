@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Map.Entry;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,17 +21,21 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
+import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 public class StundenplanPanel extends JPanel implements ActionListener,
 		MouseListener {
 
+	private DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
 	/**
 	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgef���hrt
 	 * wurde. Nicht jedes Event
@@ -343,6 +348,35 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			System.out.println(s.getName());
 			table = new StundenplanTable(s).getTable();
 
+			
+//			modelSchoolclassBedarf.addColumn("Stundeninhalt");
+//			modelSchoolclassBedarf.addColumn("Bedarf");
+//			for (Stundeninhalt si : StundeninhaltManager
+//					.getAllStundeninhalteFromDB()) {
+//				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0" });
+//			}
+//			for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
+//				for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
+//					if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
+//						modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
+//					}
+//				}
+//			}
+//
+//			final JTable table2 = new JTable(modelSchoolclassBedarf);
+//			table2.setColumnSelectionAllowed(false);
+//			table2.getTableHeader().setReorderingAllowed(false);
+//			table2.getTableHeader().setResizingAllowed(false);
+//			GridBagConstraints c = new GridBagConstraints();
+//			c.gridx = 0;
+//			c.gridy = 7;
+//			c.gridwidth = 2;
+//			c.fill = GridBagConstraints.HORIZONTAL;
+//			add(table2.getTableHeader(), c);
+//			
+//			c.gridy = 8;
+//			c.gridx = 0;
+//			add(table2, c);
 		}
 
 		init();

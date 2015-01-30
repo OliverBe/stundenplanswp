@@ -37,14 +37,14 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Bearbeitet eine Planungseinheit aus der DB. Bearbeiten findet im
-	 * w���rtlichen Sinne nicht statt, das ausgew���hlte Objekt wird mit einem neuen
-	 * ���berschrieben.
+	 * woertlichen Sinne nicht statt, das ausgewaehlte Objekt wird mit einem neuen
+	 * ueberschrieben.
 	 * 
 	 * @param pId
 	 *            Die ID der Planungseinheit, die bearbeitet werden soll.
 	 * @param pl
 	 *            Die Planungseinheit, mit der die alte Planungseinheit
-	 *            ���berschrieben wird.
+	 *            ueberschrieben wird.
 	 */
 	public static void editPlanungseinheit(int pId, Planungseinheit pl) {
 		System.out.println("Editing Planungseinheit [" + pId + "].");
