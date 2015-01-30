@@ -44,6 +44,8 @@ public class PEedit extends JFrame {
 	private JSpinner spinner4;
 	private String[] options = new String[2];
 	private JComboBox<Weekday> tag;
+	private JCheckBox teamzeit;
+	private JCheckBox bandselect;
 	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
 		public int compare(Personal p1, Personal p2) {
 			if (p1.getName() == null) {
@@ -151,6 +153,25 @@ public class PEedit extends JFrame {
 		parentframe = pParent;
 		pe = PlanungseinheitManager.getPlanungseinheitById(pPeid);
 		init();
+		spinner1.setValue(pe.getStartHour());
+		spinner2.setValue(pe.getStartminute());
+		spinner3.setValue(pe.getEndhour());
+		spinner4.setValue(pe.getEndminute());
+		tag.setSelectedItem(pe.getWeekday());
+		if(pe.getSchoolclasses().size() == 0){
+			teamzeit.setSelected(true);
+		}
+		if(pe.getRooms().size()>1){
+			bandselect.setSelected(true);
+		}
+		pList.clearSourceListModel();
+		pList.clearDestinationListModel();
+		sIList.clearSourceListModel();
+		sIList.clearDestinationListModel();
+		scList.clearSourceListModel();
+		scList.clearDestinationListModel();
+		roomList.clearSourceListModel();
+		roomList.clearDestinationListModel();
 	}
 
 	private void init() {
@@ -188,8 +209,8 @@ public class PEedit extends JFrame {
 		endtime.add(spinner3);
 		spinner4 = new JSpinner(eminmodel);
 		endtime.add(spinner4);
-		final JCheckBox bandselect = new JCheckBox("Band-Unterricht");
-		final JCheckBox teamzeit = new JCheckBox("Teamzeit");
+		bandselect = new JCheckBox("Band-Unterricht");
+		teamzeit = new JCheckBox("Teamzeit");
 		endtime.add(bandselect);
 		endtime.add(teamzeit);
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
