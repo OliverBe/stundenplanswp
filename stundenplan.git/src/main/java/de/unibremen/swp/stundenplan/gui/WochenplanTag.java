@@ -1,6 +1,5 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
@@ -198,7 +197,12 @@ public class WochenplanTag extends JPanel {
 		final String br = "<br>";
 		String raeume = holeRaume(pEinheit);
 		String stundenInhalte = holeStundeninhalte(pEinheit);
+		
 		String schulklassen = holeSchulklassen(pEinheit);
+		if(schulklassen.equals("")&& stundenInhalte.equals("")){
+			stundenInhalte = ("Team Zeit");
+			
+		}
 		String completeOutput = outputAnfang + schulklassen + br
 				+ stundenInhalte + br + raeume + outputEnde;
 		return completeOutput;
