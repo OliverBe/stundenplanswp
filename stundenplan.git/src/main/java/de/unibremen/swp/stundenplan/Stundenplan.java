@@ -57,7 +57,6 @@ public final class Stundenplan {
     private Stundenplan() {
     	Data.start();
     	main = new MainFrame();
-    	
     	try {
 			Config.init(null);
 		} catch (IOException e) {
@@ -97,7 +96,7 @@ public final class Stundenplan {
         		time++;
         		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
                     final Date date = new Date();
-//        			Data.backup("backup_" + dateFormat.format(date));
+        			Data.backup("backup_" + dateFormat.format(date));
         			time = 0;
         		}
             }
@@ -108,5 +107,6 @@ public final class Stundenplan {
     public static void restart() {
     	main.dispose();
     	start();
+    	main.repaint();
     }
 }

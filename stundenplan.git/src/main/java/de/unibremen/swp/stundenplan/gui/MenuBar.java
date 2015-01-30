@@ -129,9 +129,8 @@ public class MenuBar extends JMenuBar {
 
 	private void newClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent ae) {
-				Stundenplan.restart();
+//				Stundenplan.restart();
 			}
 		});
 	}
@@ -189,7 +188,7 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
-						Stundenplan.restart();
+//						Stundenplan.restart();
 					}
 				});
 
