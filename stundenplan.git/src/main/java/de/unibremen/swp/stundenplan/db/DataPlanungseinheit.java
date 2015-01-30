@@ -11,6 +11,8 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
+import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class DataPlanungseinheit {
 
@@ -330,7 +332,7 @@ public class DataPlanungseinheit {
 			int startMin = rs.getInt("startMin");
 			int endHour = rs.getInt("endHour");
 			int endMin = rs.getInt("endMin");
-			int dif = (endHour - startHour)*60 + (endMin - startMin);
+			int dif = TimetableManager.duration(startHour, startMin, endHour, endMin);
 			sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {

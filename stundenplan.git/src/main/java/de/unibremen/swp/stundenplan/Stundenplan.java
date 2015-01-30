@@ -63,6 +63,7 @@ public final class Stundenplan {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	main.pack();
     	//PEtest
     	}  
     

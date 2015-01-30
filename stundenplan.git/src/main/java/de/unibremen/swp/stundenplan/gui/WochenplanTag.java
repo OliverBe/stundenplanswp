@@ -1,22 +1,12 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,26 +14,19 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import de.unibremen.swp.stundenplan.*;
-import de.unibremen.swp.stundenplan.config.Config;
+
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
-import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
-import de.unibremen.swp.stundenplan.db.Data;
+
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
-import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 //Diese Klasse reprï¿½sentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
 
 	Weekday day;
-	private JFileChooser chooser = new JFileChooser();
-	private JFrame f;
 	public static JTable table;
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
@@ -214,7 +197,12 @@ public class WochenplanTag extends JPanel {
 		final String br = "<br>";
 		String raeume = holeRaume(pEinheit);
 		String stundenInhalte = holeStundeninhalte(pEinheit);
+		
 		String schulklassen = holeSchulklassen(pEinheit);
+		if(schulklassen.equals("")&& stundenInhalte.equals("")){
+			stundenInhalte = ("Team Zeit");
+			
+		}
 		String completeOutput = outputAnfang + schulklassen + br
 				+ stundenInhalte + br + raeume + outputEnde;
 		return completeOutput;
@@ -311,15 +299,6 @@ public class WochenplanTag extends JPanel {
 					.println("Zähler der Methode deleteAllPlanungseinheiten: "
 							+ i);
 		}
-	}
-
-	private void buttonOkay(JButton b) {
-		b.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				chooser.showSaveDialog(f);
-			}
-		});
 	}
 
 	public static JTable getTable() {
