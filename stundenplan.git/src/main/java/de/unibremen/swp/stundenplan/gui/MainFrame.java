@@ -227,4 +227,10 @@ public class MainFrame extends JFrame {
 	public static JTabbedPane getTabPane() {
 		return tabpane;
 	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		tabpane.removeAll();
+	}
 }

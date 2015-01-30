@@ -19,6 +19,11 @@ public class Data {
     
 	public static void start() {
 	    try {
+	    	File datei = new File("temp.db");
+	        if (datei.exists()) {
+	          datei.delete();
+	          System.out.println("Datei gelöscht!");
+	        }
 	    	Class.forName("org.sqlite.JDBC");
 	    	c = DriverManager.getConnection("jdbc:sqlite:temp.db");
 		    System.out.println("DB - Opened database successfully");

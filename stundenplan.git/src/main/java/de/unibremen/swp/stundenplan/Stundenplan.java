@@ -77,27 +77,36 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-            final Stundenplan stundenplan= new Stundenplan();
-            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            Timer timer = new Timer(60000, new ActionListener() {
-            	@Override
-                public void actionPerformed(ActionEvent e) {
-            		time++;
-            		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
-                        final Date date = new Date();
-//            			Data.backup("backup_" + dateFormat.format(date));
-            			time = 0;
-            		}
-                }
-            });
-            timer.start();
+            
     }
     
     /**
-     * gibt die Mainframe zurück
+     * gibt die Mainframe zurï¿½ck
      * @return
      */
     public static MainFrame getMain() {
     	return main;
+    }
+    
+    private static void start() {
+    	final Stundenplan stundenplan= new Stundenplan();
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        Timer timer = new Timer(60000, new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e) {
+        		time++;
+        		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
+                    final Date date = new Date();
+//        			Data.backup("backup_" + dateFormat.format(date));
+        			time = 0;
+        		}
+            }
+        });
+        timer.start();
+    }
+    
+    public static void restart() {
+    	main.dispose();
+    	start();
     }
 }

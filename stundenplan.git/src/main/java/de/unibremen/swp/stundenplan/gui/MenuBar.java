@@ -131,7 +131,7 @@ public class MenuBar extends JMenuBar {
 		item.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent ae) {
-				// neue Datei anlegen
+				Stundenplan.restart();
 			}
 		});
 	}
@@ -155,6 +155,7 @@ public class MenuBar extends JMenuBar {
 				c.gridwidth = 2;
 				list.setLayoutOrientation(JList.VERTICAL);
 				list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				list.setEnabled(true);
 				listScroller.setPreferredSize(new Dimension(300, 200));
 				backupChooser.add(listScroller, c);
 				c.gridy = 1;
@@ -188,6 +189,7 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
+						Stundenplan.restart();
 					}
 				});
 
@@ -220,6 +222,11 @@ public class MenuBar extends JMenuBar {
 				c.gridwidth = 2;
 				backupChooser.add(tf, c);
 				c.gridy = 1;
+				list.setLayoutOrientation(JList.VERTICAL);
+				list.setEnabled(false);
+				listScroller.setPreferredSize(new Dimension(300, 200));
+				backupChooser.add(listScroller, c);
+				c.gridy = 2;
 				c.gridwidth = 1;
 				c.weightx = 0.6;
 				backupChooser.add(button, c);
@@ -233,6 +240,18 @@ public class MenuBar extends JMenuBar {
 						.getLocation().y);
 				backupFrame.pack();
 				backupFrame.setVisible(true);
+				
+				File dir = new File(System.getProperty("user.dir"));
+				File[] files = dir.listFiles(new FilenameFilter() {
+					public boolean accept(File dir, String filename) {
+						return filename.endsWith(".db")
+								&& !filename.equals("temp.db");
+					}
+				});
+				listModel.clear();
+				for (File file : files) {
+					listModel.addElement(file.getName());
+				}
 
 				button.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
@@ -267,7 +286,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createPDF(eTable);
 					}
@@ -276,7 +295,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createPDF(eTable);
 					}
@@ -285,7 +304,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -300,7 +319,7 @@ public class MenuBar extends JMenuBar {
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 
 							ExportPDF.setOwner("Wochenplan-"
@@ -336,7 +355,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createCSV(eTable);
 					}
@@ -345,7 +364,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createCSV(eTable);
 					}
@@ -354,7 +373,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -370,7 +389,7 @@ public class MenuBar extends JMenuBar {
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 							ExportPDF.setOwner("Wochenplan-"
 									+ wpT.day.toString());
@@ -405,7 +424,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createDOC(eTable);
 					}
@@ -414,7 +433,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createDOC(eTable);
 					}
@@ -423,7 +442,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -438,7 +457,7 @@ public class MenuBar extends JMenuBar {
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"Wählen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Wï¿½hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 							ExportPDF.setOwner("Wochenplan-"
 									+ wpT.day.toString());
