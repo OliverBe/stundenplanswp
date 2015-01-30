@@ -15,7 +15,7 @@ public class Data {
     protected static Statement stmt = null;
     private static String sql;
     private static boolean saved = true;
-    private static String lastRestoredFileName = null;
+    private static String lastRestoredFileName = "";
     
 	public static void start() {
 	    try {
