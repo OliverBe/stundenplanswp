@@ -44,7 +44,7 @@ public class CommandHistory {
 		if(commandHistory.size() > 0){ 
 			return commandHistory.get(commandHistory.size() - 1);
 		}else{
-			throw new StundenplanException("Keine Befehle zum r�ckg�ngig machen verf�gbar.");
+			throw new StundenplanException("Keine Befehle zum rueckgaengig machen verfuegbar.");
 		}
 	}
 	
