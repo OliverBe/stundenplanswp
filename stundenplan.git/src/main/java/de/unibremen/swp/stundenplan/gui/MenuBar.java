@@ -45,8 +45,9 @@ public class MenuBar extends JMenuBar {
 
 	private JMenu data = new JMenu("Datei");
 	private JMenuItem neww = new JMenuItem("Neue Datei");
-	private JMenuItem open = new JMenuItem("�ffnen");
+	private JMenuItem open = new JMenuItem("Oeffnen");
 	private JMenuItem save = new JMenuItem("Speichern");
+	private JMenuItem saveAs = new JMenuItem("Speichern unter");
 	private JMenu export = new JMenu("Export");
 	private JMenuItem exportPDF = new JMenuItem("Exportieren als PDF");
 	private JMenuItem exportCSV = new JMenuItem("Exportieren als CSV");
@@ -84,6 +85,7 @@ public class MenuBar extends JMenuBar {
 		data.add(neww);
 		data.add(open);
 		data.add(save);
+		data.add(saveAs);
 
 		add(data);
 		add(export);
@@ -112,6 +114,7 @@ public class MenuBar extends JMenuBar {
 		newClick(neww);
 		openClick(open);
 		saveClick(save);
+		saveAsClick(saveAs);
 		exportPDFClick(exportPDF);
 		exportCSVClick(exportCSV);
 		exportDOCClick(exportDOC);
@@ -188,6 +191,7 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
+						((MainFrame) f).checkSelectedTab();
 //						Stundenplan.restart();
 					}
 				});
@@ -202,6 +206,14 @@ public class MenuBar extends JMenuBar {
 	}
 
 	private void saveClick(JMenuItem item) {
+		item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				
+			}
+		});
+	}
+	
+	private void saveAsClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				final JFrame backupFrame = new JFrame();
