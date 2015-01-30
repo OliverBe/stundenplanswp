@@ -154,7 +154,7 @@ public final class Timeslot implements Serializable {
     }
 
     public void setPersonaltext(final Planungseinheit pPE){
-    	personaltext = pPE.personaltoString();
+    	personaltext = pPE.personaltoString(getsHour(),getsMinute());
     }
     
     public String getRaeumetext(){

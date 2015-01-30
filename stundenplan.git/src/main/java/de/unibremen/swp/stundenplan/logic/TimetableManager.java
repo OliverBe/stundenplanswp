@@ -207,6 +207,9 @@ public final class TimetableManager {
         cal.set(Calendar.MINUTE, pPE.getStartminute());
         for(int i = 0 ; i<timeslotcount; i++){
     		Timeslot t = new Timeslot(pPE.getWeekday());
+    		final Calendar newCal = Calendar.getInstance();
+    		newCal.setTimeInMillis(cal.getTimeInMillis());
+            t.setstartzeit(newCal);
     		t.setKlassentext(pPE);
     		t.setPersonaltext(pPE);
     		t.setRaumtext(pPE);
@@ -217,9 +220,6 @@ public final class TimetableManager {
     			t.setrpause();
     		}
     		timeslots.add(t);
-    		final Calendar newCal = Calendar.getInstance();
-    		newCal.setTimeInMillis(cal.getTimeInMillis());
-            t.setstartzeit(newCal);
             cal.add(Calendar.MINUTE, Timeslot.timeslotlength());
         }
         return timeslots;

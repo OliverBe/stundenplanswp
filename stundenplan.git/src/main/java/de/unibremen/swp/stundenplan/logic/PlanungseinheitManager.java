@@ -16,6 +16,7 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
@@ -67,7 +68,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -89,7 +90,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -113,7 +114,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
-	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -137,7 +138,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
-	 * zur���ckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -162,7 +163,7 @@ public final class PlanungseinheitManager {
 
 	public static Planungseinheit timeslotToPE(Timeslot pTs, Object pOwner) {
 		// TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet,
-		// und gibt diese zur���ck.
+		// und gibt diese zurueck.
 		ArrayList<Planungseinheit> pes;
 		if (pOwner instanceof Personal) {
 			pes = getPEForPersonalbyWeekday(pTs.getDay(), (Personal) pOwner);

@@ -7,6 +7,7 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class Planungseinheit{
@@ -95,11 +96,19 @@ public class Planungseinheit{
 		return sb.toString();
 	}
 	
-	public String personaltoString(){
+	public String personaltoString(final int shour, final int sminute){
+		Planungseinheit p = new Planungseinheit();
 		StringBuilder sb = new StringBuilder();
 		for(String kuerzel : personal.keySet()){
+			int[] time = personal.get(kuerzel);
+			p.setStarthour(time[0]);
+			p.setStartminute(time[1]);
+			p.setEndhour(time[2]);
+			p.setEndminute(time[3]);
+			if(PlanungseinheitManager.checkPEandStartTime(p, shour, sminute)){
 			sb.append(kuerzel);
 			sb.append(",");
+			}
 		}
 		if (personal.keySet().size() != 0){ sb.deleteCharAt(sb.length()-1);}
 		return sb.toString();
