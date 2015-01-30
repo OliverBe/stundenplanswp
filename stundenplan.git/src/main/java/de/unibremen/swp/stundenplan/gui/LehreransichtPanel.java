@@ -69,6 +69,7 @@ public class LehreransichtPanel extends JPanel {
 		model.addColumn("Kuerzel");
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
+		model.addColumn("Ist-Zeit");
 
 		planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
 		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
@@ -99,6 +100,7 @@ public class LehreransichtPanel extends JPanel {
 			} else {
 				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
 			}
+			reihe.add(Integer.toString(p.getIstZeit()));
 //			if (planungseinheiten.size() == 0)
 //				model.addRow(reihe.toArray());
 			for (Planungseinheit pe : planungseinheiten) {
