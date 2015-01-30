@@ -47,7 +47,7 @@ public final class Stundenplan {
     /**
      * stellt das GUI-Hauptfenster dar 
      */
-    private static MainFrame main;
+    public static MainFrame main;
     
     
     private static int time = 0;
