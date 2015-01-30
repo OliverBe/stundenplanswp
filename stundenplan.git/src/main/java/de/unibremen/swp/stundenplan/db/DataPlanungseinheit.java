@@ -63,6 +63,7 @@ public class DataPlanungseinheit {
 						+ name + "');";
 				stmt.executeUpdate(sql);
 			}
+			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

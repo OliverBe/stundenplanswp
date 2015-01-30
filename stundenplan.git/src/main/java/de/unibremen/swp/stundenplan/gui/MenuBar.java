@@ -209,6 +209,7 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent ae) {
 				if(!Data.getLastRestoredFileName().equals("")) {
 					Data.backup(Data.getLastRestoredFileName());
+					Data.setSaved(true);
 				}else saveFrame();
 			}
 		});
@@ -283,6 +284,7 @@ public class MenuBar extends JMenuBar {
 				backupFrame.dispose();
 			}
 		});
+		Data.setSaved(true);
 	}
 
 	private void exportPDFClick(JMenuItem item) {

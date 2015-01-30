@@ -28,6 +28,7 @@ public class DataStundeninhalt {
 					+ stundeninhalt.getRegeldauer() + ","
 					+ stundeninhalt.getRhythmustyp() + ");";
 			stmt.executeUpdate(sql);
+			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

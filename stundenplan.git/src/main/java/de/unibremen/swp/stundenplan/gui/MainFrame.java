@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -170,13 +171,12 @@ public class MainFrame extends JFrame {
                 		}
                 	}
                 }
-//                File dir = new File(System.getProperty("user.dir"));
-//    			File file = dir.listFiles(new FilenameFilter() {
-//    				public boolean accept(File dir, String filename) {
-//    					return filename.equals("temp.db");
-//    				}
-//    			})[0];
-//                file.deleteOnExit();
+                Data.close();
+                File datei = new File("temp.db");
+    	        if (datei.exists()) {
+    	          datei.delete();
+    	          System.out.println("Datei gelöscht!");
+    	        }
             }
         });
 		
@@ -184,7 +184,6 @@ public class MainFrame extends JFrame {
 			@Override
 			public void windowStateChanged(WindowEvent e) {
 				if(Stundenplan.main.getState()!=Frame.ICONIFIED) {
-					
 					pack();
 				}
 			}

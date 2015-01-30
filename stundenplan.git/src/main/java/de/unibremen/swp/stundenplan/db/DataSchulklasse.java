@@ -46,7 +46,7 @@ public class DataSchulklasse {
 				stmt.executeUpdate(sql);
 			}
 			StundenplanPanel.updateLists(); 
-			
+			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -213,7 +213,7 @@ public class DataSchulklasse {
 					stmt.executeUpdate(sql);
 				}
 			}
-			System.out.println("DB - Jahrgang " + jahrgang.getJahrgang() + " added");
+			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

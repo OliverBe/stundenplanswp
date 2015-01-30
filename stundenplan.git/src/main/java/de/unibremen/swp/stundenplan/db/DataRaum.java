@@ -34,6 +34,7 @@ public class DataRaum {
 				stmt.executeUpdate(sql);
 			}
 			RaumbelegungsplanPanel.updateLists();
+			Data.setSaved(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -164,6 +165,7 @@ public class DataRaum {
 						+ "VALUES ('" + rf.getName() + "', '" + rf.getStundeninhalte().get(i) + "');";
 				stmt.executeUpdate(sql);
 			}
+			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

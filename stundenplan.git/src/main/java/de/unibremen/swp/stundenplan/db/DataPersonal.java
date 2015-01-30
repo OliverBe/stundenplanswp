@@ -48,10 +48,8 @@ public class DataPersonal {
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 			}
-			
 			StundenplanPanel.updateLists(); 
-			
-			
+			Data.setSaved(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

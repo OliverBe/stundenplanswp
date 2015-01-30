@@ -19,11 +19,6 @@ public class Data {
     
 	public static void start() {
 	    try {
-//	    	File datei = new File("temp.db");
-//	        if (datei.exists()) {
-//	          datei.delete();
-//	          System.out.println("Datei gelöscht!");
-//	        }
 	    	Class.forName("org.sqlite.JDBC");
 	    	c = DriverManager.getConnection("jdbc:sqlite:temp.db");
 		    System.out.println("DB - Opened database successfully");
@@ -213,7 +208,6 @@ public class Data {
 				}
 			}
 			stmt.executeUpdate("backup to " + backupName + ".db");
-			setSaved(true);
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on creating backup");
