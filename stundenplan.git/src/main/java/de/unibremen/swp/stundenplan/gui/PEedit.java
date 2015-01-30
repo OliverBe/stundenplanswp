@@ -459,6 +459,7 @@ public class PEedit extends JFrame {
 						getmyFrame(), listp, p);
 				if (pdialog.getsaved()) {
 					parentframe.updatetable();
+					parentframe.updateLists();
 					dispose();
 				} else {
 					return;
