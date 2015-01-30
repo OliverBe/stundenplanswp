@@ -99,8 +99,8 @@ public class LehreransichtPanel extends JPanel {
 			} else {
 				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
 			}
-			if (planungseinheiten.size() == 0)
-				model.addRow(reihe.toArray());
+//			if (planungseinheiten.size() == 0)
+//				model.addRow(reihe.toArray());
 			for (Planungseinheit pe : planungseinheiten) {
 				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
 					HashMap<String, Integer> kleineHashMap = new HashMap<>();
