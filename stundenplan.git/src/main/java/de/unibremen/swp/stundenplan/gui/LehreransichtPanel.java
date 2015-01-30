@@ -1,5 +1,6 @@
 package de.unibremen.swp.stundenplan.gui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -210,6 +211,7 @@ public class LehreransichtPanel extends JPanel {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			kuerzelInAllenReihen.add(model.getValueAt(i, 0).toString());
 		}
+		
 
 		for (Personal p : allPersonal) {
 			ArrayList<String> reihe = new ArrayList<String>();
