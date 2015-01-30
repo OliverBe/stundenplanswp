@@ -183,12 +183,13 @@ public class MainFrame extends JFrame {
 		addWindowStateListener(new WindowStateListener() {
 			@Override
 			public void windowStateChanged(WindowEvent e) {
-				if(Stundenplan.main.getState()!=Frame.ICONIFIED && Stundenplan.main.getState()!=Frame.NORMAL) {
+				if(Stundenplan.main.getState()!=Frame.ICONIFIED) {
 					
+					pack();
 				}
 			}
 		});
-		pack();
+		
 	};
 	
 	/**
@@ -205,6 +206,11 @@ public class MainFrame extends JFrame {
 	 */
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
+		
+		if(!(c instanceof StundenplanPanel)){
+			paneStundenplan.popmen.setVisible(false);
+		}
+		
 		if(c instanceof LehreransichtPanel){
 			if(   paneLehrer.getSi().size() != DataStundeninhalt.getAllStundeninhalte().size()
 			   || paneLehrer.getAllPersoKuerzel().size() != DataPersonal.getAllAcronymsFromPersonal().size()
@@ -215,6 +221,7 @@ public class MainFrame extends JFrame {
 					paneLehrer.init();
 					System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
 			}
+			pack();
 		};
 		if(c instanceof DataPanel){
 			SchoolclassPanel.updateList();
@@ -223,15 +230,19 @@ public class MainFrame extends JFrame {
 			RaumfunktionPanel.updateList();
 			StundeninhaltPanel.updateList();
 			BedarfPanel.updateList();
+			pack();
 		}
 		if(c instanceof WochenplanPanel){
 			paneWochen.update();
+			pack();
 		};
 		if(c instanceof RaumbelegungsplanPanel){
 			RaumbelegungsplanPanel.updateLists();
+			pack();
 		};
 		if(c instanceof StundenplanPanel){
 			StundenplanPanel.updateLists();
+			pack();
 		};
 	}
 	
