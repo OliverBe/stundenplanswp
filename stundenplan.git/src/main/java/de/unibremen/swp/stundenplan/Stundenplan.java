@@ -57,6 +57,7 @@ public final class Stundenplan {
     private Stundenplan() {
     	Data.start();
     	main = new MainFrame();
+    	
     	try {
 			Config.init(null);
 		} catch (IOException e) {
@@ -64,7 +65,7 @@ public final class Stundenplan {
 			e.printStackTrace();
 		}
     	//PEtest
-    	}
+    	}  
     
     /**
      * Startet die Anwendung. Erzeugt dazu einen neuen Stundenplaner und dann das Hauptanzeigefenster und macht dieses

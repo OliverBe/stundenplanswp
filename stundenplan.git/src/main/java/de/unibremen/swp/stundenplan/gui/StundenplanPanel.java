@@ -197,6 +197,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if (table != null) {
 			table.addMouseListener(mousefunc);
 		}
+		
 	}
 
 	/**

@@ -177,6 +177,7 @@ public class MainFrame extends JFrame {
 //                file.deleteOnExit();
             }
         });
+		pack();
 	};
 	
 	/**
@@ -214,6 +215,12 @@ public class MainFrame extends JFrame {
 		}
 		if(c instanceof WochenplanPanel){
 			paneWochen.update();
+		};
+		if(c instanceof RaumbelegungsplanPanel){
+			RaumbelegungsplanPanel.updateLists();
+		};
+		if(c instanceof StundenplanPanel){
+			StundenplanPanel.updateLists();
 		};
 	}
 	
