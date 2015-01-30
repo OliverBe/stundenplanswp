@@ -100,14 +100,14 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsPersonal(pPerson)) {
-				p.setTime(p.getTimesofPersonal(pPerson));
-				pes.add(p);
-			}
-		}
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pPerson);
+//		for (Planungseinheit p : DataPlanungseinheit
+//				.getAllPlanungseinheitByWeekday(pWeekday)) {
+//			if (p.containsPersonal(pPerson)) {
+//				p.setTime(p.getTimesofPersonal(pPerson));
+//				pes.add(p);
+//			}
+//		}
 		orderByTime(pes);
 		return pes;
 	}
@@ -124,14 +124,14 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForSchoolclassbyWeekday(
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pSchoolclass);
 
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsClass(pSchoolclass)) {
-				pes.add(p);
-			}
-		}
+//		for (Planungseinheit p : DataPlanungseinheit
+//				.getAllPlanungseinheitByWeekday(pWeekday)) {
+//			if (p.containsClass(pSchoolclass)) {
+//				pes.add(p);
+//			}
+//		}
 		orderByTime(pes);
 		return pes;
 	}
@@ -148,15 +148,15 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForRoombyWeekday(
 			Weekday pWeekday, final Room pRoom) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pRoom);
 
-		// hier muss die Liste geholt werden
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsRoom(pRoom)) {
-				pes.add(p);
-			}
-		}
+//		// hier muss die Liste geholt werden
+//		for (Planungseinheit p : DataPlanungseinheit
+//				.getAllPlanungseinheitByWeekday(pWeekday)) {
+//			if (p.containsRoom(pRoom)) {
+//				pes.add(p);
+//			}
+//		}
 		orderByTime(pes);
 		return pes;
 	}
@@ -295,6 +295,7 @@ public final class PlanungseinheitManager {
 	
 	public static boolean overtimePers(final Personal pPers, final int newtimemin){
 		int newizeit = newTimeforPers(pPers.getIstZeit(), newtimemin);
+		System.out.println("newistZeit="+newizeit);
 		if(newizeit>pPers.getSollZeit()){
 			return true;
 		}

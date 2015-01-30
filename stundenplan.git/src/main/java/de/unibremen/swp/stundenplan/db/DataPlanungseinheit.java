@@ -258,7 +258,7 @@ public class DataPlanungseinheit {
 						+ "AND weekday = " + day.getOrdinal() + " "
 						+ "AND personal_kuerzel = '" + ((Personal)object).getKuerzel() + "';";
 			}else if(object instanceof Schoolclass) {
-				sql = "SELECT * FROM Planungseinheit, planungseinheit_Schoolclass "
+				sql = "SELECT * FROM Planungseinheit, planungseinheit_Schulklasse "
 						+ "WHERE id = planungseinheit_id "
 						+ "AND weekday = " + day.getOrdinal() + " "
 						+ "AND schulklasse_name = '" + ((Schoolclass)object).getName() + "';";
