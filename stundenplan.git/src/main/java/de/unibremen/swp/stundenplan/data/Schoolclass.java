@@ -28,7 +28,7 @@ import javax.persistence.Id;
 /**
  * Entspricht einer Schulklasse. Eine Schulklasse hat einen Namen.
  * 
- * @author D. Lüdemann
+ * @author D. L��demann
  * @version 0.1
  */
 public final class Schoolclass extends Jahrgang{
@@ -60,7 +60,7 @@ public final class Schoolclass extends Jahrgang{
 	}
 
 	/**
-     * Gibt den Namen dieser Schulklasse zurück.
+     * Gibt den Namen dieser Schulklasse zur��ck.
      * 
      * @return den Namen dieser Schulklasse
      */
@@ -92,6 +92,15 @@ public final class Schoolclass extends Jahrgang{
     
     public void setKlassenlehrer(ArrayList<String> pKlassenlehrer) {
     	klassenlehrer = pKlassenlehrer;
+    }
+    
+    @Override
+    public boolean equals(Object psc){
+    	if(psc instanceof Schoolclass){
+    		Schoolclass sc = (Schoolclass) psc;
+    	return name.equals(sc.getName());
+    	}
+    	return false;
     }
     
     @Override

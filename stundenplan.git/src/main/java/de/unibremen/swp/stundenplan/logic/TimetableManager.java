@@ -65,34 +65,7 @@ public final class TimetableManager {
     	return schooldays;
     }
 
-//    /**
-//     * Erzeugt einen neuen Tagesplan f��r den angegebenen Wochentag und gibt ihn zur��ck.
-//     * 
-//     * @param weekday
-//     *            der Wochentag des neuen Tagesplans
-//     * @return der neue Tagesplan
-//     * @throws DatasetException
-//     *             falls ein Problem beim Aktualisieren des Datenbestandes auftritt
-//     */
-    private static ArrayList<DayTable> createTimetable(){
-        final ArrayList<DayTable> dayTables = new ArrayList<DayTable>();
-        for(final Weekday weekday : givevaliddays()){
-        	dayTables.add(createTimeslots(weekday));
-        }
-        return dayTables;
-    }
 
-    /**
-     * Erzeugt Zeiteinheiten f��r den gegebenen Tagesplan.
-     * 
-     * @param dayTable
-     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
-     */
-    private static DayTable createTimeslots(Weekday pWeekday) {
-        final Calendar cal = Calendar.getInstance();
-        DayTable dayTable = createTimeslotsForPES(PlanungseinheitManager.demomethod(pWeekday), pWeekday);
-        return dayTable;
-   }
     
     private static boolean sametimeofday(Calendar cal1, Calendar cal2){
  	   boolean sametime = cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
@@ -101,10 +74,10 @@ public final class TimetableManager {
     } 
 
     /**
-     * erzeugt eine Tagestabelle f��r eine Liste von Planungseinheiten
+     * erzeugt eine Tagestabelle fuer eine Liste von Planungseinheiten
      * @param pPE Liste von Planungseinheiten
-     * @param pWeekday den Tag f��r die Tabelle
-     * @return gibt eine DayTable zur��ck
+     * @param pWeekday den Tag fuer die Tabelle
+     * @return gibt eine DayTable zurueck
      */
     private static DayTable createTimeslotsForPES(ArrayList<Planungseinheit> pPE,Weekday pWeekday){
         final Calendar cal = Calendar.getInstance();
@@ -141,10 +114,10 @@ public final class TimetableManager {
     
     }
     /**
-     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Person.
+     * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Person.
      * 
      * @param dayTable
-     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, fuer den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
         ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
@@ -153,7 +126,7 @@ public final class TimetableManager {
     }
     
     /**
-     * f��ll eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
+     * fuellt eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
      * @param pdt Tagesplan
      * @return Liste mit restlichen leeren Timeslots
      */
@@ -174,10 +147,10 @@ public final class TimetableManager {
 	}
 
 	/**
-     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Schulklasse.
+     * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Schulklasse.
      * 
      * @param dayTable
-     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, fuer den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForSchoolclass(Weekday pWeekday, Schoolclass pSC) {
     	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pWeekday, pSC);
@@ -253,28 +226,6 @@ public final class TimetableManager {
     	System.out.println(tp.get(2).getTimeDisplay());
      }
     
-
-    /**
-     * Gibt die Zeiteinheit an der gegebenen Position f��r den gegebenen Wochentag zur��ck. Falls die Index-Angaben
-     * au��erhalb der jeweils g��ltigen Bereiche liegen, wird {@code null} zur��ckgegeben.
-     * 
-     * @param weekday
-     *            der Wochentag der gesuchten Zeiteinheit
-     * @param position
-     *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte ��bergeben wurden
-     * @throws DatasetException
-     *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
-     *             inkonsistent ist
-     */
-    public static Timeslot getTimeslotAt(final Weekday weekday, final int position) throws DatasetException {
-        DayTable dayTable;
-        dayTable = createTimeslots(weekday);
-        if (dayTable == null) {
-            return null;
-        }
-        return dayTable.getTimeslot(position);
-    }
     
     
     /**
@@ -451,7 +402,7 @@ public final class TimetableManager {
 //	     * die ��bergebene Zeiteinheit {@code null} ist
 //	     * 
 //	     * @param pTimeslot
-//	     *            die hinzuzuf��gende Zeiteinheit
+//	     *            die hinzuzufuegende Zeiteinheit
 //	     */
 	    public void addTimeslot(final ArrayList<Timeslot> pTimeslots) {
 	        if (pTimeslots == null || pTimeslots.size() == 0) {
@@ -461,7 +412,7 @@ public final class TimetableManager {
 	    }
 	    
 //	    /**
-//	     * Gibt den Wochentag dieses Tagesplans zur��ck.
+//	     * Gibt den Wochentag dieses Tagesplans zurueck.
 //	     * 
 //	     * @return den Wochentag dieses Tagesplans
 //	     */

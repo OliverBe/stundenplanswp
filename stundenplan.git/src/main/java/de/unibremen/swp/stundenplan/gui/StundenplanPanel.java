@@ -32,47 +32,49 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		MouseListener {
 
 	/**
-	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgef�hrt
+	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgef���hrt
 	 * wurde. Nicht jedes Event
 	 */
 	private int eventX;
 	/**
-	 * gibt den optischen Punkt der y-Achse an an welchem ein Event ausgef�hrt
+	 * gibt den optischen Punkt der y-Achse an an welchem ein Event ausgef���hrt
 	 * wurde. Nicht jedes Event
 	 */
 	private int eventY;
+	
+	private Object tableowner;
 
 	/**
-	 * gibt den Punkt der x-Achse an an welchem ein Event ausgef�hrt wurde.
+	 * gibt den Punkt der x-Achse an an welchem ein Event ausgef���hrt wurde.
 	 * Nicht jedes Event
 	 */
 	private int eventXX;
 
 	/**
-	 * gibt den Punkt der y-Achse an an welchem ein Event ausgef�hrt wurde.
+	 * gibt den Punkt der y-Achse an an welchem ein Event ausgef���hrt wurde.
 	 * Nicht jedes Event
 	 */
 	private int eventYY;
 
 	/**
-	 * repr�sentiert die Tabelle welche in dem Frame als Stundenplan angezeigt
+	 * repr���sentiert die Tabelle welche in dem Frame als Stundenplan angezeigt
 	 * wird
 	 */
 	private static JTable table;
 
 	/**
-	 * die MenuBar ist die Men�Leiste im Pane welche die lehrer und Schulklassen
+	 * die MenuBar ist die Men���Leiste im Pane welche die lehrer und Schulklassen
 	 * listen enthalten
 	 */
 	private static JMenuBar menuBar = new JMenuBar();
 
 	/**
-	 * ist das Model der Liste f�r das Personal
+	 * ist das Model der Liste f���r das Personal
 	 */
 	private static DefaultListModel pList;
 
 	/**
-	 * ist das Model der Liste f�r die Schulklassen
+	 * ist das Model der Liste f���r die Schulklassen
 	 */
 	private static DefaultListModel sList;
 
@@ -87,18 +89,18 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private static JList schoolclassList;
 
 	/**
-	 * Label f�r die Men�bar
+	 * Label f���r die Men���bar
 	 */
 	private static JLabel label1 = new JLabel("Lehrer");
 
 	/**
-	 * Label f�r die Men�bar
+	 * Label f���r die Men���bar
 	 */
 	private static JLabel label2 = new JLabel("Klassen");
 
 	/**
 	 * dieses MouseAdapter erzeugt bei rechtsklick auf die Tabelle ein popup
-	 * Men� welches das Planungseinheiten hinzuf�gen, oder bearbeiten kann
+	 * Men��� welches das Planungseinheiten hinzuf���gen, oder bearbeiten kann
 	 */
 	private MouseAdapter mousefunc = new MouseAdapter() {
 		public void mousePressed(MouseEvent evt) {
@@ -121,16 +123,17 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 					if (table.getValueAt(row, col) instanceof Timeslot) {
 						t = (Timeslot) table.getValueAt(row, col);
 					}
-					if (t != null)
-						;
+					if (t != null){
 					createPopup(t);
+					}
 				}
 			}
 		}
+		
 	};
 
 	/**
-	 * repr�sentiert den Button, welche beim dr�cken den ausgew�hlten
+	 * repr���sentiert den Button, welche beim dr���cken den ausgew���hlten
 	 * Stundenplan anzeigt
 	 */
 	private static JButton show = new JButton("Anzeigen");
@@ -141,8 +144,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	public JLabel warning = new JLabel();
 
 	/**
-	 * ist das Popup Men� welches erscheint, wenn in dem Stundenplan rechtsklick
-	 * ausgef�hrt wird
+	 * ist das Popup Men��� welches erscheint, wenn in dem Stundenplan rechtsklick
+	 * ausgef���hrt wird
 	 */
 	JPopupMenu popmen = new JPopupMenu();
 
@@ -160,7 +163,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * wird beim Initialisieren dieses Panes ausgef�hrt und intialisiert die
+	 * wird beim Initialisieren dieses Panes ausgef���hrt und intialisiert die
 	 * GUI-Elemente deses Panes.
 	 */
 	public void init() {
@@ -192,8 +195,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * Erzeugt ein Popup zum hinzuf�gen, editieren und l�schen von Lehrern
-	 * F�chern und Klassen
+	 * Erzeugt ein Popup zum hinzuf���gen, editieren und l���schen von Lehrern
+	 * F���chern und Klassen
 	 * 
 	 * @param row
 	 *            Die Zeile.
@@ -214,7 +217,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				popmen.setVisible(false);
-				PEedit frame = getpFrame(t);
+				PEedit frame = getpFrame(t, tableowner);
 				frame.setVisible(true);
 			}
 		});
@@ -236,13 +239,13 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 
 	}
 
-	private PEedit getpFrame(Timeslot pt) {
-		return new PEedit(this, pt);
+	private PEedit getpFrame(Timeslot pt, Object owner) {
+		return new PEedit(this, pt, owner);
 	}
 
 	/**
-	 * updated die GUI und die Listen. wird ausgef�hrt sobald eine relevante
-	 * �nderung in der Datenbank geschieht. Wird von anderen Klassen statisch
+	 * updated die GUI und die Listen. wird ausgef���hrt sobald eine relevante
+	 * ���nderung in der Datenbank geschieht. Wird von anderen Klassen statisch
 	 * ausgerufen.
 	 */
 	public static void updateLists() {
@@ -319,7 +322,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * stellt eine Aktion da. Sobald der Anzeigen Button gedr�ckt wird, wird von
+	 * stellt eine Aktion da. Sobald der Anzeigen Button gedr���ckt wird, wird von
 	 * dem element in der JList der Stundenplan in Form eines JTables angezeigt
 	 * Danach wird die GUI aktualisiert
 	 * 
@@ -329,12 +332,14 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if (ae.getSource() == show && (!personalList.isSelectionEmpty())) {
 
 			Personal p = (Personal) personalList.getSelectedValue();
+			tableowner = p;
 			System.out.println(p.getKuerzel());
 			table = new StundenplanTable(p).getTable();
 
 		} else if (ae.getSource() == show
 				&& (!schoolclassList.isSelectionEmpty())) {
 			Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
+			tableowner = s;
 			System.out.println(s.getName());
 			table = new StundenplanTable(s).getTable();
 
@@ -345,7 +350,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * gibt den aktuellen Stundenplan (die Tabelle) zur�ck
+	 * gibt den aktuellen Stundenplan (die Tabelle) zur���ck
 	 * 
 	 * @return
 	 */
@@ -365,8 +370,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * Sobald ein Element in den J-Listen ausgew�hlt
-	 * wird, wird in der anderen JListe das ausgew�hlte Element "deselected".
+	 * Sobald ein Element in den J-Listen ausgew���hlt
+	 * wird, wird in der anderen JListe das ausgew���hlte Element "deselected".
 	 * @param evt
 	 */
 	@Override
@@ -376,7 +381,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		} else if (evt.getSource() == schoolclassList) {
 			personalList.clearSelection();
 		}
-
+			popmen.setVisible(false);
 	}
 
 	@Override

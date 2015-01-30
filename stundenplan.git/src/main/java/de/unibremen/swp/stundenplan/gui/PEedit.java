@@ -37,6 +37,7 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 public class PEedit extends JFrame {
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 	private StundenplanPanel parentframe;
+	private Object owner;
 	private JSpinner spinner1;
 	private JSpinner spinner2;
 	private JSpinner spinner3;
@@ -130,9 +131,10 @@ public class PEedit extends JFrame {
 	/**
 	 * erzeugt Editor fuer ERzeugung von einer Planungseinheit.
 	 */
-	public PEedit(final StundenplanPanel pParent, Timeslot pTimeslot) {
+	public PEedit(final StundenplanPanel pParent, Timeslot pTimeslot, Object towner) {
 		super("Planungseinheiten bearbeiten");
 		parentframe = pParent;
+		owner = towner;
 		init();
 		spinner1.setValue(pTimeslot.getsHour());
 		spinner2.setValue(pTimeslot.getsMinute());
@@ -196,7 +198,14 @@ public class PEedit extends JFrame {
 		getContentPane().add(endtime);
 		pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit",
 				PersonalComparator);
-		pList.addSourceElements(DataPersonal.getAllPersonal().toArray());
+		ArrayList<Personal> plist = DataPersonal.getAllPersonal();
+		if(owner instanceof Personal){
+			if (plist.contains(owner)){
+				plist.remove(owner);
+				pList.addDestinationElements(getList(owner));
+			}
+		}
+		pList.addSourceElements(plist.toArray());
 		getContentPane().add(pList);
 		sIList = new DualListBox("Verfuegbare Stundeninhalte",
 				" Stundeninhalte im Planungseinheit", SIComparator);
@@ -205,7 +214,15 @@ public class PEedit extends JFrame {
 		getContentPane().add(sIList);
 		scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit",
 				SCComparator);
-		scList.addSourceElements(DataSchulklasse.getAllSchulklasse().toArray());
+		ArrayList<Schoolclass> sclist = DataSchulklasse.getAllSchulklasse();
+		if(owner instanceof Schoolclass){
+			System.out.println(owner);
+			if (sclist.contains(owner)){
+				sclist.remove(owner);
+				scList.addDestinationElements(getList(owner));
+			}
+		}
+		scList.addSourceElements(sclist.toArray());
 		getContentPane().add(scList);
 		roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit",
 				RoomComparator);
@@ -400,6 +417,13 @@ public class PEedit extends JFrame {
 				6, 6, // initX, initY
 				6, 6); // xPad, yPad
 		setSize(1000, 700);
+	}
+
+	private Object[] getList(Object powner) {
+		// TODO Auto-generated method stub
+		Object[] nlist = new Object[1];
+		nlist[0] = powner;
+		return nlist;
 	}
 
 	private JFrame getmyFrame() {
