@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -23,6 +24,7 @@ import javax.swing.text.BadLocationException;
 
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.exceptions.WochentagException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
@@ -252,6 +254,19 @@ public class ConfigPanel extends JPanel {
 			tf.setText("" + Timeslot.timeslotlength());
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					if (!DataPlanungseinheit.isEmpty()) {
+						Object[] options = { "Planungseinheiten loeschen und speichern!", "Nichts loeschen und abbrechen!"};
+						 int selected=JOptionPane.showOptionDialog(null,
+								"Wenn Sie die Timeslotlaenge aendern, werden alle Planungseinheiten aus Ueberschneidungsgruenden geloescht!", "WARNUNG!",
+								JOptionPane.DEFAULT_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, options,
+								options[1]);
+						if(selected==0){
+							DataPlanungseinheit.deleteAll();
+						}else{
+							return;
+						}
+					}
 					try {
 						if (Integer.parseInt(tf.getText()) > 0) {
 							Config.TIMESLOT_LENGTH = Integer.parseInt(tf
@@ -371,15 +386,29 @@ public class ConfigPanel extends JPanel {
 			add(button, c);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					boolean b=false;
+					if (!DataPlanungseinheit.isEmpty()) {
+						Object[] options = { "Planungseinheiten loeschen und speichern!", "Nichts loeschen und abbrechen!"};
+						 int selected=JOptionPane.showOptionDialog(null,
+								"Wenn Sie die Tage aendern, werden alle Planungseinheiten aus Ueberschneidungsgruenden geloescht!", "WARNUNG!",
+								JOptionPane.DEFAULT_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, options,
+								options[1]);
+						if(selected==0){
+							DataPlanungseinheit.deleteAll();
+						}else{
+							return;
+						}
+					}
+					boolean b = false;
 					for (int i = 0; i < checkList.getModel().getSize(); i++) {
 						JCheckBox cb = (JCheckBox) checkList.getModel()
 								.getElementAt(i);
-						if (cb.isSelected()) b=true;
+						if (cb.isSelected())
+							b = true;
 					}
-					if(!b) {
+					if (!b) {
 						new WochentagException();
-					}else{
+					} else {
 						String monday = mo.isSelected() ? "true" : "false";
 						String tuesday = di.isSelected() ? "true" : "false";
 						String wednesday = mi.isSelected() ? "true" : "false";
@@ -389,7 +418,8 @@ public class ConfigPanel extends JPanel {
 						String sunday = so.isSelected() ? "true" : "false";
 						Config.setStringValue(Config.MONDAY_STRING, monday);
 						Config.setStringValue(Config.TUESDAY_STRING, tuesday);
-						Config.setStringValue(Config.WEDNESDAY_STRING, wednesday);
+						Config.setStringValue(Config.WEDNESDAY_STRING,
+								wednesday);
 						Config.setStringValue(Config.THURSDAY_STRING, thursday);
 						Config.setStringValue(Config.FRIDAY_STRING, friday);
 						Config.setStringValue(Config.SATURDAY_STRING, saturday);
@@ -469,23 +499,37 @@ public class ConfigPanel extends JPanel {
 			end.setText(eh + ":" + em);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					if (!DataPlanungseinheit.isEmpty()) {
+						Object[] options = { "Planungseinheiten loeschen und speichern!", "Nichts loeschen und abbrechen!"};
+						 int selected=JOptionPane.showOptionDialog(null,
+								"Wenn Sie die Tageslaenge aendern, werden alle Planungseinheiten aus Ueberschneidungsgruenden geloescht!", "WARNUNG!",
+								JOptionPane.DEFAULT_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, options,
+								options[1]);
+						if(selected==0){
+							DataPlanungseinheit.deleteAll();
+						}else{
+							return;
+						}
+					}
 					try {
-						if(Integer.parseInt(start.getText(0, 2)) >= 0 
-								&& Integer.parseInt(start .getText(0, 2)) <= 23
-								&&Integer.parseInt(start.getText(3, 2)) >= 0 
-								&& Integer.parseInt(start .getText(3, 2)) <= 59
-								&& Integer.parseInt(end.getText(0, 2)) >= 0 
+						if (Integer.parseInt(start.getText(0, 2)) >= 0
+								&& Integer.parseInt(start.getText(0, 2)) <= 23
+								&& Integer.parseInt(start.getText(3, 2)) >= 0
+								&& Integer.parseInt(start.getText(3, 2)) <= 59
+								&& Integer.parseInt(end.getText(0, 2)) >= 0
 								&& Integer.parseInt(end.getText(0, 2)) <= 23
-								&& Integer.parseInt(end.getText(3, 2)) >= 0 
-								&& Integer.parseInt(end.getText(3, 2)) <= 59
-										){
+								&& Integer.parseInt(end.getText(3, 2)) >= 0
+								&& Integer.parseInt(end.getText(3, 2)) <= 59) {
 							Config.DAY_STARTTIME_HOUR = Integer.parseInt(start
 									.getText(0, 2));
-							Config.setIntValue(Config.DAY_STARTTIME_HOUR_STRING,
+							Config.setIntValue(
+									Config.DAY_STARTTIME_HOUR_STRING,
 									Integer.parseInt(start.getText(0, 2)));
-							Config.DAY_STARTTIME_MINUTE = Integer.parseInt(start
-									.getText(3, 2));
-							Config.setIntValue(Config.DAY_STARTTIME_MINUTE_STRING,
+							Config.DAY_STARTTIME_MINUTE = Integer
+									.parseInt(start.getText(3, 2));
+							Config.setIntValue(
+									Config.DAY_STARTTIME_MINUTE_STRING,
 									Integer.parseInt(start.getText(3, 2)));
 							Config.DAY_ENDTIME_HOUR = Integer.parseInt(start
 									.getText(0, 2));
@@ -493,11 +537,13 @@ public class ConfigPanel extends JPanel {
 									Integer.parseInt(end.getText(0, 2)));
 							Config.DAY_ENDTIME_MINUTE = Integer.parseInt(start
 									.getText(3, 2));
-							Config.setIntValue(Config.DAY_ENDTIME_MINUTE_STRING,
+							Config.setIntValue(
+									Config.DAY_ENDTIME_MINUTE_STRING,
 									Integer.parseInt(end.getText(3, 2)));
-						}else{
+						} else {
 							new ZahlException();
-						};
+						}
+						;
 					} catch (NumberFormatException | BadLocationException e) {
 						new ZahlException();
 					}

@@ -268,4 +268,14 @@ public class DataPlanungseinheit {
 			e.printStackTrace();
 		}
 	}
+
+	public static boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static void deleteAll() {
+		// TODO Auto-generated method stub
+		
+	}
 }
