@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
+import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
 
 public class DataPlanungseinheit {
 
@@ -36,7 +39,7 @@ public class DataPlanungseinheit {
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 				sql = "UPDATE Personal SET istZeit = istZeit + " 
-						+ planungseinheit.duration()/60 
+						+ planungseinheit.duration() 
 						+ " WHERE kuerzel = '" + entry.getKey() + "';";
 				stmt.executeUpdate(sql);
 			}
@@ -199,13 +202,121 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
-				
 				pl = new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin);
+				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
+						+ pId + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String personal_kuerzel = rs.getString("personal_kuerzel");
+					int zeiten[] = new int[4];
+					zeiten[0] = rs.getInt("startZeitHour");
+					zeiten[1] = rs.getInt("startZeitMin");
+					zeiten[2] = rs.getInt("endZeitHour");
+					zeiten[3] = rs.getInt("endZeitMin");
+					pl.getPersonalMap().put(personal_kuerzel, zeiten);
+				}
+				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE planungseinheit_id = "
+						+ pId + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					pl.getStundeninhalte().add(stundeninhalt_kuerzel);
+				}
+				sql = "SELECT * FROM planungseinheit_Schulklasse WHERE planungseinheit_id = "
+						+ pId + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String schulklasse_name = rs.getString("schulklasse_name");
+					pl.getSchoolclasses().add(schulklasse_name);
+				}
+				sql = "SELECT * FROM planungseinheit_Raum WHERE planungseinheit_id = "
+						+ pId + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String raum_name = rs.getString("raum_name");
+					pl.getRooms().add(raum_name);
+				}
 				return pl;
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
-
+		}
+		return null;
+	}
+	
+	public static ArrayList<Planungseinheit> getAllPlanungseinheitByWeekdayAndObject(Weekday day, Object object) {
+		try {
+			ArrayList<Planungseinheit> allPlanungseinheit = new ArrayList<Planungseinheit>();
+			if(object instanceof Room) {
+				sql = "SELECT * FROM Planungseinheit, planungseinheit_Raum "
+						+ "WHERE id = planungseinheit_id "
+						+ "AND weekday = " + day.getOrdinal() + " "
+						+ "AND raum_name = '" + ((Room)object).getName() + "';";
+			}else if(object instanceof Personal) {
+				sql = "SELECT * FROM Planungseinheit, planungseinheit_Personal "
+						+ "WHERE id = planungseinheit_id "
+						+ "AND weekday = " + day.getOrdinal() + " "
+						+ "AND personal_kuerzel = '" + ((Personal)object).getKuerzel() + "';";
+			}else if(object instanceof Schoolclass) {
+				sql = "SELECT * FROM Planungseinheit, planungseinheit_Schoolclass "
+						+ "WHERE id = planungseinheit_id "
+						+ "AND weekday = " + day.getOrdinal() + " "
+						+ "AND schulklasse_name = '" + ((Schoolclass)object).getName() + "';";
+			}else return null;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int weekday = rs.getInt("weekday");
+				int startHour = rs.getInt("startHour");
+				int startMin = rs.getInt("startMin");
+				int endHour = rs.getInt("endHour");
+				int endMin = rs.getInt("endMin");
+				allPlanungseinheit.add(new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin));
+			}
+			for(Planungseinheit p : allPlanungseinheit) {
+				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
+						+ p.getId() + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String personal_kuerzel = rs.getString("personal_kuerzel");
+					int zeiten[] = new int[4];
+					zeiten[0] = rs.getInt("startZeitHour");
+					zeiten[1] = rs.getInt("startZeitMin");
+					zeiten[2] = rs.getInt("endZeitHour");
+					zeiten[3] = rs.getInt("endZeitMin");
+					p.getPersonalMap().put(personal_kuerzel, zeiten);
+				}
+			}
+			for(Planungseinheit p : allPlanungseinheit) {
+				sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE planungseinheit_id = "
+						+ p.getId() + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
+					p.getStundeninhalte().add(stundeninhalt_kuerzel);
+				}
+			}
+			for(Planungseinheit p : allPlanungseinheit) {
+				sql = "SELECT * FROM planungseinheit_Schulklasse WHERE planungseinheit_id = "
+						+ p.getId() + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String schulklasse_name = rs.getString("schulklasse_name");
+					p.getSchoolclasses().add(schulklasse_name);
+				}
+			}
+			for(Planungseinheit p : allPlanungseinheit) {
+				sql = "SELECT * FROM planungseinheit_Raum WHERE planungseinheit_id = "
+						+ p.getId() + ";";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String raum_name = rs.getString("raum_name");
+					p.getRooms().add(raum_name);
+				}
+			}
+			return allPlanungseinheit;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -270,12 +381,13 @@ public class DataPlanungseinheit {
 	}
 
 	public static boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return getAllPlanungseinheit().isEmpty();
 	}
 
 	public static void deleteAll() {
-		// TODO Auto-generated method stub
-		
+		ArrayList<Planungseinheit> allPlanungseinheit = getAllPlanungseinheit();
+		for(Planungseinheit p : allPlanungseinheit) {
+			deletePlanungseinheitById(p.getId());
+		}
 	}
 }
