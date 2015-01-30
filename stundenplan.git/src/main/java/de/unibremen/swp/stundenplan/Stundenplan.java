@@ -77,7 +77,7 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-            
+    	start();
     }
     
     /**
