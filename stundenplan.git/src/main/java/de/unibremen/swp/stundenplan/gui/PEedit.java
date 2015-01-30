@@ -10,13 +10,13 @@ import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
@@ -199,6 +199,7 @@ public class PEedit extends JFrame {
 		pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit",
 				PersonalComparator);
 		ArrayList<Personal> plist = DataPersonal.getAllPersonal();
+		
 		if(owner instanceof Personal){
 			if (plist.contains(owner)){
 				plist.remove(owner);
@@ -231,6 +232,7 @@ public class PEedit extends JFrame {
 		button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				
 				if (pList.getDestsize() == 0 || roomList.getDestsize() == 0) {
 					JOptionPane.showMessageDialog(null,
 							"Es sind keine Personal oder Raeume eingeplant");
@@ -282,6 +284,7 @@ public class PEedit extends JFrame {
 						listp.add(pr);
 					}
 				}
+				
 				it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
@@ -340,6 +343,55 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
+				
+				
+
+				for(int i = 0; i < listp.size() ; i++) {
+					StundenplanTable table = new StundenplanTable(listp.get(i));
+					int row;
+					int column;
+					for(int e = 0; e < table.getTable().getRowCount(); e++) {
+						String s ="";
+						if(p.getStartHour()< 10) {
+							s = s + "0";
+						}
+						s = s + p.getStartHour() + ":";
+						if(p.getStartminute()< 10) {
+							s = s + "0";
+						}
+						s = s + p.getStartminute();
+						s = s + " - ";
+						
+						if(p.getEndhour()< 10) {
+							s = s + "0";
+							
+							
+						}
+						s = s + p.getEndhour() + ":";
+						if(p.getEndminute()< 10) {
+							s = s + "0";
+						}
+						s = s + p.getEndminute();
+						
+						if(table.getTable().getValueAt(e, 0).toString().equals(s)) {
+							//TODO
+							
+						}
+						
+						
+							
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				for (Personal pers : listp) {
 					if (PlanungseinheitManager.personalsiCheck(pers, p)) {
 						int result = JOptionPane.showOptionDialog(
@@ -401,6 +453,8 @@ public class PEedit extends JFrame {
 					}
 
 				}
+				
+				
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
 						getmyFrame(), listp, p);
 				if (pdialog.getsaved()) {
