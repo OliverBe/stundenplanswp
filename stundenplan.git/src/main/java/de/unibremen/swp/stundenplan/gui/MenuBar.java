@@ -137,9 +137,10 @@ public class MenuBar extends JMenuBar {
 				if(!Data.isSaved()) {
                 	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
                 	if(result==JOptionPane.YES_OPTION) {
-                		if(Data.getLastRestoredFileName()!=null) {
-                			Data.backup(Data.getLastRestoredFileName());
+                		if(Data.getLastRestoredFileName().equals("")) {
+                			Data.backup(Data.getLastRestoredFileName(), true);
                 		}else {
+                			Data.setLastRestoredFileName("");
                 			final JFrame backupFrame = new JFrame();
             				GridBagConstraints c = new GridBagConstraints();
             				JPanel backupChooser = new JPanel();
@@ -174,7 +175,7 @@ public class MenuBar extends JMenuBar {
             				button.addActionListener(new ActionListener() {
             					public void actionPerformed(ActionEvent ae) {
             						backupFrame.dispose();
-            						Data.backup(tf.getText());
+            						Data.backup(tf.getText(), true);
             					}
             				});
 
@@ -202,7 +203,7 @@ public class MenuBar extends JMenuBar {
 				JButton button2 = new JButton("Abbrechen");
 				backupChooser.setLayout(new GridBagLayout());
 				backupChooser.setBorder(BorderFactory
-						.createTitledBorder("Backup auswählen"));
+						.createTitledBorder("Datei auswählen"));
 				c.fill = GridBagConstraints.BOTH;
 				c.insets = new Insets(8, 5, 1, 1);
 				c.anchor = GridBagConstraints.CENTER;
@@ -222,7 +223,7 @@ public class MenuBar extends JMenuBar {
 				c.weightx = 0.4;
 				backupChooser.add(button2, c);
 				backupFrame.add(backupChooser);
-				backupFrame.setTitle("Backup");
+				backupFrame.setTitle("Oeffnen");
 				backupFrame.setLocation(MouseInfo.getPointerInfo()
 						.getLocation().x, MouseInfo.getPointerInfo()
 						.getLocation().y);
@@ -262,7 +263,7 @@ public class MenuBar extends JMenuBar {
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if(!Data.getLastRestoredFileName().equals("")) {
-					Data.backup(Data.getLastRestoredFileName());
+					Data.backup(Data.getLastRestoredFileName(), true);
 					Data.setSaved(true);
 				}else saveFrame();
 			}
@@ -286,7 +287,7 @@ public class MenuBar extends JMenuBar {
 		JButton button2 = new JButton("Abbrechen");
 		backupChooser.setLayout(new GridBagLayout());
 		backupChooser.setBorder(BorderFactory
-				.createTitledBorder("Backup erstellen"));
+				.createTitledBorder("Datei benennen"));
 		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(8, 5, 1, 1);
 		c.anchor = GridBagConstraints.CENTER;
@@ -307,7 +308,7 @@ public class MenuBar extends JMenuBar {
 		c.weightx = 0.4;
 		backupChooser.add(button2, c);
 		backupFrame.add(backupChooser);
-		backupFrame.setTitle("Backup");
+		backupFrame.setTitle("Speichern");
 		backupFrame.setLocation(MouseInfo.getPointerInfo()
 				.getLocation().x, MouseInfo.getPointerInfo()
 				.getLocation().y);
@@ -329,7 +330,7 @@ public class MenuBar extends JMenuBar {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				backupFrame.dispose();
-				Data.backup(tf.getText());
+				Data.backup(tf.getText(), false);
 			}
 		});
 

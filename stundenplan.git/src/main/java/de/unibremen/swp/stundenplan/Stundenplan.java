@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
@@ -86,7 +87,7 @@ public final class Stundenplan {
         		time++;
         		if(time >= Config.getInt("backupintervall", Config.BACKUPINTERVALL)){
                     final Date date = new Date();
-        			Data.backup("backup_" + dateFormat.format(date));
+        			Data.backup("backup_" + dateFormat.format(date), true);
         			time = 0;
         		}
             }

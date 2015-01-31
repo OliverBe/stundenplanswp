@@ -194,7 +194,7 @@ public class Data {
 		}
 	}
 	
-	public static void backup(String backupName) {
+	public static void backup(String backupName, boolean forceSave) {
 		try {
 			File dir = new File(System.getProperty("user.dir"));
 			File[] files = dir.listFiles(new FilenameFilter() {
@@ -204,7 +204,8 @@ public class Data {
 			});
 			for (File file : files) {
 				if((backupName + ".db").equals(file.getName())) {
-					int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Die Datei existiert bereits.\nSoll die Datei überschrieben werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+					int result = JOptionPane.YES_OPTION;
+					if(!forceSave) result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Die Datei existiert bereits.\nSoll die Datei überschrieben werden?", "Warnung", JOptionPane.YES_NO_OPTION);
 					if(result == JOptionPane.YES_OPTION) {
 						if(file.delete()) {
 							stmt.executeUpdate("backup to " + backupName + ".db");
