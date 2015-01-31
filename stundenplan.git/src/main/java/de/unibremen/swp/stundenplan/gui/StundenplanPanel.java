@@ -287,7 +287,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		menuBar.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.fill = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -476,7 +476,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		menuBar.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.fill = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
 
 		c.gridx = 0;
 		c.gridy = 0;

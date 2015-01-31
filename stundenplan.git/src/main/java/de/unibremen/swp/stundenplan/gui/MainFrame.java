@@ -86,9 +86,8 @@ public class MainFrame extends JFrame {
 		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		init();
-	//	pack();
-		setMinimumSize(new Dimension(1280,1024));
-	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
+//		setMinimumSize(new Dimension(1280,1024));
+//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
 		setVisible(true);
 	}
 	
@@ -183,9 +182,7 @@ public class MainFrame extends JFrame {
 		addWindowStateListener(new WindowStateListener() {
 			@Override
 			public void windowStateChanged(WindowEvent e) {
-				if(Stundenplan.main.getState()!=Frame.ICONIFIED) {
-					pack();
-				}
+				setExtendedState(getExtendedState() | JFrame.NORMAL );	
 			}
 		});
 		

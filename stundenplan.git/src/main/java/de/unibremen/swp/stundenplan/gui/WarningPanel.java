@@ -67,12 +67,12 @@ public class WarningPanel extends JPanel{
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		list.setFocusable(false);
-		listScroller.setPreferredSize(new Dimension(160,330));
+		listScroller.setPreferredSize(new Dimension(300,150));
 		//list.setSize(100,500);
 		c.insets=new Insets(30,0,0,0);
 		add(listScroller, c);
 		c.gridy=1;
-		c.fill=GridBagConstraints.HORIZONTAL;
+		c.fill=GridBagConstraints.BOTH;
 		c.insets=new Insets(5,0,0,0);
 		add(b1, c);
 		b1.addActionListener(new ActionListener() {

@@ -157,8 +157,8 @@ public class DataPanel extends JPanel {
 		menuBar.add(mS);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
-		c.gridy = 1;
-		c.ipady = 0;
+		c.gridy = 2;
+		c.ipady = 300;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		add(new WarningPanel(), c);
 
