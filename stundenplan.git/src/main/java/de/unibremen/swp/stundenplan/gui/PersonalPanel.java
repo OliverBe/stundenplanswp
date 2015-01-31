@@ -782,13 +782,13 @@ public class PersonalPanel extends JPanel {
 					}
 				}
 				if (c == ersatzField) {
-					if (Integer.parseInt(ersatzField.getText()) < 1) {
+					if (Integer.parseInt(ersatzField.getText()) < 0) {
 						new ZahlException();
 						b = false;
 					}
 				}
 				if (c == ersatzField2) {
-					if (Integer.parseInt(ersatzField2.getText()) < 1) {
+					if (Integer.parseInt(ersatzField2.getText()) < 0) {
 						new ZahlException();
 						b = false;
 					}
@@ -811,6 +811,12 @@ public class PersonalPanel extends JPanel {
 	 */
 	private boolean textFieldsEmpty(final JPanel p) {
 		for (Component c : p.getComponents()) {
+			if (c == ersatzField) {
+				if(ersatzField.getText().isEmpty()) ersatzField.setText("0");
+			}
+			if (c == ersatzField2) {
+				if(ersatzField2.getText().isEmpty()) ersatzField2.setText("0");
+			}
 			if (c instanceof TextField) {
 				if (((TextField) c).getText().isEmpty())
 					return true;

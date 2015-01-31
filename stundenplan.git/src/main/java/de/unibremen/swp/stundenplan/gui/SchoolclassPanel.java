@@ -464,7 +464,6 @@ public class SchoolclassPanel extends JPanel {
 		for (Personal per : PersonalManager.getAllPersonalFromDB()) {
 			boxes.add(new JCheckBox(per.getKuerzel()));
 		}
-		;
 
 		for (JCheckBox jcb : boxes) {
 			for (String s : sc.getKlassenlehrer()) {
@@ -486,13 +485,13 @@ public class SchoolclassPanel extends JPanel {
 		ArrayList<Room> ro = RaumManager.getAllRoomsFromDB();
 		cb2 = new JComboBox<Object>(ro.toArray());
 
-		for (Room r : ro) {
-			System.out.println("++ Klassenraum:  " + r.getName());
-			System.out.println("++ Klassenraum: !"
-					+ sc.getKlassenraum().getName());
-			if (r.getName().equals(sc.getKlassenraum().getName()))
-				System.out.println("++ Yes" + sc.getKlassenraum().getName());
-		}
+//		for (Room r : ro) {
+//			System.out.println("++ Klassenraum:  " + r.getName());
+//			System.out.println("++ Klassenraum: !"
+//					+ sc.getKlassenraum().getName());
+//			if (r.getName().equals(sc.getKlassenraum().getName()))
+//				System.out.println("++ Yes" + sc.getKlassenraum().getName());
+//		}
 		for (int i = 0; i < ro.size(); i++) {
 			if (ro.get(i).getName().equals(sc.getKlassenraum().getName()))
 				cb2.setSelectedIndex(i);
@@ -583,7 +582,7 @@ public class SchoolclassPanel extends JPanel {
 				HashMap<String, Integer> hm = new HashMap<String, Integer>();
 				for (int i = 0; i < model2.getRowCount(); i++) {
 					hm.put((String) model2.getValueAt(i, 0),
-							(Integer) model2.getValueAt(i, 1));
+							Integer.parseInt(((String)model2.getValueAt(i, 1))));
 				}
 
 				SchulklassenManager.editSchoolclass(
@@ -677,15 +676,15 @@ public class SchoolclassPanel extends JPanel {
 		try {
 			if (model != null) {
 				for (int i = 0; i < model.getRowCount(); i++) {
-					if (Integer.parseInt((String) model.getValueAt(i, 1)) < 0) {
+					if (Integer.parseInt(((String)model.getValueAt(i, 1))) < 0) {
 						new ZahlException();
 						b = false;
 					}
 				}
 			}
 			if (model2 != null) {
-				for (int i = 0; i < model.getRowCount(); i++) {
-					if (Integer.parseInt((String) model2.getValueAt(i, 1)) < 0) {
+				for (int i = 0; i < model2.getRowCount(); i++) {
+					if (Integer.parseInt(((String)model2.getValueAt(i, 1))) < 0) {
 						new ZahlException();
 						b = false;
 					}
