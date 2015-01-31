@@ -14,6 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
+
 /**
  * DatenPanel auf dem alle Editierungen des Datenbestandes vorgenommen werden
  * 
@@ -178,6 +180,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(personalPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -197,6 +202,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(schoolclassPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -219,6 +227,9 @@ public class DataPanel extends JPanel {
 					SwingUtilities
 							.updateComponentTreeUI((JFrame) SwingUtilities
 									.getWindowAncestor(stundeninhaltPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -238,6 +249,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(roomPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -256,6 +270,9 @@ public class DataPanel extends JPanel {
 				add(raumfunktionPanel, c);
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(raumfunktionPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -274,6 +291,9 @@ public class DataPanel extends JPanel {
 				add(bedarfPanel, c);
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(bedarfPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 	}
