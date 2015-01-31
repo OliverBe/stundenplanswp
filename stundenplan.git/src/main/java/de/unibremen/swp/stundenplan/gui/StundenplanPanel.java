@@ -365,8 +365,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	 * 
 	 */
 	public void updatetable() {
-
+		if(table != null) {
 		table.repaint();
+		}
 		Stundenplan.getMain().validate();
 		personalList.addMouseListener(this);
 		schoolclassList.addMouseListener(this);
