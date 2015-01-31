@@ -35,7 +35,7 @@ import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 public class StundenplanPanel extends JPanel implements ActionListener,
 		MouseListener {
 
-	private DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
+	
 	/**
 	 * gibt den optischen Punkt der x-Achse an an welchem ein Event ausgef���hrt
 	 * wurde. Nicht jedes Event
@@ -190,7 +190,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
 		c.weightx = 1.0;
-		c.gridwidth = 4;
+		c.gridwidth = 2;
 		c.gridy = 0;
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
@@ -287,42 +287,37 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		menuBar.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.fill = GridBagConstraints.REMAINDER;
+		c.fill = GridBagConstraints.CENTER;
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 1.0;
 		c.weighty = 0.1;
 		gbl.setConstraints(label1, c);
 		menuBar.add(label1, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = 0.3;
-		c.weightx = 1.0;
+		c.weighty = 0.2;
 		gbl.setConstraints(paneList1, c);
 		menuBar.add(paneList1, c);
 		c.gridx = 0;
 		c.gridy = 2;
-		c.weightx = 1.0;
 		c.weighty = 0.1;
 		gbl.setConstraints(label2, c);
 		menuBar.add(label2, c);
 		c.gridx = 0;
 		c.gridy = 3;
-		c.weighty = 0.3;
-		c.weightx = 1.0;
+		c.weighty = 0.2;
 		gbl.setConstraints(paneList2, c);
 		menuBar.add(paneList2, c);
 		c.gridx = 0;
 		c.gridy = 4;
-		c.weightx = 1.0;
-		c.weighty = 0.2;
+		c.weighty = 0.1;
 		gbl.setConstraints(show, c);
 		menuBar.add(show, c);
 		
-		c.gridy = 5;
-		c.ipady = 0;
-		c.anchor = GridBagConstraints.CENTER;
+		c.gridy = 6;
+		c.weighty = 0.2;
+		c.weightx = 1.0;
 		menuBar.add(new WarningPanel(), c);
 
 	}
@@ -341,46 +336,19 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			tableowner = p;
 			System.out.println(p.getKuerzel());
 			table = new StundenplanTable(p).getTable();
-
+			init();
 		} else if (ae.getSource() == show
 				&& (!schoolclassList.isSelectionEmpty())) {
 			Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
 			tableowner = s;
 			System.out.println(s.getName());
 			table = new StundenplanTable(s).getTable();
+			init(s);
 
-			
-//			modelSchoolclassBedarf.addColumn("Stundeninhalt");
-//			modelSchoolclassBedarf.addColumn("Bedarf");
-//			for (Stundeninhalt si : StundeninhaltManager
-//					.getAllStundeninhalteFromDB()) {
-//				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0" });
-//			}
-//			for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
-//				for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
-//					if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
-//						modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
-//					}
-//				}
-//			}
-//
-//			final JTable table2 = new JTable(modelSchoolclassBedarf);
-//			table2.setColumnSelectionAllowed(false);
-//			table2.getTableHeader().setReorderingAllowed(false);
-//			table2.getTableHeader().setResizingAllowed(false);
-//			GridBagConstraints c = new GridBagConstraints();
-//			c.gridx = 0;
-//			c.gridy = 7;
-//			c.gridwidth = 2;
-//			c.fill = GridBagConstraints.HORIZONTAL;
-//			add(table2.getTableHeader(), c);
-//			
-//			c.gridy = 8;
-//			c.gridx = 0;
-//			add(table2, c);
+
 		}
 
-		init();
+		
 		updatetable();
 	}
 
@@ -440,6 +408,139 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+
+	}
+	
+	
+	private void init(Schoolclass s) {
+		removeAll();
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.weightx = 0.0;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 0;
+
+		updateLists(s);
+
+		add(menuBar, c);
+
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.weightx = 1.0;
+		c.gridwidth = 2;
+		c.gridy = 0;
+		JScrollPane pane = new JScrollPane(table);
+		add(pane, c);
+		if (table != null) {
+			table.addMouseListener(mousefunc);
+		}
+		
+		
+		
+	}
+	
+	private static void updateLists(Schoolclass s) {
+		Personal[] personalListe = new Personal[PersonalManager
+				.getAllPersonalFromDB().size()];
+		Schoolclass[] schoolclassListe = new Schoolclass[SchulklassenManager
+				.getAllSchulklassenFromDB().size()];
+		pList = new DefaultListModel();
+		sList = new DefaultListModel();
+
+		for (int i = 0; i < PersonalManager.getAllPersonalFromDB().size(); i++) {
+			personalListe[i] = PersonalManager.getAllPersonalFromDB().get(i);
+
+			pList.addElement(personalListe[i]);
+		}
+
+		for (int i = 0; i < SchulklassenManager.getAllSchulklassenFromDB()
+				.size(); i++) {
+			schoolclassListe[i] = SchulklassenManager
+					.getAllSchulklassenFromDB().get(i);
+
+			sList.addElement(schoolclassListe[i]);
+		}
+
+		personalList = new JList(pList);
+		schoolclassList = new JList(sList);
+
+		JScrollPane paneList1 = new JScrollPane(personalList);
+		JScrollPane paneList2 = new JScrollPane(schoolclassList);
+
+		menuBar.removeAll();
+		GridBagLayout gbl = new GridBagLayout();
+		menuBar.setLayout(gbl);
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.fill = GridBagConstraints.CENTER;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 0.1;
+		gbl.setConstraints(label1, c);
+		menuBar.add(label1, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weighty = 0.2;
+		gbl.setConstraints(paneList1, c);
+		menuBar.add(paneList1, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weighty = 0.1;
+		gbl.setConstraints(label2, c);
+		menuBar.add(label2, c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weighty = 0.2;
+		gbl.setConstraints(paneList2, c);
+		menuBar.add(paneList2, c);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.weighty = 0.1;
+		gbl.setConstraints(show, c);
+		menuBar.add(show, c);
+		
+		
+		DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
+		
+		modelSchoolclassBedarf.addColumn("Stundeninhalt");
+		modelSchoolclassBedarf.addColumn("Bedarf");
+		for (Stundeninhalt si : StundeninhaltManager
+				.getAllStundeninhalteFromDB()) {
+			modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0" });
+		}
+		for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
+			for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
+				if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
+					modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
+				}
+			}
+		}
+
+		final JTable table2 = new JTable(modelSchoolclassBedarf);
+		table2.setColumnSelectionAllowed(false);
+		table2.getTableHeader().setReorderingAllowed(false);
+		table2.getTableHeader().setResizingAllowed(false);
+		
+		c.gridy = 5;
+		c.weighty = 0.2;
+		
+		JScrollPane paneList3 = new JScrollPane(table2);
+		menuBar.add(paneList3, c);
+		
+		
+		
+		
+		
+		c.gridy = 6;
+		c.weighty = 0.2;
+		c.weightx = 1.0;
+		menuBar.add(new WarningPanel(), c);
+		
 
 	}
 
