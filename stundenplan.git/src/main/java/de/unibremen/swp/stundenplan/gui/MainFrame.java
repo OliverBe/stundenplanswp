@@ -174,7 +174,6 @@ public class MainFrame extends JFrame {
                 File datei = new File("temp.db");
     	        if (datei.exists()) {
     	          datei.delete();
-    	          System.out.println("Datei gelöscht!");
     	        }
             }
         });
@@ -244,11 +243,5 @@ public class MainFrame extends JFrame {
 	
 	public static JTabbedPane getTabPane() {
 		return tabpane;
-	}
-	
-	@Override
-	public void dispose() {
-		super.dispose();
-		tabpane.removeAll();
 	}
 }

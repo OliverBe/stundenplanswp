@@ -7,6 +7,13 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
+import de.unibremen.swp.stundenplan.data.Jahrgang;
+import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
+import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 3;
@@ -217,7 +224,7 @@ public class Data {
 	public static void restore(String backupName) {
 		try {
 			stmt.executeUpdate("restore from " + backupName);
-			setLastRestoredFileName(backupName);
+			setLastRestoredFileName(backupName.substring(0, backupName.length()-3));
 			setSaved(true);
 			System.out.println("DB - successful restored");
 		}catch (Exception e) {
@@ -239,5 +246,27 @@ public class Data {
 
 	public static void setLastRestoredFileName(String lastRestoredFileName) {
 		Data.lastRestoredFileName = lastRestoredFileName;
+	}
+	
+	public static void deleteAll() {
+		for(Personal p : DataPersonal.getAllPersonal()) {
+			DataPersonal.deletePersonalByKuerzel(p.getKuerzel());
+		}
+		DataPlanungseinheit.deleteAll();
+		for(Room r : DataRaum.getAllRaum()) {
+			DataRaum.deleteRaumByName(r.getName());
+		}
+		for(Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
+			DataRaum.deleteRaumfunktionByName(rf.getName());
+		}
+		for(Schoolclass sc : DataSchulklasse.getAllSchulklasse()) {
+			DataSchulklasse.deleteSchulklasseByName(sc.getName());
+		}
+		for(Jahrgang j : DataSchulklasse.getAllJahrgang()) {
+			DataSchulklasse.deleteJahrgangbedarfByJahrgang(j.getJahrgang());
+		}
+		for(Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
+			DataStundeninhalt.deleteStundeninhaltByKuerzel(s.getKuerzel());
+		}
 	}
 }

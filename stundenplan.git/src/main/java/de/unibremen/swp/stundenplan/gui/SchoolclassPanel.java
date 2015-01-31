@@ -509,7 +509,7 @@ public class SchoolclassPanel extends JPanel {
 		for (Entry<String, Integer> entry : sc.getStundenbedarf().entrySet()) {
 			for (int i = 0; i < model2.getRowCount(); i++) {
 				if (model2.getValueAt(i, 0).toString().equals(entry.getKey())) {
-					model2.setValueAt(entry.getValue(), i, 1);
+					model2.setValueAt(entry.getValue()+"", i, 1);
 				}
 			}
 		}
@@ -530,7 +530,7 @@ public class SchoolclassPanel extends JPanel {
 						for (int i = 0; i < model2.getRowCount(); i++) {
 							if (model2.getValueAt(i, 0).toString()
 									.equals(entry.getKey())) {
-								model2.setValueAt(entry.getValue(), i, 1);
+								model2.setValueAt(entry.getValue()+"", i, 1);
 							}
 						}
 					}
@@ -541,7 +541,7 @@ public class SchoolclassPanel extends JPanel {
 						for (int i = 0; i < model2.getRowCount(); i++) {
 							if (model2.getValueAt(i, 0).toString()
 									.equals(entry.getKey())) {
-								model2.setValueAt(entry.getValue(), i, 1);
+								model2.setValueAt(entry.getValue()+"", i, 1);
 							}
 						}
 					}
@@ -582,7 +582,7 @@ public class SchoolclassPanel extends JPanel {
 				HashMap<String, Integer> hm = new HashMap<String, Integer>();
 				for (int i = 0; i < model2.getRowCount(); i++) {
 					hm.put((String) model2.getValueAt(i, 0),
-							Integer.parseInt(((String)model2.getValueAt(i, 1))));
+							Integer.parseInt((String)model2.getValueAt(i, 1)));
 				}
 
 				SchulklassenManager.editSchoolclass(
@@ -720,7 +720,7 @@ public class SchoolclassPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschließend wieder mit allen
+	 * leert die Liste des Panels und fuellt sie anschlieï¿½end wieder mit allen
 	 * Daten der Datenbank
 	 */
 	public static void updateList() {

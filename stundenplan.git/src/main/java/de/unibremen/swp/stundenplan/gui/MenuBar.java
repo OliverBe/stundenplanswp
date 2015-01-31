@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -133,7 +134,60 @@ public class MenuBar extends JMenuBar {
 	private void newClick(JMenuItem item) {
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-//				Stundenplan.restart();
+				if(!Data.isSaved()) {
+                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+                	if(result==JOptionPane.YES_OPTION) {
+                		if(Data.getLastRestoredFileName()!=null) {
+                			Data.backup(Data.getLastRestoredFileName());
+                		}else {
+                			final JFrame backupFrame = new JFrame();
+            				GridBagConstraints c = new GridBagConstraints();
+            				JPanel backupChooser = new JPanel();
+            				final JTextField tf = new JTextField();
+            				JButton button = new JButton("Erstellen");
+            				JButton button2 = new JButton("Abbrechen");
+            				backupChooser.setLayout(new GridBagLayout());
+            				backupChooser.setBorder(BorderFactory
+            						.createTitledBorder("Backup erstellen"));
+            				c.fill = GridBagConstraints.BOTH;
+            				c.insets = new Insets(8, 5, 1, 1);
+            				c.anchor = GridBagConstraints.CENTER;
+            				c.gridx = 0;
+            				c.gridy = 0;
+            				c.gridwidth = 2;
+            				backupChooser.add(tf, c);
+            				c.gridy = 1;
+            				c.gridwidth = 1;
+            				c.weightx = 0.6;
+            				backupChooser.add(button, c);
+            				c.gridx = 1;
+            				c.weightx = 0.4;
+            				backupChooser.add(button2, c);
+            				backupFrame.add(backupChooser);
+            				backupFrame.setTitle("Backup");
+            				backupFrame.setLocation(MouseInfo.getPointerInfo()
+            						.getLocation().x, MouseInfo.getPointerInfo()
+            						.getLocation().y);
+            				backupFrame.pack();
+            				backupFrame.setVisible(true);
+
+            				button.addActionListener(new ActionListener() {
+            					public void actionPerformed(ActionEvent ae) {
+            						backupFrame.dispose();
+            						Data.backup(tf.getText());
+            					}
+            				});
+
+            				button2.addActionListener(new ActionListener() {
+            					public void actionPerformed(ActionEvent ae) {
+            						backupFrame.dispose();
+            					}
+            				});
+                		}
+                	}
+                }
+                Data.deleteAll();
+				((MainFrame) f).checkSelectedTab();
 			}
 		});
 	}
