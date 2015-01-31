@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 
 public class DataStundeninhalt {
@@ -19,7 +20,7 @@ public class DataStundeninhalt {
 		try {
 			for(Stundeninhalt si : getAllStundeninhalte()) {
 				if(si.getKuerzel().equals(stundeninhalt.getKuerzel())){ 
-					throw new SQLException("DB - ERROR Stundeninhalt already in Database");
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "INSERT INTO Stundeninhalt "
@@ -29,7 +30,7 @@ public class DataStundeninhalt {
 					+ stundeninhalt.getRhythmustyp() + ");";
 			stmt.executeUpdate(sql);
 			Data.setSaved(false);
-		}catch (SQLException e) {
+		}catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

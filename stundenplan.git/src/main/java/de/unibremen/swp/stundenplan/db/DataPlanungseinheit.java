@@ -11,7 +11,6 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class DataPlanungseinheit {

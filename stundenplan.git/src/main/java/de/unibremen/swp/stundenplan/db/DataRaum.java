@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
+import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.RaumbelegungsplanPanel;
 
@@ -21,7 +22,7 @@ public class DataRaum {
 		try {
 			for(Room rm : getAllRaum()) {
 				if(rm.getName().equals(raum.getName())){ 
-					throw new SQLException("DB - ERROR Raum already in Database");
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "INSERT INTO Raum "
@@ -35,7 +36,7 @@ public class DataRaum {
 			}
 			RaumbelegungsplanPanel.updateLists();
 			Data.setSaved(false);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
@@ -157,7 +158,7 @@ public class DataRaum {
 		try {
 			for(Raumfunktion rmf : getAllRaumfunktion()) {
 				if(rmf.getName().equals(rf.getName())){ 
-					throw new SQLException("DB - ERROR Raum already in Database");
+					throw new BereitsVorhandenException();
 				}
 			}
 			for(int i=0;i<rf.getStundeninhalte().size();i++) {
@@ -166,7 +167,7 @@ public class DataRaum {
 				stmt.executeUpdate(sql);
 			}
 			Data.setSaved(false);
-		}catch (SQLException e) {
+		}catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

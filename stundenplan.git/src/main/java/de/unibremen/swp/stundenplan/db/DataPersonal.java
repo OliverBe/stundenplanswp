@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
@@ -23,7 +24,7 @@ public class DataPersonal {
 		try {
 			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(personal.getKuerzel())){ 
-					throw new SQLException("DB - ERROR Personal already in Database");
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
@@ -50,7 +51,7 @@ public class DataPersonal {
 			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

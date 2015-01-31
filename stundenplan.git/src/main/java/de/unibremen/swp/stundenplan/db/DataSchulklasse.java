@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
@@ -24,7 +25,7 @@ public class DataSchulklasse {
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
 				if(sc.getName().equals(schulklasse.getName())){ 
-					throw new SQLException("DB - ERROR Schulklasse already in Database");
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "INSERT INTO Schulklasse "
@@ -47,7 +48,7 @@ public class DataSchulklasse {
 			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
-		}catch (SQLException e) {
+		}catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
@@ -200,7 +201,7 @@ public class DataSchulklasse {
 						for(Entry<String, Integer> entryDB : j.getStundenbedarf().entrySet()) {
 							if(entry.getKey().equals(entryDB.getKey())) {
 								inDB = true;
-								System.out.println("DB - JahrgangStundenbedarf already in Database");
+								throw new BereitsVorhandenException();
 							}
 						}
 					}
@@ -214,7 +215,7 @@ public class DataSchulklasse {
 				}
 			}
 			Data.setSaved(false);
-		}catch (SQLException e) {
+		}catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
