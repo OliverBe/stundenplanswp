@@ -48,10 +48,8 @@ public class DataPersonal {
 						+ entry.getValue()[3] + ");";
 				stmt.executeUpdate(sql);
 			}
-			
 			StundenplanPanel.updateLists(); 
-			
-			
+			Data.setSaved(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +62,8 @@ public class DataPersonal {
 			if(rs.next()) {
 				String name = rs.getString("name");
 				int sollZeit = rs.getInt("sollZeit");
-				int istZeit = rs.getInt("istZeit");
+				int istZeitMin = rs.getInt("istZeit");
+				int istZeit = istZeitMin/60;
 				int ersatzZeit = rs.getInt("ersatzZeit");
 				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");
@@ -114,7 +113,8 @@ public class DataPersonal {
 				String name = rs.getString("name");
 				String kuerzel = rs.getString("kuerzel");
 				int sollZeit = rs.getInt("sollZeit");
-				int istZeit = rs.getInt("istZeit");
+				int istZeitMin = rs.getInt("istZeit");
+				int istZeit = istZeitMin/60;
 				int ersatzZeit = rs.getInt("ersatzZeit");
 				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");

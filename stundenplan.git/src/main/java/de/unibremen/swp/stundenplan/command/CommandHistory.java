@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
 
 /**
- * Verwaltet die History der ausgef�hrten Commands. Funktioniert nach dem LIFO-Prinzip.
+ * Verwaltet die History der ausgefuehrten Commands. Funktioniert nach dem LIFO-Prinzip.
  * @author Roman
  *
  */
@@ -13,7 +13,7 @@ public class CommandHistory {
 
 	/**
 	 * Attribut um festzuhalten, ob das letzte Command vom Typ EditCommand ist. Ist im Hinblick
-	 * auf die MainFrame n�tig, damit gezielter Updates am Personaleinsatzplan vollzogen werden k�nnen.
+	 * auf die MainFrame noetig, damit gezielter Updates am Personaleinsatzplan vollzogen werden koennen.
 	 */
 	private static boolean lastIsEditCommand = false;
 	
@@ -23,11 +23,11 @@ public class CommandHistory {
 	private static ArrayList<Command> commandHistory = new ArrayList<>();
 	
 	/**
-	 * Einf�gen eines Commands in die History. Ist das Command vom Typ EditCommand, wird
+	 * Einfuegen eines Commands in die History. Ist das Command vom Typ EditCommand, wird
 	 * das Attribut auf true gesetzt.
 	 * 
 	 * @param c
-	 * 		Das Command, das hinzugef�gt werden soll.
+	 * 		Das Command, das hinzugefuegt werden soll.
 	 */
 	public static void addCommand(Command c){
 		commandHistory.add(c);
@@ -35,7 +35,7 @@ public class CommandHistory {
 	}
 	
 	/**
-	 * Gibt das letzte Command aus der History zur�ck.
+	 * Gibt das letzte Command aus der History zurueck.
 	 * @return	Das letzte Command, das sich in die History aufgenommen wurde.
 	 * @throws StundenplanException
 	 * 			Wenn sich keine Commands in der History befinden.
@@ -44,12 +44,12 @@ public class CommandHistory {
 		if(commandHistory.size() > 0){ 
 			return commandHistory.get(commandHistory.size() - 1);
 		}else{
-			throw new StundenplanException("Keine Befehle zum r�ckg�ngig machen verf�gbar.");
+			throw new StundenplanException("Keine Befehle zum rueckgaengig machen verfuegbar.");
 		}
 	}
 	
 	/**
-	 * l�scht das letzte Command aus der History.
+	 * loescht das letzte Command aus der History.
 	 */
 	public static void deleteLast(){
 		try{
@@ -61,7 +61,7 @@ public class CommandHistory {
 	}
 	
 	/**
-	 * Gibt Attribut zur�ck, das verwaltet, ob letztes Command ein EditCommand ist.
+	 * Gibt Attribut zurueck, das verwaltet, ob letztes Command ein EditCommand ist.
 	 * @return
 	 * 		true oder false, wenn Commando ein EditCommand oder nicht
 	 */

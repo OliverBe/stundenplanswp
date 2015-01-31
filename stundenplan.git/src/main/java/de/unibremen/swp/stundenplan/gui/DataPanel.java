@@ -14,6 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import de.unibremen.swp.stundenplan.Stundenplan;
+
 /**
  * DatenPanel auf dem alle Editierungen des Datenbestandes vorgenommen werden
  * 
@@ -157,8 +159,8 @@ public class DataPanel extends JPanel {
 		menuBar.add(mS);
 		menuBar.setLayout(new GridLayout(0, 1));
 		add(menuBar, c);
-		c.gridy = 1;
-		c.ipady = 0;
+		c.gridy = 2;
+		c.ipady = 300;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		add(new WarningPanel(), c);
 
@@ -178,6 +180,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(personalPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -197,6 +202,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(schoolclassPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -219,6 +227,9 @@ public class DataPanel extends JPanel {
 					SwingUtilities
 							.updateComponentTreeUI((JFrame) SwingUtilities
 									.getWindowAncestor(stundeninhaltPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -238,6 +249,9 @@ public class DataPanel extends JPanel {
 
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(roomPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -256,6 +270,9 @@ public class DataPanel extends JPanel {
 				add(raumfunktionPanel, c);
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(raumfunktionPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 
@@ -274,6 +291,9 @@ public class DataPanel extends JPanel {
 				add(bedarfPanel, c);
 				SwingUtilities.updateComponentTreeUI((JFrame) SwingUtilities
 						.getWindowAncestor(bedarfPanel));
+				if(Stundenplan.getMain() != null) {
+					Stundenplan.getMain().pack();
+				}
 			}
 		});
 	}

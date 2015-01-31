@@ -37,14 +37,14 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Bearbeitet eine Planungseinheit aus der DB. Bearbeiten findet im
-	 * w���rtlichen Sinne nicht statt, das ausgew���hlte Objekt wird mit einem neuen
-	 * ���berschrieben.
+	 * woertlichen Sinne nicht statt, das ausgewaehlte Objekt wird mit einem neuen
+	 * ueberschrieben.
 	 * 
 	 * @param pId
 	 *            Die ID der Planungseinheit, die bearbeitet werden soll.
 	 * @param pl
 	 *            Die Planungseinheit, mit der die alte Planungseinheit
-	 *            ���berschrieben wird.
+	 *            ueberschrieben wird.
 	 */
 	public static void editPlanungseinheit(int pId, Planungseinheit pl) {
 		System.out.println("Editing Planungseinheit [" + pId + "].");
@@ -100,14 +100,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForPersonalbyWeekday(
 			Weekday pWeekday, final Personal pPerson) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsPersonal(pPerson)) {
-				p.setTime(p.getTimesofPersonal(pPerson));
-				pes.add(p);
-			}
-		}
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pPerson);
 		orderByTime(pes);
 		return pes;
 	}
@@ -124,14 +117,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForSchoolclassbyWeekday(
 			Weekday pWeekday, final Schoolclass pSchoolclass) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsClass(pSchoolclass)) {
-				pes.add(p);
-			}
-		}
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pSchoolclass);
 		orderByTime(pes);
 		return pes;
 	}
@@ -148,15 +134,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static ArrayList<Planungseinheit> getPEForRoombyWeekday(
 			Weekday pWeekday, final Room pRoom) {
-		ArrayList<Planungseinheit> pes = new ArrayList<Planungseinheit>();
-
-		// hier muss die Liste geholt werden
-		for (Planungseinheit p : DataPlanungseinheit
-				.getAllPlanungseinheitByWeekday(pWeekday)) {
-			if (p.containsRoom(pRoom)) {
-				pes.add(p);
-			}
-		}
+		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pRoom);
 		orderByTime(pes);
 		return pes;
 	}
@@ -295,6 +273,9 @@ public final class PlanungseinheitManager {
 	
 	public static boolean overtimePers(final Personal pPers, final int newtimemin){
 		int newizeit = newTimeforPers(pPers.getIstZeit(), newtimemin);
+		System.out.println("oldistZeit="+pPers.getIstZeit());
+		System.out.println("newistZeit="+newizeit);
+		System.out.println("Sollzeit"+pPers.getSollZeit());
 		if(newizeit>pPers.getSollZeit()){
 			return true;
 		}

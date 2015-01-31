@@ -2,6 +2,7 @@
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -83,9 +86,8 @@ public class MainFrame extends JFrame {
 		super("StundenplanTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		init();
-	//	pack();
-		setMinimumSize(new Dimension(1280,1024));
-	//	setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
+//		setMinimumSize(new Dimension(1280,1024));
+//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);	
 		setVisible(true);
 	}
 	
@@ -117,7 +119,7 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 if(!Data.isSaved()) {
-                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Ver��nderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
                 	if(result==JOptionPane.YES_OPTION) {
                 		if(Data.getLastRestoredFileName()!=null) {
                 			Data.backup(Data.getLastRestoredFileName());
@@ -168,31 +170,43 @@ public class MainFrame extends JFrame {
                 		}
                 	}
                 }
-//                File dir = new File(System.getProperty("user.dir"));
-//    			File file = dir.listFiles(new FilenameFilter() {
-//    				public boolean accept(File dir, String filename) {
-//    					return filename.equals("temp.db");
-//    				}
-//    			})[0];
-//                file.deleteOnExit();
+                Data.close();
+                File datei = new File("temp.db");
+    	        if (datei.exists()) {
+    	          datei.delete();
+    	          System.out.println("Datei gelöscht!");
+    	        }
             }
         });
+		
+		addWindowStateListener(new WindowStateListener() {
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				setExtendedState(getExtendedState() | JFrame.NORMAL );	
+			}
+		});
+		
 	};
 	
 	/**
-	 * Checkt das ausgew���hlte Tab. Je nach Klasse des Tabs, f���hrt es Updatemethoden
-	 * o.���. aus.
+	 * Checkt das ausgewaehlte Tab. Je nach Klasse des Tabs, fuehrt es Updatemethoden
+	 * o.Ae. aus.
 	 * 
-	 * Im Falle des LehreransichtsPanels, pr���ft es zun���chst, ob relevante Zielgroe���en ver���ndert
-	 * wurden. Sind diese nicht ver���ndert, ist kein Update noetig.
-	 * Au���erdem wird ���berpr���ft, ob das letzte Command in der History ein Edit-Command ist, da
-	 * diese Commands keine unmittelbaren ���nderungen an den Zielgroe���en bewirken, aber dennoch
-	 * Unterschiede ausmachen k���nnen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
+	 * Im Falle des LehreransichtsPanels, prueft es zunaechst, ob relevante Zielgroessen veraendert
+	 * wurden. Sind diese nicht veraendert, ist kein Update noetig.
+	 * Ausserdem wird ueberprueft, ob das letzte Command in der History ein Edit-Command ist, da
+	 * diese Commands keine unmittelbaren Aenderungen an den Zielgrossen bewirken, aber dennoch
+	 * Unterschiede ausmachen koennen (bsplw. Aenderung der Sollzeiten von Lehrerinnen etc.)
 	 * So wird verhindert, dass der Personaleinsatzplan immer weiter aktualisiert wird, obwohl der Plan
 	 * z.B. fertig ist und nicht mehr bearbeitet wird. Spart so dauerhaft Laufzeit, wenn Bearbeitung bereits abgeschlossen.
 	 */
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
+		
+		if(!(c instanceof StundenplanPanel)){
+			paneStundenplan.popmen.setVisible(false);
+		}
+		
 		if(c instanceof LehreransichtPanel){
 			if(   paneLehrer.getSi().size() != DataStundeninhalt.getAllStundeninhalte().size()
 			   || paneLehrer.getAllPersoKuerzel().size() != DataPersonal.getAllAcronymsFromPersonal().size()
@@ -203,6 +217,7 @@ public class MainFrame extends JFrame {
 					paneLehrer.init();
 					System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
 			}
+			pack();
 		};
 		if(c instanceof DataPanel){
 			SchoolclassPanel.updateList();
@@ -211,13 +226,29 @@ public class MainFrame extends JFrame {
 			RaumfunktionPanel.updateList();
 			StundeninhaltPanel.updateList();
 			BedarfPanel.updateList();
+			pack();
 		}
 		if(c instanceof WochenplanPanel){
 			paneWochen.update();
+			pack();
+		};
+		if(c instanceof RaumbelegungsplanPanel){
+			RaumbelegungsplanPanel.updateLists();
+			pack();
+		};
+		if(c instanceof StundenplanPanel){
+			StundenplanPanel.updateLists();
+			pack();
 		};
 	}
 	
 	public static JTabbedPane getTabPane() {
 		return tabpane;
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		tabpane.removeAll();
 	}
 }

@@ -15,12 +15,9 @@
  */
 package de.unibremen.swp.stundenplan.exceptions;
 
-import java.awt.Color;
-
 import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.gui.MainFrame;
 
 /**
  * Eine Ausnahme, die ein Problem mit der Persistierungskomponente anzeigt.

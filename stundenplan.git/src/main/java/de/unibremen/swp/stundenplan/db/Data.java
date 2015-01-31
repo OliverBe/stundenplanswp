@@ -15,7 +15,7 @@ public class Data {
     protected static Statement stmt = null;
     private static String sql;
     private static boolean saved = true;
-    private static String lastRestoredFileName = null;
+    private static String lastRestoredFileName = "";
     
 	public static void start() {
 	    try {
@@ -208,7 +208,6 @@ public class Data {
 				}
 			}
 			stmt.executeUpdate("backup to " + backupName + ".db");
-			setSaved(true);
 			System.out.println("DB - backup created");
 		}catch (Exception e) {
 			System.out.println("DB - ERROR on creating backup");

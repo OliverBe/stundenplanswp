@@ -26,6 +26,7 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
  * Realisiert den Personaleinsatzplan als GUI-Element in der MainFrame. Heißt 'Lehreransicht', da es anfangs
  * Verständnisprobleme in der Gruppe gab, was mit 'Personaleinsatzplan' gemeint war. Benennung wurde aufgrund
  * existierender Verbindungen beibehalten, never change a running system.
+ * 
  * @author Roman
  *
  */
@@ -36,24 +37,58 @@ public class LehreransichtPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Respräsentiert das Tabllenelement.
+	 */
 	private JTable table;
 
 //	private JFileChooser chooser = new JFileChooser();
 //	private JFrame f;
+	/**
+	 * Constraints zum festlegen, wo im Panel Elemente hinzugefügt werden
+	 */
+	private GridBagConstraints c = new GridBagConstraints();
 
-	GridBagConstraints c = new GridBagConstraints();
-
+	/**
+	 * Liste, die im Verlaufe der init Methode die existierenden Stundeninhalte führt
+	 */
 	private ArrayList<Stundeninhalt> si;
+	
+	/**
+	 * Liste, die im Verlaufe der init Methode die existierenden PEs führt.
+	 */
 	private ArrayList<Planungseinheit> planungseinheiten;
+	
+	/**
+	 * Liste, die im Verlaufe der init Methode die existierenden Kuerzel aller Personen führt.
+	 */
 	private ArrayList<String> allPersoKuerzel;
 	
-	
+	/**
+	 * Warning-Panel
+	 */
 	public JLabel warning = new JLabel();
 
+	/**
+	 * Konstruktor, ruft lediglich die init Methode auf.
+	 */
 	public LehreransichtPanel() {
 		init();
 	}
 
+	/**
+	 * Initialisiert den Personaleinsatzplan. In den einzelnen Schritten wird
+	 * 1. Standard Columns erstellen
+	 * 2. Stundeninhalte als Columns hinzufügen
+	 * 3. Alle Personen durchgehen
+	 * 4. Standard Columns der Person einfuegen
+	 * 5. Planungseinheiten der Personen durchgehen, Laenge und Klasse in HashMap speichern
+	 * 6. HashMap mit Stundeninhalten abgleichen und neu mappen
+	 * 7. neue HashMap mit Stundeninhalten und dazugehoerigen Klassen + Zeiten als
+	 * 		Array in die Reihen der entsprechenden Personen eingeben
+	 * 
+	 * Genauere Kommentare finden sich im Code
+	 */
 	public void init() {
 
 		setLayout(new GridBagLayout());
@@ -63,34 +98,45 @@ public class LehreransichtPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 4;
-
+		
+// Hier werden zunächst die Standard Columns gesetzt und Vorbereitungen
+// getroffen.
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model);
 		model.addColumn("Kuerzel");
 		model.addColumn("Wochenstunden");
 		model.addColumn("Ersatzzeit");
+		model.addColumn("Ist-Zeit");
 
+// Benoetigte Listen werden mit Daten befuellt.
 		planungseinheiten = DataPlanungseinheit.getAllPlanungseinheit();
 		ArrayList<Personal> allPersonal = new ArrayList<Personal>();
 		allPersoKuerzel = PersonalManager.getAllKuerzel();
 		Collections.sort(allPersoKuerzel);
+		
+// Da urspruenglicher Einsatzplan alphabetisch sortiert war, habe ich diesen
+// die Personalliste ebenfalls alphabetisch sortiert.
 		for(int i = 0; i<allPersoKuerzel.size();i++){
 			allPersonal.add(PersonalManager.getPersonalByKuerzel(allPersoKuerzel.get(i)));
 		}
-		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
+//		HashMap<String, HashMap<String, Integer>> inhaltKlasseStunden = new HashMap<>();
 		si = DataStundeninhalt.getAllStundeninhalte();
 		
+// Hier werden die Columns mit allen Stundeninhaltenkuerzeln besetzt. Pausen (Rhythmustyp 0) werden nicht beruecksichtigt.
 		for (Stundeninhalt s : si) {
 			if (s.getRhythmustyp() == 0)
 				continue;
 			model.addColumn(s.getKuerzel());
-			HashMap<String, Integer> hash = new HashMap<>();
-			inhaltKlasseStunden.put(s.getKuerzel(), hash);
 		}
 
 		for (Personal p : allPersonal) {
-			System.out.println("PERSONAL WIRD BEARBEITET: "+ p.getName());
-			HashMap<String, HashMap<String, Integer>> inhaltKlasseStundenPerso = hashMapReset(inhaltKlasseStunden);
+			// Diese HashMap soll spaeter die Kuerzel aller Stundeninhalte als Key haben und die Value pro
+			// Stundeninhalt ist eine weitere HashMap, die Klassennamen auf die Dauer, die die Person diese Klasse
+			// im Stundeninhalt unterrichtet speichert.
+			HashMap<String, HashMap<String, Integer>> inhaltKlasseStundenPerso = hashMapReset(new HashMap<String,HashMap<String,Integer>>());
+			// Die Reihe im Table braucht spaeter ein Array und da man die ArrayList leicht in ein Array umwandeln kann,
+			// und sie benutzerfreundlicher ist, werden die Reihenelemente nach und nach in die List eingefuegt und danach
+			// in die eigentliche Tabellenreihe eingefuegt.
 			ArrayList<String> reihe = new ArrayList<>();
 			reihe.add(p.getKuerzel());
 			reihe.add(Integer.toString(p.getSollZeit()));
@@ -99,27 +145,31 @@ public class LehreransichtPanel extends JPanel {
 			} else {
 				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
 			}
-//			if (planungseinheiten.size() == 0)
-//				model.addRow(reihe.toArray());
+			reihe.add(Integer.toString(p.getIstZeit()));
+
 			for (Planungseinheit pe : planungseinheiten) {
 				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
+					// Dies ist eine der HashMaps, die spaeter in den Values der einzelnen Stundeninhalt Keys gespeichert sind.
 					HashMap<String, Integer> kleineHashMap = new HashMap<>();
-					// TODO checken, ob die Reihenfolge bei der HashMap gleich
-					// bleibt,
-					// sonst stimmt die Anzahl der Stunden nicht mehr
 					ArrayList<String> inhalteInPlanungseinheit = pe
 							.getStundeninhalte();
 
 					ArrayList<String> klassenInPlanungseinheit = pe
 							.getSchoolclasses();
-
+					
+					// Pro Stundeninhalt in der Planungseinheit wird nun ueberprueft, ob die Schulklasse bereits gemaped ist
+					// Wenn ja, das heißt, die Klasse wird in diesem Inhalt bereits von der Person unterrichtet, muss man
+					// die bereits vorhandene Zeit mit der neuen addieren.
+					// 
+					// Wenn nein, das heißt, die Klasse wird zu diesem Zeitpunkt der Iteration noch nicht unterrichtet,
+					// muss ein neuer Eintrag für die Klasse in der kleinen HashMap angelegt werden mit der Dauer
+					// der Planungseinheit.
 					for (String s : inhalteInPlanungseinheit) {
 						for (String k : klassenInPlanungseinheit) {
-							System.out.println(inhaltKlasseStundenPerso.get(s).toString());
+
 							if (inhaltKlasseStundenPerso.get(s).get(k) != null) {
 								kleineHashMap = inhaltKlasseStundenPerso.get(s);
 								int[] zeitPersonInPE  = pe.getTimesofPersonal(p);
-//								kleineHashMap.put(k, inhaltKlasseStundenPerso.get(s).get(k) + pe.duration());
 								kleineHashMap.put(k, inhaltKlasseStundenPerso.get(s).get(k) + 
 												TimetableManager.duration(zeitPersonInPE[0]
 													, zeitPersonInPE[1]		
@@ -132,6 +182,8 @@ public class LehreransichtPanel extends JPanel {
 										, zeitPersonInPE[2]
 										, zeitPersonInPE[3]));
 							}
+							// Falls der Stundeninhalt noch ueberhaupt nicht mit dieser Klasse in Verbindung gebracht wurde
+							// waehrend der Iteration muss ein ganz neuer Eintrag in die HashMap erfolgen
 							if(inhaltKlasseStundenPerso.get(s) == null){
 								inhaltKlasseStundenPerso.put(s, kleineHashMap);
 							}else{
@@ -139,27 +191,32 @@ public class LehreransichtPanel extends JPanel {
 								zwischenHash.putAll(kleineHashMap);
 								inhaltKlasseStundenPerso.put(s, zwischenHash);
 							}
-							System.out.println("inhaltKlasseStundenPerso ist: "+inhaltKlasseStundenPerso.toString());
+							
 						}
 					}
 				}
 			}
+			// Die HashMaps sind nun befuellt, es bedarf jedoch noch Anpassung mit Hinblick auf Stundeninhalte,
+			// die die Person in mehreren Klassen unterrichtet, diese verschiedenen Klassen muessen nun in einen String
+			// zusammengebracht werden, damit sie zusammen in der richtigen Zelle erscheinen.
 			for (Stundeninhalt s : si) {
 				ArrayList<Schoolclass> klassen = DataSchulklasse
 						.getAllSchulklasse();
+				// Iteratin benoetigt Zaehler, damit man weiss, wann der Fall von mehreren Klassen in einer Zelle auftritt.
 				int anzahlKlassenInZelle = 0;
+				// Fuer nicht belegte Stundeninhalte wird der Uebersicht halber ein " - " hinzugefuegt.
 				if (s.getKuerzel() != null && s.getRhythmustyp() != 0&&inhaltKlasseStundenPerso.get(s.getKuerzel()).size() == 0) {
 					reihe.add("-");
-					System.out.println("Ein - eingfügt für: "+s.getKuerzel());
 				}
 				for (Schoolclass k : klassen) {
 
 					if (s.getKuerzel() != null && s.getRhythmustyp() != 0) {
 						if (inhaltKlasseStundenPerso.get(s.getKuerzel()).containsKey(k.getName())) {
 							anzahlKlassenInZelle++;
-							System.out.println("Anzahl Klassen in Zelle: "+anzahlKlassenInZelle);
 
-							// Unterscheidung von Lehrer und Pï¿½dagoge
+							// Unterscheidung von Lehrer und Paedagoge, die Stunden zaehlen ein Mal
+							// 45 fuer Lehrer oder 60 fuer Paedagogen
+							// Hier wird zunaechst nur die Unterrichtsdauer der iterierten Schulklasse errechnet.
 							double ergebnisInStunden=0;
 							double ergebnisInMinuten=0;
 							if (p.isLehrer()) {
@@ -175,9 +232,11 @@ public class LehreransichtPanel extends JPanel {
 								ergebnisInStunden = Math
 										.round(((ergebnisInMinuten / 60) * 100));
 								ergebnisInStunden = ergebnisInStunden / 100;
-//								reihe.add(k.getName() + ":  "
-//										+ Double.toString(ergebnisInStunden));
 							}
+							// Ist der Zaehler groesser als 1, heisst das, es sind mehr als 1 Klasse in dieser Zelle
+							// und die Strings werden zusammengesetzt. Letzter Eintrag in der Reihe wird geloescht und
+							// mit neuer Klasse in Zelle + Dauer zusammengesetzt. Um die Eintraege in mehrere Zeilen
+							// zu bekommen, wurde HTML Code verwendet.
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size()-1);
 								reihe.remove(reihe.size()-1);
@@ -192,23 +251,27 @@ public class LehreransichtPanel extends JPanel {
 						}
 					}
 				}
+				// Zum Schluss muss noch der/das HTML Body geschlossen werden.
 				String substring = reihe.get(reihe.size()-1);
 				if(!substring.equals("-")){
 					reihe.remove(reihe.size()-1);
 					reihe.add(substring+"</center></body></html>");
 				}
 			}
-			System.out.println("REIHE VOR EINFUEGEN: "+reihe.toString());
-			System.out.println("InhaltKlasseStunden ist: "+inhaltKlasseStunden.toString()
-					+"\n InhaltKlasseStundenPerso von "+ p.getName()+" ist: "+inhaltKlasseStundenPerso.toString());
+			// Hier wird die nun fertige Reihe als ArrayList in ein normales Aray das model uebergeben
+			// und die Eintraege der Person stehen in der Reihe.
+			// Schleife der Person endet hier.
 			model.addRow(reihe.toArray());
 		}
 
+		// Falls Lehrer noch keinen Planungseinheiten zugeteilt sind, tauchen sie noch nicht
+		// im Plan auf. Hier werden alle vorhandenen Kuerzel im Plan gsammelt.
 		ArrayList<String> kuerzelInAllenReihen = new ArrayList<String>();
 		for (int i = 0; i < model.getRowCount(); i++) {
 			kuerzelInAllenReihen.add(model.getValueAt(i, 0).toString());
 		}
-
+		
+		// Und hier werden die fehlenden Personen hinzugefuegt, wenn sie noch nicht im Plan auftauchen.
 		for (Personal p : allPersonal) {
 			ArrayList<String> reihe = new ArrayList<String>();
 			if (!kuerzelInAllenReihen.contains(p.getKuerzel())) {
