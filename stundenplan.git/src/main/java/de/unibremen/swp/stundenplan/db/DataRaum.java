@@ -138,8 +138,8 @@ public class DataRaum {
 	public static void editRaum(String pName, Room newRaum) {
 		try {
 			for(Room rm : getAllRaum()) {
-				if(rm.getName().equals(newRaum.getName())){ 
-					throw new SQLException("DB - ERROR Raum already in Database");
+				if(rm.getName().equals(newRaum.getName()) && !rm.getName().equals(pName)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
@@ -149,7 +149,7 @@ public class DataRaum {
 			sql = "UPDATE planungseinheit_Raum SET raum_name = '" + newRaum.getName() + "' WHERE raum_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addRaum(newRaum);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
@@ -237,8 +237,8 @@ public class DataRaum {
 	public static void editRaumfunktion(String pName, Raumfunktion rf) {
 		try {
 			for(Raumfunktion rmf : getAllRaumfunktion()) {
-				if(rmf.getName().equals(rf.getName())){ 
-					throw new SQLException("DB - ERROR Raum already in Database");
+				if(rmf.getName().equals(rf.getName()) && !rmf.getName().equals(pName)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
@@ -246,7 +246,7 @@ public class DataRaum {
 			sql = "UPDATE raum_Raumfunktion SET raumfunktion_name = '" + rf.getName() + "' WHERE raumfunktion_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addRaumfunktion(rf);
-		}catch(SQLException e) {
+		}catch(SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

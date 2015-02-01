@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -188,7 +186,7 @@ public class MenuBar extends JMenuBar {
                 	}
                 }
                 Data.deleteAll();
-				((MainFrame) f).checkSelectedTab();
+				((MainFrame) f).updateAll();
 			}
 		});
 	}
@@ -199,11 +197,11 @@ public class MenuBar extends JMenuBar {
 				final JFrame backupFrame = new JFrame();
 				GridBagConstraints c = new GridBagConstraints();
 				JPanel backupChooser = new JPanel();
-				JButton button = new JButton("Öffnen");
+				JButton button = new JButton("Oeffnen");
 				JButton button2 = new JButton("Abbrechen");
 				backupChooser.setLayout(new GridBagLayout());
 				backupChooser.setBorder(BorderFactory
-						.createTitledBorder("Datei auswählen"));
+						.createTitledBorder("Datei auswaehlen"));
 				c.fill = GridBagConstraints.BOTH;
 				c.insets = new Insets(8, 5, 1, 1);
 				c.anchor = GridBagConstraints.CENTER;
@@ -246,7 +244,7 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
-						((MainFrame) f).checkSelectedTab();
+						((MainFrame) f).updateAll();
 					}
 				});
 
@@ -326,9 +324,10 @@ public class MenuBar extends JMenuBar {
 		for (File file : files) {
 			listModel.addElement(file.getName());
 		}
-
+		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				Data.setLastRestoredFileName(tf.getText());
 				backupFrame.dispose();
 				Data.backup(tf.getText(), false);
 			}
@@ -347,11 +346,10 @@ public class MenuBar extends JMenuBar {
 
 			public void actionPerformed(ActionEvent ae) {
 				JTable eTable = new JTable();
-				Object obj = Stundenplan
-						.getMain()
+				Object obj = MainFrame
 						.getTabPane()
 						.getComponentAt(
-								Stundenplan.getMain().getTabPane()
+								MainFrame.getTabPane()
 										.getSelectedIndex());
 
 				if (obj instanceof StundenplanPanel) {
@@ -359,16 +357,15 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createPDF(eTable);
 					}
 				} else if (obj instanceof RaumbelegungsplanPanel) {
-					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
-					eTable = panel.getTable();
+					eTable = RaumbelegungsplanPanel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createPDF(eTable);
 					}
@@ -377,7 +374,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -385,14 +382,13 @@ public class MenuBar extends JMenuBar {
 						ExportPDF.setOwner("");
 					}
 				} else if (obj instanceof WochenplanPanel) {
-					WochenplanPanel panel = (WochenplanPanel) obj;
-					obj = panel.getTabPane().getSelectedComponent();
+					obj = WochenplanPanel.getTabPane().getSelectedComponent();
 					if (obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 
 							ExportPDF.setOwner("Wochenplan-"
@@ -405,7 +401,7 @@ public class MenuBar extends JMenuBar {
 				} else
 					JOptionPane.showMessageDialog(
 							Stundenplan.getMain(),
-							"Exportieren ist nur in Stundenpl�nen, Raumbelegungspl�nen, Lehreransicht und Wochenplanansicht m�glich");
+							"Exportieren ist nur in Stundenplaenen, Raumbelegungsplaenen, Lehreransicht und Wochenplanansicht moeglich");
 
 			}
 		});
@@ -416,11 +412,10 @@ public class MenuBar extends JMenuBar {
 
 			public void actionPerformed(ActionEvent ae) {
 				JTable eTable = new JTable();
-				Object obj = Stundenplan
-						.getMain()
+				Object obj = MainFrame
 						.getTabPane()
 						.getComponentAt(
-								Stundenplan.getMain().getTabPane()
+								MainFrame.getTabPane()
 										.getSelectedIndex());
 
 				if (obj instanceof StundenplanPanel) {
@@ -428,16 +423,15 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createCSV(eTable);
 					}
 				} else if (obj instanceof RaumbelegungsplanPanel) {
-					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
-					eTable = panel.getTable();
+					eTable = RaumbelegungsplanPanel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createCSV(eTable);
 					}
@@ -446,7 +440,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -455,14 +449,13 @@ public class MenuBar extends JMenuBar {
 					}
 
 				} else if (obj instanceof WochenplanPanel) {
-					WochenplanPanel panel = (WochenplanPanel) obj;
-					obj = panel.getTabPane().getSelectedComponent();
+					obj = WochenplanPanel.getTabPane().getSelectedComponent();
 					if (obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 							ExportPDF.setOwner("Wochenplan-"
 									+ wpT.day.toString());
@@ -474,7 +467,7 @@ public class MenuBar extends JMenuBar {
 				} else
 					JOptionPane.showMessageDialog(
 							Stundenplan.getMain(),
-							"Exportieren ist nur in Stundenpl�nen, Raumbelegungspl�nen, Lehreransicht und Wochenplanansicht m�glich");
+							"Exportieren ist nur in Stundenplaenen, Raumbelegungsplaenen, Lehreransicht und Wochenplanansicht moeglich");
 
 			}
 		});
@@ -485,11 +478,10 @@ public class MenuBar extends JMenuBar {
 
 			public void actionPerformed(ActionEvent ae) {
 				JTable eTable = new JTable();
-				Object obj = Stundenplan
-						.getMain()
+				Object obj = MainFrame
 						.getTabPane()
 						.getComponentAt(
-								Stundenplan.getMain().getTabPane()
+								MainFrame.getTabPane()
 										.getSelectedIndex());
 
 				if (obj instanceof StundenplanPanel) {
@@ -497,16 +489,15 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createDOC(eTable);
 					}
 				} else if (obj instanceof RaumbelegungsplanPanel) {
-					RaumbelegungsplanPanel panel = (RaumbelegungsplanPanel) obj;
-					eTable = panel.getTable();
+					eTable = RaumbelegungsplanPanel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 						ExportPDF.createDOC(eTable);
 					}
@@ -515,7 +506,7 @@ public class MenuBar extends JMenuBar {
 					eTable = panel.getTable();
 					if (eTable == null) {
 						JOptionPane.showMessageDialog(Stundenplan.getMain(),
-								"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+								"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 					} else {
 
 						ExportPDF.setOwner("Personalplan");
@@ -523,14 +514,13 @@ public class MenuBar extends JMenuBar {
 						ExportPDF.setOwner("");
 					}
 				} else if (obj instanceof WochenplanPanel) {
-					WochenplanPanel panel = (WochenplanPanel) obj;
-					obj = panel.getTabPane().getSelectedComponent();
+					obj = WochenplanPanel.getTabPane().getSelectedComponent();
 					if (obj instanceof WochenplanTag) {
 						WochenplanTag wpT = (WochenplanTag) obj;
 						if (wpT.getTable() == null) {
 							JOptionPane.showMessageDialog(
 									Stundenplan.getMain(),
-									"W�hlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
+									"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
 							ExportPDF.setOwner("Wochenplan-"
 									+ wpT.day.toString());
@@ -542,7 +532,7 @@ public class MenuBar extends JMenuBar {
 				} else
 					JOptionPane.showMessageDialog(
 							Stundenplan.getMain(),
-							"Exportieren ist nur in Stundenpl�nen, Raumbelegungspl�nen, Lehreransicht und Wochenplanansicht m�glich");
+							"Exportieren ist nur in Stundenplaenen, Raumbelegungsplaenen, Lehreransicht und Wochenplanansicht moeglich");
 
 			}
 		});

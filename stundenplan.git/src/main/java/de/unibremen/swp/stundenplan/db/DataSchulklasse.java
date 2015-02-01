@@ -11,6 +11,7 @@ import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
+import de.unibremen.swp.stundenplan.exceptions.BesetztException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
@@ -22,12 +23,29 @@ public class DataSchulklasse {
 	private DataSchulklasse() {}
 
 	public static void addSchulklasse(Schoolclass schulklasse) {
+		boolean error = false;
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
 				if(sc.getName().equals(schulklasse.getName())){ 
-					throw new BereitsVorhandenException();
+					new BereitsVorhandenException();
+					error = true;
 				}
 			}
+			for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
+				sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + klassenlehrer + "';";
+				ResultSet rs = stmt.executeQuery(sql);
+				if(rs.next()) {
+					new BesetztException("Personal");
+					error = true;
+				}
+			}
+			sql = "SELECT * FROM Schulklasse WHERE klassenraumName = '" + schulklasse.getKlassenraum().getName() + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				new BesetztException("Raum");
+				error = true;
+			}
+			if(error) return;
 			sql = "INSERT INTO Schulklasse "
 					+ "VALUES ('" + schulklasse.getName() + "',"
 					+ schulklasse.getJahrgang() + ",'"
@@ -48,7 +66,7 @@ public class DataSchulklasse {
 			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
-		}catch (SQLException | BereitsVorhandenException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -173,8 +191,8 @@ public class DataSchulklasse {
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
-				if(sc.getName().equals(newSchulklasse.getName())){ 
-					throw new SQLException("DB - ERROR Schulklasse already in Database");
+				if(sc.getName().equals(newSchulklasse.getName()) && !sc.getName().equals(pName)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
@@ -186,7 +204,7 @@ public class DataSchulklasse {
 			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addSchulklasse(newSchulklasse);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

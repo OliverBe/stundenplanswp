@@ -258,7 +258,11 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 
-		final JTable table = new JTable(model);
+		final JTable table = new JTable();
+		table.setModel(model);
+		final JScrollPane scroll = new JScrollPane(table);
+		scroll.setPreferredSize(new Dimension(100,100));
+
 		table.setColumnSelectionAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
@@ -281,17 +285,13 @@ public class SchoolclassPanel extends JPanel {
 			}
 		});
 
-		c.gridx = 0;
-		c.gridy = 7;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		p.add(table.getTableHeader(), c);
+		c.gridy = 7;
+		c.gridx = 0;
+		p.add(scroll, c);
 
 		c.gridy = 8;
-		c.gridx = 0;
-		p.add(table, c);
-
-		c.gridy = 9;
 		c.gridx = 0;
 		p.add(button, c);
 		button.addActionListener(new ActionListener() {
@@ -370,9 +370,9 @@ public class SchoolclassPanel extends JPanel {
 						JFrame edit = new JFrame("Raum editieren");
 						edit.add(createEditPanel(new JPanel(),
 								list.getSelectedValue()));
-						edit.setLocation(MouseInfo.getPointerInfo()
-								.getLocation().x, MouseInfo.getPointerInfo()
-								.getLocation().y);
+						edit.setLocation((MouseInfo.getPointerInfo()
+								.getLocation().x)-20, (MouseInfo.getPointerInfo()
+								.getLocation().y)-300);
 						edit.pack();
 						edit.setVisible(true);
 					}
@@ -485,13 +485,6 @@ public class SchoolclassPanel extends JPanel {
 		ArrayList<Room> ro = RaumManager.getAllRoomsFromDB();
 		cb2 = new JComboBox<Object>(ro.toArray());
 
-//		for (Room r : ro) {
-//			System.out.println("++ Klassenraum:  " + r.getName());
-//			System.out.println("++ Klassenraum: !"
-//					+ sc.getKlassenraum().getName());
-//			if (r.getName().equals(sc.getKlassenraum().getName()))
-//				System.out.println("++ Yes" + sc.getKlassenraum().getName());
-//		}
 		for (int i = 0; i < ro.size(); i++) {
 			if (ro.get(i).getName().equals(sc.getKlassenraum().getName()))
 				cb2.setSelectedIndex(i);
@@ -514,7 +507,11 @@ public class SchoolclassPanel extends JPanel {
 			}
 		}
 
-		final JTable table2 = new JTable(model2);
+		final JTable table2 = new JTable();
+		table2.setModel(model2);
+		final JScrollPane scroll2 = new JScrollPane(table2);
+		scroll2.setPreferredSize(new Dimension(100,100));
+		
 		table2.setColumnSelectionAllowed(false);
 		table2.getTableHeader().setReorderingAllowed(false);
 		table2.getTableHeader().setResizingAllowed(false);
@@ -549,19 +546,15 @@ public class SchoolclassPanel extends JPanel {
 			}
 		});
 
-		c.gridx = 0;
-		c.gridy = 7;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		p.add(table2.getTableHeader(), c);
+		c.gridy = 7;
+		c.gridx = 0;
+		p.add(scroll2, c);
 
 		c.gridy = 8;
 		c.gridx = 0;
-		p.add(table2, c);
-
 		c.gridwidth = 1;
-		c.gridy = 9;
-		c.gridx = 0;
 		p.add(button2, c);
 
 		// edit Button

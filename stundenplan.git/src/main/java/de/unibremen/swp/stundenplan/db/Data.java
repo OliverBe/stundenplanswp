@@ -7,17 +7,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.data.Jahrgang;
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.data.Planungseinheit;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
-import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 public class Data {
-	public final static int MAX_KUERZEL_LEN = 3;
-	public final static int MAX_NORMAL_STRING_LEN = 20;
+	public final static int MAX_KUERZEL_LEN = 4;
+	public final static int MAX_NORMAL_STRING_LEN = 30;
 	private static Connection c = null;
     protected static Statement stmt = null;
     private static String sql;
@@ -250,24 +243,41 @@ public class Data {
 	}
 	
 	public static void deleteAll() {
-		for(Personal p : DataPersonal.getAllPersonal()) {
-			DataPersonal.deletePersonalByKuerzel(p.getKuerzel());
-		}
-		DataPlanungseinheit.deleteAll();
-		for(Room r : DataRaum.getAllRaum()) {
-			DataRaum.deleteRaumByName(r.getName());
-		}
-		for(Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
-			DataRaum.deleteRaumfunktionByName(rf.getName());
-		}
-		for(Schoolclass sc : DataSchulklasse.getAllSchulklasse()) {
-			DataSchulklasse.deleteSchulklasseByName(sc.getName());
-		}
-		for(Jahrgang j : DataSchulklasse.getAllJahrgang()) {
-			DataSchulklasse.deleteJahrgangbedarfByJahrgang(j.getJahrgang());
-		}
-		for(Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
-			DataStundeninhalt.deleteStundeninhaltByKuerzel(s.getKuerzel());
+		try {
+			sql = "DELETE FROM Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Planungseinheit;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Schulklasse;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Raum;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Stundeninhalt;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Raumfunktion;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Zeitwunsch;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM klassenlehrer;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Stundeninhalt;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Raum;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Schulklasse;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM raum_Raumfunktion;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM stundenbedarf;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Jahrgang_Stundenbedarf;";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

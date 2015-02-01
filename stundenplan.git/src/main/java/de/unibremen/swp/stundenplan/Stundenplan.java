@@ -25,8 +25,6 @@ import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import org.apache.log4j.Logger;
-
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.MainFrame;
@@ -39,12 +37,6 @@ import de.unibremen.swp.stundenplan.gui.MainFrame;
  * @version 0.9
  */
 public final class Stundenplan {
-
-    /**
-     * Der Logger dieser Klasse.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Stundenplan.class.getName());
-    
     /**
      * stellt das GUI-Hauptfenster dar 
      */
@@ -57,17 +49,8 @@ public final class Stundenplan {
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
     private Stundenplan() {
-    	Data.start();
-    	main = new MainFrame();
-    	try {
-			Config.init(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	main.pack();
-    	//PEtest
-    	}  
+    	
+    }  
     
     /**
      * Startet die Anwendung. Erzeugt dazu einen neuen Stundenplaner und dann das Hauptanzeigefenster und macht dieses
@@ -79,7 +62,14 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-    	final Stundenplan stundenplan= new Stundenplan();
+    	Data.start();
+    	main = new MainFrame();
+    	try {
+			Config.init(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	main.pack();
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Timer timer = new Timer(60000, new ActionListener() {
         	@Override
@@ -93,6 +83,7 @@ public final class Stundenplan {
             }
         });
         timer.start();
+        main.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
     
     /**
