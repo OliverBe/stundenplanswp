@@ -59,7 +59,6 @@ public class WarningPanel extends JPanel{
 	 * Konstruktor des Warnungspanels
 	 */
 	public WarningPanel(){
-		System.out.println("--------- WARN -------");
 		list.setCellRenderer(new SelectedListCellRenderer());
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -91,7 +90,9 @@ public class WarningPanel extends JPanel{
 			}
 		});		
 		try{
-			if((listModel.elementAt(0).equals(message))) listModel.removeElement(message);
+			for(int i=0;i<listModel.getSize();i++){
+				if((listModel.elementAt(i).equals(message))) listModel.removeElement(message);
+			}
 		}catch(ArrayIndexOutOfBoundsException e){
 		}
 		listModel.addElement(message);
