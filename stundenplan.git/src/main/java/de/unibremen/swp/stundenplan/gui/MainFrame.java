@@ -128,7 +128,7 @@ public class MainFrame extends JFrame {
                 if(!Data.isSaved()) {
                 	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
                 	if(result==JOptionPane.YES_OPTION) {
-                		if(Data.getLastRestoredFileName()!=null) {
+                		if(!Data.getLastRestoredFileName().equals("")) {
                 			Data.backup(Data.getLastRestoredFileName(), true);
                 		}else {
 	                		final JFrame backupFrame = new JFrame();
