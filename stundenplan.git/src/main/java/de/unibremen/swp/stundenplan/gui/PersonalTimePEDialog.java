@@ -38,7 +38,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 
 	public PersonalTimePEDialog(final JFrame parent,
 			final ArrayList<Personal> perList, final Planungseinheit pPE) {
-		super(parent, "Zeiten einzelner Personal im Planungseinheit", true);
+		super(parent, "Zeiten des Personals in der Planungseinheit", true);
 		pList = perList;
 		int lsize = perList.size();
 		pe = pPE;
@@ -47,9 +47,9 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		smspinner = new JSpinner[lsize];
 		emspinner = new JSpinner[lsize];
 		setLayout(new SpringLayout());
-		getContentPane().add(new JLabel("Personal im Planungseinheit"));
-		getContentPane().add(new JLabel("Startzeit im Planungseinheit"));
-		getContentPane().add(new JLabel("Endzeit im Planungseinheit"));
+		getContentPane().add(new JLabel("Personal in der Planungseinheit"));
+		getContentPane().add(new JLabel("Startzeit in der Planungseinheit"));
+		getContentPane().add(new JLabel("Endzeit in der Planungseinheit"));
 		String[] labels = giveLabelforPersonal();
 		JPanel[] startpanels = givestartTimePanelforPersonal();
 		JPanel[] endpanels = giveendTimePanelforPersonal();
@@ -60,8 +60,8 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 			getContentPane().add(endpanels[i]);
 			i++;
 		}
-		JLabel explanation = new JLabel("Hier legen sie fest die Zeiten des ");
-		JLabel explanation2 = new JLabel("Personals im Planungseinheit");
+		JLabel explanation = new JLabel("Hier legen sie die Zeiten des ");
+		JLabel explanation2 = new JLabel("Personals in der Planungseinheit fest");
 		JButton button = new JButton("Speichern");
 		button.addActionListener(this);
 		getContentPane().add(explanation);
@@ -86,9 +86,9 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Startzeit von "
+								"Die Startzeit von "
 										+ p.getName()
-										+ " befindet sich nicht im Startzeit der Planungseinheit");
+										+ " befindet sich nicht in der Startzeit der Planungseinheit");
 				return;
 			}
 			if (PlanungseinheitManager.checkTimeInPE(pe,
@@ -97,22 +97,22 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Endzeit von "
+								"Die Endzeit von "
 										+ p.getName()
-										+ " befindet sich nicht im End der Planungseinheit");
+										+ " befindet sich nicht in der Endzeit der Planungseinheit");
 				return;
 			}
 			if (((int) shspinner[i].getValue() == (int) ehspinner[i].getValue())
 					&& ((int) smspinner[i].getValue() == (int) emspinner[i]
 							.getValue())) {
-				JOptionPane.showMessageDialog(null, "Personal " + p.getName()
-						+ " darf nicht gleiche Startzeit und Endzeit haben");
+				JOptionPane.showMessageDialog(null, "Das Personal (" + p.getName()
+						+ ") darf nicht die gleiche Start- und Endzeit haben");
 				return;
 			} else if ((int) shspinner[i].getValue() > (int) ehspinner[i]
 					.getValue()) {
 				JOptionPane.showMessageDialog(null,
-						"Startzeit von " + p.getName()
-								+ " muss frueher als Endzeit sein");
+						"Die Startzeit von (" + p.getName()
+								+ ") muss vir dessen Endzeit beginnen");
 				return;
 			}
 			pe.addPersonal(
@@ -127,7 +127,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 			JOptionPane
 					.showMessageDialog(
 							null,
-							"Mindestens eine Personal muss in der gesamten Dauer des Planungseinheites sein.");
+							"Mindestens ein Personal muss in der gesamten Dauer der Planungseinheit sein.");
 			return;
 		}
 		PlanungseinheitManager.addPlanungseinheitToDB(pe);
