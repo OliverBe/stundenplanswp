@@ -16,21 +16,7 @@
 package de.unibremen.swp.stundenplan.gui;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.config.Config;
@@ -45,6 +31,7 @@ import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
  * @version 0.1
  * 
  */
+@SuppressWarnings("serial")
 public final class Timeslot implements Serializable {
 
     /**

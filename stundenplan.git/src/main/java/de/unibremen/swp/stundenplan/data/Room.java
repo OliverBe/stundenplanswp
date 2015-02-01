@@ -1,16 +1,7 @@
 package de.unibremen.swp.stundenplan.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import de.unibremen.swp.stundenplan.logic.RaumManager;
-
 
 public final class Room{
 

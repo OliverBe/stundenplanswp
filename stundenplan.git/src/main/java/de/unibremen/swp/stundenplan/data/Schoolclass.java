@@ -16,20 +16,12 @@ package de.unibremen.swp.stundenplan.data;
  *   limitations under the License.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  * Entspricht einer Schulklasse. Eine Schulklasse hat einen Namen.
  * 
- * @author D. L��demann
- * @version 0.1
  */
 public final class Schoolclass extends Jahrgang{
 
@@ -45,8 +37,6 @@ public final class Schoolclass extends Jahrgang{
     
     //falls die klasse einen speziellen bedarf hat
 //    private HashMap<String, Integer> stundenbedarf = new HashMap<String, Integer>();
-    
-    private ArrayList<Planungseinheit> planungseinheiten;
     
     public Schoolclass() {
     	super();
