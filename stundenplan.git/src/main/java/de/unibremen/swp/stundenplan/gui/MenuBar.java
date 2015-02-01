@@ -199,11 +199,11 @@ public class MenuBar extends JMenuBar {
 				final JFrame backupFrame = new JFrame();
 				GridBagConstraints c = new GridBagConstraints();
 				JPanel backupChooser = new JPanel();
-				JButton button = new JButton("Öffnen");
+				JButton button = new JButton("Oeffnen");
 				JButton button2 = new JButton("Abbrechen");
 				backupChooser.setLayout(new GridBagLayout());
 				backupChooser.setBorder(BorderFactory
-						.createTitledBorder("Datei auswählen"));
+						.createTitledBorder("Datei auswaehlen"));
 				c.fill = GridBagConstraints.BOTH;
 				c.insets = new Insets(8, 5, 1, 1);
 				c.anchor = GridBagConstraints.CENTER;
@@ -326,9 +326,10 @@ public class MenuBar extends JMenuBar {
 		for (File file : files) {
 			listModel.addElement(file.getName());
 		}
-
+		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				Data.setLastRestoredFileName(tf.getText());
 				backupFrame.dispose();
 				Data.backup(tf.getText(), false);
 			}

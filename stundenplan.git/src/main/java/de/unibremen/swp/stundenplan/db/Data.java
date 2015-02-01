@@ -7,13 +7,6 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
-import de.unibremen.swp.stundenplan.data.Jahrgang;
-import de.unibremen.swp.stundenplan.data.Personal;
-import de.unibremen.swp.stundenplan.data.Planungseinheit;
-import de.unibremen.swp.stundenplan.data.Raumfunktion;
-import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 public class Data {
 	public final static int MAX_KUERZEL_LEN = 4;
@@ -254,6 +247,35 @@ public class Data {
 			sql = "DELETE FROM Personal;";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Planungseinheit;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Schulklasse;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Raum;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Stundeninhalt;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Raumfunktion;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Zeitwunsch;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM moegliche_Stundeninhalte_Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM klassenlehrer;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Stundeninhalt;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Raum;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM planungseinheit_Schulklasse;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM raum_Raumfunktion;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM stundenbedarf;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Jahrgang_Stundenbedarf;";
+			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
