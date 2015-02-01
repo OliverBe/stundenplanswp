@@ -2,7 +2,6 @@
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -127,91 +126,81 @@ public class MainFrame extends JFrame {
             @Override
             public void windowClosing(final WindowEvent e)
             {
-//                if(!Data.isSaved()) {
-//                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
-//                	if(result==JOptionPane.YES_OPTION) {
-//                		if(Data.getLastRestoredFileName()!=null) {
-//                			Data.backup(Data.getLastRestoredFileName(), true);
-//                		}else {
-//	                		final JFrame backupFrame = new JFrame();
-//	                		GridBagConstraints c = new GridBagConstraints();
-//	                		JPanel backupChooser = new JPanel();
-//	                		final JTextField tf = new JTextField();
-//	                		JButton button = new JButton("Erstellen");
-//	                		JButton button2 = new JButton("Abbrechen");
-//	                		backupChooser.setLayout(new GridBagLayout());
-//	                		backupChooser.setBorder(BorderFactory
-//	                				.createTitledBorder("Datei benennen"));
-//	                		c.fill = GridBagConstraints.BOTH;
-//	                		c.insets = new Insets(8, 5, 1, 1);
-//	                		c.anchor = GridBagConstraints.CENTER;
-//	                		c.gridx = 0;
-//	                		c.gridy = 0;
-//	                		c.gridwidth = 2;
-//	                		backupChooser.add(tf, c);
-//	                		c.gridy = 1;
-//	                		list.setLayoutOrientation(JList.VERTICAL);
-//	                		list.setEnabled(false);
-//	                		listScroller.setPreferredSize(new Dimension(300, 200));
-//	                		backupChooser.add(listScroller, c);
-//	                		c.gridy = 2;
-//	                		c.gridwidth = 1;
-//	                		c.weightx = 0.6;
-//	                		backupChooser.add(button, c);
-//	                		c.gridx = 1;
-//	                		c.weightx = 0.4;
-//	                		backupChooser.add(button2, c);
-//	                		backupFrame.add(backupChooser);
-//	                		backupFrame.setTitle("Speichern");
-//	                		backupFrame.setLocation(MouseInfo.getPointerInfo()
-//	                				.getLocation().x, MouseInfo.getPointerInfo()
-//	                				.getLocation().y);
-//	                		backupFrame.pack();
-//	                		backupFrame.setVisible(true);
-//	                		
-//	                		File dir = new File(System.getProperty("user.dir"));
-//	                		File[] files = dir.listFiles(new FilenameFilter() {
-//	                			public boolean accept(File dir, String filename) {
-//	                				return filename.endsWith(".db")
-//	                						&& !filename.equals("temp.db");
-//	                			}
-//	                		});
-//	                		listModel.clear();
-//	                		for (File file : files) {
-//	                			listModel.addElement(file.getName());
-//	                		}
-//	
-//	                		button.addActionListener(new ActionListener() {
-//	                			public void actionPerformed(ActionEvent ae) {
-//	                				backupFrame.dispose();
-//	                				Data.backup(tf.getText(), false);
-//	                				Data.close();
-//	                                File datei = new File("temp.db");
-//	                    	        if (datei.exists()) {
-//	                    	          datei.delete();
-//	                    	        }
-//	                			}
-//	                		});
-//	
-//	                		button2.addActionListener(new ActionListener() {
-//	                			public void actionPerformed(ActionEvent ae) {
-//	                				backupFrame.dispose();
-//	                				Data.close();
-//	                                File datei = new File("temp.db");
-//	                    	        if (datei.exists()) {
-//	                    	          datei.delete();
-//	                    	        }
-//	                			}
-//	                		});
-//                		}
-//                	}
-//                }else {
-//                	Data.close();
-//                    File datei = new File("temp.db");
-//        	        if (datei.exists()) {
-//        	          datei.delete();
-//        	        }
-//                }
+                if(!Data.isSaved()) {
+                	int result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Es wurden Veraenderungen vorgenommen.\nSoll gespeichert werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+                	if(result==JOptionPane.YES_OPTION) {
+                		if(Data.getLastRestoredFileName()!=null) {
+                			Data.backup(Data.getLastRestoredFileName(), true);
+                		}else {
+	                		final JFrame backupFrame = new JFrame();
+	                		GridBagConstraints c = new GridBagConstraints();
+	                		JPanel backupChooser = new JPanel();
+	                		final JTextField tf = new JTextField();
+	                		JButton button = new JButton("Erstellen");
+	                		JButton button2 = new JButton("Abbrechen");
+	                		backupChooser.setLayout(new GridBagLayout());
+	                		backupChooser.setBorder(BorderFactory
+	                				.createTitledBorder("Datei benennen"));
+	                		c.fill = GridBagConstraints.BOTH;
+	                		c.insets = new Insets(8, 5, 1, 1);
+	                		c.anchor = GridBagConstraints.CENTER;
+	                		c.gridx = 0;
+	                		c.gridy = 0;
+	                		c.gridwidth = 2;
+	                		backupChooser.add(tf, c);
+	                		c.gridy = 1;
+	                		list.setLayoutOrientation(JList.VERTICAL);
+	                		list.setEnabled(false);
+	                		listScroller.setPreferredSize(new Dimension(300, 200));
+	                		backupChooser.add(listScroller, c);
+	                		c.gridy = 2;
+	                		c.gridwidth = 1;
+	                		c.weightx = 0.6;
+	                		backupChooser.add(button, c);
+	                		c.gridx = 1;
+	                		c.weightx = 0.4;
+	                		backupChooser.add(button2, c);
+	                		backupFrame.add(backupChooser);
+	                		backupFrame.setTitle("Speichern");
+	                		backupFrame.setLocation(MouseInfo.getPointerInfo()
+	                				.getLocation().x, MouseInfo.getPointerInfo()
+	                				.getLocation().y);
+	                		backupFrame.pack();
+	                		backupFrame.setVisible(true);
+	                		
+	                		File dir = new File(System.getProperty("user.dir"));
+	                		File[] files = dir.listFiles(new FilenameFilter() {
+	                			public boolean accept(File dir, String filename) {
+	                				return filename.endsWith(".db")
+	                						&& !filename.equals("temp.db");
+	                			}
+	                		});
+	                		listModel.clear();
+	                		for (File file : files) {
+	                			listModel.addElement(file.getName());
+	                		}
+	
+	                		button.addActionListener(new ActionListener() {
+	                			public void actionPerformed(ActionEvent ae) {
+	                				backupFrame.dispose();
+	                				Data.backup(tf.getText(), false);
+	                			}
+	                		});
+	
+	                		button2.addActionListener(new ActionListener() {
+	                			public void actionPerformed(ActionEvent ae) {
+	                				backupFrame.dispose();
+	                			}
+	                		});
+                		}
+                	}
+                }
+            	Data.close();
+                File datei = new File("temp.db");
+    	        if (datei.exists()) {
+    	          datei.delete();
+    	        }
+    	        Stundenplan.getMain().dispose();
             }
         });
 		

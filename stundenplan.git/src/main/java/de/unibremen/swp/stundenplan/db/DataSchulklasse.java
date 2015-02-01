@@ -191,8 +191,8 @@ public class DataSchulklasse {
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
-				if(sc.getName().equals(newSchulklasse.getName())){ 
-					throw new SQLException("DB - ERROR Schulklasse already in Database");
+				if(sc.getName().equals(newSchulklasse.getName()) && !sc.getName().equals(pName)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
@@ -204,7 +204,7 @@ public class DataSchulklasse {
 			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addSchulklasse(newSchulklasse);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

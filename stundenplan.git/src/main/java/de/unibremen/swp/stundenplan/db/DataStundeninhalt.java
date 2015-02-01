@@ -159,8 +159,8 @@ public class DataStundeninhalt {
 	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {
 		try {
 			for(Stundeninhalt si : getAllStundeninhalte()) {
-				if(si.getKuerzel().equals(newStundeninhalt.getKuerzel())){ 
-					throw new SQLException("DB - ERROR Stundeninhalt already in Database");
+				if(si.getKuerzel().equals(newStundeninhalt.getKuerzel()) && !si.getKuerzel().equals(pKuerzel)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
@@ -176,7 +176,7 @@ public class DataStundeninhalt {
 			sql = "UPDATE Jahrgang_Stundenbedarf SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			addStundeninhalt(newStundeninhalt);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
