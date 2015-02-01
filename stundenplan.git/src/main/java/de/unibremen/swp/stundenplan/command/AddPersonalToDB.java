@@ -4,13 +4,13 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 
 /**
- * Command-Klasse zum Einfügen einer Person in die Datenbank.
+ * Command-Klasse zum Einfuegen einer Person in die Datenbank.
  * @author Roman
  *
  */
 public class AddPersonalToDB implements Command {
 	/**
-	 * Person, die eingefügt wird.
+	 * Person, die eingefuegt wird.
 	 */
 	private Personal personal;
 
@@ -18,10 +18,10 @@ public class AddPersonalToDB implements Command {
     }
     
     /**
-     * Execute-Methode dieser Klasse. Fügt dieses Command- Objekt zur CommandHistory hinzu
-     * Speichert eingefügte Person als Attribut. Leitet Einfügen an Datenbank weiter.
+     * Execute-Methode dieser Klasse. Fuegt dieses Command- Objekt zur CommandHistory hinzu
+     * Speichert eingefuegte Person als Attribut. Leitet Einfuegen an Datenbank weiter.
      * @param p
-     * 		Personal das hinzugefügt werden soll.
+     * 		Personal das hinzugefuegt werden soll.
      */
 	public void execute(Personal p) {
 		DataPersonal.addPersonal(p);
@@ -31,7 +31,7 @@ public class AddPersonalToDB implements Command {
 
 	
 	/**
-	 * Undo-Methoder dieser Klasse. Leitet Löschanfrage an Datenbank weiter.
+	 * Undo-Methoder dieser Klasse. Leitet Loeschanfrage an Datenbank weiter.
 	 */
 	@Override
 	public void undo(){	

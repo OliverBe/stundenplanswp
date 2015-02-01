@@ -23,8 +23,8 @@ import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 /**
- * Realisiert den Personaleinsatzplan als GUI-Element in der MainFrame. Heißt 'Lehreransicht', da es anfangs
- * Verständnisprobleme in der Gruppe gab, was mit 'Personaleinsatzplan' gemeint war. Benennung wurde aufgrund
+ * Realisiert den Personaleinsatzplan als GUI-Element in der MainFrame. Heisst 'Lehreransicht', da es anfangs
+ * Verstaendnisprobleme in der Gruppe gab, was mit 'Personaleinsatzplan' gemeint war. Benennung wurde aufgrund
  * existierender Verbindungen beibehalten, never change a running system.
  * 
  * @author Roman
@@ -38,29 +38,29 @@ public class LehreransichtPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Respräsentiert das Tabllenelement.
+	 * Respraesentiert das Tabllenelement.
 	 */
 	private JTable table;
 
 //	private JFileChooser chooser = new JFileChooser();
 //	private JFrame f;
 	/**
-	 * Constraints zum festlegen, wo im Panel Elemente hinzugefügt werden
+	 * Constraints zum festlegen, wo im Panel Elemente hinzugefuegt werden
 	 */
 	private GridBagConstraints c = new GridBagConstraints();
 
 	/**
-	 * Liste, die im Verlaufe der init Methode die existierenden Stundeninhalte führt
+	 * Liste, die im Verlaufe der init Methode die existierenden Stundeninhalte fuehrt
 	 */
 	private ArrayList<Stundeninhalt> si;
 	
 	/**
-	 * Liste, die im Verlaufe der init Methode die existierenden PEs führt.
+	 * Liste, die im Verlaufe der init Methode die existierenden PEs fuehrt.
 	 */
 	private ArrayList<Planungseinheit> planungseinheiten;
 	
 	/**
-	 * Liste, die im Verlaufe der init Methode die existierenden Kuerzel aller Personen führt.
+	 * Liste, die im Verlaufe der init Methode die existierenden Kuerzel aller Personen fuehrt.
 	 */
 	private ArrayList<String> allPersoKuerzel;
 	
@@ -79,7 +79,7 @@ public class LehreransichtPanel extends JPanel {
 	/**
 	 * Initialisiert den Personaleinsatzplan. In den einzelnen Schritten wird
 	 * 1. Standard Columns erstellen
-	 * 2. Stundeninhalte als Columns hinzufügen
+	 * 2. Stundeninhalte als Columns hinzufuegen
 	 * 3. Alle Personen durchgehen
 	 * 4. Standard Columns der Person einfuegen
 	 * 5. Planungseinheiten der Personen durchgehen, Laenge und Klasse in HashMap speichern
@@ -99,7 +99,7 @@ public class LehreransichtPanel extends JPanel {
 		c.gridy = 0;
 		c.gridwidth = 4;
 		
-// Hier werden zunächst die Standard Columns gesetzt und Vorbereitungen
+// Hier werden zunaechst die Standard Columns gesetzt und Vorbereitungen
 // getroffen.
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model);
@@ -158,11 +158,11 @@ public class LehreransichtPanel extends JPanel {
 							.getSchoolclasses();
 					
 					// Pro Stundeninhalt in der Planungseinheit wird nun ueberprueft, ob die Schulklasse bereits gemaped ist
-					// Wenn ja, das heißt, die Klasse wird in diesem Inhalt bereits von der Person unterrichtet, muss man
+					// Wenn ja, das heisst, die Klasse wird in diesem Inhalt bereits von der Person unterrichtet, muss man
 					// die bereits vorhandene Zeit mit der neuen addieren.
 					// 
-					// Wenn nein, das heißt, die Klasse wird zu diesem Zeitpunkt der Iteration noch nicht unterrichtet,
-					// muss ein neuer Eintrag für die Klasse in der kleinen HashMap angelegt werden mit der Dauer
+					// Wenn nein, das heisst, die Klasse wird zu diesem Zeitpunkt der Iteration noch nicht unterrichtet,
+					// muss ein neuer Eintrag fuer die Klasse in der kleinen HashMap angelegt werden mit der Dauer
 					// der Planungseinheit.
 					for (String s : inhalteInPlanungseinheit) {
 						for (String k : klassenInPlanungseinheit) {
@@ -292,11 +292,11 @@ public class LehreransichtPanel extends JPanel {
 	}
 	
 	/**
-	 * Setzt die übergebene HashMap auf den Anfangswert zurück, der für die init()-Methode pro Person benötigt wird.
-	 * Da die HashMap 'inhaltKlasseStunden', in der zum Start der init()-Methode alle Stundeninhalte eingefügt werden, stets
-	 * von allen Schleifen-Durchläufen modifiziert wird, wurde diese Methode angelegt, damit die HashMap jeweils auf den
-	 * benötigten Anfangsbestand zurück gesetzt wird. Es werden nur die Stundeninhalte als Keys gebraucht und eine
-	 * leere HashMap als Value 'hash', die anschließend von jeder Person mit den entsprechenden Klassen und Stunden befüllt wird.
+	 * Setzt die uebergebene HashMap auf den Anfangswert zurueck, der fuer die init()-Methode pro Person benoetigt wird.
+	 * Da die HashMap 'inhaltKlasseStunden', in der zum Start der init()-Methode alle Stundeninhalte eingefuegt werden, stets
+	 * von allen Schleifen-Durchlaufen modifiziert wird, wurde diese Methode angelegt, damit die HashMap jeweils auf den
+	 * benoetigten Anfangsbestand zurueck gesetzt wird. Es werden nur die Stundeninhalte als Keys gebraucht und eine
+	 * leere HashMap als Value 'hash', die anschliessend von jeder Person mit den entsprechenden Klassen und Stunden befaellt wird.
 	 * 
 	 * @param pInhaltKlasseStunden Die HashMap, die auf den Anfangszustand gesetzt werden soll
 	 * @return

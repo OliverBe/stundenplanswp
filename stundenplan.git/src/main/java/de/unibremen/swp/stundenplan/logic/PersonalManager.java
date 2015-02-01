@@ -54,30 +54,26 @@ public class PersonalManager {
     }
 	
 	/**
-	 * Übergibt Personal an DB, dort wird Personal hinzugefügt.
+	 * Uebergibt Personal an DB, dort wird Personal hinzugefuegt.
 	 * @param personal
-	 * 		Person die hinzugefügt werden soll.
+	 * 		Person die hinzugefuegt werden soll.
 	 */
 	public static void addPersonalToDb(final Personal personal){
-		System.out.println("adding Personal...");
 		AddPersonalToDB addPerso = new AddPersonalToDB();
 		addPerso.execute(personal);
-		System.out.println("added Personal: "+personal);
 	}
 	
 	/**
-	 * Bearbeitet eine Person aus der DB.Bearbeiten findet im wörtlichen Sinne nicht statt,
-	 * das ausgewählte Objekt wird mit einem neuen überschrieben.
+	 * Bearbeitet eine Person aus der DB.Bearbeiten findet im woertlichen Sinne nicht statt,
+	 * das ausgewaehlte Objekt wird mit einem neuen ueberschrieben.
 	 * @param zuBearbeitendesKuerz 
 	 * 			Das Kuerzel der Person, die bearbeitet werden soll.
 	 * @param neuesPersonal
-	 * 			Die Person, mit der die alte Person überschrieben wird.
+	 * 			Die Person, mit der die alte Person ueberschrieben wird.
 	 */
 	public static void editPersonal(final String zuBearbeitendesKuerz, final Personal neuesPersonal){
-		System.out.println("Editing: "+zuBearbeitendesKuerz);
 		EditPersonal editP = new EditPersonal();
 		editP.execute(zuBearbeitendesKuerz, neuesPersonal);
-		System.out.println(neuesPersonal.getKuerzel()+ "was edited.");
 	}
 	
 	/**
@@ -88,64 +84,35 @@ public class PersonalManager {
      * @return gefundene Person mit Acronym
      */
     public static Personal getPersonalByKuerzel(final String kuerz) {
-    	System.out.println("Searching for Personal with acro: "+kuerz+"...");
     	Personal p = DataPersonal.getPersonalByKuerzel(kuerz);
-    	if(p!=null){
-    		System.out.println("Found: "+p);
-    	}else{
-    		System.out.println("not found");
-    	}
         return p;        
     }
     
     /**
-     * löscht Person mit angegebenem Kürzel aus der DB. Leutet Kürzel an DB weiter.
+     * loescht Person mit angegebenem Kuerzel aus der DB. Leutet Kuerzel an DB weiter.
      * @param kuerz
-     * 		Kürzel, das gesucht werden soll
+     * 		Kuerzel, das gesucht werden soll
      */
     public static void deletePersonalFromDB(final String kuerz)	{
     	if(getPersonalByKuerzel(kuerz)!= null){
-    		System.out.println("Deleting Personal from DB...");
     		DeletePersonalFromDB deletePerso = new DeletePersonalFromDB();
     		deletePerso.execute(kuerz);
-    	}else{
-    		System.out.println("Kuerzel "+kuerz+" not found.");
     	}
     }
 	
     /**
-     * Gibt Liste mit allem Personal in der DB zurück. Leitet Anfrage an DB weiter.
+     * Gibt Liste mit allem Personal in der DB zurueck. Leitet Anfrage an DB weiter.
      */
     public static ArrayList<Personal> getAllPersonalFromDB(){
     	ArrayList<Personal> personal = DataPersonal.getAllPersonal();
-    	
-    	if(personal.size() == 0){
-    		System.out.println("No Personal in DB");
-    	}else{
-    	System.out.println("Personal in DB: ");
-    		for(int i=0; i<personal.size(); i++){
-    			System.out.println(personal.get(i));
-    		}
-    	}
-    	
 		return personal;
     }
     
     /**
-     * Gibt Liste mit allen Kürzeln des Personals zurück.
+     * Gibt Liste mit allen Kuerzeln des Personals zurueck.
      */
     public static ArrayList<String> getAllKuerzel(){
     	ArrayList<String> acros = DataPersonal.getAllAcronymsFromPersonal();
-  
-    	if(acros.size() == 0){
-    		System.out.println("No Personal in DB");
-    	}else{
-    	System.out.println("Personal in DB: ");
-    		for(int i=0; i<acros.size(); i++){
-    			System.out.println(acros.get(i));
-    		}
-    	}
-    	
 		return acros;
     }
    

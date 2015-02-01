@@ -5,22 +5,22 @@ import java.util.ArrayList;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 /**
- * Command-Klasse zum Löschen einer Person aus der Datenbank.
+ * Command-Klasse zum Loeschen einer Person aus der Datenbank.
  * @author Roman
  *
  */
 public class DeletePlanungseinheitFromDB implements Command {
 	
 	/**
-	 * PE, die gelöscht werden soll.
+	 * PE, die geloescht werden soll.
 	 */
 	private Planungseinheit pl;
 
 	/**
-	 * Leitet Löschanfrage an die Datenbank weiter, mit dem übergebenem
-	 * Kuerzel. Fügt dieses Objekt der CommandHistory hinzu.
+	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem uebergebenem
+	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.
 	 * @param i
-	 * 		ID der PE, die gelöscht werden soll.
+	 * 		ID der PE, die geloescht werden soll.
 	 */
 	public void execute(int i){
 		ArrayList<Planungseinheit> pEinheiten = DataPlanungseinheit.getAllPlanungseinheit();
@@ -32,7 +32,7 @@ public class DeletePlanungseinheitFromDB implements Command {
 	}
 	
 	/**
-	 * Leitet Einfügen-Anfrage an Datenbank weiter mit der PE, die gelöscht wurde.
+	 * Leitet Einfuegen-Anfrage an Datenbank weiter mit der PE, die geloescht wurde.
 	 */
 	@Override
 	public void undo() {

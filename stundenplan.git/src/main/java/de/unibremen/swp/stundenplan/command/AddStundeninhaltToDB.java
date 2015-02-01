@@ -4,22 +4,22 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 /**
- * Command-Klasse zum Einfügen eines Stundeninhalts in die Datenbank.
+ * Command-Klasse zum Einfuegen eines Stundeninhalts in die Datenbank.
  * @author Roman
  *
  */
 public class AddStundeninhaltToDB implements Command {
 
 	/**
-	 * SI, der eingefügt wird.
+	 * SI, der eingefuegt wird.
 	 */
 	private Stundeninhalt inhalt;
 	
 	/**
-     * Execute-Methode dieser Klasse. Fügt dieses Comand- Objekt zur CommandHistory hinzu
-     * Speichert eingefügte SI als Attribut. Leitet Einfügen an Datenbank weiter.
+     * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
+     * Speichert eingefuegte SI als Attribut. Leitet Einfuegen an Datenbank weiter.
      * @param st
-     * 		SI der hinzugefügt werden soll.
+     * 		SI der hinzugefuegt werden soll.
      */
 	public void execute(Stundeninhalt st){
 		inhalt = st;
@@ -28,7 +28,7 @@ public class AddStundeninhaltToDB implements Command {
 	}
 
 	/**
-	 * Undo-Methoder dieser Klasse. Leitet Löschanfrage an Datenbank weiter.
+	 * Undo-Methoder dieser Klasse. Leitet Loeschanfrage an Datenbank weiter.
 	 */
 	@Override
 	public void undo() {

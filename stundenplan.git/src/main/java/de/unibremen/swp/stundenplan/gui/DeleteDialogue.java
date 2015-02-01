@@ -26,7 +26,7 @@ import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
 import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 
 /**
- * Repräsentiert das Pop-Up-Fenster zum Loeschen von Daten
+ * Repraesentiert das Pop-Up-Fenster zum Loeschen von Daten
  * 
  * @author Oliver
  */
@@ -58,7 +58,7 @@ public class DeleteDialogue extends JFrame {
 	 * @param pO
 	 */
 	public DeleteDialogue(final Object pO){
-		super("Löschen");
+		super("Loeschen");
 		o=pO;
 		init();
 		pack();
@@ -74,7 +74,7 @@ public class DeleteDialogue extends JFrame {
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx=0;
 		c.gridy=0;
-		JLabel loeschen = new JLabel("Möchten Sie [ "+o.toString() +" ] wirklich loeschen?");
+		JLabel loeschen = new JLabel("Moechten Sie [ "+o.toString() +" ] wirklich loeschen?");
 		panel.add(loeschen,c);
 		
 		c.gridx=0;

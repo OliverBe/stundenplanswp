@@ -3,22 +3,22 @@ package de.unibremen.swp.stundenplan.command;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 /**
- * Comand-Klasse zum Löschen von Jahrgangsbedarfen.
+ * Comand-Klasse zum Loeschen von Jahrgangsbedarfen.
  * @author Roman
  *
  */
 public class DeleteJahrgangsBedarfFromDB implements Command {
 	/**
-	 * Jahrgang, für den der neue Bedarf festgelegt werden soll.
+	 * Jahrgang, fuer den der neue Bedarf festgelegt werden soll.
 	 */
 	private Jahrgang j;
 	
 	/**
-	 * Leitet Löschanfrage an Datenbank weiter. Fügt dieses Objekt der CommandHistory hinzu.
+	 * Leitet Loeschanfrage an Datenbank weiter. Fuegt dieses Objekt der CommandHistory hinzu.
 	 * @param jahrgang
-	 * 		Der Jahrgang, für den der Bedarf gelöscht werden soll
+	 * 		Der Jahrgang, fuer den der Bedarf geloescht werden soll
 	 * @param kuerzel
-	 *		Kuerzel des Stundeininhalts, dessen Bedarf gelöscht werden soll.
+	 *		Kuerzel des Stundeininhalts, dessen Bedarf geloescht werden soll.
 	 */
 	public void execute(Jahrgang jahrgang, String kuerzel){
 		j = jahrgang;
@@ -27,8 +27,8 @@ public class DeleteJahrgangsBedarfFromDB implements Command {
 	}
 
 	/**
-	 * Fügt den Jahrgang inklusive Jahrgangsbedarf wieder der DB hinzu, so wie er war,
-	 * bevor der Bedarf gelöscht wurde.
+	 * Fuegt den Jahrgang inklusive Jahrgangsbedarf wieder der DB hinzu, so wie er war,
+	 * bevor der Bedarf geloescht wurde.
 	 */
 	@Override
 	public void undo() {

@@ -4,14 +4,14 @@ import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 
 /**
- * Command-Klasse zum Löschen einer Raumfunktion aus der Datenbank.
+ * Command-Klasse zum Loeschen einer Raumfunktion aus der Datenbank.
  * @author Roman
  *
  */
 public class DeleteRaumfunktionFromDB implements Command {
 
 	/**
-	 * RF, die gelöscht werden soll.
+	 * RF, die geloescht werden soll.
 	 */
 	private Raumfunktion r;
 	
@@ -20,10 +20,10 @@ public class DeleteRaumfunktionFromDB implements Command {
 	}
 	
 	/**
-	 * Leitet Löschanfrage an die Datenbank weiter, mit dem übergebenem
-	 * Kuerzel. Fügt dieses Objekt der CommandHistory hinzu.
+	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
+	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.
 	 * @param rName
-	 * 		Name der RF, die gelöscht werden soll.
+	 * 		Name der RF, die geloescht werden soll.
 	 */
 	public void execute(String rName){
 		r = DataRaum.getRaumfunktionByName(rName);
@@ -32,7 +32,7 @@ public class DeleteRaumfunktionFromDB implements Command {
 	}
 
 	/**
-	 * Leitet Einfügen-Anfrage an Datenbank weiter mit der Person, die gelöscht wurde.
+	 * Leitet Einfuegen-Anfrage an Datenbank weiter mit der Person, die geloescht wurde.
 	 */
 	@Override
 	public void undo() {

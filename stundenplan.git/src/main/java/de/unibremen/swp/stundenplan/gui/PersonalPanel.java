@@ -828,7 +828,7 @@ public class PersonalPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschlieﬂend wieder mit allen
+	 * leert die Liste des Panels und fuellt sie anschliessend wieder mit allen
 	 * Daten der Datenbank
 	 */
 	public static void updateList() {

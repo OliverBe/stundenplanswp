@@ -22,13 +22,13 @@ import de.unibremen.swp.stundenplan.gui.Timeslot;
 import de.unibremen.swp.stundenplan.gui.TimetableModel;
 
 /**
- * Diese Klasse exportiert die Stundenpläne aus dem StundenplanPanel und dem
+ * Diese Klasse exportiert die Stundenplaene aus dem StundenplanPanel und dem
  * RaumansichtsPanel in eine .csv, .pdf oder .doc Datei.
  * 
- * Die Exportmethode für pdf basiert auf dem itext-Tutorial
+ * Die Exportmethode fuer pdf basiert auf dem itext-Tutorial
  * http://itextpdf.com/examples/iia.php?id=12
  * 
- * Für das Exportieren wird die Itext API genutzt http://itextpdf.com/api
+ * Fuer das Exportieren wird die Itext API genutzt http://itextpdf.com/api
  * 
  * @author Fabian H.
  *
@@ -36,7 +36,7 @@ import de.unibremen.swp.stundenplan.gui.TimetableModel;
 public class ExportPDF {
 
 	/**
-	 * der Systempfad in dem sich die zu öffnenden Dateien befinden
+	 * der Systempfad in dem sich die zu oeffnenden Dateien befinden
 	 */
 	private static String path = System.getProperty("user.dir") + "/";
 
@@ -56,7 +56,7 @@ public class ExportPDF {
 	/**
 	 * Diese methode erzeugt eine neue PDF-Datei. In der Datei wird sich der
 	 * Inhalt des Parameters jTable befinden. Es wird ein document erstellt
-	 * dieses erhält zwei Paragraphen. Zum einen den String mit dem Namen des
+	 * dieses erhaelt zwei Paragraphen. Zum einen den String mit dem Namen des
 	 * Owners und zum anderen den Inhalt des JTables. Dieser Inhalt wird aus der
 	 * doppelten for-Schleife in ein PdfPTable gebracht.
 	 * 
@@ -117,7 +117,7 @@ public class ExportPDF {
 
 			document.close();
 
-			// öffnet die PDF
+			// oeffnet die PDF
 			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".pdf");
 
 		} catch (Exception e) {
@@ -126,8 +126,8 @@ public class ExportPDF {
 	}
 
 	/**
-	 * fügt Leere Zeilen ein wobei number die Anzahl der leeren Zeilen angibt
-	 * und Paragraph den Paragraphen nennt in dem die Zeilen eingefügt werden.
+	 * fuegt Leere Zeilen ein wobei number die Anzahl der leeren Zeilen angibt
+	 * und Paragraph den Paragraphen nennt in dem die Zeilen eingefuegt werden.
 	 * 
 	 * @param paragraph
 	 * @param number
@@ -265,7 +265,7 @@ public class ExportPDF {
 
 	/**
 	 * setzt die Strings FILE und planOwner fest, indem auf das jTable
-	 * zugegriffen wird und der Owner des JTables genutzt wird. Somit wird für
+	 * zugegriffen wird und der Owner des JTables genutzt wird. Somit wird fuer
 	 * jede einzellene Schulklasse, Raum, Personal ein eigener Stundenplan
 	 * erstellt mit verschiedenen Namen.
 	 * 
@@ -304,7 +304,7 @@ public class ExportPDF {
 	}
 
 	/**
-	 * ändert den Owner-Namen zu dem Strin der in dem Parameter enthalten ist
+	 * aendert den Owner-Namen zu dem Strin der in dem Parameter enthalten ist
 	 * @param name
 	 */
 	public static void setOwner(String name) {

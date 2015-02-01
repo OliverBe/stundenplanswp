@@ -23,7 +23,7 @@ import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
-//Diese Klasse reprï¿½sentiert einen Plan und einem bestimmten Tag im Wochenplan.
+//Diese Klasse repraesentiert einen Plan und einem bestimmten Tag im Wochenplan.
 public class WochenplanTag extends JPanel {
 
 	Weekday day;
@@ -70,7 +70,7 @@ public class WochenplanTag extends JPanel {
 	}
 
 	/**
-	 * Diese Methode füllt die Reihen der ersten Spalte der Tabelle mit den Vor
+	 * Diese Methode faellt die Reihen der ersten Spalte der Tabelle mit den Vor
 	 * und Nachnamen des gesamten Personals. Vorher wird der Inhalt der PersonalDatenBank lokal Alphabetisch sortiert.
 	 */
 	public void addData() {
@@ -100,7 +100,7 @@ public class WochenplanTag extends JPanel {
 	}
 
 	/**
-	 * Diese Methode durchläuft alle Planungseinheiten und versucht diese den
+	 * Diese Methode durchlaeuft alle Planungseinheiten und versucht diese den
 	 * entsprechenden Lehrern zuzuordnen, mit Infos des Faches, der Klasse und
 	 * des Raumes an der besagten Zeit der Planungseinheit.
 	 */
@@ -188,8 +188,8 @@ public class WochenplanTag extends JPanel {
 	 * 
 	 * @param pEinheit
 	 *            Die entsprechende Planungseinheit
-	 * @return Ein String mit Infos des Faches/Fächer, der Klasse/Klassen und
-	 *         anschließend des Raumes/der Raeume
+	 * @return Ein String mit Infos des Faches/Faecher, der Klasse/Klassen und
+	 *         anschliessend des Raumes/der Raeume
 	 */
 	public String createOutput(Planungseinheit pEinheit) {
 		final String outputAnfang = "<html><body><center>";
@@ -270,19 +270,19 @@ public class WochenplanTag extends JPanel {
 	}
 
 	/**
-	 * Löscht das gesamte Personal aus der Tabelle.
+	 * Loescht das gesamte Personal aus der Tabelle.
 	 */
 	public void deleteAllPersonal() {
 
 		for (int i = 0; i <= model.getRowCount(); i++) {
-			System.out.println("Länge des TableModelLänge: "
+			System.out.println("Laenge des TableModelLaenge: "
 					+ model.getRowCount());
 			model.removeRow(i);
 		}
 	}
 
 	/**
-	 * Löscht einmal das gesamte Personal fügt dann wieder das gesamte Personal
+	 * Loescht einmal das gesamte Personal fuegt dann wieder das gesamte Personal
 	 * ein.
 	 */
 	public void refresh() {
@@ -296,7 +296,7 @@ public class WochenplanTag extends JPanel {
 				DataPlanungseinheit.deletePlanungseinheitById(i);
 			}
 			System.out
-					.println("Zähler der Methode deleteAllPlanungseinheiten: "
+					.println("Zaehler der Methode deleteAllPlanungseinheiten: "
 							+ i);
 		}
 	}

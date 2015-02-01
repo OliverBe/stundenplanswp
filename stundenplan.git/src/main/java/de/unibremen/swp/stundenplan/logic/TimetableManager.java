@@ -15,19 +15,15 @@
  */
 package de.unibremen.swp.stundenplan.logic;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
-import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.DatasetException;
-import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 import de.unibremen.swp.stundenplan.config.Config;
 
@@ -35,7 +31,7 @@ import java.util.ArrayList;
 
 
 /**
- * Diese Utility-Klasse verwaltet die Tagespl��ne.
+ * Diese Utility-Klasse verwaltet die Tagesplaene.
  * 
  * @author Fathan Vidjaja
  * @version 0.1
@@ -173,10 +169,10 @@ public final class TimetableManager {
         }
     
     /**
-     * Erzeugt Zeiteinheiten f��r den gegebenen Tag und Raum.
+     * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Raum.
      * 
      * @param dayTable
-     *            der Tagesplan, f��r den die Zeiteinheiten erstellt werden sollen
+     *            der Tagesplan, fuer den die Zeiteinheiten erstellt werden sollen
      */
     private static DayTable createTimeslotsForRoom(Weekday pWeekday,Room pRoom) {
     	ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForRoombyWeekday(pWeekday, pRoom);
@@ -246,7 +242,7 @@ public final class TimetableManager {
      *            der Wochentag der gesuchten Zeiteinheit
      * @param position
      *            die Position der gesuchten Zeiteinheit am gegebenen Wochentag
-     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte ��bergeben wurden
+     * @return die gesuchte Zeiteinheit oder {@code null}, falls unsinnige Parameterwerte uebergeben wurden
      * @throws DatasetException
      *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
      *             inkonsistent ist

@@ -1,8 +1,8 @@
 package de.unibremen.swp.stundenplan.command;
 /**
- * Interface als Schnittstelle für weitere Commands.
+ * Interface als Schnittstelle fuer weitere Commands.
  * Implementiert NICHT die Methode execute(), da unsere Execute-Methoden
- * verschiedene Anzahlen von Parametern benötigen.
+ * verschiedene Anzahlen von Parametern benoetigen.
  * 
  * @author Roman
  *
