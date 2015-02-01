@@ -47,7 +47,6 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.exceptions.KuerzelException;
-import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
 import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.exceptions.ZahlException;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
@@ -439,9 +438,8 @@ public class PersonalPanel extends JPanel {
 						JFrame edit = new JFrame("Personal editieren");
 						edit.add(createEditPanel(new JPanel(),
 								list.getSelectedValue()));
-						edit.setLocation(MouseInfo.getPointerInfo()
-								.getLocation().x, MouseInfo.getPointerInfo()
-								.getLocation().y);
+						edit.setLocation((MouseInfo.getPointerInfo()
+								.getLocation().x)-50,list.getParent().getY()+150);
 						edit.pack();
 						edit.setVisible(true);
 					}

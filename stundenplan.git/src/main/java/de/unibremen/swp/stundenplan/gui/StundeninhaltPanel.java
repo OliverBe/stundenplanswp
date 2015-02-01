@@ -239,9 +239,8 @@ public class StundeninhaltPanel extends JPanel {
 						JFrame edit = new JFrame("Bedarf editieren");
 						edit.add(createEditPanel(new JPanel(),
 								list.getSelectedValue()));
-						edit.setLocation(MouseInfo.getPointerInfo()
-								.getLocation().x, MouseInfo.getPointerInfo()
-								.getLocation().y);
+						edit.setLocation((MouseInfo.getPointerInfo()
+								.getLocation().x)-50,list.getParent().getY()+150);
 						edit.pack();
 						edit.setVisible(true);
 					}

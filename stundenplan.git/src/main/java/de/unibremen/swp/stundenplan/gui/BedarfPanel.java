@@ -239,9 +239,8 @@ public class BedarfPanel extends JPanel {
 									JahrgangsManager.getJahrgangByJundSkuerzelFromDB(
 											Integer.parseInt(arr.get(0)),
 											arr.get(1))));
-							edit.setLocation(MouseInfo.getPointerInfo()
-									.getLocation().x, MouseInfo
-									.getPointerInfo().getLocation().y);
+							edit.setLocation((MouseInfo.getPointerInfo()
+									.getLocation().x)-50,list.getParent().getY()+150);
 							edit.pack();
 							edit.setVisible(true);
 						}

@@ -228,9 +228,8 @@ public class RaumfunktionPanel extends JPanel {
 						edit.add(createEditPanel(new JPanel(),
 								list.getSelectedValue()));
 						edit.pack();
-						edit.setLocation(MouseInfo.getPointerInfo()
-								.getLocation().x, MouseInfo.getPointerInfo()
-								.getLocation().y);
+						edit.setLocation((MouseInfo.getPointerInfo()
+								.getLocation().x)-50,list.getParent().getY()+150);
 						edit.setVisible(true);
 					}
 				});
@@ -264,7 +263,7 @@ public class RaumfunktionPanel extends JPanel {
 	private JPanel createEditPanel(final JPanel p, final Raumfunktion rf) {
 		c = new GridBagConstraints();
 		tf2 = new JTextField(20);
-		JButton button2 = new JButton("Funktion editieren");
+		JButton button2 = new JButton("Speichern");
 		JButton button3 = new JButton("Abbrechen");
 
 		p.setLayout(new GridBagLayout());
