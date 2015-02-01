@@ -372,7 +372,7 @@ public class SchoolclassPanel extends JPanel {
 								list.getSelectedValue()));
 						edit.setLocation((MouseInfo.getPointerInfo()
 								.getLocation().x)-20, (MouseInfo.getPointerInfo()
-								.getLocation().y)-100);
+								.getLocation().y)-300);
 						edit.pack();
 						edit.setVisible(true);
 					}
