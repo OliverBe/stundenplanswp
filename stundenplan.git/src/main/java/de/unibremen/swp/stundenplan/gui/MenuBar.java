@@ -186,7 +186,7 @@ public class MenuBar extends JMenuBar {
                 	}
                 }
                 Data.deleteAll();
-				((MainFrame) f).checkSelectedTab();
+				((MainFrame) f).updateAll();
 			}
 		});
 	}
@@ -244,7 +244,7 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
-						((MainFrame) f).checkSelectedTab();
+						((MainFrame) f).updateAll();
 					}
 				});
 

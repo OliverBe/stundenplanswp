@@ -266,6 +266,29 @@ public class MainFrame extends JFrame {
 		};
 	}
 	
+	public void updateAll() {
+		paneStundenplan.popmen.setVisible(false);
+		if(   paneLehrer.getSi().size() != DataStundeninhalt.getAllStundeninhalte().size()
+		   || paneLehrer.getAllPersoKuerzel().size() != DataPersonal.getAllAcronymsFromPersonal().size()
+		   || paneLehrer.getPlanungseinheiten().size() != DataPlanungseinheit.getAllPlanungseinheit().size()
+		   || CommandHistory.isLastEditCommand()) {
+			
+				paneLehrer.removeAll();
+				paneLehrer.init();
+				System.out.println("[DEBUG]: Lehreransicht aktualisiert.");
+		}
+		SchoolclassPanel.updateList();
+		PersonalPanel.updateList();
+		RoomPanel.updateList();
+		RaumfunktionPanel.updateList();
+		StundeninhaltPanel.updateList();
+		BedarfPanel.updateList();
+		paneWochen.update();
+		RaumbelegungsplanPanel.updateLists();
+		StundenplanPanel.updateLists();
+		pack();
+	}
+	
 	public static JTabbedPane getTabPane() {
 		return tabpane;
 	}
