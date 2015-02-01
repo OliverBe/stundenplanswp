@@ -87,6 +87,15 @@ public final class Room{
 	}
 	
 	@Override
+    public boolean equals(Object pr){
+    	if(pr instanceof Room){
+    		Room r = (Room) pr;
+    	return name.equals(r.getName());
+    	}
+    	return false;
+    }
+	
+	@Override
     public String toString() {
         return String.format("Name=%s, Gebaeude=%d", name, gebaeude);
     }

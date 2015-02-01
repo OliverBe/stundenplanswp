@@ -43,6 +43,16 @@ public class Stundeninhalt {
 	public int getRhythmustyp() {
 		return rhythmusTyp;
 	}
+	
+	@Override
+    public boolean equals(Object psi){
+    	if(psi instanceof Stundeninhalt){
+    		Stundeninhalt si = (Stundeninhalt) psi;
+    	return name.equals(si.getName());
+    	}
+    	return false;
+    }
+	
 	@Override
     public String toString() {
         return String.format("%s, %s, %d", name, kuerzel, regeldauer);

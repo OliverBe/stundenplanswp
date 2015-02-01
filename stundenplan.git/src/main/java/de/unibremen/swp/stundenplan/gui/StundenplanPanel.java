@@ -217,6 +217,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		}
 		popmen = new JPopupMenu();
 		final JMenuItem menu1 = new JMenuItem("Neue Planungseinheit");
+		final JMenuItem menu3 = new JMenuItem("Planungseinheit bearbeiten");
 		final JMenuItem menu2 = new JMenuItem("Planungseinheit entfernen");
 
 		menu1.addActionListener(new ActionListener() {
@@ -235,9 +236,20 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 				updatetable();
 			}
 		});
-		popmen.add(menu1);
+		menu3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				popmen.setVisible(false);
+				PEedit frame = getpFrame(t);
+				frame.setVisible(true);
+			}
+		});
+		
 		if (t.getpe() != -1) {
+			popmen.add(menu3);
 			popmen.add(menu2);
+		}else{
+			popmen.add(menu1);
 		}
 		popmen.setLocation(eventX, eventY);
 		popmen.setVisible(true);
@@ -248,7 +260,11 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private PEedit getpFrame(Timeslot pt, Object owner) {
 		return new PEedit(this, pt, owner);
 	}
-
+	
+	private PEedit getpFrame(Timeslot pt) {
+		return new PEedit(this, pt.getpe());
+	}
+	
 	/**
 	 * updated die GUI und die Listen. wird ausgef���hrt sobald eine relevante
 	 * ���nderung in der Datenbank geschieht. Wird von anderen Klassen statisch

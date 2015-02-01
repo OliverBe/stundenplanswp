@@ -79,6 +79,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int i = 0;
+		pe.getPersonalMap().clear();
 		for (Personal p : pList) {
 			if (PlanungseinheitManager.checkTimeInPE(pe,
 					(int) shspinner[i].getValue(),
@@ -130,7 +131,11 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 							"Mindestens eine Personal muss in der gesamten Dauer des Planungseinheites sein.");
 			return;
 		}
+		if(pe.getId()!= -1){
+			PlanungseinheitManager.editPlanungseinheit(pe.getId(), pe);
+		}else{
 		PlanungseinheitManager.addPlanungseinheitToDB(pe);
+		}
 		saved = true;
 		dispose();
 	}
@@ -165,11 +170,21 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 	private JPanel[] givestartTimePanelforPersonal() {
 		JPanel[] panels = new JPanel[pList.size()];
 		int i = 0;
+		int sh;
+		int sm;
 		for (Personal p : pList) {
+			int[] times = pe.getTimesofPersonal(p);
+			if(pe.getTimesofPersonal(p)!= null){
+				sh = times[0];
+				sm = times[1];
+			}else{
+				sh = pe.getStartHour();
+				sm = pe.getStartminute();
+			}
 			panels[i] = new JPanel();
-			SpinnerModel hourmodel = new SpinnerNumberModel(pe.getStartHour(),
+			SpinnerModel hourmodel = new SpinnerNumberModel(sh,
 					pe.getStartHour(), pe.getEndhour(), 1);
-			SpinnerModel minmodel = new SpinnerNumberModel(pe.getStartminute(), 0, 59,
+			SpinnerModel minmodel = new SpinnerNumberModel(sm, 0, 59,
 					Timeslot.timeslotlength());
 			shspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(shspinner[i]);
@@ -183,11 +198,21 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 	private JPanel[] giveendTimePanelforPersonal() {
 		JPanel[] panels = new JPanel[pList.size()];
 		int i = 0;
+		int eh;
+		int em;
 		for (Personal p : pList) {
+			int[] times = pe.getTimesofPersonal(p);
+			if(pe.getTimesofPersonal(p)!= null){
+				eh = times[2];
+				em = times[3];
+			}else{
+				eh = pe.getEndhour();
+				em = pe.getEndminute();
+			}
 			panels[i] = new JPanel();
-			SpinnerModel hourmodel = new SpinnerNumberModel(pe.getEndhour(),
+			SpinnerModel hourmodel = new SpinnerNumberModel(eh,
 					pe.getStartHour(), pe.getEndhour(), 1);
-			SpinnerModel minmodel = new SpinnerNumberModel(pe.getEndminute(), 0, 59,
+			SpinnerModel minmodel = new SpinnerNumberModel(em, 0, 59,
 					Timeslot.timeslotlength());
 			ehspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(ehspinner[i]);

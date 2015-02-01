@@ -165,14 +165,6 @@ public class PEedit extends JFrame {
 		if(pe.getRooms().size()>1){
 			bandselect.setSelected(true);
 		}
-		pList.clearSourceListModel();
-		pList.clearDestinationListModel();
-		sIList.clearSourceListModel();
-		sIList.clearDestinationListModel();
-		scList.clearSourceListModel();
-		scList.clearDestinationListModel();
-		roomList.clearSourceListModel();
-		roomList.clearDestinationListModel();
 	}
 
 	private void init() {
@@ -221,7 +213,10 @@ public class PEedit extends JFrame {
 		pList = new DualListBox("Alle Lehrer", " Lehrer im Planungseinheit",
 				PersonalComparator);
 		ArrayList<Personal> plist = DataPersonal.getAllPersonal();
-		
+		if(pe!=null){
+			plist.removeAll(pe.getPersonal());
+			pList.addDestinationElements(pe.getPersonal().toArray());
+		}
 		if(owner instanceof Personal){
 			if (plist.contains(owner)){
 				plist.remove(owner);
@@ -232,12 +227,20 @@ public class PEedit extends JFrame {
 		getContentPane().add(pList);
 		sIList = new DualListBox("Verfuegbare Stundeninhalte",
 				" Stundeninhalte im Planungseinheit", SIComparator);
-		sIList.addSourceElements(DataStundeninhalt.getAllStundeninhalte()
-				.toArray());
+		ArrayList<Stundeninhalt> silist = DataStundeninhalt.getAllStundeninhalte();
+		if(pe!=null){
+		silist.removeAll(PlanungseinheitManager.getSIforPE(pe));
+		sIList.addDestinationElements(PlanungseinheitManager.getSIforPE(pe).toArray());
+		}
+		sIList.addSourceElements(silist.toArray());
 		getContentPane().add(sIList);
 		scList = new DualListBox("Alle Klassen", " Klassen im Planungseinheit",
 				SCComparator);
 		ArrayList<Schoolclass> sclist = DataSchulklasse.getAllSchulklasse();
+		if(pe!=null){
+		sclist.removeAll(PlanungseinheitManager.getSCforPE(pe));
+		scList.addDestinationElements(PlanungseinheitManager.getSCforPE(pe).toArray());
+		}
 		if(owner instanceof Schoolclass){
 			System.out.println(owner);
 			if (sclist.contains(owner)){
@@ -249,8 +252,16 @@ public class PEedit extends JFrame {
 		getContentPane().add(scList);
 		roomList = new DualListBox("Alle Raeume", " Raeume im Planungseinheit",
 				RoomComparator);
-		roomList.addSourceElements(DataRaum.getAllRaum().toArray());
+		ArrayList<Room> rlist = DataRaum.getAllRaum();
+		if(pe!=null){
+		rlist.removeAll(PlanungseinheitManager.getRforPE(pe));
+		roomList.addDestinationElements(PlanungseinheitManager.getRforPE(pe).toArray());
+		}
+		roomList.addSourceElements(rlist.toArray());
 		getContentPane().add(roomList);
+		pe.getSchoolclasses().clear();
+		pe.getRooms().clear();
+		pe.getStundeninhalte().clear();
 		button = new JButton("Planungseinheiten speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -267,7 +278,12 @@ public class PEedit extends JFrame {
 									"Nur Band-Unterricht kann mehrere Stundeninhalte, Klassen und Raeume haben");
 					return;
 				}
-				Planungseinheit p = new Planungseinheit();
+				Planungseinheit p;
+				if(pe!=null){
+				 p = pe;
+				}else{
+				 p = new Planungseinheit();
+				}
 				p.setStarthour((int) spinner1.getValue());
 				p.setStartminute((int) spinner2.getValue());
 				p.setEndhour((int) spinner3.getValue());
@@ -493,10 +509,8 @@ public class PEedit extends JFrame {
 					}
 
 				}
-				
-				
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
-						getmyFrame(), listp, p);
+							getmyFrame(), listp, pe);
 				if (pdialog.getsaved()) {
 					parentframe.updatetable();
 					parentframe.updateLists();

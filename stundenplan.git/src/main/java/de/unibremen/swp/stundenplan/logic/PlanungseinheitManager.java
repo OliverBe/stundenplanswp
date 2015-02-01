@@ -14,8 +14,11 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
+import de.unibremen.swp.stundenplan.db.DataSchulklasse;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 public final class PlanungseinheitManager {
 
@@ -258,6 +261,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
 		if(pPe.getStundeninhalte().size() == 0){return false;}
+		if(pPe.getSchoolclasses().size() == 0){return false;}
 		if(pPer.getMoeglicheStundeninhalte().size() == 0){return true;}
 			for(String si : pPe.getStundeninhalte()){
 				if(!pPer.getMoeglicheStundeninhalte().contains(si)){
@@ -277,6 +281,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static boolean roomsiCheck(final Room pr, final Planungseinheit pPe){
 		if(pr.getMoeglicheFunktionen().size()==0){return true;}
+		if(pPe.getSchoolclasses().size() == 0){return false;}
 		if(pPe.getStundeninhalte().size() == 0){return false;}
 		for(String s : pr.getMoeglicheFunktionen()){
 		Raumfunktion rf = DataRaum.getRaumfunktionByName(s);
@@ -498,7 +503,31 @@ public final class PlanungseinheitManager {
 		p2.setStartminute(15);
 		System.out.println("2pecomparison : true " + checktwoPEs(p1, p2));
 	}
-
+	
+	public static ArrayList<Schoolclass> getSCforPE(Planungseinheit pPE){
+		ArrayList<Schoolclass> scList = new ArrayList<Schoolclass>();
+		for(String s: pPE.getSchoolclasses()){
+			scList.add(DataSchulklasse.getSchulklasseByName(s));
+		}
+		return scList;
+	}
+	
+	public static ArrayList<Room> getRforPE(Planungseinheit pPE){
+		ArrayList<Room> rList = new ArrayList<Room>();
+		for(String s: pPE.getRooms()){
+			rList.add(DataRaum.getRaumByName(s));
+		}
+		return rList;
+	}
+	
+	public static ArrayList<Stundeninhalt> getSIforPE(Planungseinheit pPE){
+		ArrayList<Stundeninhalt> siList = new ArrayList<Stundeninhalt>();
+		for(String s: pPE.getStundeninhalte()){
+			siList.add(DataStundeninhalt.getStundeninhaltByKuerzel(s));
+		}
+		return siList;
+	}
+	
 	/**
 	 * Gibt alle Planungseinheiten in der DB als ArrayList zurueck
 	 */
