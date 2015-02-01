@@ -12,7 +12,7 @@ import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 public class Planungseinheit{
 
-    private int id;
+    private int id = -1;
 	
 	//lehrerkuerzel, time[2] (anfangs,endzeit)
 	private HashMap<String, int[]> personal = new HashMap<String, int[]>(); 
@@ -258,6 +258,10 @@ public class Planungseinheit{
 		return endMin;
 	}
 	
+	/**
+	 * setzt die Endminute der PE
+	 * @param pEndminute neue Endminute
+	 */
 	public void setEndminute(final int pEndminute){
 		if(pEndminute < 0){throw new IllegalArgumentException("Argument must not be less than 0");}
 		endMin = pEndminute;
@@ -272,6 +276,10 @@ public class Planungseinheit{
 	    return dur;
 	}
 	
+	/**
+	 * setzt die ID der PE 
+	 * @param pId neue ID der PE
+	 */
 	public void setId(int pId){
 	 id = pId;	
 	}

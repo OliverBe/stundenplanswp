@@ -34,6 +34,16 @@ public class Raumfunktion {
 	public ArrayList<String> getStundeninhalte() {
 		return stundeninhalte;
 	}
+	
+	public String getmSI(){
+		StringBuilder sb = new StringBuilder();
+	    for (String st : stundeninhalte) { 
+	    	sb.append(st);
+	        sb.append(',');
+	    }
+	    if (stundeninhalte.size() != 0){ sb.deleteCharAt(sb.length()-1);}
+	    return sb.toString();
+	}
 
 	public void setStundeninhalte(ArrayList<String> pStundeninhalte) {
 		stundeninhalte = pStundeninhalte;

@@ -52,11 +52,20 @@ public final class TimetableManager {
     private TimetableManager() {
     }
     
+    /**
+     * gibt eine Array der geplanten Wochentagen zurück, wird in Timetablemodel benutzt um 
+     * die Berrechnung der Anzahl und die Beschriftung der Spalten benutzt 
+     * @return
+     */
     public static Weekday[] validdays(){
        Weekday[] w = new Weekday[givevaliddays().size()];
        return givevaliddays().toArray(w);
     }
     
+    /**
+     * gibt eine Liste der geplanten Wochentagen zurueck.
+     * @return
+     */
     private static ArrayList<Weekday> givevaliddays(){
     	final ArrayList<Weekday> schooldays = new ArrayList<Weekday>();
     	for(final Weekday weekday : Weekday.values()){
@@ -66,7 +75,12 @@ public final class TimetableManager {
     }
 
 
-    
+    /**
+     * prueft ob zwei Calendareinheiten die gleiche Zeitpunkt  am Tag besitzt
+     * @param cal1 erste Calendarobjekt
+     * @param cal2 zweite Calendarobjekt
+     * @return gibt true zurueck falls die Stunden und Minuten gleich sind
+     */
     private static boolean sametimeofday(Calendar cal1, Calendar cal2){
  	   boolean sametime = cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
                 cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE);
@@ -170,6 +184,12 @@ public final class TimetableManager {
         return dayTable;
    }
     
+    /**
+     * Berechnet die Anzahl der Timeslots die in einem Planungseinheiten passen,(es muss genau passen)
+     * und beschriftet die Timeslots mit den notwendigen Informationen
+     * @param pPE
+     * @return gibt eine Liste von Timeslots zurueck
+     */
     private static ArrayList<Timeslot> planungsEinheitToTimeslot(final Planungseinheit pPE){
     	ArrayList<Timeslot> timeslots = new ArrayList<Timeslot>();
     	int timeslotcount = duration(pPE.getStartHour(), pPE.getStartminute(), pPE.getEndhour(), pPE.getEndminute());
@@ -200,16 +220,6 @@ public final class TimetableManager {
     
     
     
-    public static void peTest(){
-    	DayTable tp = createTimeslotsForPES(PlanungseinheitManager.demomethod(Weekday.values()[0]), Weekday.values()[0]);
-    	System.out.println(tp.timeslots.size());
-    	for(int i = 0; i<daytablelength();i++){
-    		Timeslot t = tp.getTimeslot(i);
-    		System.out.println("Test"+t.getTimeDisplay());
-    	}
-    }
-    
-    
     /**
      * testet Planungseinheit in timeslot Konversion
      */
@@ -229,8 +239,8 @@ public final class TimetableManager {
     
     
     /**
-     * Gibt die Zeiteinheit an der gegebenen Position f��r den gegebenen Wochentag zur��ck. Falls die Index-Angaben
-     * au��erhalb der jeweils g��ltigen Bereiche liegen, wird {@code null} zur��ckgegeben.
+     * Gibt die Zeiteinheit an der gegebenen Position fuer den gegebenen Wochentag zurueck. Falls die Index-Angaben
+     * ausserhalb der jeweils gueltigen Bereiche liegen, wird {@code null} zuruwckgegeben.
      * 
      * @param weekday
      *            der Wochentag der gesuchten Zeiteinheit
@@ -257,7 +267,7 @@ public final class TimetableManager {
     }
 
     /**
-     * Gibt eine Zeichenkette zur Anzeige in der GUI f��r die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
+     * Gibt eine Zeichenkette zur Anzeige in der GUI fuer die Zeiteinheit an der gegebenen Position. Die erste Zeiteinheit
      * befindet sich an Position 0.
      * 
      * @param position
@@ -277,31 +287,55 @@ public final class TimetableManager {
         display += String.format("%02d:%02d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
         return display;
     }
-
+    
+    /**
+     * gibt die sespeicherte Startminute von Wochentagen zurueck
+     * @return
+     */
     public static int startTimeMinute() {
 	// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_STARTTIME_MINUTE_STRING,
 	            Config.DAY_STARTTIME_MINUTE);
 	}
-
+    
+    /**
+     * gibt die sespeicherte Startstunde von Wochentagen zurueck
+     * @return
+     */
 	public static int startTimeHour() {
 		// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_STARTTIME_HOUR_STRING,
 	            Config.DAY_STARTTIME_HOUR);
 	}
-
+	
+	/**
+     * gibt die sespeicherte Endminute von Wochentagen zurueck
+     * @return
+     */
 	public static int endTimeMinute() {
 	// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_ENDTIME_MINUTE_STRING,
 	            Config.DAY_ENDTIME_MINUTE);
 	}
-
+	
+	/**
+     * gibt die sespeicherte Endstunde von Wochentagen zurueck
+     * @return
+     */
 	public static int endTimeHour() {
 		// TODO Auto-generated method stub
 		return Config.getInt(Config.DAY_ENDTIME_HOUR_STRING,
 	            Config.DAY_ENDTIME_HOUR);
 	}
 	
+	/**
+	 * berechnet die Dauer von Startzeitpunkt zum Endzeitpunkt
+	 * @param pStarthour Stundeziffer der Startzeitpunkt
+	 * @param pStartminute	Minutenziffer der Startzeitpunkt
+	 * @param pEndhour	Stundenziffer der Endzeitpunkt
+	 * @param pEndminute	Minutenziffer der Endzeitpunkt
+	 * @return Dauer in Minuten
+	 */
 	public static int duration(final int pStarthour,final int pStartminute,final int pEndhour,final int pEndminute){
 		final Calendar starttime = Calendar.getInstance();
 		starttime.set(Calendar.HOUR_OF_DAY, pStarthour);
@@ -323,8 +357,10 @@ public final class TimetableManager {
         long timeDifMinutes = timeDifInMilliSec / (60 * 1000);
         return (int) timeDifMinutes;
 	}
-	/*
+	
+	/**
 	 * errechnet die Anzahl der Timeslots die in dem Tag passt
+	 * @return gibt die Anzahl der Timeslot in einem Tag zurueck
 	 */
 	public static int daytablelength() {
 		int dur = duration(startTimeHour(),startTimeMinute(),endTimeHour(),endTimeMinute());
@@ -335,61 +371,43 @@ public final class TimetableManager {
         return dur/Timeslot.timeslotlength();
 	}
 
-//    /**
-//     * Aktualisiert die Werte f��r die gegebene Zeiteinheit im Datenbestand.
-//     * 
-//     * @param pTimeslot
-//     *            die zu aktualisierende Zeiteinheit
-//     * @throws DatasetException
-//     *             falls bei der Aktualisierung ein Fehler in der unterliegenden Persistenzkomponente auftritt oder das
-//     *             gegebene Objekt noch nicht im Datenbestand existiert
-//     */
-//    public static void updateTimeslot(final Timeslot pTimeslot) throws DatasetException {
-//        Data.updateTimeslot(pTimeslot);
-//    }
+
 	
-	///**
-	// * Repr��sentiert einen Tagesplan eines Stundenplans an einem bestimmten Wochentag. Verwaltet eine Liste von
-	// * Zeiteinheiten. Jeder Tagesplan verwaltet innerhalb eines Stundenplans die gleiche Anzahl von Zeiteinheiten. Diese
-	// * Anzahl ist konfigurierbar und per Default auf {@linkplain Config#DAYTABLE_LENGTH_DEFAULT} festgelegt. Alle Tagespl��ne
-	// * beginnen zur gleichen konfigurierbaren Uhrzeit. Diese Startzeit ist per Default festgelegt auf die Stunde
-	// * {@linkplain Config#DAYTABLE_STARTTIME_HOUR_DEFAULT} und die Minute
-	// * {@linkplain Config#DAYTABLE_STARTTIME_MINUTE_DEFAULT}. Die Endzeit des Tagesplans ergibt sich dann aus der Startzeit
-	// * und der Anzahl der Zeiteinheiten.
-	// * 
-	// * @author F.Vidjaja
-	// * @version 0.1
-	// */
+	/**
+	 * eine private Hilfsklasse die, die Timeslots an die Tabelle verknuepft
+	 * @author F.Vidjaja
+	 * @version 0.1
+	 */
 	private static class DayTable {
 		
 	
-//	    /**
-//	     * Die Liste von Zeiteinheiten, aufsteigend sortiert nach ihren Anfangszeiten.
-//	     */
+	    /**
+	     * Die Liste von Zeiteinheiten, aufsteigend sortiert nach ihren Anfangszeiten.
+	     */
 	    private List<Timeslot> timeslots;
 	
-//	    /**
-//	     * Der Wochentag dieses Tagesplans.
-//	     */
+	    /**
+	     * Der Wochentag dieses Tagesplans.
+	     */
 	    private Weekday weekday;
 	    
 	    
 	
-//	    /**
-//	     * Erzeugt einen neuen Tagesplan mit einer leeren Liste von Zeiteinheiten.
-//	     */
+	    /**
+	     * Erzeugt einen neuen Tagesplan mit einer leeren Liste von Zeiteinheiten.
+	     */
 	    public DayTable(final Weekday pWeekday) {
 	        timeslots = new ArrayList<>();
 	        weekday = pWeekday;
 	    }
 		    
-//	    /**
-//	     * F��gt die ��bergebene Zeiteinheit zu diesem Tagesplan hinzu. L��st eine {@link IllegalArgumentException} aus, falls
-//	     * die ��bergebene Zeiteinheit {@code null} ist
-//	     * 
-//	     * @param pTimeslot
-//	     *            die hinzuzuf��gende Zeiteinheit
-//	     */
+	    /**
+	     * Fuegt die uebergebene Zeiteinheit zu diesem Tagesplan hinzu. Loest eine {@link IllegalArgumentException} aus, falls
+	     * die uebergebene Zeiteinheit {@code null} ist
+	     * 
+	     * @param pTimeslot
+	     *            die hinzuzufuegende Zeiteinheit
+	     */
 	    public void addTimeslot(final Timeslot pTimeslot) {
 	        if (pTimeslot == null) {
 	            throw new IllegalArgumentException("FIXME: configured exception string");
@@ -397,13 +415,13 @@ public final class TimetableManager {
 	        timeslots.add(pTimeslot);
 	    }
 
-//	    /**
-//	     * F��gt die ��bergebene Zeiteinheit zu diesem Tagesplan hinzu. L��st eine {@link IllegalArgumentException} aus, falls
-//	     * die ��bergebene Zeiteinheit {@code null} ist
-//	     * 
-//	     * @param pTimeslot
-//	     *            die hinzuzufuegende Zeiteinheit
-//	     */
+	    /**
+	     * Fuegt die uebergebene Zeiteinheit zu diesem Tagesplan hinzu. Loest eine {@link IllegalArgumentException} aus, falls
+	     * die uebergebene Zeiteinheit {@code null} ist
+	     * 
+	     * @param pTimeslot
+	     *            die hinzuzufuegende Zeiteinheit
+	     */
 	    public void addTimeslot(final ArrayList<Timeslot> pTimeslots) {
 	        if (pTimeslots == null || pTimeslots.size() == 0) {
 	            throw new IllegalArgumentException("FIXME: configured exception string");
@@ -411,27 +429,31 @@ public final class TimetableManager {
 	        timeslots.addAll(pTimeslots);
 	    }
 	    
-//	    /**
-//	     * Gibt den Wochentag dieses Tagesplans zurueck.
-//	     * 
-//	     * @return den Wochentag dieses Tagesplans
-//	     */
+	    /**
+	     * Gibt den Wochentag dieses Tagesplans zurueck.
+	     * 
+	     * @return den Wochentag dieses Tagesplans
+	     */
 	    public Weekday getWeekday() {
 	        return weekday;
 	    }
 	    
+	    /**
+	     * Gibt die Laenge der Liste von Timeslots zurueck
+	     * @return
+	     */
 	    public int slotslength(){
 	    	return timeslots.size();
 	    }
 	
-//	    /**
-//	     * Gibt die Zeiteinheit am gegebenen Positionsindex zur��ck oder {@code null} falls ein ung��ltiger Positionsindex
-//	     * zur��ckgegeben wurde. Die erste Zeiteinheit des Tagesplans beginnt bei Index 0.
-//	     * 
-//	     * @param position
-//	     *            die Position der gesuchten Zeiteinheit
-//	     * @return die gesuchte Zeiteinheit oder {@code null}, falls eine ung��ltige Position ��bergeben wurde
-//	     */
+	    /**
+	     * Gibt die Zeiteinheit am gegebenen Positionsindex zurueck oder {@code null} falls ein ungueltiger Positionsindex
+	     * zurueckgegeben wurde. Die erste Zeiteinheit des Tagesplans beginnt bei Index 0.
+	     * 
+	     * @param position
+	     *            die Position der gesuchten Zeiteinheit
+	     * @return die gesuchte Zeiteinheit oder {@code null}, falls eine ungueltige Position uebergeben wurde
+	     */
 	    public Timeslot getTimeslot(final int position) {
 	        if (position >= 0 && position < timeslots.size()) {
 	            return timeslots.get(position);

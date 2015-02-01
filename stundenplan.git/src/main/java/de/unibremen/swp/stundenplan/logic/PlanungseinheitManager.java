@@ -11,13 +11,11 @@ import de.unibremen.swp.stundenplan.command.EditPlanungseinheit;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
+import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
-import de.unibremen.swp.stundenplan.db.DataSchulklasse;
-import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
 
@@ -106,7 +104,7 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * Soll Planungseinheiten in einer Liste von einem Personal an einem Tag
+	 * Soll Planungseinheiten in einer Liste von einer Schulklasse an einem Tag
 	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
 	 * 
 	 * @param pWeekday
@@ -139,28 +137,12 @@ public final class PlanungseinheitManager {
 		return pes;
 	}
 
-	public static Planungseinheit timeslotToPE(Timeslot pTs, Object pOwner) {
-		// TO-DO findet heraus ob in dem Timeslot eine Planungseinheit befindet,
-		// und gibt diese zurueck.
-		ArrayList<Planungseinheit> pes;
-		if (pOwner instanceof Personal) {
-			pes = getPEForPersonalbyWeekday(pTs.getDay(), (Personal) pOwner);
-		} else if (pOwner instanceof Room) {
-			pes = getPEForRoombyWeekday(pTs.getDay(), (Room) pOwner);
-		} else if (pOwner instanceof Schoolclass) {
-			pes = getPEForSchoolclassbyWeekday(pTs.getDay(),
-					(Schoolclass) pOwner);
-		} else {
-			return null;
-		}
-		Planungseinheit thisismyPE = null;
-		for (Planungseinheit p : pes) {
-			if (checkPEandStartTime(p, pTs.getsHour(), pTs.getsMinute()))
-				;
-		}
-		return thisismyPE;
-	}
-
+	
+	/**
+	 * ordnet eine Liste von Planungseinheiten nach Zeit, die Liste soll nur Planungseinheiten
+	 * von einem Tag beinhalten
+	 * @param pPE die Liste von Planungseinheiten
+	 */
 	public static void orderByTime(List<Planungseinheit> pPE) {
 		Collections.sort(pPE, new Comparator<Planungseinheit>() {
 			@Override
@@ -174,6 +156,10 @@ public final class PlanungseinheitManager {
 		});
 	}
 
+	/**
+	 * ordnet eine Liste von Planungseinheiten nach id-Nummer
+	 * @param pPE die Liste von Planungseinheiten
+	 */
 	public static void orderByID(List<Planungseinheit> pPE) {
 		Collections.sort(pPE, new Comparator<Planungseinheit>() {
 			@Override
@@ -184,7 +170,7 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * Testet order()
+	 * Testet orderByTime()
 	 */
 	public static void ordertest() {
 		Planungseinheit pe1 = new Planungseinheit();
@@ -241,7 +227,13 @@ public final class PlanungseinheitManager {
 		}
 		return counter;
 	}
-	
+	 /**
+	  * prueft ob die geplante Planungseinheit mit dem Wunschzeiten der Personal
+	  * uebereinstimmen
+	  * @param pPer Personal die in die Planungseinheit hinzugefuegt werden soll
+	  * @param pPe	neue Planungseinheit die gprueft wird
+	  * @return	gibt true zurueck, falls die Zeiten der Planungseinheiten ausserhalb der Wunschzeiten sind
+	  */
 	public static boolean personalWZCheck(final Personal pPer,
 			final Planungseinheit pPe) {
 		int[] wunschzeiten = pPer.getWunschzeitForWeekday(pPe.getWeekday());
@@ -250,14 +242,23 @@ public final class PlanungseinheitManager {
 		p.setStartminute(wunschzeiten[1]);
 		p.setEndhour(wunschzeiten[2]);
 		p.setEndminute(wunschzeiten[3]);
+		p.setId(0);
 		if (!checktwoPEs(pPe, p)) {
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Prueft ob Personal fuer die geplanten Stundeninhalte im Planungseinheit
+	 * eingetragen ist, falls Personal fuer keine SI eingetragen ist, wird die Pruefung beendet.
+	 * @param pPer Personal die in die Planung eingetragen werden soll
+	 * @param pPe	Planungseinheit die geprueft wird
+	 * @return gibt true zurueck, falls Stundeninhalte im PE nicht fuer die Personal eingetragen ist.
+	 */
 	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
 		if(pPe.getStundeninhalte().size() == 0){return false;}
+		if(pPer.getMoeglicheStundeninhalte().size() == 0){return true;}
 			for(String si : pPe.getStundeninhalte()){
 				if(!pPer.getMoeglicheStundeninhalte().contains(si)){
 				return true;
@@ -267,10 +268,37 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 	
+	/**
+	 * Prueft ob Raum fuer die geplanten Stundeninhalte im Planungseinheit
+	 * eingetragen ist, falls Raum fuer keine SI eingetragen ist, wird die Pruefung beendet.
+	 * @param pr   Raum die in der Planung eingetragen werden soll
+	 * @param pPe	Planungseinheit die geprueft wird
+	 * @return gibt true zurueck, falls Stundeninhalte im PE nicht fuer die Raum eingetragen ist.
+	 */
+	public static boolean roomsiCheck(final Room pr, final Planungseinheit pPe){
+		if(pr.getMoeglicheFunktionen().size()==0){return true;}
+		if(pPe.getStundeninhalte().size() == 0){return false;}
+		for(String s : pr.getMoeglicheFunktionen()){
+		Raumfunktion rf = DataRaum.getRaumfunktionByName(s);
+			for(String si : pPe.getStundeninhalte()){
+				if(!rf.getStundeninhalte().contains(si)){
+				return true;
+				}	
+			}
+		}
+		return false;
+	}
+	
 	public static int newTimeforPers(final int oldtime, final int newtimemin){
 		return oldtime + (newtimemin/60);
 	}
 	
+	/**
+	 * prueft ob die neue Planung die Istzeit den Sollzeit uebersteigt
+	 * @param pPers
+	 * @param newtimemin
+	 * @return
+	 */
 	public static boolean overtimePers(final Personal pPers, final int newtimemin){
 		int newizeit = newTimeforPers(pPers.getIstZeit(), newtimemin);
 		System.out.println("oldistZeit="+pPers.getIstZeit());
@@ -283,12 +311,13 @@ public final class PlanungseinheitManager {
 	}
 	
 	/**
-	 * TO-DO prueft ob zwei Planungseinheiten sich ueberschneiden im selben Tag.
+	 * prueft ob zwei Planungseinheiten sich ueberschneiden im selben Tag.
 	 * 
 	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
+		if(p1.getId() == p2.getId()){return false;}
 		if (checkPEandStartTime(p1, p2.getStartHour(), p2.getStartminute())) {
 			return true;
 		} else if (checkPEandEndTime(p1, p2.getEndhour(), p2.getEndminute())) {
@@ -301,7 +330,14 @@ public final class PlanungseinheitManager {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * prueft ob Zeit zwischen die Zeiten des PE ist, War prototyp der Methoden
+	 * @param p1 PE
+	 * @param hour Stunde der Zeit
+	 * @param minute Minute der Zeit
+	 * @return gibt true zurueck falls Zeit im PE befindet
+	 */
 	private static boolean checkPEandTime(final Planungseinheit p1,
 			final int hour, final int minute) {
 		if (hour > p1.getStartHour() && hour < p1.getEndhour()) {
@@ -318,7 +354,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
+	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checkPersonPE(final Personal p,
 			final Planungseinheit pe, final Weekday day) {
@@ -333,7 +369,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
+	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checkRoomPE(final Room r, final Planungseinheit pe,
 			final Weekday day) {
@@ -348,7 +384,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft auf ueberschneidungen von PE fuer Personal
 	 * 
-	 * @return gibt true zur��ck wenn die PEs sich ��berlappen
+	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checkScPE(final Schoolclass sc,
 			final Planungseinheit pe, final Weekday day) {
@@ -361,9 +397,10 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
-	 * 
-	 * @return
+	 * prueft ob Startzeitpunkt sich mit PE ueberschneidet im selben Tag.
+	 * prueft bis auf die letzte Minute der PE, da Startzeit und Endzeit zwei 
+	 * folgenden PE gleich sein kann
+	 * @return gibt true zurueck falls es sich ueberscheiden,
 	 */
 	public static boolean checkPEandStartTime(final Planungseinheit p1,
 			final int hour, final int minute) {
@@ -384,9 +421,10 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * TO-DO prueft ob Zeitpunkt sich mit PE ueberschneidet im selben Tag.
-	 * 
-	 * @return
+	 *prueft ob Endzeitpunkt sich mit PE ueberschneidet im selben Tag.
+	 * prueft bis auf die erste Minute der PE, da Endzeit und Startzeit zwei 
+	 * folgenden PE gleich sein kann
+	 * @return gibt true zurueck falls die Endzeit mit dem PE ausser der ersten Minute ueberlappt
 	 */
 	public static boolean checkPEandEndTime(final Planungseinheit p1,
 			final int hour, final int minute) {
@@ -409,15 +447,21 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * TO-DO prueft ob Zeitpunkt nicht im PE befindet, im selben Tag.
+	 * prueft ob Zeitpunkt nicht im PE befindet, im selben Tag.
 	 * 
-	 * @return
+	 * @return gibt true zurueck wenn Zeit nicht im 
 	 */
 	public static boolean checkTimeInPE(final Planungseinheit p1,
 			final int hour, final int minute) {
 		if (hour < p1.getStartHour() && hour > p1.getEndhour()) {
 			return true;
-		} else if (hour == p1.getStartHour() && minute < p1.getStartminute()) {
+		}  else if ((hour == p1.getStartHour() && hour == p1.getEndhour())) {
+			if (minute < p1.getStartminute() && minute > p1.getEndminute()) {
+				return true;
+			} else {
+				return false;
+			}
+		}  else if (hour == p1.getStartHour() && minute < p1.getStartminute()) {
 			return true;
 		} else if (hour == p1.getEndhour() && minute > p1.getEndminute()) {
 			return true;
@@ -425,6 +469,9 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 
+	/**
+	 * teste die Zeitueberlappungpruefung
+	 */
 	public static void checkPetimetest() {
 		Planungseinheit p1 = new Planungseinheit();
 		p1.setStarthour(9);

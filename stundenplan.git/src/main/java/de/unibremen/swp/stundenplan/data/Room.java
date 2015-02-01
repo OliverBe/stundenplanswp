@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import de.unibremen.swp.stundenplan.logic.RaumManager;
+
 
 public final class Room{
 
@@ -35,7 +37,7 @@ public final class Room{
     }
     
     /**
-     * Gibt den Namen dieses Raumes zurück.
+     * Gibt den Namen dieses Raumes zur��ck.
      * 
      * @return den Namen dieses Raumes
      */
@@ -71,6 +73,17 @@ public final class Room{
 	
 	public void addMoeglicheFunktionen(final String funktion){
 		moeglicheFunktionen.add(funktion);
+	}
+	
+	public String getmSI(){
+		StringBuilder sb = new StringBuilder();
+	    for (String st : moeglicheFunktionen) { 
+	    	Raumfunktion rf = RaumManager.getRaumfunktionByName(st);
+	    	sb.append(rf.getmSI());
+	    	sb.append(',');
+	    }
+	    if (moeglicheFunktionen.size() != 0){ sb.deleteCharAt(sb.length()-1);}
+	    return sb.toString();
 	}
 	
 	@Override

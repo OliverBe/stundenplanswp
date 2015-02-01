@@ -355,6 +355,24 @@ public class PEedit extends JFrame {
 				it = roomList.destinationIterator();
 				while (it.hasNext()) {
 					Room r = (Room) it.next();
+					if (PlanungseinheitManager.roomsiCheck(r, p)) {
+						int result = JOptionPane.showOptionDialog(
+								null,
+								"Raum "
+										+ r.getName()
+										+ " ist nicht fuer die geplante Stundeninhalte eingetragen. \n Stundeninhalte von Raum : "
+										+ r.getmSI()
+										+ " \n Stundeninhalte im Planung :"
+										+ p.stundenInhaltetoString(),
+								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
+								options, null);
+						if (result == 0) {
+							WarningPanel.setText("Konflikt : inkompatibles SI "
+									+ r.getName());
+						} else {
+							return;
+						}
+					}
 					if (PlanungseinheitManager.checkRoomPE(r, p, p.getWeekday())) {
 						JOptionPane.showMessageDialog(null,
 								"Raum " + r.getName()
@@ -421,7 +439,7 @@ public class PEedit extends JFrame {
 										+ pers.getName()
 										+ " ist nicht fuer die geplante Stundeninhalte eingetragen. \n Stundeninhalte von Personal : "
 										+ pers.getmSI()
-										+ " \n Stundeninhalte im Planung "
+										+ " \n Stundeninhalte im Planung :"
 										+ p.stundenInhaltetoString(),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
@@ -438,7 +456,7 @@ public class PEedit extends JFrame {
 								null,
 								"Personal "
 										+ pers.getName()
-										+ " ist zum geplanten Zeitspanne nicht verfügbar",
+										+ " ist zum geplanten Zeitspanne nicht verfügbar \n Anwesenheit der Personal :" + printWZ(pers.getWunschzeitForWeekday(p.getWeekday())),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
 						if (result == 0) {
@@ -501,7 +519,20 @@ public class PEedit extends JFrame {
 		nlist[0] = powner;
 		return nlist;
 	}
-
+	
+	private String printWZ(int[] wZ){
+		if(wZ.length != 4){return "";}
+		StringBuilder sb = new StringBuilder();
+		sb.append(wZ[0]);
+		sb.append(":");
+		sb.append(wZ[1]);
+		sb.append(" - ");
+		sb.append(wZ[2]);
+		sb.append(":");
+		sb.append(wZ[3]);
+		return sb.toString();
+	}
+	
 	private JFrame getmyFrame() {
 		return this;
 	}

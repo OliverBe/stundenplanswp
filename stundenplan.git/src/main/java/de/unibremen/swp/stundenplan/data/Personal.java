@@ -188,6 +188,7 @@ public final class Personal {
 	public String getmSI(){
 		StringBuilder sb = new StringBuilder();
 	    for (String st : moeglicheStundeninhalte) { 
+	    	sb.append(st);
 	        sb.append(',');
 	    }
 	    if (moeglicheStundeninhalte.size() != 0){ sb.deleteCharAt(sb.length()-1);}
