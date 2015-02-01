@@ -33,15 +33,6 @@ public final class Personal {
     
     //array of time[2] geht irgendwie nicht
     private HashMap<Weekday, int[]> wunschzeiten = new HashMap<Weekday,int[]>();
- 
-    /**
-     * Gibt den Namen dieses Lehrers zur��ck.
-     * 
-     * @return den Namen dieses Lehrers
-     */
-    public String getName() {
-        return name;
-    }
 
     /**
      * Konstruktor fuer Personal.
@@ -88,6 +79,15 @@ public final class Personal {
     }
     
     /**
+     * Gibt den Namen dieses Lehrers zur��ck.
+     * 
+     * @return den Namen dieses Lehrers
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
      * Setzt den Namen dieser LehrerIn auf den ��bergebenen Namen. Falls der Name l��nger als
      * {@linkplain Data#MAX_NORMAL_STRING_LEN} Zeichen ist, wird er entsprechend gek��rzt. F��hrende und folgende
      * Leerzeichen werden entfernt. L��st eine {@link IllegalArgumentException} aus, falls der Name leer ist.
@@ -103,9 +103,9 @@ public final class Personal {
     }
 
     /**
-     * Gibt das K��rzel dieser LehrerIn zur��ck.
+     * Gibt das Kuerzel dieser LehrerIn zur��ck.
      * 
-     * @return das K��rzel dieses LehrerIn
+     * @return das Kuerzel dieses LehrerIn
      */
     public String getKuerzel() {
         return kuerzel;
@@ -113,7 +113,7 @@ public final class Personal {
     
 
     /**
-     * Setzt das K��rzel dieser LehrerIn auf das ��bergebene K��rzel. Falls das K��rzel l��nger als
+     * Setzt das Kuerzel dieser LehrerIn auf das uebergebene K��rzel. Falls das K��rzel l��nger als
      * {@linkplain Data#MAX_kuerzel_LEN} Zeichen ist, wird es entsprechend gek��rzt. F��hrende und folgende
      * Leerzeichen werden entfernt. L��st eine {@link IllegalArgumentException} aus, falls das K��rzel leer ist.
      * 
@@ -124,14 +124,14 @@ public final class Personal {
      */
     public void setKuerzel(final String pKuerzel) {
         if (pKuerzel == null || pKuerzel.trim().isEmpty()) {
-            throw new IllegalArgumentException("K��rzel der LehrerIn ist leer");
+            throw new IllegalArgumentException("Kuerzel der LehrerIn ist leer");
         }
         kuerzel = pKuerzel.trim().substring(0, Math.min(Data.MAX_KUERZEL_LEN, pKuerzel.length()));
     }
     
     @Override
     public String toString() {
-        return String.format("Kuerzel=%s, Name=%s, SollZeit=%d", kuerzel, name, sollZeit);
+        return String.format("Kuerzel: %s, Name: %s", kuerzel, name);
     }
 
     @Override
