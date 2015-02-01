@@ -35,7 +35,6 @@ import javax.swing.event.ListSelectionListener;
 
 import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.data.Room;
-import de.unibremen.swp.stundenplan.exceptions.StundeninhaltException;
 import de.unibremen.swp.stundenplan.exceptions.TextException;
 import de.unibremen.swp.stundenplan.logic.RaumManager;
 
@@ -257,9 +256,8 @@ public class RoomPanel extends JPanel {
 						JFrame edit = new JFrame("Raum editieren");
 						edit.add(createEditPanel(new JPanel(),
 								list.getSelectedValue()));
-						edit.setLocation(MouseInfo.getPointerInfo()
-								.getLocation().x, MouseInfo.getPointerInfo()
-								.getLocation().y);
+						edit.setLocation((MouseInfo.getPointerInfo()
+								.getLocation().x)-50,list.getParent().getY()+150);
 						edit.pack();
 						edit.setVisible(true);
 					}
