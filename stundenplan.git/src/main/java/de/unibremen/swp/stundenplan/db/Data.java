@@ -28,7 +28,7 @@ public class Data {
 	    	//Personal
 	    	sql = "CREATE TABLE IF NOT EXISTS Personal "
 	    			+ "(name VARCHAR(" + MAX_NORMAL_STRING_LEN + ") NOT NULL, "
-	    			+ "kuerzel VARCHAR(" + MAX_KUERZEL_LEN + ") NOT NULL, "
+	    			+ "kuerzel VARCHAR(" + MAX_KUERZEL_LEN + ") PRIMARY KEY NOT NULL, "
 	    			+ "sollZeit INT NOT NULL, "
 	    			+ "istZeit INT NOT NULL, "
 	    			+ "ersatzZeit INT NOT NULL, "
