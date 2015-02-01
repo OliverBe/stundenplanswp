@@ -25,7 +25,7 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an DB weiter. speichert den jetzigen Jahrgang in urspurenglich.
-	 * Speichert den neuen Jahrgang in bearbeitet. Fügt dieses EditCommandObjekt der CommandHistory
+	 * Speichert den neuen Jahrgang in bearbeitet. Fuegt dieses EditCommandObjekt der CommandHistory
 	 * hinzu.
 	 * @param neu
 	 * 		Jahrgangsbedarf, wie er nach bearbeiten sein soll.
@@ -39,7 +39,7 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 
 
 	/**
-	 * Leitet Edit-Anfrage an DB weiter. Fügt alten Jahrgang hinzu.
+	 * Leitet Edit-Anfrage an DB weiter. Fuegt alten Jahrgang hinzu.
 	 */
 	@Override
 	public void undo() {

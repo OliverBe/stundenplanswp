@@ -36,7 +36,7 @@ public class DatasetException extends Exception {
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.
      * 
      * 
-     * Bei einer ausgelösten Exception wird im Warningpanel eine Fehlermeldung ausgegeben
+     * Bei einer ausgeloesten Exception wird im Warningpanel eine Fehlermeldung ausgegeben
      * 
      * @param message
      *            die Nachricht der neuen Ausnahme

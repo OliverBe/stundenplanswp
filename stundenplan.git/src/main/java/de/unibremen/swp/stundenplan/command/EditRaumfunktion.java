@@ -4,7 +4,7 @@ import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 
 /**
- * Command-Klasse für das Bearbeiten einer Raumfunktion in der DB.
+ * Command-Klasse fuer das Bearbeiten einer Raumfunktion in der DB.
  * @author Roman
  *
  */
@@ -21,7 +21,7 @@ public class EditRaumfunktion implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fügt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
 	 * CommandHistory an.
 	 * @param name
 	 * 		Name der RF, die bearbeitet werden soll.
@@ -36,7 +36,7 @@ public class EditRaumfunktion implements Command, EditCommand {
 	}
 
 	/**
-	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, überschreibt es mit vorigem
+	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, ueberschreibt es mit vorigem
 	 * Objekt-Zustand.
 	 */
 	@Override

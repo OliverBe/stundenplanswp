@@ -4,7 +4,7 @@ import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 /**
- * Command-Klasse für das Bearbeiten eines SI in der DB.
+ * Command-Klasse fuer das Bearbeiten eines SI in der DB.
  * @author Roman
  *
  */
@@ -21,7 +21,7 @@ public class EditStundeninhalt implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fügt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
 	 * CommandHistory an.
 	 * @param pKuerzel
 	 * 		Kuerzel des SI, der bearbeitet werden soll
@@ -36,7 +36,7 @@ public class EditStundeninhalt implements Command, EditCommand {
 	}
 
 	/**
-	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, überschreibt es mit vorigem
+	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, ueberschreibt es mit vorigem
 	 * Objekt-Zustand.
 	 */
 	@Override

@@ -4,7 +4,7 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 
 /**
- * Command-Klasse für das Bearbeiten einer Planungseinheit in der DB.
+ * Command-Klasse fuer das Bearbeiten einer Planungseinheit in der DB.
  * @author Roman
  *
  */
@@ -20,7 +20,7 @@ public class EditPlanungseinheit implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fügt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
 	 * CommandHistory an.
 	 * @param iD
 	 * 		ID der PE, die bearbeitet werden soll
@@ -35,7 +35,7 @@ public class EditPlanungseinheit implements Command, EditCommand {
 	}
 
 	/**
-	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, überschreibt es mit vorigem
+	 * Leitet Edit-Anfrage an DB weiter. Bearbeitet neues Objekt, ueberschreibt es mit vorigem
 	 * Objekt-Zustand.
 	 */
 	@Override
