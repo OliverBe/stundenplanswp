@@ -159,12 +159,6 @@ public class PEedit extends JFrame {
 		spinner3.setValue(pe.getEndhour());
 		spinner4.setValue(pe.getEndminute());
 		tag.setSelectedItem(pe.getWeekday());
-		if(pe.getSchoolclasses().size() == 0){
-			teamzeit.setSelected(true);
-		}
-		if(pe.getRooms().size()>1){
-			bandselect.setSelected(true);
-		}
 	}
 
 	private void init() {
@@ -206,6 +200,12 @@ public class PEedit extends JFrame {
 		teamzeit = new JCheckBox("Teamzeit");
 		endtime.add(bandselect);
 		endtime.add(teamzeit);
+		if(pe.getSchoolclasses().size() == 0){
+			teamzeit.setSelected(true);
+		}
+		if(pe.getRooms().size()>1){
+			bandselect.setSelected(true);
+		}
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 		tf.setEditable(false);
 		getContentPane().add(starttime);
