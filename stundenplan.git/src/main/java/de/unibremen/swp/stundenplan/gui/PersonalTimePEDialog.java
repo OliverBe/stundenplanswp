@@ -175,7 +175,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		int sm;
 		for (Personal p : pList) {
 			int[] times = pe.getTimesofPersonal(p);
-			if(pe.getTimesofPersonal(p)!= null){
+			if(pe.getTimesofPersonal(p)!= null && times[0] <=pe.getStartHour() && times[0] >=pe.getEndhour()){
 				sh = times[0];
 				sm = times[1];
 			}else{
@@ -203,7 +203,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		int em;
 		for (Personal p : pList) {
 			int[] times = pe.getTimesofPersonal(p);
-			if(pe.getTimesofPersonal(p)!= null){
+			if(pe.getTimesofPersonal(p)!= null && times[2] >=pe.getStartHour() &&times[2] <=pe.getEndhour()){
 				eh = times[2];
 				em = times[3];
 			}else{
