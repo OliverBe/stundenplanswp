@@ -59,9 +59,9 @@ public class MenuBar extends JMenuBar {
 	private JFrame f;
 
 	private ImageIcon revert = new ImageIcon(getClass().getResource(
-			"revert.png"));
+			"./revert.png"));
 	private ImageIcon revertG = new ImageIcon(getClass().getResource(
-			"revertGRUEN.png"));
+			"./revertGRUEN.png"));
 
 	private JButton button1 = new JButton(revert);
 
