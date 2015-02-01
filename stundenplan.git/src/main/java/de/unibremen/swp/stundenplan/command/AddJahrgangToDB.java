@@ -10,23 +10,23 @@ import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.exceptions.CommandHistoryException;
 
 /**
- * Command-Klasse zum Hinzufügen von Jahrgangsbedarfen in die DB.
+ * Command-Klasse zum Hinzufuegen von Jahrgangsbedarfen in die DB.
  * @author Roman
  * 
  */
 public class AddJahrgangToDB implements Command {
 	/**
-	 * Jahrgang, wie er nach dem Hinzufügen aussehen soll.
+	 * Jahrgang, wie er nach dem Hinzufuegen aussehen soll.
 	 */
 	private Jahrgang jrg;
 	/**
-	 * Jahrgang, wie er vor dem Hinzufügen aussieht.
+	 * Jahrgang, wie er vor dem Hinzufuegen aussieht.
 	 */
 	private Jahrgang alt;
 
 	/**
 	 * Execute Methode dieser Klasse. Speichert den jetzigen Jahrgang unter Attribut alt ab.
-	 * Speichert den neuen unter jrg. Leitet Einfügen an Datenbank weiter. Fügt dieses Objekt
+	 * Speichert den neuen unter jrg. Leitet Einfuegen an Datenbank weiter. Fuegt dieses Objekt
 	 * der CommandHIstory hinzu.
 	 * @param jahrgang
 	 */
@@ -38,13 +38,13 @@ public class AddJahrgangToDB implements Command {
 	}
 
 	/**
-	 * Undo-Methode dieser Klasse. Prüft, wo die Unterschiede in den Bedarfen zwischen
-	 * dem Jahrgang vor dem Hinzufügen und dem Jahrgang nach dem Hinzufügen. Dort, wo der Unterschied
-	 * gefunden wird, wird das Stundeninhaltkuerzel an die Datenbank weitergeleitet, wo die Löschanfrage
+	 * Undo-Methode dieser Klasse. Prueft, wo die Unterschiede in den Bedarfen zwischen
+	 * dem Jahrgang vor dem Hinzufuegen und dem Jahrgang nach dem Hinzufuegen. Dort, wo der Unterschied
+	 * gefunden wird, wird das Stundeninhaltkuerzel an die Datenbank weitergeleitet, wo die Loeschanfrage
 	 * realisiert wird.
 	 * 
 	 * @exception CommandHIstoryException
-	 * 			Wenn die beiden Jahrägnge keine Differenz aufzeigen.
+	 * 			Wenn die beiden Jahrgaenge keine Differenz aufzeigen.
 	 */
 	@Override
 	public void undo() {

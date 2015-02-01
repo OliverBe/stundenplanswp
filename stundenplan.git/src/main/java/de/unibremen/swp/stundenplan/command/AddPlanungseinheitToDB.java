@@ -4,14 +4,14 @@ import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 
 /**
- * Command-Klasse zum Einfügen einer Planungseinheit in die Datenbank.
+ * Command-Klasse zum Einfuegen einer Planungseinheit in die Datenbank.
  * @author Roman
  *
  */
 public class AddPlanungseinheitToDB implements Command {
 
 	/**
-	 * PE, die eingefügt wird.
+	 * PE, die eingefuegt wird.
 	 */
 	private Planungseinheit einheit;
 	
@@ -20,10 +20,10 @@ public class AddPlanungseinheitToDB implements Command {
 	}
 	
 	/**
-     * Execute-Methode dieser Klasse. Fügt dieses Comand- Objekt zur CommandHistory hinzu
-     * Speichert eingefügte PE als Attribut. Leitet Einfügen an Datenbank weiter.
+     * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
+     * Speichert eingefuegte PE als Attribut. Leitet Einfuegen an Datenbank weiter.
      * @param p1
-     * 		PE die hinzugefügt werden soll.
+     * 		PE die hinzugefuegt werden soll.
      */
 	public void execute(Planungseinheit pl){
 		einheit = pl;
@@ -32,7 +32,7 @@ public class AddPlanungseinheitToDB implements Command {
 	}
 
 	/**
-	 * Undo-Methoder dieser Klasse. Leitet Löschanfrage an Datenbank weiter.
+	 * Undo-Methoder dieser Klasse. Leitet Loeschanfrage an Datenbank weiter.
 	 */
 	@Override
 	public void undo() {

@@ -4,14 +4,14 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
 /**
- * Command-Klasse zum Löschen einer Schulklasse aus der Datenbank.
+ * Command-Klasse zum Loeschen einer Schulklasse aus der Datenbank.
  * @author Roman
  *
  */
 public class DeleteSchulklasseFromDB implements Command {
 	
 	/**
-	 * Schulklasse, die gelöscht werden soll.
+	 * Schulklasse, die geloescht werden soll.
 	 */
 	private Schoolclass schoolClass;
 
@@ -20,10 +20,10 @@ public class DeleteSchulklasseFromDB implements Command {
 	}
 
 	/**
-	 * Leitet Löschanfrage an die Datenbank weiter, mit dem übergebenem
-	 * Kuerzel. Fügt dieses Objekt der CommandHistory hinzu.
+	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
+	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.
 	 * @param name
-	 * 		Name der Schulklasse, die gelöscht werden soll.
+	 * 		Name der Schulklasse, die geloescht werden soll.
 	 */
 	public void execute(String name){
 		schoolClass = DataSchulklasse.getSchulklasseByName(name);
@@ -32,7 +32,7 @@ public class DeleteSchulklasseFromDB implements Command {
 	}
 
 	/**
-	 * Leitet Einfügen-Anfrage an Datenbank weiter mit der Schulklasse, die gelöscht wurde.
+	 * Leitet Einfuegen-Anfrage an Datenbank weiter mit der Schulklasse, die geloescht wurde.
 	 */
 	@Override
 	public void undo() {

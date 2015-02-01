@@ -4,14 +4,14 @@ import de.unibremen.swp.stundenplan.data.Raumfunktion;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 
 /**
- * Command-Klasse zum Einfügen einer Raumfunktion in die Datenbank.
+ * Command-Klasse zum Einfuegen einer Raumfunktion in die Datenbank.
  * @author Roman
  *
  */
 public class AddRaumfunktionToDB implements Command {
 	
 	/**
-	 * RF, die eingefügt wird.
+	 * RF, die eingefuegt wird.
 	 */
 	private Raumfunktion r;
 	
@@ -20,10 +20,10 @@ public class AddRaumfunktionToDB implements Command {
 	}
 	
 	/**
-     * Execute-Methode dieser Klasse. Fügt dieses Comand- Objekt zur CommandHistory hinzu
-     * Speichert eingefügte RF als Attribut. Leitet Einfügen an Datenbank weiter.
+     * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
+     * Speichert eingefuegte RF als Attribut. Leitet Einfuegen an Datenbank weiter.
      * @param rf
-     * 		RF die hinzugefügt werden soll.
+     * 		RF die hinzugefuegt werden soll.
      */
 	public void execute(Raumfunktion rf){
 		r = rf;
@@ -32,7 +32,7 @@ public class AddRaumfunktionToDB implements Command {
 	}
 
 	/**
-	 * Undo-Methoder dieser Klasse. Leitet Löschanfrage an Datenbank weiter.
+	 * Undo-Methoder dieser Klasse. Leitet Loeschanfrage an Datenbank weiter.
 	 */
 	@Override
 	public void undo() {

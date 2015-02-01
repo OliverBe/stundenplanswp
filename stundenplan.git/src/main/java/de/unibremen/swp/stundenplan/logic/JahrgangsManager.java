@@ -30,44 +30,21 @@ public class JahrgangsManager {
 	}
 
 	/**
-	 * Gibt Liste mit allen Jahrgaengen in der DB zurück. Leitet Anfrage an DB
+	 * Gibt Liste mit allen Jahrgaengen in der DB zurueck. Leitet Anfrage an DB
 	 * weiter.
 	 */
 	public static ArrayList<Jahrgang> getAllJahrgangFromDB() {
 		ArrayList<Jahrgang> jahrgang = DataSchulklasse.getAllJahrgang();
-
-		if (jahrgang.size() == 0) {
-			System.out.println("No Jahrgang in DB");
-		} else {
-			System.out.println("Jahrgang in DB: ");
-			for (int i = 0; i < jahrgang.size(); i++) {
-				System.out.println(jahrgang.get(i));
-			}
-		}
 		return jahrgang;
 	}
 	
 	public static Jahrgang getJahrgangByJahrgangFromDB(int jahrgang) {
 		Jahrgang jg = DataSchulklasse.getJahrgangByJahrgang(jahrgang);
-
-		if (jg == null) {
-			System.out.println("No Jahrgang in DB");
-		} else {
-			System.out.println("Jahrgang in DB: ");
-			System.out.println(jg);
-		}
 		return jg;
 	}
 	
 	public static Jahrgang getJahrgangByJundSkuerzelFromDB(int jahrgang, String stundeninhalt_kuerzel) {
 		Jahrgang jg = DataSchulklasse.getJahrgangByJundSkuerzel(jahrgang, stundeninhalt_kuerzel);
-
-		if (jg == null) {
-			System.out.println("No Jahrgang in DB");
-		} else {
-			System.out.println("Jahrgang in DB: ");
-			System.out.println(jg);
-		}
 		return jg;
 	}
 }
