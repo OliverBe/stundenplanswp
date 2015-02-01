@@ -25,7 +25,8 @@ import org.apache.log4j.Logger;
  * Verwaltet die Konfiguration des Stundenplaners.
  * 
  * @author D. Lüdemann, K. Hölscher
- * @version 0.1
+ * @version 1.0
+ * @editor Oliver, Fathan
  */
 public final class Config {
 

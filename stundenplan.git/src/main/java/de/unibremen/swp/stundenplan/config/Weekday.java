@@ -23,6 +23,7 @@ import java.io.IOException;
  * 
  * @author D. Lüdemann, K. Hölscher
  * @version 0.1
+ * @editor Oliver, Fathan
  */
 public enum Weekday {
 

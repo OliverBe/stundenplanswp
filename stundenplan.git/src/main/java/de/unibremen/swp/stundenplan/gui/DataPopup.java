@@ -22,8 +22,6 @@ public class DataPopup extends JPopupMenu{
 	
 	private static DefaultListModel model;
 	
-	private Personal p = new Personal();
-	
 
 	JMenuItem edit = new JMenuItem("Bearbeiten");
 	JMenuItem delete = new JMenuItem("Loeschen");

@@ -383,8 +383,8 @@ public class PersonalPanel extends JPanel {
 				}
 
 				Personal pe = new Personal(nameField.getText(), kuerzField
-						.getText(), Integer.parseInt(pflichtField.getText()),
-						Integer.parseInt(ersatzField.getText()), lehrerB
+						.getText(), Integer.parseInt(pflichtField.getText()),0,
+						Integer.parseInt(ersatzField.getText()),false, lehrerB
 								.isSelected(), stdi, wunsch);
 				PersonalManager.addPersonalToDb(pe);
 				updateList();
@@ -663,8 +663,8 @@ public class PersonalPanel extends JPanel {
 						pe.getKuerzel(),
 						new Personal(nameField2.getText(), kuerzField2
 								.getText(), Integer.parseInt(pflichtField2
-								.getText()), Integer.parseInt(ersatzField2
-								.getText()), lehrerB2.isSelected(), stunden,
+								.getText()),pe.getErsatzZeit(), Integer.parseInt(ersatzField2
+								.getText()),pe.isGependelt(), lehrerB2.isSelected(), stunden,
 								wunsch));
 
 				updateList();
