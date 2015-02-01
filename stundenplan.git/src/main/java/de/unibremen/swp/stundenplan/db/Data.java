@@ -16,8 +16,8 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
 public class Data {
-	public final static int MAX_KUERZEL_LEN = 3;
-	public final static int MAX_NORMAL_STRING_LEN = 20;
+	public final static int MAX_KUERZEL_LEN = 4;
+	public final static int MAX_NORMAL_STRING_LEN = 30;
 	private static Connection c = null;
     protected static Statement stmt = null;
     private static String sql;
@@ -250,24 +250,12 @@ public class Data {
 	}
 	
 	public static void deleteAll() {
-		for(Personal p : DataPersonal.getAllPersonal()) {
-			DataPersonal.deletePersonalByKuerzel(p.getKuerzel());
-		}
-		DataPlanungseinheit.deleteAll();
-		for(Room r : DataRaum.getAllRaum()) {
-			DataRaum.deleteRaumByName(r.getName());
-		}
-		for(Raumfunktion rf : DataRaum.getAllRaumfunktion()) {
-			DataRaum.deleteRaumfunktionByName(rf.getName());
-		}
-		for(Schoolclass sc : DataSchulklasse.getAllSchulklasse()) {
-			DataSchulklasse.deleteSchulklasseByName(sc.getName());
-		}
-		for(Jahrgang j : DataSchulklasse.getAllJahrgang()) {
-			DataSchulklasse.deleteJahrgangbedarfByJahrgang(j.getJahrgang());
-		}
-		for(Stundeninhalt s : DataStundeninhalt.getAllStundeninhalte()) {
-			DataStundeninhalt.deleteStundeninhaltByKuerzel(s.getKuerzel());
+		try {
+			sql = "DELETE FROM Personal;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM Planungseinheit;";
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }
