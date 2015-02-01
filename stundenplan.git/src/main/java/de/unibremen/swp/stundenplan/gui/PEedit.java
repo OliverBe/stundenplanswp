@@ -4,6 +4,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -523,13 +524,9 @@ public class PEedit extends JFrame {
 	private String printWZ(int[] wZ){
 		if(wZ.length != 4){return "";}
 		StringBuilder sb = new StringBuilder();
-		sb.append(wZ[0]);
-		sb.append(":");
-		sb.append(wZ[1]);
+		sb.append(String.format("%02d:%02d", wZ[0], wZ[1]));
 		sb.append(" - ");
-		sb.append(wZ[2]);
-		sb.append(":");
-		sb.append(wZ[3]);
+		sb.append(String.format("%02d:%02d", wZ[2], wZ[3]));
 		return sb.toString();
 	}
 	
