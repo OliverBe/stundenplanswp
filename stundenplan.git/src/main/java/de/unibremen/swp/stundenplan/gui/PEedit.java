@@ -259,9 +259,11 @@ public class PEedit extends JFrame {
 		}
 		roomList.addSourceElements(rlist.toArray());
 		getContentPane().add(roomList);
+		if(pe!=null){
 		pe.getSchoolclasses().clear();
 		pe.getRooms().clear();
 		pe.getStundeninhalte().clear();
+		}
 		button = new JButton("Planungseinheit speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -525,7 +527,7 @@ public class PEedit extends JFrame {
 
 				}
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
-							getmyFrame(), listp, pe);
+							getmyFrame(), listp, p);
 				if (pdialog.getsaved()) {
 					parentframe.updatetable();
 					parentframe.updateLists();
