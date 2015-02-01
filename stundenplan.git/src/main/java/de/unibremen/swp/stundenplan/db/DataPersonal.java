@@ -214,8 +214,8 @@ public class DataPersonal {
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
 		try {
 			for(Personal pers : getAllPersonal()) {
-				if(pers.getKuerzel().equals(newPersonal.getKuerzel())){ 
-					throw new SQLException("DB - ERROR Personal already in Database");
+				if(pers.getKuerzel().equals(newPersonal.getKuerzel()) && !pers.getKuerzel().equals(pKuerzel)){ 
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
@@ -229,7 +229,7 @@ public class DataPersonal {
 			sql = "UPDATE klassenlehrer SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			addPersonal(newPersonal);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
