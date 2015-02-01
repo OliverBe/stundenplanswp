@@ -200,10 +200,10 @@ public class PEedit extends JFrame {
 		teamzeit = new JCheckBox("Teamzeit");
 		endtime.add(bandselect);
 		endtime.add(teamzeit);
-		if(pe.getSchoolclasses().size() == 0){
+		if(pe!=null&&pe.getSchoolclasses().size() == 0){
 			teamzeit.setSelected(true);
 		}
-		if(pe.getRooms().size()>1){
+		if(pe!=null&&pe.getRooms().size()>1){
 			bandselect.setSelected(true);
 		}
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
