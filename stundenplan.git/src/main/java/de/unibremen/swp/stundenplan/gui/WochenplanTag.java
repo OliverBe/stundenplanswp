@@ -31,6 +31,11 @@ public class WochenplanTag extends JPanel {
 	public JLabel warning = new JLabel();
 	public DefaultTableModel model = new DefaultTableModel();
 
+	/**
+	 * Konstruktor der Klasse WochenplanTag
+	 * @param pDay
+	 * 			Der Name des Tages.
+	 */
 	public WochenplanTag(final Weekday pDay) {
 		day = pDay;
 		init();
@@ -288,17 +293,6 @@ public class WochenplanTag extends JPanel {
 	public void refresh() {
 		deleteAllPersonal();
 
-	}
-
-	public void deleteAllPlanungseinheiten() {
-		for (int i = 0; i <= 100; i++) {
-			if (DataPlanungseinheit.getPlanungseinheitById(i) != null) {
-				DataPlanungseinheit.deletePlanungseinheitById(i);
-			}
-			System.out
-					.println("Zaehler der Methode deleteAllPlanungseinheiten: "
-							+ i);
-		}
 	}
 
 	public static JTable getTable() {
