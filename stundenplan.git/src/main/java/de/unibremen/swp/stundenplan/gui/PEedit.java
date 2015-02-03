@@ -296,13 +296,21 @@ public class PEedit extends JFrame {
 							.showMessageDialog(null,
 									"Planungseinheit darf nicht gleiche Startzeit und Endzeit haben");
 					return;
-				} else if ((p.getStartHour() > p.getEndhour())) {
+				} else if (p.getStartHour() > p.getEndhour() || (p.getStartHour() == p.getEndhour() && p.getStartminute() > p.getEndminute())) {
 					JOptionPane.showMessageDialog(null,
 							"Die Startzeit muss vor der Endzeit beginnen");
 					return;
 				}
-				if (p.getEndhour() == TimetableManager.endTimeHour()
-						&& p.getEndminute() > TimetableManager.endTimeMinute()) {
+				if ((p.getEndhour() == TimetableManager.endTimeHour()
+						&& p.getEndminute() > TimetableManager.endTimeMinute()) ||p.getEndhour() > TimetableManager.endTimeHour()) {
+					JOptionPane.showMessageDialog(
+							null,
+							"Der Tag ist leider bereits um " + p.getEndhour() + ":"
+									+ p.getEndminute() + " zu Ende");
+					return;
+				}
+				if ((p.getStartHour() == TimetableManager.startTimeHour()
+						&& p.getStartminute() > TimetableManager.startTimeMinute()) || p.getStartHour() > TimetableManager.startTimeHour()) {
 					JOptionPane.showMessageDialog(
 							null,
 							"Der Tag ist leider bereits um " + p.getEndhour() + ":"

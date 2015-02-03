@@ -228,11 +228,13 @@ public class MainFrame extends JFrame {
 	public void checkSelectedTab(){
 		Component c = tabpane.getSelectedComponent();
 		
-		if(!(c instanceof StundenplanPanel)){
+		if (!(c instanceof StundenplanPanel)) {
 			paneStundenplan.popmen.setVisible(false);
-			if(paneStundenplan.bedarf.isVisible()) {
-				paneStundenplan.bedarf.dispose();
-				paneStundenplan.bedarfTable = null;
+			if (paneStundenplan.bedarf != null) {
+				if (paneStundenplan.bedarf.isVisible()) {
+					paneStundenplan.bedarf.dispose();
+					paneStundenplan.bedarfTable = null;
+				}
 			}
 		}
 		
