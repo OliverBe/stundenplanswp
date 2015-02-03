@@ -258,10 +258,14 @@ public final class PlanungseinheitManager {
 			final Planungseinheit pPe) {
 		int[] wunschzeiten = pPer.getWunschzeitForWeekday(pPe.getWeekday());
 		Planungseinheit p = new Planungseinheit();
-		p.setStarthour(wunschzeiten[0]);
-		p.setStartminute(wunschzeiten[1]);
-		p.setEndhour(wunschzeiten[2]);
-		p.setEndminute(wunschzeiten[3]);
+		if (wunschzeiten != null) {
+			p.setStarthour(wunschzeiten[0]);
+			p.setStartminute(wunschzeiten[1]);
+			p.setEndhour(wunschzeiten[2]);
+			p.setEndminute(wunschzeiten[3]);
+		} else {
+			return false;		
+		}
 		p.setId(0);
 		if (!checktwoPEs(pPe, p)) {
 			return true;

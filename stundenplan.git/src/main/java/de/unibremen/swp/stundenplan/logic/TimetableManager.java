@@ -71,6 +71,7 @@ public final class TimetableManager {
     }
 
 
+    
     /**
      * prueft ob zwei Calendareinheiten die gleiche Zeitpunkt  am Tag besitzt
      * @param cal1 erste Calendarobjekt
@@ -82,7 +83,7 @@ public final class TimetableManager {
                 cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE);
  	   return sametime;
     } 
-
+    
     /**
      * erzeugt eine Tagestabelle fuer eine Liste von Planungseinheiten
      * @param pPE Liste von Planungseinheiten
@@ -123,17 +124,6 @@ public final class TimetableManager {
         return dayTable;
     
     }
-    /**
-     * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Person.
-     * 
-     * @param dayTable
-     *            der Tagesplan, fuer den die Zeiteinheiten erstellt werden sollen
-     */
-    private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
-        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
-        DayTable dayTable = createTimeslotsForPES(pE, pWeekday);
-        return dayTable;
-    }
     
     /**
      * fuellt eine Tagesplan mit leeren Timeslots falls Tabelle noch nicht voll ist
@@ -155,6 +145,20 @@ public final class TimetableManager {
 		}
         return timeslot;
 	}
+
+
+    /**
+     * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Person.
+     * 
+     * @param dayTable
+     *            der Tagesplan, fuer den die Zeiteinheiten erstellt werden sollen
+     */
+    private static DayTable createTimeslotsForPersonal(Weekday pWeekday, Personal pPerson) {
+        ArrayList<Planungseinheit> pE = PlanungseinheitManager.getPEForPersonalbyWeekday(pWeekday, pPerson);
+        DayTable dayTable = createTimeslotsForPES(pE, pWeekday);
+        return dayTable;
+    }
+    
 
 	/**
      * Erzeugt Zeiteinheiten fuer den gegebenen Tag und Schulklasse.
