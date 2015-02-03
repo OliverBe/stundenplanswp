@@ -311,6 +311,12 @@ public final class PlanungseinheitManager {
 		return false;
 	}
 	
+	/**
+	 * soll neue Istzeit berechnen
+	 * @param oldtime
+	 * @param newtimemin
+	 * @return
+	 */
 	public static int newTimeforPers(final int oldtime, final int newtimemin){
 		return oldtime + (newtimemin/60);
 	}
@@ -380,8 +386,8 @@ public final class PlanungseinheitManager {
 	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checkPersonPE(final Personal p,
-			final Planungseinheit pe, final Weekday day) {
-		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(day, p);
+			final Planungseinheit pe) {
+		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(pe.getWeekday(), p);
 		for (Planungseinheit pl : pes) {
 			if (checktwoPEs(pl, pe))
 				return true;
@@ -394,9 +400,8 @@ public final class PlanungseinheitManager {
 	 * 
 	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
-	public static boolean checkRoomPE(final Room r, final Planungseinheit pe,
-			final Weekday day) {
-		ArrayList<Planungseinheit> pes = getPEForRoombyWeekday(day, r);
+	public static boolean checkRoomPE(final Room r, final Planungseinheit pe) {
+		ArrayList<Planungseinheit> pes = getPEForRoombyWeekday(pe.getWeekday(), r);
 		for (Planungseinheit pl : pes) {
 			if (checktwoPEs(pl, pe))
 				return true;
@@ -410,8 +415,8 @@ public final class PlanungseinheitManager {
 	 * @return gibt true zurueck wenn die PEs sich ueberlappen
 	 */
 	public static boolean checkScPE(final Schoolclass sc,
-			final Planungseinheit pe, final Weekday day) {
-		ArrayList<Planungseinheit> pes = getPEForSchoolclassbyWeekday(day, sc);
+			final Planungseinheit pe) {
+		ArrayList<Planungseinheit> pes = getPEForSchoolclassbyWeekday(pe.getWeekday(), sc);
 		for (Planungseinheit pl : pes) {
 			if (checktwoPEs(pl, pe))
 				return true;
