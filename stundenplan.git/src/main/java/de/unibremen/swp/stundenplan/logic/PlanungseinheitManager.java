@@ -19,6 +19,7 @@ import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
 
@@ -138,6 +139,22 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> pes = DataPlanungseinheit.getAllPlanungseinheitByWeekdayAndObject(pWeekday, pRoom);
 		orderByTime(pes);
 		return pes;
+	}
+	
+	/**
+	 * ueberprueft ob Planungseinheiten mit Zeitraster(Timeslotlength) passt.
+	 * @return true wenn Planungseinheiten nicht mit Zeitraster passt sonst false.
+	 */
+	public static boolean consistencecheck(){
+		if(getAllPlanungseinheitFromDB().size()!=0){
+			for(Planungseinheit p : getAllPlanungseinheitFromDB()){
+				if(p.duration()%Timeslot.timeslotlength()!= 0){
+					return true;
+				}
+			}
+		}
+		return false;
+		
 	}
 
 	
@@ -322,6 +339,7 @@ public final class PlanungseinheitManager {
 	 */
 	public static boolean checktwoPEs(final Planungseinheit p1,
 			final Planungseinheit p2) {
+		if(p1 == null || p2 == null){throw new IllegalArgumentException("Parameters should be not null");}
 		if(p1.getId() == p2.getId()){return false;}
 		if (checkPEandStartTime(p1, p2.getStartHour(), p2.getStartminute())) {
 			return true;

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FilenameFilter;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -32,7 +33,9 @@ import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.config.ExportPDF;
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
+import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 
 public class MenuBar extends JMenuBar {
 
@@ -72,7 +75,7 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
-	 * Open Source Logo f�r Revert Button, Quelle:
+	 * Open Source Logo fuer Revert Button, Quelle:
 	 * https://openclipart.org/detail
 	 * /181114/square-undo-or-back-button-by-barrettward-181114
 	 */
@@ -244,6 +247,9 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
 						backupFrame.dispose();
+						if(PlanungseinheitManager.consistencecheck()){ // prueft ob geladene PEs zum Zeitraster passt
+							DataPlanungseinheit.deleteAll();		   // wenn nicht wird alle PEs geloescht
+						}
 						((MainFrame) f).updateAll();
 					}
 				});
