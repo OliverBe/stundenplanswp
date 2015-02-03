@@ -127,12 +127,13 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<groups>de.unibremen.swp.stundenplan.IntegrationTest</groups>
+					<groups>de.unibremen.swp.stundenplan.IntegrationsTest</groups>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>integration-test</goal>
+							<goal>verify</goal>
 						</goals>
 						<configuration>
 							<includes>
