@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 
 public class WochenplanPanel extends JPanel {
@@ -21,6 +22,7 @@ public class WochenplanPanel extends JPanel {
 	private WochenplanTag donnerstag;
 	private WochenplanTag freitag;
 	private WochenplanTag samstag;
+	private WochenplanTag sonntag;
 	
 	
 	public WochenplanPanel(){
@@ -33,18 +35,36 @@ public class WochenplanPanel extends JPanel {
 	
 	public void init(){
 		
-		montag = new WochenplanTag(Weekday.MONDAY);
-		tabPane.add("Montag", montag);
+		if(Weekday.MONDAY.isSchoolday()){
+			montag = new WochenplanTag(Weekday.MONDAY);
+			tabPane.add("Montag", montag);
+		}
+		
+		
+		if(Weekday.TUESDAY.isSchoolday()){
 		dienstag = new WochenplanTag(Weekday.TUESDAY);
 		tabPane.add("Dienstag", dienstag);
+		}
+		if(Weekday.WEDNESDAY.isSchoolday()){
 		mittwoch = new WochenplanTag(Weekday.WEDNESDAY);
 		tabPane.add("Mittwoch", mittwoch);
+		}
+		if(Weekday.THURSDAY.isSchoolday()){
 		donnerstag = new WochenplanTag(Weekday.THURSDAY);
 		tabPane.add("Donnerstag", donnerstag);
+		}
+		if(Weekday.FRIDAY.isSchoolday()){
 		freitag = new WochenplanTag(Weekday.FRIDAY);
 		tabPane.add("Freitag", freitag);
+		}
+		if(Weekday.SATURDAY.isSchoolday()){
 		samstag = new WochenplanTag(Weekday.SATURDAY);
 		tabPane.add("Samstag",samstag);
+		}
+		if(Weekday.SUNDAY.isSchoolday()){
+		samstag = new WochenplanTag(Weekday.SATURDAY);
+		tabPane.add("Sonntag",sonntag);	
+		}
 		add(tabPane);
 	}
 	
