@@ -317,8 +317,12 @@ public final class PlanungseinheitManager {
 	 * @param newtimemin
 	 * @return
 	 */
-	public static int newTimeforPers(final int oldtime, final int newtimemin){
-		return oldtime + newtimemin;
+	public static int newTimeforPers(final Personal pPers, final int newtimemin){
+		if(pPers.isLehrer()){
+			return pPers.getIstZeit() + newtimemin/45;
+		}else{
+			return pPers.getIstZeit() + newtimemin/60;
+		}
 	}
 	
 	/**
@@ -328,7 +332,7 @@ public final class PlanungseinheitManager {
 	 * @return
 	 */
 	public static boolean overtimePers(final Personal pPers, final int newtimemin){
-		int newizeit = newTimeforPers(pPers.getIstZeit(), newtimemin);
+		int newizeit = newTimeforPers(pPers, newtimemin);
 		System.out.println("oldistZeit="+pPers.getIstZeit());
 		System.out.println("newistZeit="+newizeit);
 		System.out.println("Sollzeit"+pPers.getSollZeit());

@@ -519,7 +519,7 @@ public class PEedit extends JFrame {
 										+ "neue Istzeit: "
 										+ PlanungseinheitManager
 												.newTimeforPers(
-														pers.getIstZeit(),
+														pers,
 														p.duration()),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
