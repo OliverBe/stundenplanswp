@@ -25,7 +25,7 @@ public class PersonalManager {
      * @return
      * 		IstZeit in Stunden
      */
-    public double berechneIstZeitInStunden(Personal p){
+    public static double berechneIstZeitInStunden(Personal p){
 	
     	double ergebnis=0;
 	
@@ -41,7 +41,7 @@ public class PersonalManager {
     /**
      * Berechnet Sollzeit von Minuten in Stunden.
      */
-    public double berechneSollZeitInStunden(Personal p){
+    public static double berechneSollZeitInStunden(Personal p){
     	double ergebnis=0;
     	
     	if(p.isLehrer()){
