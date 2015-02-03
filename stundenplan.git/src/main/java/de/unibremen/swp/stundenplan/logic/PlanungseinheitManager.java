@@ -318,7 +318,7 @@ public final class PlanungseinheitManager {
 	 * @return
 	 */
 	public static int newTimeforPers(final int oldtime, final int newtimemin){
-		return oldtime + (newtimemin/60);
+		return oldtime + newtimemin;
 	}
 	
 	/**
@@ -475,9 +475,9 @@ public final class PlanungseinheitManager {
 	}
 
 	/**
-	 * prueft ob Zeitpunkt nicht im PE befindet, im selben Tag.
+	 * prueft ob Zeitpunkt nicht im PE befindet, am selben Tag.
 	 * 
-	 * @return gibt true zurueck wenn Zeit nicht im 
+	 * @return gibt true zurueck wenn Zeitpunkt nicht im PE befindet 
 	 */
 	public static boolean checkTimeInPE(final Planungseinheit p1,
 			final int hour, final int minute) {

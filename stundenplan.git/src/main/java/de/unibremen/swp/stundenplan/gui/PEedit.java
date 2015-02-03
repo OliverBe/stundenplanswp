@@ -310,11 +310,11 @@ public class PEedit extends JFrame {
 					return;
 				}
 				if ((p.getStartHour() == TimetableManager.startTimeHour()
-						&& p.getStartminute() > TimetableManager.startTimeMinute()) || p.getStartHour() > TimetableManager.startTimeHour()) {
+						&& (p.getStartminute() < TimetableManager.startTimeMinute()) || p.getStartHour() < TimetableManager.startTimeHour())) {
 					JOptionPane.showMessageDialog(
 							null,
-							"Der Tag ist leider bereits um " + p.getEndhour() + ":"
-									+ p.getEndminute() + " zu Ende");
+							"Der Tag hat leider  um " + p.getStartHour() + ":"
+									+ p.getStartminute() + " noch nicht angefangen");
 					return;
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
