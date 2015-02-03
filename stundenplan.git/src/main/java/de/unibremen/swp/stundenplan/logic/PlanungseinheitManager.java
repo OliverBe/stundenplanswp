@@ -141,13 +141,15 @@ public final class PlanungseinheitManager {
 		return pes;
 	}
 	
+	/**
+	 * ueberprueft ob Planungseinheiten mit Zeitraster(Timeslotlength) passt.
+	 * @return true wenn Planungseinheiten nicht mit Zeitraster passt sonst false.
+	 */
 	public static boolean consistencecheck(){
 		if(getAllPlanungseinheitFromDB().size()!=0){
 			for(Planungseinheit p : getAllPlanungseinheitFromDB()){
 				if(p.duration()%Timeslot.timeslotlength()!= 0){
 					return true;
-				}else{
-					return false;
 				}
 			}
 		}

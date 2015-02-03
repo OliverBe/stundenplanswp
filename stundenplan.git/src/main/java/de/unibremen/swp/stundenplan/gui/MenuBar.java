@@ -246,10 +246,10 @@ public class MenuBar extends JMenuBar {
 				button.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
 						Data.restore(list.getSelectedValue());
-						if(PlanungseinheitManager.consistencecheck()){ // prueft ob geladene PE zum Zeitraster passt
-							DataPlanungseinheit.deleteAll();		   // wenn nicht wird alles geloescht
-						}
 						backupFrame.dispose();
+						if(PlanungseinheitManager.consistencecheck()){ // prueft ob geladene PEs zum Zeitraster passt
+							DataPlanungseinheit.deleteAll();		   // wenn nicht wird alle PEs geloescht
+						}
 						((MainFrame) f).updateAll();
 					}
 				});
