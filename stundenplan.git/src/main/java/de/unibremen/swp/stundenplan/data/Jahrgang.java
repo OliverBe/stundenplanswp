@@ -7,9 +7,6 @@ public class Jahrgang {
     
     private HashMap<String, Integer> stundenbedarf = new HashMap<String, Integer>();
     
-    public Jahrgang(){	
-    }
-    
     public Jahrgang(int pJahrgang, HashMap<String, Integer> pStundenbedarf) {
     	setJahrgang(pJahrgang);
     	setStundenbedarf(pStundenbedarf);

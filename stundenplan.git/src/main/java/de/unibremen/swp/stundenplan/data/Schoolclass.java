@@ -33,14 +33,7 @@ public final class Schoolclass extends Jahrgang{
     
     private Room klassenraum;
     
-    private ArrayList<String> klassenlehrer = new ArrayList<String>();
-    
-    //falls die klasse einen speziellen bedarf hat
-//    private HashMap<String, Integer> stundenbedarf = new HashMap<String, Integer>();
-    
-    public Schoolclass() {
-    	super();
-    }
+    private ArrayList<String> klassenlehrer = new ArrayList<String>(); 
 
     public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
 		super(pJahrgang, pStundenbedarf);
