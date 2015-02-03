@@ -310,7 +310,7 @@ public class PEedit extends JFrame {
 					return;
 				}
 				if ((p.getStartHour() == TimetableManager.startTimeHour()
-						&& (p.getStartminute() < TimetableManager.startTimeMinute()) || p.getStartHour() < TimetableManager.startTimeHour())) {
+						&& p.getStartminute() < TimetableManager.startTimeMinute()) || p.getStartHour() < TimetableManager.startTimeHour()) {
 					JOptionPane.showMessageDialog(
 							null,
 							"Der Tag hat leider  um " + p.getStartHour() + ":"
