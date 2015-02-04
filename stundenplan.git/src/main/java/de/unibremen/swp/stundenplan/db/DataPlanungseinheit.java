@@ -13,13 +13,33 @@ import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
+/**
+ * Klasse stellt die Verbindung von Planungseinheit zur Datenbank dar.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class DataPlanungseinheit {
-
+	/**
+	 * Speichert das Statement, das in der Data Klasse erstellt wurde.
+	 */
 	private static Statement stmt = Data.stmt;
+	/**
+	 * Speichert den SQL-Befehl.
+	 */
 	private static String sql;
 	
+	/**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
 	private DataPlanungseinheit() {}
 	
+	/**
+	 * Fügt die übergebene Planungseinheit zur Datenbank hinzu.
+	 * 
+	 * @param planungseinheit
+	 * 		die Planungseinheit, welche in die Datenbank gespeichert werden soll
+	 */
 	public static void addPlanungseinheit(Planungseinheit planungseinheit) {
 		try {
 			sql = "INSERT INTO Planungseinheit "
@@ -68,6 +88,11 @@ public class DataPlanungseinheit {
 		}
 	}
 	
+	/**
+	 * Gibt eine Liste aller Planungseinheiten zurück, die in der Datenbank sind.
+	 * 
+	 * @return	Liste aller Planungseinheiten
+	 */
 	public static ArrayList<Planungseinheit> getAllPlanungseinheit() {
 		try {
 			ArrayList<Planungseinheit> allPlanungseinheit = new ArrayList<Planungseinheit>();
@@ -130,6 +155,14 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
+	/**
+	 * Methode gibt eine Liste aller Planungseinheiten zurück, 
+	 * die an dem uebergebenen Wochentag eingetragen sind.
+	 * 
+	 * @param pWeekday
+	 * 		der Wochentag, in der die Planungseinheit eingetragen ist
+	 * @return	eine ArrayList, die alle Planungseinheiten enthaelt, die den Wochentag besitzen
+	 */
 	public static ArrayList<Planungseinheit> getAllPlanungseinheitByWeekday(final Weekday pWeekday) {
 		try {
 			ArrayList<Planungseinheit> allPlanungseinheit = new ArrayList<Planungseinheit>();
@@ -192,6 +225,14 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
+	/**
+	 * Gibt die Planungseinheit mit der uebergebenen Id zurück.
+	 * 
+	 * @param pId
+	 * 		die Id, nach der gesucht werden soll
+	 * @return	die Planungseinheit mit der uebergebenen Id, 
+	 * 			wenn nicht vorhanden null
+	 */
 	public static Planungseinheit getPlanungseinheitById(int pId){
 		Planungseinheit pl = new Planungseinheit();
 		try{
@@ -246,6 +287,16 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
+	/**
+	 * Methode gibt eine Liste aller Planungseinheiten zurück, 
+	 * die den uebergebenen Wochentag und das uebergebene Object besitzen.
+	 * 
+	 * @param day
+	 * 		der Wochentag, nach dem gesucht werden soll
+	 * @param object
+	 * 		das Object, nach dem gesucht werden soll
+	 * @return	eine ArrayList von Planungseinheiten
+	 */
 	public static ArrayList<Planungseinheit> getAllPlanungseinheitByWeekdayAndObject(Weekday day, Object object) {
 		try {
 			ArrayList<Planungseinheit> allPlanungseinheit = new ArrayList<Planungseinheit>();
@@ -323,6 +374,12 @@ public class DataPlanungseinheit {
 		return null;
 	}
 	
+	/**
+	 * Loescht die Planungseinheit mit der uebergebenen Id.
+	 * 
+	 * @param id
+	 * 		die Id von der Planungseinheit, die geloescht werden soll
+	 */
 	public static void deletePlanungseinheitById(int id) {
 		try {
 			sql = "SELECT * FROM Planungseinheit WHERE id = " + id + ";";
@@ -355,11 +412,26 @@ public class DataPlanungseinheit {
 		}
 	}
 	
-	public static void editPlanungseinheit(int iD, Planungseinheit planungseinheit) {
-			deletePlanungseinheitById(iD);
+	/**
+	 * Methode bearbeitet die Planungseinheit mit der uebergebenen Id.
+	 * 
+	 * @param id
+	 * 		die Id von der Planungseinheit, die bearbeitet werden soll
+	 * @param planungseinheit
+	 * 		die bearbeitete Planungseinheit
+	 */
+	public static void editPlanungseinheit(int id, Planungseinheit planungseinheit) {
+			deletePlanungseinheitById(id);
 			addPlanungseinheit(planungseinheit);
 	}
 	
+	/**
+	 * Methode ueberprueft, ob die Planungseinheit mit der uebergebenen Id in der Datenbank leer ist, 
+	 * wenn ja, wird die Planungseinheit geloescht
+	 * 
+	 * @param id
+	 * 		die Id von der Planungseinheit
+	 */
 	protected static void deleteIfEmpty(int id) {
 		try {
 			sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = " + id + ";";
@@ -381,11 +453,20 @@ public class DataPlanungseinheit {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Gibt zurueck, ob es Planungseinheiten existieren.
+	 * 
+	 * @return	true, wenn es mindestens eine Planungseinheit gibt, 
+	 * 			sonst false
+	 */
 	public static boolean isEmpty() {
 		return getAllPlanungseinheit().isEmpty();
 	}
 
+	/**
+	 * Methode loescht alle Planungseinheiten in der Datenbank.
+	 */
 	public static void deleteAll() {
 		ArrayList<Planungseinheit> allPlanungseinheit = getAllPlanungseinheit();
 		for(Planungseinheit p : allPlanungseinheit) {

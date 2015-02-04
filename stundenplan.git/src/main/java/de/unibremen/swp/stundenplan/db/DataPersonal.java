@@ -13,13 +13,33 @@ import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
+/**
+ * Klasse stellt die Verbindung von Personal zur Datenbank dar.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class DataPersonal {
-
+	/**
+	 * Speichert das Statement, das in der Data Klasse erstellt wurde.
+	 */
 	private static Statement stmt = Data.stmt;
+	/**
+	 * Speichert den SQL-Befehl.
+	 */
 	private static String sql;
-
+	
+	/**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
 	private DataPersonal() {}
 
+	/**
+	 * Fuegt das uebergebene Personal zur Datenbank hinzu.
+	 * 
+	 * @param personal
+	 * 		das Personal, welches in die Datenbank gespeichert werden soll
+	 */
 	public static void addPersonal(Personal personal) {
 		try {
 			for(Personal pers : getAllPersonal()) {
@@ -56,6 +76,15 @@ public class DataPersonal {
 		}
 	}
 	
+	/**
+	 * Methode gibt das Personal aus der Datenbank zurueck, 
+	 * das den uebergebenen Kuerzel besitzt.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel nach dem gesucht werden soll
+	 * @return	das Personal mit dem uebergebenen Kuerzel, 
+	 * 			wenn nicht vorhanden null
+	 */
 	public static Personal getPersonalByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
@@ -101,9 +130,9 @@ public class DataPersonal {
 	}
 
 	/**
-	 * Fathanisiert
+	 * Gibt eine Liste aller Personal aus der Datenbank zurueck.
 	 * 
-	 * @return Liste mit allem Personal das sich in der DB befindet.
+	 * @return	Liste mit allem Personal, die sich in der Datenbank befindet.
 	 */
 	public static ArrayList<Personal> getAllPersonal() {
 		try {
@@ -155,6 +184,11 @@ public class DataPersonal {
 		}
 	}
 
+	/**
+	 * Methode gibt eine Liste mit allen Kuerzeln der Personal in der Datenbank zurueck.
+	 * 
+	 * @return	eine ArrayList mit allen Kuerzeln der Personal in der Datenbank
+	 */
 	public static ArrayList<String> getAllAcronymsFromPersonal(){
 		try{ 
 			sql = "SELECT kuerzel FROM Personal";
@@ -172,6 +206,12 @@ public class DataPersonal {
 		}
 	}
 	
+	/**
+	 * Methode loescht das Personal mit dem uebergebenen Kuerzel.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Personals, das geloescht werden soll
+	 */
 	public static void deletePersonalByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
@@ -198,6 +238,13 @@ public class DataPersonal {
 		}
 	}
 	
+	/**
+	 * Private Hilfsmethode zum Loeschen eines Personals
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Personals, das geloescht werden soll
+	 * @throws SQLException
+	 */
 	private static void deleteSQL(String pKuerzel) throws SQLException {
 		sql = "DELETE FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 		stmt.executeUpdate(sql);
@@ -211,6 +258,14 @@ public class DataPersonal {
 		stmt.executeUpdate(sql);
 	}
 	
+	/**
+	 * Methode bearbeitet ein Personal in der Datenbank.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Personals, das bearbeitet werden soll
+	 * @param newPersonal
+	 * 		das bearbeitete Personal
+	 */
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
 		try {
 			for(Personal pers : getAllPersonal()) {

@@ -8,20 +8,55 @@ import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 
+/**
+ * Klasse stellt einer Verbindung zur Datenbank her.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class Data {
+	/**
+	 * Konstante, die die maximale Länge eines Kuerzels eines Personals festlegt.
+	 */
 	public final static int MAX_KUERZEL_LEN = 4;
+	/**
+	 * Konstante, die die maximale Länge des Personalnamens festlegt.
+	 */
 	public final static int MAX_NORMAL_STRING_LEN = 30;
+	/**
+	 * Stellt eine Verbindung zur Datenbank her.
+	 */
 	private static Connection c = null;
+	/**
+	 * Wird dazu verwendet SQL-Befehle an die Datenbank zu schicken.
+	 */
     protected static Statement stmt = null;
+    /**
+     * Speichert den aktuellen SQL-Befehl.
+     */
     private static String sql;
+    /**
+     * Wert, der speichert, ob die Datenbank bereits gespeichert wurde.
+     */
     private static boolean saved = true;
+    /**
+     * Speichert den Namen der zuletzt verwendeten Datenbank.
+     */
     private static String lastRestoredFileName = "";
     
+    /**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
+    private Data() {}
+    
+    /**
+     * In der Methode wird eine Verbindung mit der temporaeren Datenbank erstellt.
+     * Erstellt auch alle Tabellen mit deren Attributen, falls diese nicht bereits vorhanden sind.
+     */
 	public static void start() {
 	    try {
 	    	Class.forName("org.sqlite.JDBC");
 	    	c = DriverManager.getConnection("jdbc:sqlite:temp.db");
-		    System.out.println("DB - Opened database successfully");
 		    
 	    	stmt = c.createStatement();
 	    	
@@ -172,21 +207,35 @@ public class Data {
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
-	    	System.out.println("DB - Tables created");
 	    }catch ( Exception e ) {
-	    	System.out.println("DB - ERROR on creating tables");
+	    	e.printStackTrace();
 	    }
 	}
-		
+	
+	/**
+	 * Methode schließt das Statement und die Verbindung zur Datenbank.
+	 */
 	public static void close() {
 		try {
 			stmt.close();
 			c.close();
 		}catch (Exception e) {
-			System.out.println("DB - ERROR on closing Database");
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Methode erstellt ein Backup der Datenbank mit dem Dateinamen, der uebergeben wird. 
+	 * Falls die Datei mit dem gegeben Dateinamen bereits existiert und 
+	 * forceSave true ist, wird ohne Nachfrage einfach die Datei ueberschrieben, 
+	 * sonst wird nachgefragt und erst bei Bestätigung ueberschrieben.
+	 * 
+	 * @param backupName
+	 * 		Dateiname des Backups
+	 * @param forceSave
+	 * 		wenn true, wird ohne Nachfrage ueberschrieben,
+	 * 		sonst mit Nachfrage
+	 */
 	public static void backup(String backupName, boolean forceSave) {
 		try {
 			File dir = new File(System.getProperty("user.dir"));
@@ -198,50 +247,78 @@ public class Data {
 			for (File file : files) {
 				if((backupName + ".db").equals(file.getName())) {
 					int result = JOptionPane.YES_OPTION;
-					if(!forceSave) result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Die Datei existiert bereits.\nSoll die Datei überschrieben werden?", "Warnung", JOptionPane.YES_NO_OPTION);
+					if(!forceSave) result = JOptionPane.showConfirmDialog(Stundenplan.getMain(), "Die Datei existiert bereits.\nSoll die Datei ueberschrieben werden?", "Warnung", JOptionPane.YES_NO_OPTION);
 					if(result == JOptionPane.YES_OPTION) {
 						if(file.delete()) {
 							stmt.executeUpdate("backup to " + backupName + ".db");
-							System.out.println("DB - database replaced");
-						}else System.out.println("DB - ERROR on deleting database");
+						}
 					}
 					return;
 				}
 			}
 			stmt.executeUpdate("backup to " + backupName + ".db");
-			System.out.println("DB - backup created");
 		}catch (Exception e) {
-			System.out.println("DB - ERROR on creating backup");
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Läd die Datei mit dem uebergebenen Dateinamen in die temporaere Datenbank.
+	 * 
+	 * @param backupName
+	 * 		Dateiname der Datei, die geladen werden soll
+	 */
 	public static void restore(String backupName) {
 		try {
 			stmt.executeUpdate("restore from " + backupName);
 			setLastRestoredFileName(backupName.substring(0, backupName.length()-3));
 			setSaved(true);
-			System.out.println("DB - successful restored");
 		}catch (Exception e) {
-			System.out.println("DB - ERROR on restoring from backup");
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Gibt den saved zurueck.
+	 * 
+	 * @return saved
+	 */
 	public static boolean isSaved() {
 		return saved;
 	}
 	
+	/**
+	 * Setzt den Wert saved.
+	 * 
+	 * @param pSaved
+	 * 		Wert, der saved sein soll
+	 */
 	public static void setSaved(boolean pSaved) {
 		saved = pSaved;
 	}
 
+	/**
+	 * Gibt den zuletzt verwendeten Dateinamen zurueck.
+	 * 
+	 * @return lastRestoredFileName
+	 */
 	public static String getLastRestoredFileName() {
 		return lastRestoredFileName;
 	}
 
+	/**
+	 * Setzt den zuletzt verwendeten Dateinamen.
+	 * 
+	 * @param lastRestoredFileName
+	 * 		der zuletzt verwendete Dateiname
+	 */
 	public static void setLastRestoredFileName(String lastRestoredFileName) {
 		Data.lastRestoredFileName = lastRestoredFileName;
 	}
 	
+	/**
+	 * Methode löscht alle Daten in der Datenbank.
+	 */
 	public static void deleteAll() {
 		try {
 			sql = "DELETE FROM Personal;";
