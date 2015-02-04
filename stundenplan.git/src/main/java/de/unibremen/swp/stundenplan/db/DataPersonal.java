@@ -24,7 +24,7 @@ public class DataPersonal {
 		try {
 			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(personal.getKuerzel())){ 
-					 new BereitsVorhandenException();
+					throw new BereitsVorhandenException();
 				}
 			}
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
@@ -51,7 +51,7 @@ public class DataPersonal {
 			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
-		} catch (SQLException e) {
+		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
