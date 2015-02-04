@@ -400,7 +400,6 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			modelSchoolclassBedarf.addColumn("Bedarf");
 			modelSchoolclassBedarf.addColumn("Ist-Zeit");
 			ArrayList<Planungseinheit> pEs = DataPlanungseinheit.getAllPlanungseinheitByObject(s);
-			System.out.println(pEs.size());
 			for (Stundeninhalt si : StundeninhaltManager
 					.getAllStundeninhalteFromDB()) {
 				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0", "0" });
