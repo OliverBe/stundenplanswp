@@ -1,5 +1,4 @@
 package de.unibremen.swp.stundenplan.logic;
-
 import java.util.ArrayList;
 import de.unibremen.swp.stundenplan.command.AddJahrgangToDB;
 import de.unibremen.swp.stundenplan.command.DeleteJahrgangsBedarfFromDB;
@@ -7,10 +6,17 @@ import de.unibremen.swp.stundenplan.command.EditJahrgangsBedarf;
 import de.unibremen.swp.stundenplan.data.Jahrgang;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 
+/**
+ * Uebergang von Jahrgängen zu DB und History durch diesen Manager
+ * @doc Oliver
+ *
+ */
 public class JahrgangsManager {
 
+	/**
+	 * 
+	 */
 	public JahrgangsManager() {
-
 	}
 
 	public static void addBedarfToJahrgang(final Jahrgang jahrgang) {
@@ -34,17 +40,14 @@ public class JahrgangsManager {
 	 * weiter.
 	 */
 	public static ArrayList<Jahrgang> getAllJahrgangFromDB() {
-		ArrayList<Jahrgang> jahrgang = DataSchulklasse.getAllJahrgang();
-		return jahrgang;
+		return DataSchulklasse.getAllJahrgang();
 	}
 	
 	public static Jahrgang getJahrgangByJahrgangFromDB(int jahrgang) {
-		Jahrgang jg = DataSchulklasse.getJahrgangByJahrgang(jahrgang);
-		return jg;
+		return DataSchulklasse.getJahrgangByJahrgang(jahrgang);
 	}
 	
 	public static Jahrgang getJahrgangByJundSkuerzelFromDB(int jahrgang, String stundeninhalt_kuerzel) {
-		Jahrgang jg = DataSchulklasse.getJahrgangByJundSkuerzel(jahrgang, stundeninhalt_kuerzel);
-		return jg;
+		return DataSchulklasse.getJahrgangByJundSkuerzel(jahrgang, stundeninhalt_kuerzel);
 	}
 }

@@ -123,10 +123,6 @@ public class DataLeistungsTest {
 	
 	@Test
 	public void massiveCreateStundeninhalt() {
-		// hundert Stdi
-		for (int i = 0; i < 100; i++) {
-			array.add("Si" + i);
-		}
 		ArrayList<Stundeninhalt> list = new ArrayList<Stundeninhalt>();
 		int zaehler = 0;
 		while ((System.currentTimeMillis() - tStart) / 1000 < 20
@@ -234,17 +230,13 @@ public class DataLeistungsTest {
 	
 	@Test
 	public void massiveAddStundeninhaltToDB() {
-		// zehn Stdi
-		for (int i = 0; i < 10; i++) {
-			array.add("Si" + i);
-		}
 		int zaehler = 0;
 		while ((System.currentTimeMillis() - tStart) / 1000 < 30
-				&& zaehler < 50) {
+				&& zaehler < 100) {
 			DataStundeninhalt.addStundeninhalt(new Stundeninhalt("Si", "si"+zaehler,1,1));
 			zaehler++;
 		}
-		// 50 Schulklassen in höchstens 30 Sekunden erstellt
-		assertTrue(zaehler == 50);
+		// 1000 Schulklassen in höchstens 30 Sekunden erstellt
+		assertTrue(zaehler == 100);
 	}
 }
