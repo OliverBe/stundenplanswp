@@ -375,6 +375,10 @@ public class Data {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Jahrgang_Stundenbedarf;";
 			stmt.executeUpdate(sql);
+			sql = "DELETE FROM gependelt_Schulklasse;";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM gependelt_Personal;";
+			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

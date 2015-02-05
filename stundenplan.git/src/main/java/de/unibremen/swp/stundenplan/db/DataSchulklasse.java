@@ -210,6 +210,8 @@ public class DataSchulklasse {
 		stmt.executeUpdate(sql);
 		sql = "DELETE FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
 		stmt.executeUpdate(sql);
+		sql = "DELETE FROM gependelt_Schulklasse WHERE schulklasse_name = '" + pName + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
@@ -224,6 +226,8 @@ public class DataSchulklasse {
 			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM gependelt_Schulklasse WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
