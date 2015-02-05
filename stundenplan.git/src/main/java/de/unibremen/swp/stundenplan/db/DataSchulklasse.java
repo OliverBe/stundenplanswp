@@ -211,26 +211,26 @@ public class DataSchulklasse {
 	
 	public static void addJahrgang(Jahrgang jahrgang) {
 		try {
-			boolean inDB;
 			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
-				inDB = false;
 				for(Jahrgang j : getAllJahrgang()) {
 					if(jahrgang.getJahrgang() == j.getJahrgang()) {
 						for(Entry<String, Integer> entryDB : j.getStundenbedarf().entrySet()) {
 							if(entry.getKey().equals(entryDB.getKey())) {
-								inDB = true;
 								throw new BereitsVorhandenException();
 							}
 						}
 					}
 				}
-				if(!inDB) {
-					sql = "INSERT INTO Jahrgang_Stundenbedarf "
-							+ "VALUES (" + jahrgang.getJahrgang() + ",'"
-							+ entry.getKey() + "',"
-							+ entry.getValue() + ");";
-					stmt.executeUpdate(sql);
-				}
+				sql = "INSERT INTO Jahrgang_Stundenbedarf "
+						+ "VALUES (" + jahrgang.getJahrgang() + ",'"
+						+ entry.getKey() + "',"
+						+ entry.getValue() + ");";
+				stmt.executeUpdate(sql);
+				sql = "UPDATE Schulklasse, stundenbedarf SET bedarf = " + entry.getValue() + " WHERE name = schulklasse_name "
+						+ "AND jahrgang = " + jahrgang.getJahrgang() + " "
+						+ "AND stundeninhalt_kuerzel = '" + entry.getKey() + "' "
+						+ "AND bedarf = 0;";
+				stmt.executeUpdate(sql);
 			}
 			Data.setSaved(false);
 		}catch (SQLException | BereitsVorhandenException e) {
