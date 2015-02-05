@@ -498,9 +498,9 @@ public final class PlanungseinheitManager {
 				return true;
 			}
 		}  else if (hour == p1.getStartHour() && minute < p1.getStartminute()) {
-			return true;
+			return false;
 		} else if (hour == p1.getEndhour() && minute > p1.getEndminute()) {
-			return true;
+			return false;
 		}
 		return false;
 	}
