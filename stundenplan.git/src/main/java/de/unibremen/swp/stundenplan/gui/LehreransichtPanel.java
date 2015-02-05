@@ -105,7 +105,7 @@ public class LehreransichtPanel extends JPanel {
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model);
 		model.addColumn("Kuerzel");
-		model.addColumn("Wochenstunden");
+		model.addColumn("Arbeitszeit");
 		model.addColumn("Ersatzzeit");
 		model.addColumn("Ist-Zeit");
 
@@ -281,26 +281,27 @@ public class LehreransichtPanel extends JPanel {
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size() - 1);
 								reihe.remove(reihe.size() - 1);
-								reihe.add(teilString + "<br>" + k.getName()
+								reihe.add(teilString + "\n" + " "+ k.getName()
 										+ ": "
 										+ Double.toString(ergebnisInStunden));
-								System.out.println(reihe.toString());
 							} else {
-								reihe.add("<html><body><center>" + k.getName()
+//								reihe.add("<html><body><center>" + k.getName()
+//										+ ": "
+//										+ Double.toString(ergebnisInStunden)
+//										+ "\n"+"Test test"+"\n"+"test2");
+								reihe.add(" "+k.getName()
 										+ ": "
 										+ Double.toString(ergebnisInStunden));
-								System.out.println("Reihe erster Durchlauf: "
-										+ reihe.toString());
 							}
 						}
 					}
 				}
 				// Zum Schluss muss noch der/das HTML Body geschlossen werden.
-				String substring = reihe.get(reihe.size() - 1);
-				if (!substring.equals("-")) {
-					reihe.remove(reihe.size() - 1);
-					reihe.add(substring + "</center></body></html>");
-				}
+//				String substring = reihe.get(reihe.size() - 1);
+//				if (!substring.equals("-")) {
+//					reihe.remove(reihe.size() - 1);
+//					reihe.add(substring + "</center></body></html>");
+//				}
 			}
 			// Hier wird die nun fertige Reihe als ArrayList in ein normales
 			// Aray das model uebergeben
