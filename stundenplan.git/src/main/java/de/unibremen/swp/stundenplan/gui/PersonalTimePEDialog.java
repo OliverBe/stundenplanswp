@@ -113,7 +113,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 					.getValue()) {
 				JOptionPane.showMessageDialog(null,
 						"Die Startzeit von (" + p.getName()
-								+ ") muss vir dessen Endzeit beginnen");
+								+ ") muss vor dessen Endzeit beginnen");
 				return;
 			}
 			pe.addPersonal(
