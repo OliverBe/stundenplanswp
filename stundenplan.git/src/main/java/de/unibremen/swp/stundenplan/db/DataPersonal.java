@@ -59,13 +59,20 @@ public class DataPersonal {
 				stmt.executeUpdate(sql);
 			}
 			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten().entrySet()) {
-				sql = "INSERT INTO Zeitwunsch " + "VALUES ('" 
+				sql = "INSERT INTO Zeitwunsch VALUES ('" 
 						+ personal.getKuerzel() + "',"
 						+ entry.getKey().getOrdinal() + ","
 						+ entry.getValue()[0] + ","
 						+ entry.getValue()[1] + ","
 						+ entry.getValue()[2] + ","
 						+ entry.getValue()[3] + ");";
+				stmt.executeUpdate(sql);
+			}
+			for(int i=0;i<7;i++) {
+				sql = "INSERT INTO gependelt_Personal VALUES ('"
+						+ personal.getKuerzel() + "',"
+						+ i + ","
+						+ personal.isGependelt(Weekday.getDay(i)) + ");";
 				stmt.executeUpdate(sql);
 			}
 			StundenplanPanel.updateLists(); 
@@ -117,6 +124,13 @@ public class DataPersonal {
 					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
 				}
 				p.setWunschZeiten(zeitwunsch);
+				sql = "SELECT * FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					int weekday = rs.getInt("weekday");
+					boolean gependelt = rs.getBoolean("gependelt");
+					p.setGependelt(Weekday.getDay(weekday), gependelt);
+				}
 				return p;
 			}else {
 				return null;
@@ -173,6 +187,15 @@ public class DataPersonal {
 					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
 				}
 				p.setWunschZeiten(zeitwunsch);
+			}
+			for(Personal p : allPersonal) {
+				sql = "SELECT * FROM gependelt_Personal WHERE personal_kuerzel = '" + p.getKuerzel() + "';";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					int weekday = rs.getInt("weekday");
+					boolean gependelt = rs.getBoolean("gependelt");
+					p.setGependelt(Weekday.getDay(weekday), gependelt);
+				}
 			}
 			return allPersonal;
 		} catch (SQLException e) {
@@ -275,6 +298,8 @@ public class DataPersonal {
 			sql = "DELETE FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+			stmt.executeUpdate(sql);
+			sql = "DELETE FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE planungseinheit_Personal SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
