@@ -22,6 +22,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 
+import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
@@ -134,7 +135,8 @@ public class PEedit extends JFrame {
 	/**
 	 * erzeugt Editor fuer ERzeugung von einer Planungseinheit.
 	 */
-	public PEedit(final StundenplanPanel pParent, Timeslot pTimeslot, Object towner) {
+	public PEedit(final StundenplanPanel pParent, Timeslot pTimeslot,
+			Object towner) {
 		super("Planungseinheit bearbeiten");
 		parentframe = pParent;
 		owner = towner;
@@ -200,25 +202,25 @@ public class PEedit extends JFrame {
 		teamzeit = new JCheckBox("Teamzeit");
 		endtime.add(bandselect);
 		endtime.add(teamzeit);
-		if(pe!=null&&pe.getSchoolclasses().size() == 0){
+		if (pe != null && pe.getSchoolclasses().size() == 0) {
 			teamzeit.setSelected(true);
 		}
-		if(pe!=null&&pe.getRooms().size()>1){
+		if (pe != null && pe.getRooms().size() > 1) {
 			bandselect.setSelected(true);
 		}
 		tf = ((JSpinner.DefaultEditor) spinner4.getEditor()).getTextField();
 		tf.setEditable(false);
 		getContentPane().add(starttime);
 		getContentPane().add(endtime);
-		pList = new DualListBox("Alle Lehrer", " Lehrer in der Planungseinheit",
-				PersonalComparator);
+		pList = new DualListBox("Alle Lehrer",
+				" Lehrer in der Planungseinheit", PersonalComparator);
 		ArrayList<Personal> plist = DataPersonal.getAllPersonal();
-		if(pe!=null){
+		if (pe != null) {
 			plist.removeAll(pe.getPersonal());
 			pList.addDestinationElements(pe.getPersonal().toArray());
 		}
-		if(owner instanceof Personal){
-			if (plist.contains(owner)){
+		if (owner instanceof Personal) {
+			if (plist.contains(owner)) {
 				plist.remove(owner);
 				pList.addDestinationElements(getList(owner));
 			}
@@ -227,50 +229,55 @@ public class PEedit extends JFrame {
 		getContentPane().add(pList);
 		sIList = new DualListBox("Verfuegbare Stundeninhalte",
 				" Stundeninhalte in der Planungseinheit", SIComparator);
-		ArrayList<Stundeninhalt> silist = DataStundeninhalt.getAllStundeninhalte();
-		if(pe!=null){
-		silist.removeAll(PlanungseinheitManager.getSIforPE(pe));
-		sIList.addDestinationElements(PlanungseinheitManager.getSIforPE(pe).toArray());
+		ArrayList<Stundeninhalt> silist = DataStundeninhalt
+				.getAllStundeninhalte();
+		if (pe != null) {
+			silist.removeAll(PlanungseinheitManager.getSIforPE(pe));
+			sIList.addDestinationElements(PlanungseinheitManager.getSIforPE(pe)
+					.toArray());
 		}
 		sIList.addSourceElements(silist.toArray());
 		getContentPane().add(sIList);
-		scList = new DualListBox("Alle Klassen", " Klassen in der Planungseinheit",
-				SCComparator);
+		scList = new DualListBox("Alle Klassen",
+				" Klassen in der Planungseinheit", SCComparator);
 		ArrayList<Schoolclass> sclist = DataSchulklasse.getAllSchulklasse();
-		if(pe!=null){
-		sclist.removeAll(PlanungseinheitManager.getSCforPE(pe));
-		scList.addDestinationElements(PlanungseinheitManager.getSCforPE(pe).toArray());
+		if (pe != null) {
+			sclist.removeAll(PlanungseinheitManager.getSCforPE(pe));
+			scList.addDestinationElements(PlanungseinheitManager.getSCforPE(pe)
+					.toArray());
 		}
-		if(owner instanceof Schoolclass){
+		if (owner instanceof Schoolclass) {
 			System.out.println(owner);
-			if (sclist.contains(owner)){
+			if (sclist.contains(owner)) {
 				sclist.remove(owner);
 				scList.addDestinationElements(getList(owner));
 			}
 		}
 		scList.addSourceElements(sclist.toArray());
 		getContentPane().add(scList);
-		roomList = new DualListBox("Alle Raeume", " Raeume in der Planungseinheit",
-				RoomComparator);
+		roomList = new DualListBox("Alle Raeume",
+				" Raeume in der Planungseinheit", RoomComparator);
 		ArrayList<Room> rlist = DataRaum.getAllRaum();
-		if(pe!=null){
-		rlist.removeAll(PlanungseinheitManager.getRforPE(pe));
-		roomList.addDestinationElements(PlanungseinheitManager.getRforPE(pe).toArray());
+		if (pe != null) {
+			rlist.removeAll(PlanungseinheitManager.getRforPE(pe));
+			roomList.addDestinationElements(PlanungseinheitManager
+					.getRforPE(pe).toArray());
 		}
 		roomList.addSourceElements(rlist.toArray());
 		getContentPane().add(roomList);
-		if(pe!=null){
-		pe.getSchoolclasses().clear();
-		pe.getRooms().clear();
-		pe.getStundeninhalte().clear();
+		if (pe != null) {
+			pe.getSchoolclasses().clear();
+			pe.getRooms().clear();
+			pe.getStundeninhalte().clear();
 		}
 		button = new JButton("Planungseinheit speichern");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				
+
 				if (pList.getDestsize() == 0 || roomList.getDestsize() == 0) {
-					JOptionPane.showMessageDialog(null,
-							"Es sind keine Raeume und/oder kein Personal eingeplant");
+					JOptionPane
+							.showMessageDialog(null,
+									"Es sind keine Raeume und/oder kein Personal eingeplant");
 					return;
 				} else if ((sIList.getDestsize() > 1
 						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
@@ -281,10 +288,10 @@ public class PEedit extends JFrame {
 					return;
 				}
 				Planungseinheit p;
-				if(pe!=null){
-				 p = pe;
-				}else{
-				 p = new Planungseinheit();
+				if (pe != null) {
+					p = pe;
+				} else {
+					p = new Planungseinheit();
 				}
 				p.setStarthour((int) spinner1.getValue());
 				p.setStartminute((int) spinner2.getValue());
@@ -296,25 +303,28 @@ public class PEedit extends JFrame {
 							.showMessageDialog(null,
 									"Planungseinheit darf nicht gleiche Startzeit und Endzeit haben");
 					return;
-				} else if (p.getStartHour() > p.getEndhour() || (p.getStartHour() == p.getEndhour() && p.getStartminute() > p.getEndminute())) {
+				} else if (p.getStartHour() > p.getEndhour()
+						|| (p.getStartHour() == p.getEndhour() && p
+								.getStartminute() > p.getEndminute())) {
 					JOptionPane.showMessageDialog(null,
 							"Die Startzeit muss vor der Endzeit beginnen");
 					return;
 				}
-				if ((p.getEndhour() == TimetableManager.endTimeHour()
-						&& p.getEndminute() > TimetableManager.endTimeMinute()) ||p.getEndhour() > TimetableManager.endTimeHour()) {
-					JOptionPane.showMessageDialog(
-							null,
-							"Der Tag ist leider bereits um " + p.getEndhour() + ":"
-									+ p.getEndminute() + " zu Ende");
+				if ((p.getEndhour() == TimetableManager.endTimeHour() && p
+						.getEndminute() > TimetableManager.endTimeMinute())
+						|| p.getEndhour() > TimetableManager.endTimeHour()) {
+					JOptionPane.showMessageDialog(null,
+							"Der Tag ist leider bereits um " + p.getEndhour()
+									+ ":" + p.getEndminute() + " zu Ende");
 					return;
 				}
-				if ((p.getStartHour() == TimetableManager.startTimeHour()
-						&& p.getStartminute() < TimetableManager.startTimeMinute()) || p.getStartHour() < TimetableManager.startTimeHour()) {
-					JOptionPane.showMessageDialog(
-							null,
+				if ((p.getStartHour() == TimetableManager.startTimeHour() && p
+						.getStartminute() < TimetableManager.startTimeMinute())
+						|| p.getStartHour() < TimetableManager.startTimeHour()) {
+					JOptionPane.showMessageDialog(null,
 							"Der Tag hat leider  um " + p.getStartHour() + ":"
-									+ p.getStartminute() + " noch nicht angefangen");
+									+ p.getStartminute()
+									+ " noch nicht angefangen");
 					return;
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
@@ -331,7 +341,7 @@ public class PEedit extends JFrame {
 						listp.add(pr);
 					}
 				}
-				
+
 				it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
@@ -347,15 +357,15 @@ public class PEedit extends JFrame {
 												+ p.duration()
 												+ "\n"
 												+ "Regeldauer von "
-												+ si.getName() + " in min: "
+												+ si.getName()
+												+ " in min: "
 												+ si.getRegeldauer(),
 										"Warnung", 0,
 										JOptionPane.YES_NO_OPTION, null,
 										options, null);
 						if (result == 0) {
-							WarningPanel
-									.setText("Regeldauer bei Planung von "
-											+ si.getName());
+							WarningPanel.setText("Regeldauer bei Planung von "
+									+ si.getName());
 						} else {
 							return;
 						}
@@ -364,8 +374,9 @@ public class PEedit extends JFrame {
 				}
 
 				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {
-					JOptionPane.showMessageDialog(null,
-							"In der Teamzeit kann keine Klasse eingetragen werden");
+					JOptionPane
+							.showMessageDialog(null,
+									"In der Teamzeit kann keine Klasse eingetragen werden");
 					return;
 				}
 
@@ -390,17 +401,16 @@ public class PEedit extends JFrame {
 								"Der Raum ("
 										+ r.getName()
 										+ ") ist nicht fuer die geplanten Stundeninhalte vorhergesehen."
-										+ "\n"
-										+ "Stundeninhalte vom Raum: "
-										+ r.getmSI()
-										+ "\n"
+										+ "\n" + "Stundeninhalte vom Raum: "
+										+ r.getmSI() + "\n"
 										+ "Stundeninhalte in der Planung: "
 										+ p.stundenInhaltetoString(),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
 						if (result == 0) {
-							WarningPanel.setText("Stundeninhalt nicht fuer Raum vorhergesehen"
-									+ r.getName());
+							WarningPanel
+									.setText("Stundeninhalt nicht fuer Raum vorhergesehen"
+											+ r.getName());
 						} else {
 							return;
 						}
@@ -414,55 +424,9 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
-				
-				
 
-				for(int i = 0; i < listp.size() ; i++) {
-					StundenplanTable table = new StundenplanTable(listp.get(i));
-					int row;
-					int column;
-					for(int e = 0; e < table.getTable().getRowCount(); e++) {
-						String s ="";
-						if(p.getStartHour()< 10) {
-							s = s + "0";
-						}
-						s = s + p.getStartHour() + ":";
-						if(p.getStartminute()< 10) {
-							s = s + "0";
-						}
-						s = s + p.getStartminute();
-						s = s + " - ";
-						
-						if(p.getEndhour()< 10) {
-							s = s + "0";
-							
-							
-						}
-						s = s + p.getEndhour() + ":";
-						if(p.getEndminute()< 10) {
-							s = s + "0";
-						}
-						s = s + p.getEndminute();
-						
-						if(table.getTable().getValueAt(e, 0).toString().equals(s)) {
-							//TODO
-							
-						}
-						
-						
-							
-					}
-				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
+
 				for (Personal pers : listp) {
 					if (PlanungseinheitManager.personalsiCheck(pers, p)) {
 						int result = JOptionPane.showOptionDialog(
@@ -472,15 +436,15 @@ public class PEedit extends JFrame {
 										+ ") ist nicht fuer die geplanten Stundeninhalte vorhergesehen."
 										+ "\n"
 										+ "Stundeninhalte vom Personal: "
-										+ pers.getmSI()
-										+ " \n"
+										+ pers.getmSI() + " \n"
 										+ "Stundeninhalte in der Planung: "
 										+ p.stundenInhaltetoString(),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
 						if (result == 0) {
-							WarningPanel.setText("Stundeninhalt nicht fuer Personal vorhergesehen"
-									+ pers.getName());
+							WarningPanel
+									.setText("Stundeninhalt nicht fuer Personal vorhergesehen"
+											+ pers.getName());
 						} else {
 							return;
 						}
@@ -493,36 +457,40 @@ public class PEedit extends JFrame {
 										+ pers.getName()
 										+ ") ist zu der geplanten Zeitspanne nicht verfuegbar"
 										+ "\n"
-										+ "Anwesenheit des Personals: " 
-										+ printWZ(pers.getWunschzeitForWeekday(p.getWeekday())),
+										+ "Anwesenheit des Personals: "
+										+ printWZ(pers
+												.getWunschzeitForWeekday(p
+														.getWeekday())),
 								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
 								options, null);
 						if (result == 0) {
 							// add Warningpanel
-							WarningPanel.setText("Wunschzeit stimmt nicht mit geplanter Zeit ueberein"
-									+ pers.getName());
+							WarningPanel
+									.setText("Wunschzeit stimmt nicht mit geplanter Zeit ueberein"
+											+ pers.getName());
 						} else {
 							return;
 						}
 					}
 
 					if (PlanungseinheitManager.overtimePers(pers, p.duration())) {
-						int result = JOptionPane.showOptionDialog(
-								null,
-								"Die Istzeit vom Personal ("
-										+ pers.getName()
-										+ ") uebersteigt mit der Eintragung die "
-										+ "\n"
-										+ "Sollzeit: "
-										+ pers.getSollZeit()
-										+ "\n"
-										+ "neue Istzeit: "
-										+ PlanungseinheitManager
-												.newTimeforPers(
-														pers,
-														p.duration()),
-								"Warnung", 0, JOptionPane.YES_NO_OPTION, null,
-								options, null);
+						int result = JOptionPane
+								.showOptionDialog(
+										null,
+										"Die Istzeit vom Personal ("
+												+ pers.getName()
+												+ ") uebersteigt mit der Eintragung die "
+												+ "\n"
+												+ "Sollzeit: "
+												+ pers.getSollZeit()
+												+ "\n"
+												+ "neue Istzeit: "
+												+ PlanungseinheitManager
+														.newTimeforPers(pers,
+																p.duration()),
+										"Warnung", 0,
+										JOptionPane.YES_NO_OPTION, null,
+										options, null);
 						if (result == 0) {
 							// add Warningpanel
 							WarningPanel.setText("Personal macht Ueberstunden"
@@ -534,10 +502,152 @@ public class PEedit extends JFrame {
 
 				}
 				PersonalTimePEDialog pdialog = new PersonalTimePEDialog(
-							getmyFrame(), listp, p);
+						getmyFrame(), listp, p);
 				if (pdialog.getsaved()) {
 					parentframe.updatetable();
 					parentframe.updateLists();
+					
+					
+					for (int i = 0; i < listp.size(); i++) {
+						StundenplanTable table = new StundenplanTable(listp.get(i));
+						Planungseinheit p0;
+						Planungseinheit p1;
+						Room r0;
+						Room r1;
+						for (int e = 1; e < table.getTable().getRowCount()-1; e++) {
+							for (int o = 0; o < table.getTable().getColumnCount(); o++) {
+
+								if (table.getTable().getValueAt(e, o) instanceof Timeslot) {
+									Timeslot ts0 = (Timeslot) table.getTable()
+											.getValueAt(e, o);
+									Timeslot ts1 = (Timeslot) table.getTable()
+											.getValueAt(e+1, o);
+									p0 = PlanungseinheitManager
+											.getPlanungseinheitById(ts0.getpe());
+									p1 = PlanungseinheitManager
+											.getPlanungseinheitById(ts1.getpe());
+									if (!(p0 == null || p1 == null)) {
+
+										ArrayList<String> roomList1 = p0.getRooms();
+										ArrayList<String> roomList2 = p1.getRooms();
+										for (int a = 0; a < roomList1.size(); a++) {
+											for (int s = 0; s < roomList2.size(); s++) {
+												r0 = p0.getRoomByName(roomList1
+														.get(a));
+												r1 = p1.getRoomByName(roomList2
+														.get(s));
+												/**
+												 * TODO WegZeit festlegen unten
+												 */
+												int wegzeit = 15;
+												if (r0.getGebaeude() != r1
+														.getGebaeude()) {
+													// gleiche Std angefangen /
+													// beendet
+													if (p0.getEndhour() == p1
+															.getStartHour()) {
+														if (p0.getEndminute() > (59 - wegzeit)) {
+															JOptionPane
+																	.showMessageDialog(
+																			null,
+																			"Das Personal ("
+																					+ listp.get(
+																							i)
+																							.getName()
+																					+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+															CommandHistory.deleteLast();
+															parentframe.updatetable();
+															parentframe.updateLists();
+
+														} else {
+															if (p0.getEndminute()
+																	+ wegzeit <= p1
+																	.getStartminute()) {
+
+															} else {
+																JOptionPane
+																		.showMessageDialog(
+																				null,
+																				"Das Personal ("
+																						+ listp.get(
+																								i)
+																								.getName()
+																						+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																CommandHistory.deleteLast();
+																parentframe.updatetable();
+																parentframe.updateLists();
+															}
+														}
+													} // Std früher endet / später
+														// beginnt
+													else if (p0.getEndhour() < p1
+															.getStartHour()) {
+														if (p0.getEndminute() > (p1
+																.getStartminute() - wegzeit)) {
+															JOptionPane
+																	.showMessageDialog(
+																			null,
+																			"Das Personal ("
+																					+ listp.get(
+																							i)
+																							.getName()
+																					+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+															CommandHistory.deleteLast();
+															parentframe.updatetable();
+															parentframe.updateLists();
+
+														} else {
+															if ((p0.getEndminute() + wegzeit % 60) <= p1
+																	.getStartminute()) {
+
+															} else {
+																JOptionPane
+																		.showMessageDialog(
+																				null,
+																				"Das Personal ("
+																						+ listp.get(
+																								i)
+																								.getName()
+																						+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																CommandHistory.deleteLast();
+																parentframe.updatetable();
+																parentframe.updateLists();
+															}
+														}
+													} else {
+														JOptionPane
+																.showMessageDialog(
+																		null,
+																		"Das Personal ("
+																				+ listp.get(
+																						i)
+																						.getName()
+																				+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+														CommandHistory.deleteLast();
+														parentframe.updatetable();
+														parentframe.updateLists();
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+						}
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					dispose();
 				} else {
 					return;
@@ -558,16 +668,18 @@ public class PEedit extends JFrame {
 		nlist[0] = powner;
 		return nlist;
 	}
-	
-	private String printWZ(int[] wZ){
-		if(wZ.length != 4){return "";}
+
+	private String printWZ(int[] wZ) {
+		if (wZ.length != 4) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("%02d:%02d", wZ[0], wZ[1]));
 		sb.append(" - ");
 		sb.append(String.format("%02d:%02d", wZ[2], wZ[3]));
 		return sb.toString();
 	}
-	
+
 	private JFrame getmyFrame() {
 		return this;
 	}

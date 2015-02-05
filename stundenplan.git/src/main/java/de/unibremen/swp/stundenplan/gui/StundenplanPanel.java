@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.DefaultListModel;
@@ -25,8 +26,10 @@ import javax.swing.table.DefaultTableModel;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.data.Personal;
+import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.logic.PersonalManager;
 import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.SchulklassenManager;
@@ -393,17 +396,27 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			table = new StundenplanTable(s).getTable();
 			
 			DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
-			
 			modelSchoolclassBedarf.addColumn("Stundeninhalt");
 			modelSchoolclassBedarf.addColumn("Bedarf");
+			modelSchoolclassBedarf.addColumn("Ist-Zeit");
+			ArrayList<Planungseinheit> pEs = DataPlanungseinheit.getAllPlanungseinheitByObject(s);
 			for (Stundeninhalt si : StundeninhaltManager
 					.getAllStundeninhalteFromDB()) {
-				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0" });
+				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0", "0" });
 			}
 			for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
 				for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
 					if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
 						modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
+					}
+				}
+			}
+			for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
+				for(Planungseinheit p: pEs){
+					if(p.getStundeninhalte().contains(modelSchoolclassBedarf.getValueAt(i, 0))){
+						int dauer = Integer.parseInt(modelSchoolclassBedarf.getValueAt(i, 2).toString());
+						dauer += p.duration()/45;
+						modelSchoolclassBedarf.setValueAt(dauer, i, 2);
 					}
 				}
 			}
