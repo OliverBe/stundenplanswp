@@ -19,9 +19,9 @@ import java.io.IOException;
 
 
 /**
- * Eine Aufzählung von relevanten Wochentagen für einen Stundenplan.
+ * Eine Aufzaehlung von relevanten Wochentagen fuer einen Stundenplan.
  * 
- * @author D. Lüdemann, K. Hölscher
+ * @author D. Luedemann, K. Hoelscher
  * @version 0.1
  * @editor Oliver, Fathan
  */
@@ -83,12 +83,12 @@ public enum Weekday {
     
     /**
      * Erzeugt einen neuen Wochentag mit dem gegebenen Anzeigenamen und der gegebenen Ordinalzahl. Da es sich um einen
-     * privaten Konstruktor handelt, werden die Parameterwerte nicht auf Plausibilität geprüft.
+     * privaten Konstruktor handelt, werden die Parameterwerte nicht auf Plausibilituet geprueft.
      * 
      * @param pDisplayName
-     *            der Anzeigename für den Wochentag
+     *            der Anzeigename fuer den Wochentag
      * @param pOrdinal
-     *            die Ordinalzahl für den neuen Wochentag
+     *            die Ordinalzahl fuer den neuen Wochentag
      */
     private Weekday(final String pDisplayName, final int pOrdinal, final String pDaystring, final String pDayvalue) {
     	try {
@@ -110,7 +110,7 @@ public enum Weekday {
     }
 
     /**
-     * Gibt die Ordinalzahl dieses Wochentages zurück.
+     * Gibt die Ordinalzahl dieses Wochentages zurueck.
      * 
      * @return die Ordinalzahl dieses Wochentages
      */
@@ -119,7 +119,7 @@ public enum Weekday {
     }
     
     /**
-     *  Gibt zurück ob Tag verplant.
+     *  Gibt zurueck ob Tag verplant.
      */
     public boolean isSchoolday() {
     	return Boolean.parseBoolean(Config.getString(daystring,dayvalue));
