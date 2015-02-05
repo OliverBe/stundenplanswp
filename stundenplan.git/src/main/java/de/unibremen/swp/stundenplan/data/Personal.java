@@ -94,6 +94,7 @@ public final class Personal {
 		lehrer = pLehrer;
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 		wunschzeiten = pWunschzeiten;
+		initHashMap();
 	}
 
 	/**
@@ -238,12 +239,12 @@ public final class Personal {
 		wunschzeiten = pWunschzeiten;
 	}
 
-	public HashMap<Weekday, Boolean> isGependelt() {
-		return gependelt;
+	public boolean isGependelt(Weekday weekday) {
+		return gependelt.get(weekday);
 	}
 
-	public void setGependelt(final HashMap<Weekday, Boolean> pGependelt) {
-		gependelt = pGependelt;
+	public void setGependelt(Weekday weekday, boolean state) {
+		gependelt.replace(weekday, state);
 	}
 
 	public boolean isLehrer() {
@@ -253,4 +254,16 @@ public final class Personal {
 	public void setLehrer(final boolean pLehrer) {
 		lehrer = pLehrer;
 	}
+	
+	public void initHashMap() {
+		gependelt.put(Weekday.MONDAY, false);
+		gependelt.put(Weekday.TUESDAY, false);
+		gependelt.put(Weekday.WEDNESDAY, false);
+		gependelt.put(Weekday.THURSDAY, false);
+		gependelt.put(Weekday.FRIDAY, false);
+		gependelt.put(Weekday.SATURDAY, false);
+		gependelt.put(Weekday.SUNDAY, false);
+	}
+	
+	
 }
