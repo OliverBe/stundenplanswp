@@ -11,6 +11,7 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
+import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 /**
@@ -514,8 +515,15 @@ public class DataPlanungseinheit {
 	 * 		die bearbeitete Planungseinheit
 	 */
 	public static void editPlanungseinheit(int id, Planungseinheit planungseinheit) {
+		try {
+			for(Planungseinheit pe : getAllPlanungseinheit()) {
+				if(!(pe.getId() == id) && getAllPlanungseinheit().indexOf(pe)+1 == getAllPlanungseinheit().size()) throw new NichtVorhandenException();
+			}
 			deletePlanungseinheitById(id);
 			addPlanungseinheit(planungseinheit);
+		} catch (NichtVorhandenException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	/**

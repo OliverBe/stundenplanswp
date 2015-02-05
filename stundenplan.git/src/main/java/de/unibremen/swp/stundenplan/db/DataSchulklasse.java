@@ -218,7 +218,7 @@ public class DataSchulklasse {
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
-				if(!sc.getName().equals(pName) && getAllSchulklasse().lastIndexOf(sc)+1 == getAllSchulklasse().size()) throw new NichtVorhandenException(); 
+				if(!sc.getName().equals(pName) && getAllSchulklasse().indexOf(sc)+1 == getAllSchulklasse().size()) throw new NichtVorhandenException(); 
 			}
 			for(Schoolclass sc : getAllSchulklasse()) {
 				if(sc.getName().equals(newSchulklasse.getName()) && !sc.getName().equals(pName)){ 
@@ -382,11 +382,14 @@ public class DataSchulklasse {
 	
 	public static void editJahrgang(Jahrgang jahrgang) {
 		try {
+			for(Jahrgang j : getAllJahrgang()) {
+				if(!(j.getJahrgang() == jahrgang.getJahrgang()) && getAllJahrgang().indexOf(j)+1 == getAllJahrgang().size()) throw new NichtVorhandenException(); 
+			}
 			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
 				sql = "UPDATE Jahrgang_Stundenbedarf SET bedarf = " + entry.getValue() + " WHERE jahrgang = " + jahrgang.getJahrgang() + " AND stundeninhalt_kuerzel = '" + entry.getKey() + "';";
 				stmt.executeUpdate(sql);
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
