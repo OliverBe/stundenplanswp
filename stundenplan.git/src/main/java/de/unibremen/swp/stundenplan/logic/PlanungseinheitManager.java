@@ -492,7 +492,7 @@ public final class PlanungseinheitManager {
 		if(hour < p1.getStartHour() || hour > p1.getEndhour()){
 			return true;
 		} else if (hour == p1.getStartHour() && hour == p1.getEndhour()){
-			if (minute > p1.getStartminute() && minute < p1.getEndminute()) {
+			if (minute < p1.getStartminute() || minute > p1.getEndminute()) {
 				return true;
 			} else {
 				return false;
