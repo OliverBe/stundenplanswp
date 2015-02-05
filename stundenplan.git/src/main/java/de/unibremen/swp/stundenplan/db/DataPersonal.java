@@ -96,46 +96,43 @@ public class DataPersonal {
 		try {
 			sql = "SELECT * FROM Personal WHERE kuerzel = '" + pKuerzel + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if(rs.next()) {
-				String name = rs.getString("name");
-				int sollZeit = rs.getInt("sollZeit");
-				int istZeitMin = rs.getInt("istZeit");
-				int ersatzZeit = rs.getInt("ersatzZeit");
-				boolean lehrer = rs.getBoolean("lehrer");
-				int istZeit = istZeitMin/(lehrer ? 45:60);
-				Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>());
-				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
-						+ pKuerzel + "';";
-				rs = stmt.executeQuery(sql);
-				ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
-				while (rs.next()) {
-					moeglicheStundeninhalte.add(rs.getString("stundeninhalt_kuerzel"));
-				}
-				p.setMoeglicheStundeninhalte(moeglicheStundeninhalte);
-				sql = "SELECT * FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
-				rs = stmt.executeQuery(sql);
-				HashMap<Weekday, int[]> zeitwunsch = new HashMap<Weekday, int[]>();
-				while(rs.next()) {
-					int weekday = rs.getInt("weekday");
-					int[] zeiten = new int[4];
-					zeiten[0] = rs.getInt("startHour");
-					zeiten[1] = rs.getInt("startMin");
-					zeiten[2] = rs.getInt("endHour");
-					zeiten[3] = rs.getInt("endMin");
-					zeitwunsch.put(Weekday.getDay(weekday), zeiten);
-				}
-				p.setWunschZeiten(zeitwunsch);
-				sql = "SELECT * FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
-				rs = stmt.executeQuery(sql);
-				while(rs.next()) {
-					int weekday = rs.getInt("weekday");
-					boolean gependelt = rs.getBoolean("gependelt");
-					p.setGependelt(Weekday.getDay(weekday), gependelt);
-				}
-				return p;
-			}else {
-				return null;
+			rs.next();
+			String name = rs.getString("name");
+			int sollZeit = rs.getInt("sollZeit");
+			int istZeitMin = rs.getInt("istZeit");
+			int ersatzZeit = rs.getInt("ersatzZeit");
+			boolean lehrer = rs.getBoolean("lehrer");
+			int istZeit = istZeitMin/(lehrer ? 45:60);
+			Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>());
+			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
+					+ pKuerzel + "';";
+			rs = stmt.executeQuery(sql);
+			ArrayList<String> moeglicheStundeninhalte = new ArrayList<String>();
+			while (rs.next()) {
+				moeglicheStundeninhalte.add(rs.getString("stundeninhalt_kuerzel"));
 			}
+			p.setMoeglicheStundeninhalte(moeglicheStundeninhalte);
+			sql = "SELECT * FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
+			rs = stmt.executeQuery(sql);
+			HashMap<Weekday, int[]> zeitwunsch = new HashMap<Weekday, int[]>();
+			while(rs.next()) {
+				int weekday = rs.getInt("weekday");
+				int[] zeiten = new int[4];
+				zeiten[0] = rs.getInt("startHour");
+				zeiten[1] = rs.getInt("startMin");
+				zeiten[2] = rs.getInt("endHour");
+				zeiten[3] = rs.getInt("endMin");
+				zeitwunsch.put(Weekday.getDay(weekday), zeiten);
+			}
+			p.setWunschZeiten(zeitwunsch);
+			sql = "SELECT * FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				int weekday = rs.getInt("weekday");
+				boolean gependelt = rs.getBoolean("gependelt");
+				p.setGependelt(Weekday.getDay(weekday), gependelt);
+			}
+			return p;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

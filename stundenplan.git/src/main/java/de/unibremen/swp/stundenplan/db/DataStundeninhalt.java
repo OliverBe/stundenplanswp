@@ -47,8 +47,8 @@ public class DataStundeninhalt {
 			return new Stundeninhalt(name, pKuerzel, regeldauer, rhythmustyp);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	public static ArrayList<Stundeninhalt> getAllStundeninhalte() {
@@ -70,21 +70,21 @@ public class DataStundeninhalt {
 	}
 	
 	public static ArrayList<String> getAllAcronymsFromStundeninhalt(){
-				try{ 
-					sql = "SELECT kuerzel FROM Stundeninhalt";
-					ResultSet rs = stmt.executeQuery(sql);
-					ArrayList<String> kuerzels = new ArrayList<>();
-					while(rs.next()){
-						kuerzels.add(rs.getString("kuerzel"));
-					}
-					
-					return kuerzels;
-					
-				}catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
+		try{ 
+			sql = "SELECT kuerzel FROM Stundeninhalt";
+			ResultSet rs = stmt.executeQuery(sql);
+			ArrayList<String> kuerzels = new ArrayList<>();
+			while(rs.next()){
+				kuerzels.add(rs.getString("kuerzel"));
 			}
+			
+			return kuerzels;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public static void deleteStundeninhaltByKuerzel(String pKuerzel) {
 		try {

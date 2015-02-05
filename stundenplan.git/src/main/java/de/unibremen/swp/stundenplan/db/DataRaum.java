@@ -86,8 +86,8 @@ public class DataRaum {
 			return raum;
 		}catch (SQLException e){
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	/**
