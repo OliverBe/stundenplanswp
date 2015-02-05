@@ -121,12 +121,12 @@ public final class Schoolclass extends Jahrgang{
     	return ("Name=" + name + ", Jahrgang=" + getJahrgang() + ", Klassenraum=(" + klassenraum + ")");
     }
 
-	public HashMap<Weekday, Boolean> getGependelt() {
-		return gependelt;
+    public boolean isGependelt(Weekday weekday) {
+		return gependelt.get(weekday);
 	}
 
-	public void setGependelt(HashMap<Weekday, Boolean> gependelt) {
-		this.gependelt = gependelt;
+	public void setGependelt(Weekday weekday, boolean state) {
+		gependelt.replace(weekday, state);
 	}
 	
 	private void initHashMap() {

@@ -72,7 +72,7 @@ public class DataPersonal {
 				sql = "INSERT INTO gependelt_Personal VALUES ('"
 						+ personal.getKuerzel() + "',"
 						+ i + ","
-						+ personal.isGependelt(Weekday.getDay(i)) + ");";
+						+ (personal.isGependelt(Weekday.getDay(i)) ? 1:0) + ");";
 				stmt.executeUpdate(sql);
 			}
 			StundenplanPanel.updateLists(); 

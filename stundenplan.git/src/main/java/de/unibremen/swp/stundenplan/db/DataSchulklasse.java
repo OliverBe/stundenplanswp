@@ -65,6 +65,13 @@ public class DataSchulklasse {
 						+ entry.getValue() + ");";
 				stmt.executeUpdate(sql);
 			}
+			for(int i=0;i<7;i++) {
+				sql = "INSERT INTO gependelt_Personal VALUES ('"
+						+ schulklasse.getName() + "',"
+						+ i + ","
+						+ (schulklasse.isGependelt(Weekday.getDay(i)) ? 1:0) + ");";
+				stmt.executeUpdate(sql);
+			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
 		}catch (SQLException e) {
@@ -81,18 +88,25 @@ public class DataSchulklasse {
 			int jahrgang = rs.getInt("jahrgang");
 			String klassenraumName = rs.getString("klassenraumName");
 			Schoolclass sc = new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName), new ArrayList<String>(), new HashMap<String, Integer>(), new HashMap<Weekday, Boolean>());
-			sql = "SELECT * FROM klassenlehrer WHERE schulklasse_name = '" + sc.getName() + "'";
+			sql = "SELECT * FROM klassenlehrer WHERE schulklasse_name = '" + pName + "'";
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String personal_kuerzel = rs.getString("personal_kuerzel");
 				sc.getKlassenlehrer().add(personal_kuerzel);
 			}
-			sql = "SELECT * FROM stundenbedarf WHERE schulklasse_name = '" + sc.getName() + "'";
+			sql = "SELECT * FROM stundenbedarf WHERE schulklasse_name = '" + pName + "'";
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
 				int bedarf = rs.getInt("bedarf");
 				sc.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+			}
+			sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_kuerzel = '" + pName + "';";
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				int weekday = rs.getInt("weekday");
+				boolean gependelt = rs.getBoolean("gependelt");
+				sc.setGependelt(Weekday.getDay(weekday), gependelt);
 			}
 			return sc;
 		} catch (SQLException e) {
@@ -130,6 +144,15 @@ public class DataSchulklasse {
 					String stundeninhalt_kuerzel = rs.getString("stundeninhalt_kuerzel");
 					int bedarf = rs.getInt("bedarf");
 					sc.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
+				}
+			}
+			for(Schoolclass sc : allSchulklasse) {
+				sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_kuerzel = '" + sc.getName() + "';";
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					int weekday = rs.getInt("weekday");
+					boolean gependelt = rs.getBoolean("gependelt");
+					sc.setGependelt(Weekday.getDay(weekday), gependelt);
 				}
 			}
 		} catch (SQLException e) {
