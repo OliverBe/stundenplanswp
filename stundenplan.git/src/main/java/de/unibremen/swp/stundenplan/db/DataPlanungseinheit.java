@@ -49,7 +49,7 @@ public class DataPlanungseinheit {
 					+ planungseinheit.getStartminute() + ","
 					+ planungseinheit.getEndhour() + ","
 					+ planungseinheit.getEndminute() + ","
-					+ planungseinheit.getPendelCheck() + ");";
+					+ (planungseinheit.getPendelCheck() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
 			for (Entry<String, int[]> entry : planungseinheit.getPersonalMap().entrySet()) {
 				sql = "INSERT INTO planungseinheit_Personal " + "VALUES (" 
