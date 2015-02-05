@@ -271,7 +271,7 @@ public final class Personal {
 	}
 
 	public void setGependelt(Weekday weekday, boolean state) {
-		gependelt.replace(weekday, state);
+		gependelt.put(weekday, state);
 	}
 
 	public boolean isLehrer() {

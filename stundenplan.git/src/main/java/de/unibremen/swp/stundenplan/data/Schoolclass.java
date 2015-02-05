@@ -126,7 +126,7 @@ public final class Schoolclass extends Jahrgang{
 	}
 
 	public void setGependelt(Weekday weekday, boolean state) {
-		gependelt.replace(weekday, state);
+		gependelt.put(weekday, state);
 	}
 	
 	private void initHashMap() {

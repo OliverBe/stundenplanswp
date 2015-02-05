@@ -228,6 +228,22 @@ public final class PlanungseinheitManager {
 	}
 	
 	/**
+	 * prueft ob Raeume in PE in verschiedenen Gebaeude befindet
+	 * @param pe Planungseinheit die ueberprueft wird
+	 * @return gibt die Anzahl von Wechsel
+	 */
+	public static boolean peRoomGcheck( final Planungseinheit pe){
+		int gebnr = -1;
+		for(Room r : getRforPE(pe)){
+			if(gebnr != -1 && gebnr != r.getGebaeude()){
+				return true;
+			}
+			gebnr = r.getGebaeude();
+		}
+		return false;
+	}
+	
+	/**
 	 * Zaehlt wiviel mal eine Person am Tag die Gebaeude wechselt
 	 * @param pers Personal
 	 * @param pDay Tag
