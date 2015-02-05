@@ -67,7 +67,6 @@ public class Data {
 	    			+ "sollZeit INT NOT NULL, "
 	    			+ "istZeit INT NOT NULL, "
 	    			+ "ersatzZeit INT NOT NULL, "
-	    			+ "schonGependelt BOOLEAN NOT NULL, "
 	    			+ "lehrer BOOLEAN NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
@@ -78,7 +77,8 @@ public class Data {
 	    			+ "startHour INT NOT NULL, "
 	    			+ "startMin INT NOT NULL, "
 	    			+ "endHour INT NOT NULL, "
-	    			+ "endMin INT NOT NULL)";
+	    			+ "endMin INT NOT NULL, "
+	    			+ "pendelCheck BOOLEAN NOT NULL)";
 	    	stmt.executeUpdate(sql);
 	    	
 	    	//Schulklasse
@@ -208,7 +208,23 @@ public class Data {
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
 	    	
-	    	//HashMap
+	    	//HashMap von Personal(Weekday, gependelt)
+	    	sql = "CREATE TABLE IF NOT EXISTS gependelt_Personal "
+	    			+ "(personal_kuerzel VARCHAR NOT NULL, "
+	    			+ "weekday INT NOT NULL, "
+	    			+ "gependelt BOOLEAN NOT NULL, "
+	    			+ "PRIMARY KEY (personal_kuerzel, weekday), "
+	    			+ "FOREIGN KEY (personal_kuerzel) REFERENCES Personal(kuerzel))";
+	    	stmt.executeUpdate(sql);
+	    	
+	    	//HashMap von Schulklasse(Weekday, gependelt)
+	    	sql = "CREATE TABLE IF NOT EXISTS gependelt_Schulklasse "
+	    			+ "(schulklasse_name VARCHAR NOT NULL, "
+	    			+ "weekday INT NOT NULL, "
+	    			+ "gependelt BOOLEAN NOT NULL, "
+	    			+ "PRIMARY KEY (schulklasse_name, weekday), "
+	    			+ "FOREIGN KEY (schulklasse_name) REFERENCES Schulklasse(name))";
+	    	stmt.executeUpdate(sql);
 	    }catch ( Exception e ) {
 	    	e.printStackTrace();
 	    }

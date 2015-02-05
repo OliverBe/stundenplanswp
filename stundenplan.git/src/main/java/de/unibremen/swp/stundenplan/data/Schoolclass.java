@@ -19,6 +19,8 @@ package de.unibremen.swp.stundenplan.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.unibremen.swp.stundenplan.config.Weekday;
+
 /**
  * Entspricht einer Schulklasse. Eine Schulklasse hat einen Namen.
  * 
@@ -34,12 +36,18 @@ public final class Schoolclass extends Jahrgang{
     private Room klassenraum;
     
     private ArrayList<String> klassenlehrer = new ArrayList<String>(); 
+    
+    /**
+	 * Ist die Schulklasse schon einmal an einem Tag gependelt, true, wenn nicht, dann false
+	 */
+	private HashMap<Weekday, Boolean> gependelt = new HashMap<Weekday, Boolean>();
 
-    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
+    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf, HashMap<Weekday, Boolean> pGependelt) {
 		super(pJahrgang, pStundenbedarf);
     	name = pName;
 		klassenraum = pKlassenraum;
-		klassenlehrer=pKlassenlehrer;
+		klassenlehrer = pKlassenlehrer;
+		setGependelt(pGependelt);
 	}
 
 	/**
@@ -90,4 +98,12 @@ public final class Schoolclass extends Jahrgang{
     public String toString() {
     	return ("Name=" + name + ", Jahrgang=" + getJahrgang() + ", Klassenraum=(" + klassenraum + ")");
     }
+
+	public HashMap<Weekday, Boolean> getGependelt() {
+		return gependelt;
+	}
+
+	public void setGependelt(HashMap<Weekday, Boolean> gependelt) {
+		this.gependelt = gependelt;
+	}
 }

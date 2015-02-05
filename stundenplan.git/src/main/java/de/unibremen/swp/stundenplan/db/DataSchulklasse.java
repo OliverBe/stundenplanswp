@@ -14,6 +14,7 @@ import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.BesetztException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
+import de.unibremen.swp.stundenplan.config.Weekday;
 
 public class DataSchulklasse {
 
@@ -79,7 +80,7 @@ public class DataSchulklasse {
 			String name = rs.getString("name");
 			int jahrgang = rs.getInt("jahrgang");
 			String klassenraumName = rs.getString("klassenraumName");
-			Schoolclass sc = new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName), new ArrayList<String>(), new HashMap<String, Integer>());
+			Schoolclass sc = new Schoolclass(name, jahrgang, DataRaum.getRaumByName(klassenraumName), new ArrayList<String>(), new HashMap<String, Integer>(), new HashMap<Weekday, Boolean>());
 			sql = "SELECT * FROM klassenlehrer WHERE schulklasse_name = '" + sc.getName() + "'";
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -111,7 +112,7 @@ public class DataSchulklasse {
 				int jahrgang = rs.getInt("jahrgang");
 				String klassenraumName = rs.getString("klassenraumName");
 				klassenraumNamen.add(klassenraumName);
-				allSchulklasse.add(new Schoolclass(name, jahrgang, new Room(), new ArrayList<String>(), new HashMap<String, Integer>()));
+				allSchulklasse.add(new Schoolclass(name, jahrgang, new Room(), new ArrayList<String>(), new HashMap<String, Integer>(), new HashMap<Weekday, Boolean>()));
 			}
 			for(int i=0;i<allSchulklasse.size();i++) {
 				allSchulklasse.get(i).setKlassenraum(DataRaum.getRaumByName(klassenraumNamen.get(i)));
@@ -206,6 +207,32 @@ public class DataSchulklasse {
 			addSchulklasse(newSchulklasse);
 		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void setGependelt(String schulklasse_name, Weekday day, boolean gependelt) {
+		try {
+			sql = "UPDATE gependelt_Schulklasse SET gependelt = " + (gependelt ? 1:0) + " "
+					+ "WHERE schulklasse_name = '" + schulklasse_name + "' "
+					+ "AND weekday = " + day.getOrdinal() + ";";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static boolean getGependelt(String schulklasse_name, Weekday day) {
+		try {
+			sql = "SELECT gependelt FROM gependelt_Schulklasse "
+					+ "WHERE schulklasse_name = '" + schulklasse_name + "' "
+					+ "AND weekday = " + day.getOrdinal() + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			boolean gependelt = rs.getBoolean("gependelt");
+			return gependelt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

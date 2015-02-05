@@ -40,9 +40,9 @@ public final class Personal {
 	private int ersatzZeit;
 
 	/**
-	 * Ist das Personal schon einmal gependelt, true, wenn nicht, dann false
+	 * Ist das Personal schon einmal an einem Tag gependelt, true, wenn nicht, dann false
 	 */
-	private boolean gependelt;
+	private HashMap<Weekday, Boolean> gependelt = new HashMap<Weekday, Boolean>();
 
 	/**
 	 * Ist das Personal ein Lehrer,true, ist es ein Paedagoge, false
@@ -82,7 +82,7 @@ public final class Personal {
 	 *            gibt die Wunschzeiten des Personals an
 	 */
 	public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit,
-			int pErsatzZeit, boolean pGependelt, boolean pLehrer,
+			int pErsatzZeit, HashMap<Weekday, Boolean> pGependelt, boolean pLehrer,
 			ArrayList<String> pMoeglicheStundeninhalte,
 			HashMap<Weekday, int[]> pWunschzeiten) {
 		name = pName;
@@ -238,11 +238,11 @@ public final class Personal {
 		wunschzeiten = pWunschzeiten;
 	}
 
-	public boolean isGependelt() {
+	public HashMap<Weekday, Boolean> isGependelt() {
 		return gependelt;
 	}
 
-	public void setGependelt(final boolean pGependelt) {
+	public void setGependelt(final HashMap<Weekday, Boolean> pGependelt) {
 		gependelt = pGependelt;
 	}
 

@@ -50,7 +50,6 @@ public class DataPersonal {
 			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
 					+ "', '" + personal.getKuerzel() + "', "
 					+ personal.getSollZeit() + ", 0, " + personal.getErsatzZeit() + ", "
-					+ (personal.isGependelt() ? 1:0) + ", "
 					+ (personal.isLehrer() ? 1:0) + ");";
 			stmt.executeUpdate(sql);
 			for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
@@ -95,9 +94,8 @@ public class DataPersonal {
 				int istZeitMin = rs.getInt("istZeit");
 				int istZeit = istZeitMin/60;
 				int ersatzZeit = rs.getInt("ersatzZeit");
-				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");
-				Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer,new ArrayList<String>(), new HashMap<Weekday, int[]>());
+				Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>());
 				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
 						+ pKuerzel + "';";
 				rs = stmt.executeQuery(sql);
@@ -146,9 +144,8 @@ public class DataPersonal {
 				int istZeitMin = rs.getInt("istZeit");
 				int istZeit = istZeitMin/60;
 				int ersatzZeit = rs.getInt("ersatzZeit");
-				boolean schonGependelt = rs.getBoolean("schonGependelt");
 				boolean lehrer = rs.getBoolean("lehrer");
-				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, schonGependelt, lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>()));
+				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>()));
 			}
 			for(Personal p : allPersonal) {
 				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
@@ -286,6 +283,32 @@ public class DataPersonal {
 			addPersonal(newPersonal);
 		} catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void setGependelt(String personal_kuerzel, Weekday day, boolean gependelt) {
+		try {
+			sql = "UPDATE gependelt_Personal SET gependelt = " + (gependelt ? 1:0) + " "
+					+ "WHERE personal_kuerzel = '" + personal_kuerzel + "' "
+					+ "AND weekday = " + day.getOrdinal() + ";";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static boolean getGependelt(String personal_kuerzel, Weekday day) {
+		try {
+			sql = "SELECT gependelt FROM gependelt_Personal "
+					+ "WHERE personal_kuerzel = '" + personal_kuerzel + "' "
+					+ "AND weekday = " + day.getOrdinal() + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			boolean gependelt = rs.getBoolean("gependelt");
+			return gependelt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

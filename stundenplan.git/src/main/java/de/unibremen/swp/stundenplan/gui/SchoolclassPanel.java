@@ -41,6 +41,7 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
+import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
@@ -317,7 +318,7 @@ public class SchoolclassPanel extends JPanel {
 				DataSchulklasse.addSchulklasse(new Schoolclass((jg
 						.getSelectedItem()) + bezField.getText(), (int) jg
 						.getSelectedItem(), (Room) cb1.getSelectedItem(), kt,
-						hm));
+						hm, new HashMap<Weekday, Boolean>()));
 				updateList();
 			}
 		});
@@ -582,7 +583,7 @@ public class SchoolclassPanel extends JPanel {
 						new Schoolclass((jg2.getSelectedItem())
 								+ bezField2.getText(), (int) jg2
 								.getSelectedItem(), (Room) cb2
-								.getSelectedItem(), kt, hm));
+								.getSelectedItem(), kt, hm, new HashMap<Weekday, Boolean>()));
 
 				updateList();
 				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();
