@@ -147,7 +147,7 @@ public class LehreransichtPanel extends JPanel {
 			// und nach in die List eingefuegt und danach
 			// in die eigentliche Tabellenreihe eingefuegt.
 			ArrayList<String> reihe = new ArrayList<>();
-			reihe.add(" "+p.getKuerzel());
+			reihe.add(p.getKuerzel());
 			reihe.add(" "+Integer.toString(p.getSollZeit()));
 			if (p.getErsatzZeit() == 0) {
 				reihe.add(" -");
