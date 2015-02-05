@@ -432,7 +432,11 @@ public class PEedit extends JFrame {
 					}
 				}
 
-
+				if (PlanungseinheitManager.peRoomGcheck(p)) {
+					JOptionPane.showMessageDialog(null,
+							"Raeume sind nicht im selben Gebaeude");
+					return;
+				}
 
 				for (Personal pers : listp) {
 					if (PlanungseinheitManager.personalsiCheck(pers, p)) {

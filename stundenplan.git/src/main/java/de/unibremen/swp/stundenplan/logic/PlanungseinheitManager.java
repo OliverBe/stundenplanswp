@@ -230,7 +230,7 @@ public final class PlanungseinheitManager {
 	/**
 	 * prueft ob Raeume in PE in verschiedenen Gebaeude befindet
 	 * @param pe Planungseinheit die ueberprueft wird
-	 * @return gibt die Anzahl von Wechsel
+	 * @return gibt true zurueck, falls Raeume in verschiedene Gebaeude sind
 	 */
 	public static boolean peRoomGcheck( final Planungseinheit pe){
 		int gebnr = -1;
