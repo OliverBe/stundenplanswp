@@ -226,7 +226,9 @@ public class DataSchulklasse {
 						+ entry.getKey() + "',"
 						+ entry.getValue() + ");";
 				stmt.executeUpdate(sql);
-				sql = "UPDATE Schulklasse, stundenbedarf SET bedarf = " + entry.getValue() + " WHERE name = schulklasse_name "
+				sql = "UPDATE stundenbedarf SET bedarf = " + entry.getValue() + " "
+						+ "FROM Schulklasse, stundenbedarf "
+						+ "WHERE name = schulklasse_name "
 						+ "AND jahrgang = " + jahrgang.getJahrgang() + " "
 						+ "AND stundeninhalt_kuerzel = '" + entry.getKey() + "' "
 						+ "AND bedarf = 0;";
