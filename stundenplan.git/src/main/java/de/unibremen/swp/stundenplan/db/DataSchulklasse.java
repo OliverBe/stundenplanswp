@@ -226,13 +226,20 @@ public class DataSchulklasse {
 						+ entry.getKey() + "',"
 						+ entry.getValue() + ");";
 				stmt.executeUpdate(sql);
-				sql = "UPDATE stundenbedarf SET bedarf = " + entry.getValue() + " "
-						+ "FROM Schulklasse, stundenbedarf "
-						+ "WHERE name = schulklasse_name "
-						+ "AND jahrgang = " + jahrgang.getJahrgang() + " "
-						+ "AND stundeninhalt_kuerzel = '" + entry.getKey() + "' "
-						+ "AND bedarf = 0;";
-				stmt.executeUpdate(sql);
+				ArrayList<String> klassennamen = new ArrayList<String>();
+				sql = "SELECT name FROM Schulklasse WHERE jahrgang = " + jahrgang.getJahrgang() + ";";
+				ResultSet rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					String name = rs.getString("name");
+					klassennamen.add(name);
+				}
+				for(int i=0;i<klassennamen.size();i++) {
+					sql = "UPDATE stundenbedarf SET bedarf = " + entry.getValue() + " "
+							+ "WHERE schulklasse_name = '" + klassennamen.get(i) + "' "
+							+ "AND stundeninhalt_kuerzel = '" + entry.getKey() + "' "
+							+ "AND bedarf = 0;";
+					stmt.executeUpdate(sql);
+				}
 			}
 			Data.setSaved(false);
 		}catch (SQLException | BereitsVorhandenException e) {

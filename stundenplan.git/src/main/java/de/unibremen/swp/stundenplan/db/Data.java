@@ -207,6 +207,8 @@ public class Data {
 	    			+ "FOREIGN KEY (planungseinheit_id) REFERENCES Planungseinheit(id), "
 	    			+ "FOREIGN KEY (raum_name) REFERENCES Raum(name))";
 	    	stmt.executeUpdate(sql);
+	    	
+	    	//HashMap
 	    }catch ( Exception e ) {
 	    	e.printStackTrace();
 	    }
