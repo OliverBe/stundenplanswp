@@ -57,6 +57,20 @@ public final class Schoolclass extends Jahrgang{
 			}
 		}
 	}
+    
+    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
+		super(pJahrgang, pStundenbedarf);
+    	name = pName;
+		klassenraum = pKlassenraum;
+		klassenlehrer = pKlassenlehrer;
+		gependelt.put(Weekday.MONDAY, false);
+		gependelt.put(Weekday.TUESDAY, false);
+		gependelt.put(Weekday.WEDNESDAY, false);
+		gependelt.put(Weekday.THURSDAY, false);
+		gependelt.put(Weekday.FRIDAY, false);
+		gependelt.put(Weekday.SATURDAY, false);
+		gependelt.put(Weekday.SUNDAY, false);
+    }
 
 	/**
      * Gibt den Namen dieser Schulklasse zur��ck.
