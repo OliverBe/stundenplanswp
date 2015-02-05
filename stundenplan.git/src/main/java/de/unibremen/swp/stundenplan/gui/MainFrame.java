@@ -198,10 +198,6 @@ public class MainFrame extends JFrame {
 					}
 				}
 				Data.close();
-				File datei = new File("temp.db");
-				if (datei.exists()) {
-					datei.delete();
-				}
 				Stundenplan.getMain().dispose();
 			}
 		});

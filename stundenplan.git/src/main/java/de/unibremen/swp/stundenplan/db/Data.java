@@ -237,6 +237,10 @@ public class Data {
 		try {
 			stmt.close();
 			c.close();
+			File datei = new File("temp.db");
+			if (datei.exists()) {
+				datei.delete();
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
