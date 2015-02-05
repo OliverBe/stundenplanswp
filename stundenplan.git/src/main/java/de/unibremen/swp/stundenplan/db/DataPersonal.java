@@ -276,6 +276,8 @@ public class DataPersonal {
 		stmt.executeUpdate(sql);
 		sql = "DELETE FROM klassenlehrer WHERE personal_kuerzel = '" + pKuerzel + "';";
 		stmt.executeUpdate(sql);
+		sql = "DELETE FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+		stmt.executeUpdate(sql);
 	}
 	
 	/**
