@@ -11,13 +11,33 @@ import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.gui.RaumbelegungsplanPanel;
 
+/**
+ * Klasse stellt die Verbindung von Room und Raumfunktion zur Datenbank dar.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class DataRaum {
-	
+	/**
+	 * Speichert das Statement, das in der Data Klasse erstellt wurde.
+	 */
 	private static Statement stmt = Data.stmt;
+	/**
+	 * Speichert den SQL-Befehl.
+	 */
 	private static String sql;
 	
+	/**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
 	private DataRaum() {}
-
+	
+	/**
+	 * Fuegt den uebergebenen Raum zur Datenbank hinzu.
+	 * 
+	 * @param raum
+	 * 		der Raum, welcher in die Datenbank gespeichert werden soll
+	 */
 	public static void addRaum(Room raum) {
 		try {
 			for(Room rm : getAllRaum()) {
@@ -41,6 +61,13 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Gibt den Raum mit dem gegebenen Namen zurueck.
+	 * 
+	 * @param pName
+	 * 		der Name des Raums, nach dem gesucht werden soll
+	 * @return	der Raum mit dem gegebenen Namen
+	 */
 	public static Room getRaumByName(String pName){
 		try	{
 			sql = "SELECT * FROM Raum WHERE name = '" + pName + "';";
@@ -62,6 +89,11 @@ public class DataRaum {
 		return null;
 	}
 	
+	/**
+	 * Methode gibt eine Liste aller Raeume zurueck, die in der Datenbank gespeichert sind.
+	 * 
+	 * @return	eine ArrayList mit allen Raeumen
+	 */
 	public static ArrayList<Room> getAllRaum() {
 		ArrayList<Room> allRaum = new ArrayList<Room>();
 		try {
@@ -86,23 +118,34 @@ public class DataRaum {
 		return allRaum;
 	}
 	
+	/**
+	 * Gibt eine Liste von Namen aller Raeume zurueck.
+	 * 
+	 * @return	eine ArrayList der Namen aller Raeume
+	 */
 	public static ArrayList<String> getAllNameFromRaum(){
-				try{ 
-					sql = "SELECT name FROM Raum";
-					ResultSet rs = stmt.executeQuery(sql);
-					ArrayList<String> names = new ArrayList<>();
-					while(rs.next()){
-						names.add(rs.getString("name"));
-					}
-					
-					return names;
-					
-				}catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
+		try{ 
+			sql = "SELECT name FROM Raum";
+			ResultSet rs = stmt.executeQuery(sql);
+			ArrayList<String> names = new ArrayList<>();
+			while(rs.next()){
+				names.add(rs.getString("name"));
 			}
+			
+			return names;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	/**
+	 * Loescht den Raum mit dem gegebenen Namen.
+	 * 
+	 * @param pName
+	 * 		der Name des zu loeschenden Raumes
+	 */
 	public static void deleteRaumByName(String pName) {
 		try {
 			sql = "SELECT * FROM planungseinheit_Raum WHERE raum_name = '" + pName + "';";
@@ -126,6 +169,13 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen eines Raumes.
+	 * 
+	 * @param pName
+	 * 		der Name des Raumes, der geloescht werden soll
+	 * @throws SQLException
+	 */
 	private static void deleteRSQL(String pName) throws SQLException {
 		sql = "DELETE FROM Raum WHERE name = '" + pName + "';";
 		stmt.executeUpdate(sql);
@@ -135,6 +185,14 @@ public class DataRaum {
 		stmt.executeUpdate(sql);
 	}
 	
+	/**
+	 * Methode bearbeitet den Raum mit dem gegebenen Namen
+	 * 
+	 * @param pName
+	 * 		der Name des Raumes
+	 * @param newRaum
+	 * 		der bearbeitete Raum
+	 */
 	public static void editRaum(String pName, Room newRaum) {
 		try {
 			for(Room rm : getAllRaum()) {
@@ -154,6 +212,12 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Fuegt die gegebene Raumfunktion der Datenbank hinzu.
+	 * 
+	 * @param rf
+	 * 		die Raumfunktion, die in die Datenbank gespeichert werden soll
+	 */
 	public static void addRaumfunktion(Raumfunktion rf) {
 		try {
 			for(Raumfunktion rmf : getAllRaumfunktion()) {
@@ -172,6 +236,12 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param pName
+	 * @return
+	 */
 	public static Raumfunktion getRaumfunktionByName(String pName) {
 		try	{
 			ArrayList<String> stundeninhalte = new ArrayList<String>();

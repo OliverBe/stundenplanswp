@@ -35,7 +35,7 @@ public class DataPlanungseinheit {
 	private DataPlanungseinheit() {}
 	
 	/**
-	 * Fügt die übergebene Planungseinheit zur Datenbank hinzu.
+	 * Fuegt die uebergebene Planungseinheit zur Datenbank hinzu.
 	 * 
 	 * @param planungseinheit
 	 * 		die Planungseinheit, welche in die Datenbank gespeichert werden soll
@@ -89,7 +89,7 @@ public class DataPlanungseinheit {
 	}
 	
 	/**
-	 * Gibt eine Liste aller Planungseinheiten zurück, die in der Datenbank sind.
+	 * Gibt eine Liste aller Planungseinheiten zurueck, die in der Datenbank sind.
 	 * 
 	 * @return	Liste aller Planungseinheiten
 	 */
@@ -156,7 +156,7 @@ public class DataPlanungseinheit {
 	}
 	
 	/**
-	 * Methode gibt eine Liste aller Planungseinheiten zurück, 
+	 * Methode gibt eine Liste aller Planungseinheiten zurueck, 
 	 * die an dem uebergebenen Wochentag eingetragen sind.
 	 * 
 	 * @param pWeekday
@@ -226,7 +226,7 @@ public class DataPlanungseinheit {
 	}
 	
 	/**
-	 * Gibt die Planungseinheit mit der uebergebenen Id zurück.
+	 * Gibt die Planungseinheit mit der uebergebenen Id zurueck.
 	 * 
 	 * @param pId
 	 * 		die Id, nach der gesucht werden soll
@@ -288,7 +288,7 @@ public class DataPlanungseinheit {
 	}
 	
 	/**
-	 * Methode gibt eine Liste aller Planungseinheiten zurück, 
+	 * Methode gibt eine Liste aller Planungseinheiten zurueck, 
 	 * die das uebergebene Objekt besitzen.
 	 * 
 	 * @param object
@@ -370,7 +370,7 @@ public class DataPlanungseinheit {
 	}
 	
 	/**
-	 * Methode gibt eine Liste aller Planungseinheiten zurück, 
+	 * Methode gibt eine Liste aller Planungseinheiten zurueck, 
 	 * die den uebergebenen Wochentag und das uebergebene Objekt besitzen.
 	 * 
 	 * @param day
