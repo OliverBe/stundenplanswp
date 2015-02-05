@@ -95,13 +95,34 @@ public final class Personal {
 		}else {
 			gependelt = pGependelt;
 			for(int i=0;i<7;i++) {
-				if(Weekday.getDay(i).isSchoolday() && pGependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
-				System.out.println(Weekday.getDay(i) + " Tag:" + pGependelt.get(Weekday.getDay(i) + " Key"));
+				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
+				System.out.println(Weekday.getDay(i) + " Tag:" + gependelt.get(Weekday.getDay(i) + " Key"));
 			}
 		}
 		lehrer = pLehrer;
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 		wunschzeiten = pWunschzeiten;
+	}
+	
+	public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit,
+			int pErsatzZeit, boolean pLehrer,
+			ArrayList<String> pMoeglicheStundeninhalte,
+			HashMap<Weekday, int[]> pWunschzeiten) {
+		name = pName;
+		kuerzel = pKuerzel;
+		sollZeit = pSollZeit;
+		istZeit = pIstZeit;
+		ersatzZeit = pErsatzZeit;
+		lehrer = pLehrer;
+		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
+		wunschzeiten = pWunschzeiten;
+		gependelt.put(Weekday.MONDAY, false);
+		gependelt.put(Weekday.TUESDAY, false);
+		gependelt.put(Weekday.WEDNESDAY, false);
+		gependelt.put(Weekday.THURSDAY, false);
+		gependelt.put(Weekday.FRIDAY, false);
+		gependelt.put(Weekday.SATURDAY, false);
+		gependelt.put(Weekday.SUNDAY, false);
 	}
 
 	/**
