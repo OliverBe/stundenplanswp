@@ -47,7 +47,14 @@ public final class Schoolclass extends Jahrgang{
     	name = pName;
 		klassenraum = pKlassenraum;
 		klassenlehrer = pKlassenlehrer;
-		setGependelt(pGependelt);
+		if(pGependelt == null) {
+			initHashMap();
+		}else {
+			gependelt = pGependelt;
+			for(int i=0;i<7;i++) {
+				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
+			}
+		}
 	}
 
 	/**
@@ -105,5 +112,15 @@ public final class Schoolclass extends Jahrgang{
 
 	public void setGependelt(HashMap<Weekday, Boolean> gependelt) {
 		this.gependelt = gependelt;
+	}
+	
+	private void initHashMap() {
+		gependelt.put(Weekday.MONDAY, false);
+		gependelt.put(Weekday.TUESDAY, false);
+		gependelt.put(Weekday.WEDNESDAY, false);
+		gependelt.put(Weekday.THURSDAY, false);
+		gependelt.put(Weekday.FRIDAY, false);
+		gependelt.put(Weekday.SATURDAY, false);
+		gependelt.put(Weekday.SUNDAY, false);
 	}
 }

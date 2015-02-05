@@ -90,11 +90,17 @@ public final class Personal {
 		sollZeit = pSollZeit;
 		istZeit = pIstZeit;
 		ersatzZeit = pErsatzZeit;
-		gependelt = pGependelt;
+		if(pGependelt == null) {
+			initHashMap();
+		}else {
+			gependelt = pGependelt;
+			for(int i=0;i<7;i++) {
+				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
+			}
+		}
 		lehrer = pLehrer;
 		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
 		wunschzeiten = pWunschzeiten;
-		initHashMap();
 	}
 
 	/**
@@ -255,7 +261,7 @@ public final class Personal {
 		lehrer = pLehrer;
 	}
 	
-	public void initHashMap() {
+	private void initHashMap() {
 		gependelt.put(Weekday.MONDAY, false);
 		gependelt.put(Weekday.TUESDAY, false);
 		gependelt.put(Weekday.WEDNESDAY, false);
@@ -264,6 +270,4 @@ public final class Personal {
 		gependelt.put(Weekday.SATURDAY, false);
 		gependelt.put(Weekday.SUNDAY, false);
 	}
-	
-	
 }

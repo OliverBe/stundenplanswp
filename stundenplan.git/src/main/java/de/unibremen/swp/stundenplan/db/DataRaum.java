@@ -324,10 +324,12 @@ public class DataRaum {
 	}
 	
 	/**
-	 * Methode bearbeitet 
+	 * Methode bearbeitet die Raumfunktion mit dem gegebenen Namen.
 	 * 
 	 * @param pName
+	 * 		der Name der zu bearbeitenden Raumfunktion
 	 * @param rf
+	 * 		die bearbeitete Raumfunktion
 	 */
 	public static void editRaumfunktion(String pName, Raumfunktion rf) {
 		try {
@@ -346,6 +348,11 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Methode loescht die 
+	 * 
+	 * @param pName
+	 */
 	protected static void deleteRfIfEmtpy(String pName) {
 		try {
 			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
