@@ -148,13 +148,13 @@ public class LehreransichtPanel extends JPanel {
 			// in die eigentliche Tabellenreihe eingefuegt.
 			ArrayList<String> reihe = new ArrayList<>();
 			reihe.add(p.getKuerzel());
-			reihe.add(Integer.toString(p.getSollZeit()));
+			reihe.add(" "+Integer.toString(p.getSollZeit()));
 			if (p.getErsatzZeit() == 0) {
-				reihe.add("-");
+				reihe.add(" -");
 			} else {
-				reihe.add("- " + Integer.toString(p.getErsatzZeit()));
+				reihe.add(" - " + Integer.toString(p.getErsatzZeit()));
 			}
-			reihe.add(Integer.toString(p.getIstZeit()));
+			reihe.add(" "+Integer.toString(p.getIstZeit()));
 
 			for (Planungseinheit pe : planungseinheiten) {
 				if (pe.getPersonalbyKuerzel(p.getKuerzel()) != null) {
