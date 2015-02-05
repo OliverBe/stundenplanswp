@@ -96,7 +96,6 @@ public final class Personal {
 			gependelt = pGependelt;
 			for(int i=0;i<7;i++) {
 				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
-				System.out.println(Weekday.getDay(i) + " Tag:" + gependelt.get(Weekday.getDay(i) + " Key"));
 			}
 		}
 		lehrer = pLehrer;
