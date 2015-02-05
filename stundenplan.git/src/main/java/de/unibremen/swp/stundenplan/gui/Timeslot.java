@@ -59,14 +59,6 @@ public final class Timeslot implements Serializable {
     /**
      * Erzeugt eine neue Zeiteinheit.
      */
-    public Timeslot(Calendar pStart, Weekday pWeekday) {
-    	startzeit = pStart;
-    	wochentag = pWeekday;
-    }
-    
-    /**
-     * Erzeugt eine neue Zeiteinheit.
-     */
     public Timeslot(Weekday pWeekday) {
     	wochentag = pWeekday;
     }

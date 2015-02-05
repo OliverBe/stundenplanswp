@@ -1,5 +1,10 @@
 package de.unibremen.swp.stundenplan.gui;
-
+/*
+Definitive Guide to Swing for Java 2, Second Edition
+By John Zukowski     
+ISBN: 1-893115-78-X
+Publisher: APress
+*/
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
