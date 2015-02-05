@@ -11,6 +11,7 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
+import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 
 /**
@@ -291,6 +292,9 @@ public class DataPersonal {
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
 		try {
 			for(Personal pers : getAllPersonal()) {
+				if(!pers.getKuerzel().equals(pKuerzel) && getAllPersonal().lastIndexOf(pers)+1 == getAllPersonal().size()) throw new NichtVorhandenException(); 
+			}
+			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(newPersonal.getKuerzel()) && !pers.getKuerzel().equals(pKuerzel)){ 
 					throw new BereitsVorhandenException();
 				}
@@ -308,7 +312,7 @@ public class DataPersonal {
 			sql = "UPDATE klassenlehrer SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			addPersonal(newPersonal);
-		} catch (SQLException | BereitsVorhandenException e) {
+		} catch (SQLException | BereitsVorhandenException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}
 	}

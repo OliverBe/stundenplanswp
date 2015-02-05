@@ -13,6 +13,7 @@ import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.BesetztException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
+import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 import de.unibremen.swp.stundenplan.config.Weekday;
 
@@ -101,7 +102,7 @@ public class DataSchulklasse {
 				int bedarf = rs.getInt("bedarf");
 				sc.getStundenbedarf().put(stundeninhalt_kuerzel, bedarf);
 			}
-			sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_kuerzel = '" + pName + "';";
+			sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_name = '" + pName + "';";
 			rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				int weekday = rs.getInt("weekday");
@@ -147,7 +148,7 @@ public class DataSchulklasse {
 				}
 			}
 			for(Schoolclass sc : allSchulklasse) {
-				sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_kuerzel = '" + sc.getName() + "';";
+				sql = "SELECT * FROM gependelt_Schulklasse WHERE schulklasse_name = '" + sc.getName() + "';";
 				rs = stmt.executeQuery(sql);
 				while(rs.next()) {
 					int weekday = rs.getInt("weekday");
@@ -217,6 +218,9 @@ public class DataSchulklasse {
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
 			for(Schoolclass sc : getAllSchulklasse()) {
+				if(!sc.getName().equals(pName) && getAllSchulklasse().lastIndexOf(sc)+1 == getAllSchulklasse().size()) throw new NichtVorhandenException(); 
+			}
+			for(Schoolclass sc : getAllSchulklasse()) {
 				if(sc.getName().equals(newSchulklasse.getName()) && !sc.getName().equals(pName)){ 
 					throw new BereitsVorhandenException();
 				}
@@ -232,7 +236,7 @@ public class DataSchulklasse {
 			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			addSchulklasse(newSchulklasse);
-		} catch (SQLException | BereitsVorhandenException e) {
+		} catch (SQLException | BereitsVorhandenException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
