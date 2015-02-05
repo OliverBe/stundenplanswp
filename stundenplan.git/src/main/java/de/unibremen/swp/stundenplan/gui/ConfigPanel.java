@@ -101,7 +101,7 @@ public class ConfigPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mT = new JMenuItem("Timeslotdauer");
+		mT = new JMenuItem("Timeslot- und Pendeldauer");
 		mBI = new JMenuItem("Back-Up-Intervall");
 		mWD = new JMenuItem("Zu verplanende Wochentage");
 		mDL = new JMenuItem("Dauer eines Wochentages");
@@ -231,6 +231,8 @@ public class ConfigPanel extends JPanel {
 	public class TimeslotConfig extends JPanel {
 		private Label lTime = new Label("Dauer eines Timeslots:");
 		private JTextField tf = new JTextField(2);
+		private Label lPendel = new Label("Pendeldauer:");
+		private JTextField pf = new JTextField(2);
 		private GridBagConstraints c = new GridBagConstraints();
 		private JButton button = new JButton("Einstellungen speichern");
 
@@ -246,15 +248,24 @@ public class ConfigPanel extends JPanel {
 			add(tf, c);
 			c.gridx = 2;
 			add(new Label("Minuten"), c);
+			c.gridx=0;
+			c.gridy = 1;
+			add(lPendel, c);
+			c.gridx = 1;
+			add(pf, c);
+			c.gridx = 2;
+			add(new Label("Minuten"), c);
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 3;
 			c.gridx = 0;
-			c.gridy = 1;
+			c.gridy = 2;
 			add(button, c);
 			tf.setText("" + Timeslot.timeslotlength());
+			pf.setText("" + Config.getInt(Config.PENDELTIME_STRING,
+	                Config.PENDELTIME));
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					if (!DataPlanungseinheit.isEmpty()) {
+					if (!DataPlanungseinheit.isEmpty() && Integer.parseInt(tf.getText()) != Timeslot.timeslotlength()) {
 						Object[] options = { "Planungseinheiten loeschen und speichern!", "Nichts loeschen und abbrechen!"};
 						 int selected=JOptionPane.showOptionDialog(null,
 								"Wenn Sie die Timeslotlaenge aendern, werden alle Planungseinheiten aus Ueberschneidungsgruenden geloescht!", "WARNUNG!",
@@ -268,11 +279,11 @@ public class ConfigPanel extends JPanel {
 						}
 					}
 					try {
-						if (Integer.parseInt(tf.getText()) > 0) {
-							Config.TIMESLOT_LENGTH = Integer.parseInt(tf
-									.getText());
+						if (Integer.parseInt(tf.getText()) > 0 && Integer.parseInt(pf.getText()) >= 0) {
 							Config.setIntValue(Config.TIMESLOT_LENGTH_STRING,
 									Integer.parseInt(tf.getText()));
+							Config.setIntValue(Config.PENDELTIME_STRING,
+									Integer.parseInt(pf.getText()));
 						} else {
 							new ZahlException();
 						}

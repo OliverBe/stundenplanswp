@@ -102,6 +102,16 @@ public final class Config {
      * Konfigurationsdatei überschrieben werden.
      */
     public static int TIMESLOT_LENGTH = 10;
+    
+    /**
+     * Wert f�r die Dauer der Pendelzeit.
+     */
+    public static int PENDELTIME = 15;
+    
+    /**
+     * Wert f�r die Dauer der Pendelzeit.
+     */
+    public static String PENDELTIME_STRING = "pendeldauer";
 
     /**
      * Der Schlüssel für den Eintrag der Zeiteinheit-Länge in der Konfigurationsdatei.
