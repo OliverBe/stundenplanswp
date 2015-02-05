@@ -48,7 +48,8 @@ public class DataPlanungseinheit {
 					+ planungseinheit.getStartHour() + ","
 					+ planungseinheit.getStartminute() + ","
 					+ planungseinheit.getEndhour() + ","
-					+ planungseinheit.getEndminute() + ");";
+					+ planungseinheit.getEndminute() + ","
+					+ planungseinheit.getPendelCheck() + ");";
 			stmt.executeUpdate(sql);
 			for (Entry<String, int[]> entry : planungseinheit.getPersonalMap().entrySet()) {
 				sql = "INSERT INTO planungseinheit_Personal " + "VALUES (" 
@@ -105,7 +106,9 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				boolean pendelCheck = rs.getBoolean("pendelCheck");
 				allPlanungseinheit.add(new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin));
+				allPlanungseinheit.get(allPlanungseinheit.size()-1).setPendelCheck(pendelCheck);
 			}
 			for(Planungseinheit p : allPlanungseinheit) {
 				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
@@ -175,7 +178,9 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				boolean pendelCheck = rs.getBoolean("pendelCheck");
 				allPlanungseinheit.add(new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin));
+				allPlanungseinheit.get(allPlanungseinheit.size()-1).setPendelCheck(pendelCheck);
 			}
 			for(Planungseinheit p : allPlanungseinheit) {
 				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
@@ -245,7 +250,9 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				boolean pendelCheck = rs.getBoolean("pendelCheck");
 				pl = new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin);
+				pl.setPendelCheck(pendelCheck);
 				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
 						+ pId + ";";
 				rs = stmt.executeQuery(sql);
@@ -319,7 +326,9 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				boolean pendelCheck = rs.getBoolean("pendelCheck");
 				allPlanungseinheit.add(new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin));
+				allPlanungseinheit.get(allPlanungseinheit.size()-1).setPendelCheck(pendelCheck);
 			}
 			for(Planungseinheit p : allPlanungseinheit) {
 				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
@@ -406,7 +415,9 @@ public class DataPlanungseinheit {
 				int startMin = rs.getInt("startMin");
 				int endHour = rs.getInt("endHour");
 				int endMin = rs.getInt("endMin");
+				boolean pendelCheck = rs.getBoolean("pendelCheck");
 				allPlanungseinheit.add(new Planungseinheit(id, Weekday.getDay(weekday), startHour, startMin, endHour, endMin));
+				allPlanungseinheit.get(allPlanungseinheit.size()-1).setPendelCheck(pendelCheck);
 			}
 			for(Planungseinheit p : allPlanungseinheit) {
 				sql = "SELECT * FROM planungseinheit_Personal WHERE planungseinheit_id = "
