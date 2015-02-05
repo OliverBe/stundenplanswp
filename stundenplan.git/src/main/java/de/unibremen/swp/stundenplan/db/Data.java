@@ -423,6 +423,19 @@ public class Data {
 		}
 	}
 	
+	public static void closeTEST() {
+		try {
+			stmt.close();
+			c.close();
+			File datei = new File("test.db");
+			if (datei.exists()) {
+				datei.delete();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Methode erstellt ein Backup der Datenbank mit dem Dateinamen, der uebergeben wird. 
 	 * Falls die Datei mit dem gegeben Dateinamen bereits existiert und 
