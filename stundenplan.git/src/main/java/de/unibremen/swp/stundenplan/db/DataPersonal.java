@@ -291,9 +291,7 @@ public class DataPersonal {
 	 */
 	public static void editPersonal(String pKuerzel, Personal newPersonal) {
 		try {
-			for(Personal pers : getAllPersonal()) {
-				if(!pers.getKuerzel().equals(pKuerzel) && getAllPersonal().indexOf(pers)+1 == getAllPersonal().size()) throw new NichtVorhandenException(); 
-			}
+			if(getPersonalByKuerzel(pKuerzel) == null) throw new NichtVorhandenException();
 			for(Personal pers : getAllPersonal()) {
 				if(pers.getKuerzel().equals(newPersonal.getKuerzel()) && !pers.getKuerzel().equals(pKuerzel)){ 
 					throw new BereitsVorhandenException();

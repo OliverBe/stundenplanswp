@@ -516,9 +516,7 @@ public class DataPlanungseinheit {
 	 */
 	public static void editPlanungseinheit(int id, Planungseinheit planungseinheit) {
 		try {
-			for(Planungseinheit pe : getAllPlanungseinheit()) {
-				if(!(pe.getId() == id) && getAllPlanungseinheit().indexOf(pe)+1 == getAllPlanungseinheit().size()) throw new NichtVorhandenException();
-			}
+			if(getPlanungseinheitById(id) == null) throw new NichtVorhandenException();
 			deletePlanungseinheitById(id);
 			addPlanungseinheit(planungseinheit);
 		} catch (NichtVorhandenException e) {

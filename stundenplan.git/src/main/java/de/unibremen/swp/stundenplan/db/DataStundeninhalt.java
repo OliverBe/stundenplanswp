@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
+import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 
 public class DataStundeninhalt {
 
@@ -158,6 +159,7 @@ public class DataStundeninhalt {
 	
 	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {
 		try {
+			if(getStundeninhaltByKuerzel(pKuerzel) == null) throw new NichtVorhandenException();
 			for(Stundeninhalt si : getAllStundeninhalte()) {
 				if(si.getKuerzel().equals(newStundeninhalt.getKuerzel()) && !si.getKuerzel().equals(pKuerzel)){ 
 					throw new BereitsVorhandenException();
@@ -176,7 +178,7 @@ public class DataStundeninhalt {
 			sql = "UPDATE Jahrgang_Stundenbedarf SET stundeninhalt_kuerzel = '" + newStundeninhalt.getKuerzel() + "' WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			addStundeninhalt(newStundeninhalt);
-		} catch (SQLException | BereitsVorhandenException e) {
+		} catch (SQLException | BereitsVorhandenException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
