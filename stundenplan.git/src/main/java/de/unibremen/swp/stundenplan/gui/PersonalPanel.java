@@ -659,13 +659,18 @@ public class PersonalPanel extends JPanel {
 					if (cb.isSelected())
 						stunden.add(cb.getText());
 				}
+				Personal pers = new Personal(nameField2.getText(), kuerzField2
+						.getText(), Integer.parseInt(pflichtField2
+						.getText()),pe.getErsatzZeit(), Integer.parseInt(ersatzField2
+						.getText()),new HashMap<Weekday, Boolean>(), lehrerB2.isSelected(), stunden,
+						wunsch);
+				for(int i=0;i<7;i++) {
+					if(Weekday.getDay(i).isSchoolday()) {
+						pers.setGependelt(Weekday.getDay(i), pe.isGependelt(Weekday.getDay(i)));
+					}
+				}
 				PersonalManager.editPersonal(
-						pe.getKuerzel(),
-						new Personal(nameField2.getText(), kuerzField2
-								.getText(), Integer.parseInt(pflichtField2
-								.getText()),pe.getErsatzZeit(), Integer.parseInt(ersatzField2
-								.getText()),pe.isGependelt(), lehrerB2.isSelected(), stunden,
-								wunsch));
+						pe.getKuerzel(), pers);
 
 				updateList();
 				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();

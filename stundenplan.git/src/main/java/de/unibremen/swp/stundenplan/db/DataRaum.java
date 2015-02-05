@@ -237,10 +237,11 @@ public class DataRaum {
 	}
 	
 	/**
-	 * 
+	 * Methode gibt die Raumfunktion zurueck, die den gegebenen Namen besitzt.
 	 * 
 	 * @param pName
-	 * @return
+	 * 		der Name der Raumfunktion
+	 * @return	die Raumfunktion mit dem gegebenen Namen, falls nicht vorhanden null
 	 */
 	public static Raumfunktion getRaumfunktionByName(String pName) {
 		try	{
@@ -260,6 +261,11 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Gibt eine Liste aller Raumfunktionen in der Datenbank zurueck.
+	 * 
+	 * @return	eine ArrayList von Raumfunktionen
+	 */
 	public static ArrayList<Raumfunktion> getAllRaumfunktion() {
 		try{
 			ArrayList<Raumfunktion> rfs = new ArrayList<Raumfunktion>();
@@ -284,6 +290,12 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Loescht die Raumfunktion mit dem gegebenen Namen.
+	 * 
+	 * @param pName
+	 * 		der Name der Raumfunktion, die geloescht werden soll
+	 */
 	public static void deleteRaumfunktionByName(String pName) {
 		try {
 			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
@@ -297,13 +309,26 @@ public class DataRaum {
 		}
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen einer Raumfunktion.
+	 * 
+	 * @param pName
+	 * 		der Name der Raumfunktion, die geloescht werden soll
+	 * @throws SQLException
+	 */
 	private static void deleteRfSQL(String pName) throws SQLException {
 		sql = "DELETE FROM Raumfunktion WHERE name = '" + pName + "';";
 		stmt.executeUpdate(sql);
 		sql = "DELETE FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
 		stmt.executeUpdate(sql);
 	}
-		
+	
+	/**
+	 * Methode bearbeitet 
+	 * 
+	 * @param pName
+	 * @param rf
+	 */
 	public static void editRaumfunktion(String pName, Raumfunktion rf) {
 		try {
 			for(Raumfunktion rmf : getAllRaumfunktion()) {
