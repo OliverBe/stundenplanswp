@@ -489,19 +489,19 @@ public final class PlanungseinheitManager {
 	 */
 	public static boolean checkTimeInPE(final Planungseinheit p1,
 			final int hour, final int minute) {
-		if (hour < p1.getStartHour() && hour > p1.getEndhour()) {
+		if(hour < p1.getStartHour() || hour > p1.getEndhour()){
 			return true;
-		}  else if ((hour == p1.getStartHour() && hour == p1.getEndhour())) {
-			if (minute < p1.getStartminute() && minute > p1.getEndminute()) {
-				return false;
-			} else {
+		} else if (hour == p1.getStartHour() && hour == p1.getEndhour()){
+			if (minute > p1.getStartminute() && minute < p1.getEndminute()) {
 				return true;
+			} else {
+				return false;
 			}
 		}  else if (hour == p1.getStartHour() && minute < p1.getStartminute()) {
-			return false;
+			return true;
 		} else if (hour == p1.getEndhour() && minute > p1.getEndminute()) {
-			return false;
-		}
+			return true;
+		}		
 		return false;
 	}
 
