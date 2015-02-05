@@ -287,6 +287,19 @@ public class PEedit extends JFrame {
 									"Nur ein Bandunterricht kann mehrere Stundeninhalte, Klassen oder Raeume haben");
 					return;
 				}
+				
+				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {
+					JOptionPane
+							.showMessageDialog(null,
+									"Nur in der Teamzeit kann keine Klasse eingetragen werden");
+					return;
+				}else if(scList.getDestsize() > 0 && teamzeit.isSelected()){
+					JOptionPane
+					.showMessageDialog(null,
+							"In der Teamzeit soll keine Klasse eingetragen werden");
+					return;
+				}
+				
 				Planungseinheit p;
 				if (pe != null) {
 					p = pe;
@@ -373,12 +386,6 @@ public class PEedit extends JFrame {
 					p.addStundeninhalt(si);
 				}
 
-				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {
-					JOptionPane
-							.showMessageDialog(null,
-									"In der Teamzeit kann keine Klasse eingetragen werden");
-					return;
-				}
 
 				it = scList.destinationIterator();
 				while (it.hasNext()) {
@@ -554,7 +561,7 @@ public class PEedit extends JFrame {
 																					+ listp.get(
 																							i)
 																							.getName()
-																					+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																					+ ") schafft es nicht rechtzeitig zum anderen Gebï¿½ude");
 															CommandHistory.deleteLast();
 															parentframe.updatetable();
 															parentframe.updateLists();
@@ -572,13 +579,13 @@ public class PEedit extends JFrame {
 																						+ listp.get(
 																								i)
 																								.getName()
-																						+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																						+ ") schafft es nicht rechtzeitig zum anderen Gebï¿½ude");
 																CommandHistory.deleteLast();
 																parentframe.updatetable();
 																parentframe.updateLists();
 															}
 														}
-													} // Std früher endet / später
+													} // Std frï¿½her endet / spï¿½ter
 														// beginnt
 													else if (p0.getEndhour() < p1
 															.getStartHour()) {
@@ -591,7 +598,7 @@ public class PEedit extends JFrame {
 																					+ listp.get(
 																							i)
 																							.getName()
-																					+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																					+ ") schafft es nicht rechtzeitig zum anderen Gebï¿½ude");
 															CommandHistory.deleteLast();
 															parentframe.updatetable();
 															parentframe.updateLists();
@@ -608,7 +615,7 @@ public class PEedit extends JFrame {
 																						+ listp.get(
 																								i)
 																								.getName()
-																						+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																						+ ") schafft es nicht rechtzeitig zum anderen Gebï¿½ude");
 																CommandHistory.deleteLast();
 																parentframe.updatetable();
 																parentframe.updateLists();
@@ -622,7 +629,7 @@ public class PEedit extends JFrame {
 																				+ listp.get(
 																						i)
 																						.getName()
-																				+ ") schafft es nicht rechtzeitig zum anderen Gebäude");
+																				+ ") schafft es nicht rechtzeitig zum anderen Gebï¿½ude");
 														CommandHistory.deleteLast();
 														parentframe.updatetable();
 														parentframe.updateLists();
