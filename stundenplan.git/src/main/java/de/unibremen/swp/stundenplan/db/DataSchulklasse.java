@@ -17,13 +17,33 @@ import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 import de.unibremen.swp.stundenplan.gui.StundenplanPanel;
 import de.unibremen.swp.stundenplan.config.Weekday;
 
+/**
+ * Klasse stellt die Verbindung von Schulklasse und Jahrgang zur Datenbank dar.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class DataSchulklasse {
-
+	/**
+	 * Speichert das Statement, das in der Data Klasse erstellt wurde.
+	 */
 	private static Statement stmt = Data.stmt;
+	/**
+	 * Speichert den SQL-Befehl.
+	 */
 	private static String sql;
-
+	
+	/**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
 	private DataSchulklasse() {}
 
+	/**
+	 * Fuegt die uebergebene Schulklasse zur Datenbank hinzu.
+	 * 
+	 * @param schulklasse
+	 * 		die Schulklasse, welche in die Datenbank gespeichert werden soll
+	 */
 	public static void addSchulklasse(Schoolclass schulklasse) {
 		boolean error = false;
 		try {

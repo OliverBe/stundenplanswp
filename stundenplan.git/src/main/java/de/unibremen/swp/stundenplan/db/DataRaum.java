@@ -350,19 +350,4 @@ public class DataRaum {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Methode loescht die 
-	 * 
-	 * @param pName
-	 */
-	protected static void deleteRfIfEmtpy(String pName) {
-		try {
-			sql = "SELECT * FROM raum_Raumfunktion WHERE raumfunktion_name = '" + pName + "';";
-			ResultSet rs = stmt.executeQuery(sql);
-			if(!rs.next()) deleteRaumfunktionByName(pName);
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }

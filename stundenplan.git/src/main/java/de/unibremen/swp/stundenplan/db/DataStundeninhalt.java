@@ -130,15 +130,9 @@ public class DataStundeninhalt {
 				for(int pId : pIds) {
 					DataPlanungseinheit.deleteIfEmpty(pId);
 				}
-				for(String rfName : rfNames) {
-					DataRaum.deleteRfIfEmtpy(rfName);
-				}
 			}
 		}else {
 			deleteSQL(pKuerzel);
-			for(String rfName : rfNames) {
-				DataRaum.deleteRfIfEmtpy(rfName);
-			}
 		}
 	}
 	
