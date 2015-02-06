@@ -10,13 +10,33 @@ import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
 import de.unibremen.swp.stundenplan.exceptions.DeleteException;
 import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 
+/**
+ * Klasse stellt die Verbindung vom Stundeninhalt zur Datenbank dar.
+ * 
+ * @author Kim-Long
+ *
+ */
 public class DataStundeninhalt {
-
+	/**
+	 * Speichert das Statement, das in der Data Klasse erstellt wurde.
+	 */
 	private static Statement stmt = Data.stmt;
+	/**
+	 * Speichert den SQL-Befehl.
+	 */
 	private static String sql;
 	
+	/**
+     * Privater Konstruktor, sodass kein Object dieser Klasse erstellt werden kann.
+     */
 	private DataStundeninhalt() {}
 	
+	/**
+	 * Fuegt den uebergebenen Stundeninhalt zur Datenbank hinzu.
+	 * 
+	 * @param stundeninhalt
+	 * 		der Stundeninhalt, der hinzugefuegt werden soll
+	 */
 	public static void addStundeninhalt(Stundeninhalt stundeninhalt) {
 		try {
 			for(Stundeninhalt si : getAllStundeninhalte()) {
@@ -36,6 +56,13 @@ public class DataStundeninhalt {
 		}
 	}
 	
+	/**
+	 * Gibt den Stundeninhalt mit dem gegebenen Kuerzel zurueck.
+	 * 
+	 * @param pKuerzel
+	 * 		der Kuerzel des Stundeninhalts
+	 * @return	der Stundeninhalt mit dem gegebenen Kuerzel, falls nicht vorhanden null
+	 */
 	public static Stundeninhalt getStundeninhaltByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
@@ -51,6 +78,11 @@ public class DataStundeninhalt {
 		}
 	}
 	
+	/**
+	 * Methode gibt eine Liste aller Stundeninhalte zurueck.
+	 * 
+	 * @return	eine ArrayList aller Stundeninhalte
+	 */
 	public static ArrayList<Stundeninhalt> getAllStundeninhalte() {
 		ArrayList<Stundeninhalt> allStundeninhalt = new ArrayList<Stundeninhalt>();
 		try {
@@ -69,6 +101,11 @@ public class DataStundeninhalt {
 		return allStundeninhalt;
 	}
 	
+	/**
+	 * Gibt eine Liste von Kuerzel aller Stundeninhalten zurueck.
+	 * 
+	 * @return	eine ArrayList von Kuerzeln aller Stundeninhalten
+	 */
 	public static ArrayList<String> getAllAcronymsFromStundeninhalt(){
 		try{ 
 			sql = "SELECT kuerzel FROM Stundeninhalt";
@@ -86,6 +123,12 @@ public class DataStundeninhalt {
 		}
 	}
 	
+	/**
+	 * Methode loescht den Stundeninhalt mit dem gegebenen Kuerzel. 
+	 * 
+	 * @param pKuerzel
+	 * 		der Kuerzel vom Stundeninhalt, der geloescht werden soll
+	 */
 	public static void deleteStundeninhaltByKuerzel(String pKuerzel) {
 		try {
 			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
@@ -99,6 +142,13 @@ public class DataStundeninhalt {
 		}
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen eines Stundeninhaltes.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Stundeninhaltes
+	 * @throws SQLException
+	 */
 	private static void delete0(String pKuerzel) throws SQLException {
 		sql = "SELECT * FROM Raumfunktion WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -115,6 +165,15 @@ public class DataStundeninhalt {
 		}else delete1(pKuerzel, new ArrayList<String>());
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen eines Stundeninhaltes.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Stundeninhaltes
+	 * @param rfNames
+	 * 		ArrayList mit Namen von Raumfunktionen
+	 * @throws SQLException
+	 */
 	private static void delete1(String pKuerzel, ArrayList<String> rfNames) throws SQLException {
 		sql = "SELECT * FROM planungseinheit_Stundeninhalt WHERE stundeninhalt_kuerzel = '" + pKuerzel + "';";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -136,6 +195,13 @@ public class DataStundeninhalt {
 		}
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen eines Stundeninhaltes.
+	 * 
+	 * @param pKuerzel
+	 * 		das Kuerzel des Stundeninhaltes
+	 * @throws SQLException
+	 */
 	private static void deleteSQL(String pKuerzel) throws SQLException {
 		sql = "DELETE FROM Stundeninhalt WHERE kuerzel = '" + pKuerzel + "';";
 		stmt.executeUpdate(sql);
@@ -151,6 +217,14 @@ public class DataStundeninhalt {
 		stmt.executeUpdate(sql);
 	}
 	
+	/**
+	 * Methode bearbeitet den Stundeninhalt mit dem gegebenen Kuerzel.
+	 * 
+	 * @param pKuerzel
+	 * 		der Kuerzel des zu bearbeitenden Stundeninhaltes
+	 * @param newStundeninhalt
+	 * 		der bearbeitete Stundeninhalt
+	 */
 	public static void editStundeninhalt(String pKuerzel, Stundeninhalt newStundeninhalt) {
 		try {
 			if(getStundeninhaltByKuerzel(pKuerzel) == null) throw new NichtVorhandenException();

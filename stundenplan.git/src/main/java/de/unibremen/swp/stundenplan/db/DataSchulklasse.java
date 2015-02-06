@@ -387,6 +387,13 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Gibt den Jahrgang mit dem gegebenen Jahrgang zurueck.
+	 * 
+	 * @param jahrgang
+	 * 		der Jahrgang nach dem gesucht werden soll
+	 * @return	der Jahrgang mit dem gegebenen Jahrgang
+	 */
 	public static Jahrgang getJahrgangByJahrgang(int jahrgang) {
 		try {
 			sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + jahrgang + ";";
@@ -404,6 +411,15 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode gibt den Jahrgang mit dem gegebenen Jahrgang und Stundeninhalt zurueck.
+	 * 
+	 * @param jahrgang
+	 * 		der Jahrgang nach dem gesucht werden soll
+	 * @param stundeninhalt_kuerzel
+	 * 		der Kuerzel vom Stundeninhalt
+	 * @return	der Jahrgang mit dem gegebenen Jahrgang und Stundeninhalt
+	 */
 	public static Jahrgang getJahrgangByJundSkuerzel(int jahrgang, String stundeninhalt_kuerzel) {
 		try {
 			sql = "SELECT * FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + jahrgang + " AND stundeninhalt_kuerzel = '" + stundeninhalt_kuerzel + "';";
@@ -419,6 +435,11 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Gibt eine Liste aller Jahrgaenge zurueck.
+	 * 
+	 * @return	ArrayList aller Jahrgaenge in der Datenbank
+	 */
 	public static ArrayList<Jahrgang> getAllJahrgang() {
 		ArrayList<Jahrgang> allJahrgangbedarf = new ArrayList<Jahrgang>();
 		try {
@@ -444,6 +465,12 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode loescht den Jahrgang mit gegebenen Jahrgang.
+	 * 
+	 * @param pJahrgang
+	 * 		der Jahrgang, der geloescht werden soll
+	 */
 	public static void deleteJahrgangbedarfByJahrgang(int pJahrgang) {
 		try {
 			sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + pJahrgang + ";";
@@ -453,6 +480,12 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode loescht den Jahrgang mit dem gegebenen Jahrgang und der gegebenen Stundeninhalt.
+	 * 
+	 * @param pJahrgang
+	 * @param pStundeninhalt_kuerzel
+	 */
 	public static void deleteJahrgangbedarfByJAndSkuerzel(int pJahrgang, String pStundeninhalt_kuerzel) {
 		try {
 			sql = "DELETE FROM Jahrgang_Stundenbedarf WHERE jahrgang = " + pJahrgang + " AND stundeninhalt_kuerzel = '" + pStundeninhalt_kuerzel + "';";
@@ -462,6 +495,12 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode bearbeitet den Jahrgang mit dem gegebenen Jahrgang.
+	 * 
+	 * @param jahrgang
+	 * 		der bearbeitete Jahrgang
+	 */
 	public static void editJahrgang(Jahrgang jahrgang) {
 		try {
 			if(getJahrgangByJahrgang(jahrgang.getJahrgang()) == null) throw new NichtVorhandenException();
