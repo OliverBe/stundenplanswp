@@ -100,6 +100,13 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode gibt die Schulklasse mit dem gegebenen Namen zurueck.
+	 * 
+	 * @param pName
+	 * 		der Name der Schulklasse
+	 * @return	die Schulklasse mit dem Namen, falls nicht vorhanden null
+	 */
 	public static Schoolclass getSchulklasseByName(String pName) {
 		try {
 			sql = "SELECT * FROM Schulklasse WHERE name = '" + pName + "';";
@@ -136,6 +143,11 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Gibt eine Liste aller Schulklassen zurueck.
+	 * 
+	 * @return	eine ArrayList mit allen Schulklassen
+	 */
 	public static ArrayList<Schoolclass> getAllSchulklasse() {
 		ArrayList<Schoolclass> allSchulklasse = new ArrayList<Schoolclass>();
 		try {
@@ -182,23 +194,34 @@ public class DataSchulklasse {
 		return allSchulklasse;
 	}
 	
+	/**
+	 * Methode gibt eine Liste von Namen aller Schulklassen zurueck.
+	 * 
+	 * @return	eine ArrayList mit Namen aller Schulklassen
+	 */
 	public static ArrayList<String> getAllNameFromSchulklasse(){
-				try{ 
-					sql = "SELECT name FROM Schulklasse";
-					ResultSet rs = stmt.executeQuery(sql);
-					ArrayList<String> names = new ArrayList<>();
-					while(rs.next()){
-						names.add(rs.getString("name"));
-					}
-					
-					return names;
-					
-				}catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
+		try{ 
+			sql = "SELECT name FROM Schulklasse";
+			ResultSet rs = stmt.executeQuery(sql);
+			ArrayList<String> names = new ArrayList<>();
+			while(rs.next()){
+				names.add(rs.getString("name"));
 			}
+			
+			return names;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	/**
+	 * Loescht die Schulklasse mit dem gegebenen Namen aus der Datenbank.
+	 * 
+	 * @param pName
+	 * 		der Name der zu loeschenden Schulklasse
+	 */
 	public static void deleteSchulklasseByName(String pName) {
 		try {
 			sql = "SELECT * FROM planungseinheit_Schulklasse WHERE schulklasse_name = '" + pName + "';";
@@ -222,6 +245,13 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Hilfsmethode fuer das Loeschen einer Schulklasse.
+	 * 
+	 * @param pName
+	 * 		der Name der Schulklasse
+	 * @throws SQLException
+	 */
 	private static void deleteSQL(String pName) throws SQLException {
 		sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
 		stmt.executeUpdate(sql);
@@ -235,6 +265,15 @@ public class DataSchulklasse {
 		stmt.executeUpdate(sql);
 	}
 	
+	/**
+	 * Methode bearbeitet die Schulklasse mit dem gegebenen Namen. 
+	 * Dazu uebergibt man die bearbeitete Schulklasse und die alte Version wird ersetzt. 
+	 * 
+	 * @param pName
+	 * 		der Name der Schulklasse, die bearbeitet werden soll
+	 * @param newSchulklasse
+	 * 		die bearbeitete Schulklasse
+	 */
 	public static void editSchulklasse(String pName, Schoolclass newSchulklasse) {
 		try {
 			if(getSchulklasseByName(pName) == null) throw new NichtVorhandenException();
@@ -259,6 +298,16 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Setzt den boolean-Wert gependelt fuer die gegebene Schulklasse und den gegebenen Wochentag.
+	 * 
+	 * @param schulklasse_name
+	 * 		der Name der Schulklasse
+	 * @param day
+	 * 		der Wochentag
+	 * @param gependelt
+	 * 		der boolean-Wert, der gependelt gesetzt werden soll
+	 */
 	public static void setGependelt(String schulklasse_name, Weekday day, boolean gependelt) {
 		try {
 			sql = "UPDATE gependelt_Schulklasse SET gependelt = " + (gependelt ? 1:0) + " "
@@ -270,6 +319,15 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Gibt den boolean-Wert gependelt fuer die uebergebene Schulklasse und gegebenen Wochentag.
+	 * 
+	 * @param schulklasse_name
+	 * 		der Name der Schulklasse
+	 * @param day
+	 * 		der Wochentag
+	 * @return	gependelt von der Schulklasse und Wochentag
+	 */
 	public static boolean getGependelt(String schulklasse_name, Weekday day) {
 		try {
 			sql = "SELECT gependelt FROM gependelt_Schulklasse "
@@ -285,6 +343,12 @@ public class DataSchulklasse {
 		}
 	}
 	
+	/**
+	 * Methode fuegt den gegebenen Jahrgang zur Datenbank hinzu.
+	 * 
+	 * @param jahrgang
+	 * 		der Jahrgang, der hinzugefuegt werden soll
+	 */
 	public static void addJahrgang(Jahrgang jahrgang) {
 		try {
 			for(Entry<String, Integer> entry : jahrgang.getStundenbedarf().entrySet()) {
