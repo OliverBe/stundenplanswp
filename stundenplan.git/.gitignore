@@ -1,2 +1,6 @@
 /stundenplan.db
 /stundenplan.properties
+/target/
+/temp.db
+/.settings/
+/.gitignore

@@ -102,7 +102,12 @@ public final class Schoolclass extends Jahrgang{
     
     @Override
     public String toString() {
-    	return ("Name=" + name + ", Jahrgang=" + getJahrgang() + ", Klassenraum=(" + klassenraum + ")");
+    	String team=", Team: ";
+    	for (int i=0;i<klassenlehrer.size();i++){
+    		if(i<klassenlehrer.size()-1) team=team+klassenlehrer.get(i)+", ";
+    		if(i==klassenlehrer.size()-1) team=team+klassenlehrer.get(i);
+    	}
+    	return (name + ", Klassenraum: " + klassenraum.getName() + team);
     }
 
     public boolean isGependelt(Weekday weekday) {

@@ -8,10 +8,6 @@ public class Raumfunktion {
 	
 	//kuerzel von Stundeninhalten
 	private ArrayList<String> stundeninhalte;
-
-	public Raumfunktion(){
-		name="Gamecuberaum";
-	}
 	
 	public Raumfunktion(final String pName, final ArrayList<String> pStundeninhalte){
 		name=pName;

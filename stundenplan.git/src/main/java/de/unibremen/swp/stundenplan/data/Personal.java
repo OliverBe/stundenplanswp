@@ -161,7 +161,10 @@ public final class Personal {
 
 	@Override
 	public String toString() {
-		return String.format("Kuerzel: %s, Name: %s", kuerzel, name);
+		if(isLehrer()){
+			return String.format("Lehrer: "+name+" ("+kuerzel+")");
+		}
+		return String.format("Paedagoge: "+name+" ("+kuerzel+")");
 	}
 
 	@Override

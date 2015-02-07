@@ -59,7 +59,7 @@ public class ExceptionsTest {
 		new BesetztException("Personal");
 		try {
 			if ((WarningPanel.getListModel().elementAt(0)
-					.equals("Personal bereits Klassenlehrer"))) {
+					.equals("Personal bereits in anderem Klassenteam"))) {
 				assertTrue(true);
 				return;
 			}
