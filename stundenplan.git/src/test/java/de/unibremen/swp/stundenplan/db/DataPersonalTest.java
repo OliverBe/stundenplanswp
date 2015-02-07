@@ -1,18 +1,4 @@
-/*
- * Copyright 2014 AG Softwaretechnik, University of Bremen, Germany
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+
 package de.unibremen.swp.stundenplan.db;
 
 import static org.junit.Assert.*;
@@ -21,9 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
 
@@ -32,21 +21,38 @@ import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.exceptions.BereitsVorhandenException;
+import de.unibremen.swp.stundenplan.exceptions.NichtVorhandenException;
 
 /**
  * Integrationstest fuer DataPersonal mit Personal Bitte beachten, dass
  * Wertabfragen (negative Werte, leere Übergaben etc.) in den GUI-Panels
- * vorgenommen werden und somit hier rüberflüssig sind
+ * vorgenommen werden und somit hier überflüssig sind
  * 
  * @author Oliver
  *
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DataPersonalTest {
 
+	private ArrayList<String> array;
+	private HashMap<Weekday, int[]> map;
+	private HashMap<Weekday, Boolean> map2;
+	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
+	@BeforeClass
+	public static void startDB(){
+		Data.start();
+	}
 	@Before
 	public void setUp() {
-		Data.start();
 		Data.deleteAll();
+		
+		array = new ArrayList<String>();
+		map = new HashMap<Weekday, int[]>();
+		map2 = new HashMap<Weekday, Boolean>();
+		map2.put(Weekday.MONDAY, true);
 	}
 
 	@Test
@@ -57,15 +63,17 @@ public class DataPersonalTest {
 		// Create in DB
 		ArrayList<String> array = new ArrayList<String>();
 		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0, false,
-				false, array, map));
+		Personal p = new Personal("Nobody", "No", 10, 0, 0,
+				false, array, map);
+		p.setGependelt(Weekday.getDay("Montag"), true);
+		DataPersonal.addPersonal(p);
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No");
 		assertEquals("Nobody", p2.getName());
 		assertEquals("No", p2.getKuerzel());
 		assertEquals(10, p2.getSollZeit());
 		assertEquals(0, p2.getIstZeit());
 		assertEquals(0, p2.getErsatzZeit());
-		assertEquals(false, p2.isGependelt());
+		assertEquals(true, p2.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p2.isLehrer());
 		assertEquals(array, p2.getMoeglicheStundeninhalte());
 		assertEquals(map, p2.getWunschzeiten());
@@ -82,14 +90,13 @@ public class DataPersonalTest {
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No");
 		assertNull(p1);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0,
 				false, array, map));
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No");
 		assertEquals("No", p2.getKuerzel());
 		assertEquals("Nobody", p2.getName());
-		DataPersonal.addPersonal(new Personal("Yobody", "No", 10, 0, 0, false,
+		//Kuerzel bereits vergeben
+		DataPersonal.addPersonal(new Personal("Yobody", "No", 10, 0, 0,
 				false, array, map));
 		Personal p3 = DataPersonal.getPersonalByKuerzel("No");
 		assertEquals("No", p3.getKuerzel());
@@ -108,9 +115,7 @@ public class DataPersonalTest {
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No");
 		assertNull(p1);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0,
 				false, array, map));
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No");
 		assertEquals("Nobody", p2.getName());
@@ -146,9 +151,7 @@ public class DataPersonalTest {
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No");
 		assertNull(p1);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody", "No", 10, 0, 0,
 				false, array, map));
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No");
 		assertEquals("Nobody", p2.getName());
@@ -186,17 +189,15 @@ public class DataPersonalTest {
 		assertNull(p4);
 		assertNull(p5);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody2", "No2", 2, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody2", "No2", 2, 0, 0, 
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody3", "No3", 3, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody3", "No3", 3, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody4", "No4", 4, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody4", "No4", 4, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody5", "No5", 5, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody5", "No5", 5, 0, 0,
 				false, array, map));
 		p1 = DataPersonal.getPersonalByKuerzel("No1");
 		p2 = DataPersonal.getPersonalByKuerzel("No2");
@@ -208,7 +209,7 @@ public class DataPersonalTest {
 		assertEquals(1, p1.getSollZeit());
 		assertEquals(0, p1.getIstZeit());
 		assertEquals(0, p1.getErsatzZeit());
-		assertEquals(false, p1.isGependelt());
+		assertEquals(false, p1.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p1.isLehrer());
 		assertEquals(array, p1.getMoeglicheStundeninhalte());
 		assertEquals(map, p1.getWunschzeiten());
@@ -217,7 +218,7 @@ public class DataPersonalTest {
 		assertEquals(2, p2.getSollZeit());
 		assertEquals(0, p2.getIstZeit());
 		assertEquals(0, p2.getErsatzZeit());
-		assertEquals(false, p2.isGependelt());
+		assertEquals(false, p2.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p2.isLehrer());
 		assertEquals(array, p2.getMoeglicheStundeninhalte());
 		assertEquals(map, p2.getWunschzeiten());
@@ -226,7 +227,7 @@ public class DataPersonalTest {
 		assertEquals(3, p3.getSollZeit());
 		assertEquals(0, p3.getIstZeit());
 		assertEquals(0, p3.getErsatzZeit());
-		assertEquals(false, p3.isGependelt());
+		assertEquals(false, p3.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p3.isLehrer());
 		assertEquals(array, p3.getMoeglicheStundeninhalte());
 		assertEquals(map, p3.getWunschzeiten());
@@ -235,7 +236,7 @@ public class DataPersonalTest {
 		assertEquals(4, p4.getSollZeit());
 		assertEquals(0, p4.getIstZeit());
 		assertEquals(0, p4.getErsatzZeit());
-		assertEquals(false, p4.isGependelt());
+		assertEquals(false, p4.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p4.isLehrer());
 		assertEquals(array, p4.getMoeglicheStundeninhalte());
 		assertEquals(map, p4.getWunschzeiten());
@@ -244,20 +245,20 @@ public class DataPersonalTest {
 		assertEquals(5, p5.getSollZeit());
 		assertEquals(0, p5.getIstZeit());
 		assertEquals(0, p5.getErsatzZeit());
-		assertEquals(false, p5.isGependelt());
+		assertEquals(false, p5.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p5.isLehrer());
 		assertEquals(array, p5.getMoeglicheStundeninhalte());
 		assertEquals(map, p5.getWunschzeiten());
 		// Edit in DB
 		DataPersonal.editPersonal("No1", new Personal("Nobody1", "No1", 1337,
-				0, 0, false, false, array, map));
+				0, 0, false, array, map));
 		p1 = DataPersonal.getPersonalByKuerzel("No1");
 		assertEquals("Nobody1", p1.getName());
 		assertEquals("No1", p1.getKuerzel());
 		assertEquals(1337, p1.getSollZeit());
 		assertEquals(0, p1.getIstZeit());
 		assertEquals(0, p1.getErsatzZeit());
-		assertEquals(false, p1.isGependelt());
+		assertEquals(false, p1.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p1.isLehrer());
 		assertEquals(array, p1.getMoeglicheStundeninhalte());
 		assertEquals(map, p1.getWunschzeiten());
@@ -277,17 +278,15 @@ public class DataPersonalTest {
 		assertNull(p4);
 		assertNull(p5);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody2", "No2", 2, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody2", "No2", 2, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody3", "No3", 3, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody3", "No3", 3, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody4", "No4", 4, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody4", "No4", 4, 0, 0,
 				false, array, map));
-		DataPersonal.addPersonal(new Personal("Nobody5", "No5", 5, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody5", "No5", 5, 0, 0,
 				false, array, map));
 		p1 = DataPersonal.getPersonalByKuerzel("No1");
 		p2 = DataPersonal.getPersonalByKuerzel("No2");
@@ -299,7 +298,7 @@ public class DataPersonalTest {
 		assertEquals(1, p1.getSollZeit());
 		assertEquals(0, p1.getIstZeit());
 		assertEquals(0, p1.getErsatzZeit());
-		assertEquals(false, p1.isGependelt());
+		assertEquals(false, p1.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p1.isLehrer());
 		assertEquals(array, p1.getMoeglicheStundeninhalte());
 		assertEquals(map, p1.getWunschzeiten());
@@ -308,7 +307,8 @@ public class DataPersonalTest {
 		assertEquals(2, p2.getSollZeit());
 		assertEquals(0, p2.getIstZeit());
 		assertEquals(0, p2.getErsatzZeit());
-		assertEquals(false, p2.isGependelt());
+		p2.setGependelt(Weekday.getDay("Montag"),true);
+		assertEquals(true, p2.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p2.isLehrer());
 		assertEquals(array, p2.getMoeglicheStundeninhalte());
 		assertEquals(map, p2.getWunschzeiten());
@@ -317,7 +317,7 @@ public class DataPersonalTest {
 		assertEquals(3, p3.getSollZeit());
 		assertEquals(0, p3.getIstZeit());
 		assertEquals(0, p3.getErsatzZeit());
-		assertEquals(false, p3.isGependelt());
+		assertEquals(false, p3.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p3.isLehrer());
 		assertEquals(array, p3.getMoeglicheStundeninhalte());
 		assertEquals(map, p3.getWunschzeiten());
@@ -326,7 +326,7 @@ public class DataPersonalTest {
 		assertEquals(4, p4.getSollZeit());
 		assertEquals(0, p4.getIstZeit());
 		assertEquals(0, p4.getErsatzZeit());
-		assertEquals(false, p4.isGependelt());
+		assertEquals(false, p4.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p4.isLehrer());
 		assertEquals(array, p4.getMoeglicheStundeninhalte());
 		assertEquals(map, p4.getWunschzeiten());
@@ -335,13 +335,13 @@ public class DataPersonalTest {
 		assertEquals(5, p5.getSollZeit());
 		assertEquals(0, p5.getIstZeit());
 		assertEquals(0, p5.getErsatzZeit());
-		assertEquals(false, p5.isGependelt());
+		assertEquals(false, p5.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p5.isLehrer());
 		assertEquals(array, p5.getMoeglicheStundeninhalte());
 		assertEquals(map, p5.getWunschzeiten());
 		// Edit in DB
 		DataPersonal.editPersonal("No1", new Personal("Nobody1", "No2", 1, 0,
-				0, false, false, array, map));
+				0, false, array, map));
 		// still the same, intercepted in DataPersonal
 		p1 = DataPersonal.getPersonalByKuerzel("No1");
 		assertEquals("Nobody1", p1.getName());
@@ -349,7 +349,7 @@ public class DataPersonalTest {
 		assertEquals(1, p1.getSollZeit());
 		assertEquals(0, p1.getIstZeit());
 		assertEquals(0, p1.getErsatzZeit());
-		assertEquals(false, p1.isGependelt());
+		assertEquals(false, p1.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p1.isLehrer());
 		assertEquals(array, p1.getMoeglicheStundeninhalte());
 		assertEquals(map, p1.getWunschzeiten());
@@ -358,7 +358,7 @@ public class DataPersonalTest {
 		assertEquals(2, p2.getSollZeit());
 		assertEquals(0, p2.getIstZeit());
 		assertEquals(0, p2.getErsatzZeit());
-		assertEquals(false, p2.isGependelt());
+		assertEquals(true, p2.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p2.isLehrer());
 		assertEquals(array, p2.getMoeglicheStundeninhalte());
 		assertEquals(map, p2.getWunschzeiten());
@@ -372,9 +372,7 @@ public class DataPersonalTest {
 		assertNull(p1);
 		assertNull(p2);
 		// Create in DB
-		ArrayList<String> array = new ArrayList<String>();
-		HashMap<Weekday, int[]> map = new HashMap<Weekday, int[]>();
-		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0, false,
+		DataPersonal.addPersonal(new Personal("Nobody1", "No1", 1, 0, 0,
 				false, array, map));
 		p1 = DataPersonal.getPersonalByKuerzel("No1");
 		assertEquals("Nobody1", p1.getName());
@@ -382,13 +380,13 @@ public class DataPersonalTest {
 		assertEquals(1, p1.getSollZeit());
 		assertEquals(0, p1.getIstZeit());
 		assertEquals(0, p1.getErsatzZeit());
-		assertEquals(false, p1.isGependelt());
+		assertEquals(false, p1.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p1.isLehrer());
 		assertEquals(array, p1.getMoeglicheStundeninhalte());
 		assertEquals(map, p1.getWunschzeiten());
 		// Edit in DB
 		DataPersonal.editPersonal("No1", new Personal("Nobody2", "No2", 2, 0,
-				0, false, false, array, map));
+				0, false, array, map));
 		// still the same, intercepted in DataPersonal
 		p2 = DataPersonal.getPersonalByKuerzel("No2");
 		assertEquals("Nobody2", p2.getName());
@@ -396,9 +394,23 @@ public class DataPersonalTest {
 		assertEquals(2, p2.getSollZeit());
 		assertEquals(0, p2.getIstZeit());
 		assertEquals(0, p2.getErsatzZeit());
-		assertEquals(false, p2.isGependelt());
+		assertEquals(false, p2.isGependelt(Weekday.getDay("Montag")));
 		assertEquals(false, p2.isLehrer());
 		assertEquals(array, p2.getMoeglicheStundeninhalte());
 		assertEquals(map, p2.getWunschzeiten());
+	}
+	
+	@Test
+	public void testEditPersonalThatDoesNotExist(){
+		// Not in DB
+		Personal p1 = DataPersonal.getPersonalByKuerzel("Not1");
+		assertNull(p1);
+		// Edit in DB
+		DataPersonal.editPersonal("Not1", new Personal("Nobody2", "Not2", 2, 0,
+				0, false, array, map));
+		Personal p2 = DataPersonal.getPersonalByKuerzel("Not1");
+		assertNull(p2);
+		Personal p3 = DataPersonal.getPersonalByKuerzel("Not2");
+		assertNull(p3);
 	}
 }

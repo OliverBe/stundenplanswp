@@ -19,103 +19,121 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Warnungspanel, enthaelt alle Exceptions, die vom User gesehen werden sollen
+ * 
  * @author Oliver
  *
  */
 @SuppressWarnings("serial")
-public class WarningPanel extends JPanel{
+public class WarningPanel extends JPanel {
 
 	/**
 	 * ListModel der JList im Warnungspanel
 	 */
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
-	
+
 	/**
 	 * Jlist des Warnungspanels
 	 */
 	private JList<String> list = new JList<String>(listModel);
-	
+
 	/**
 	 * Scrollbar der JList
 	 */
 	private JScrollPane listScroller = new JScrollPane(list);
-	
+
 	/**
 	 * Standartanzeige : No Warning
 	 */
-	public static String message="No Warning";
-	
+	public static String message = "No Warning";
+
 	/**
 	 * Button um eine Warnung zu loeschen
 	 */
-	private JButton b1=new JButton("Warnung loeschen");
-	
+	private JButton b1 = new JButton("Warnung loeschen");
+
 	/**
 	 * Button um alle Warnungen zu loeschen
 	 */
-	private JButton b2=new JButton("Alle Warnungen loeschen");
-	
+	private JButton b2 = new JButton("Alle Warnungen loeschen");
+
 	/**
 	 * Konstruktor des Warnungspanels
 	 */
-	public WarningPanel(){
+	public WarningPanel() {
 		list.setCellRenderer(new SelectedListCellRenderer());
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(new Color(143,188,143));
+		list.setBackground(new Color(143, 188, 143));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		list.setFocusable(false);
-		listScroller.setPreferredSize(new Dimension(300,150));
-		//list.setSize(100,500);
-		c.insets=new Insets(30,0,0,0);
+		listScroller.setPreferredSize(new Dimension(300, 150));
+		// list.setSize(100,500);
+		c.insets = new Insets(30, 0, 0, 0);
 		add(listScroller, c);
-		c.gridy=1;
-		c.fill=GridBagConstraints.BOTH;
-		c.insets=new Insets(5,0,0,0);
+		c.gridy = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(5, 0, 0, 0);
 		add(b1, c);
 		b1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				listModel.removeElement(list.getSelectedValue());
 			}
 		});
-		
-		c.gridy=2;
-		c.fill=GridBagConstraints.HORIZONTAL;
+
+		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		add(b2, c);
 		b2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				listModel.clear();
 				listModel.addElement(message);
 			}
-		});		
-		try{
-			for(int i=0;i<listModel.getSize();i++){
-				if((listModel.elementAt(i).equals(message))) listModel.removeElement(message);
+		});
+		try {
+			for (int i = 0; i < listModel.getSize(); i++) {
+				if ((listModel.elementAt(i).equals(message)))
+					listModel.removeElement(message);
 			}
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 		listModel.addElement(message);
 	}
-	
+
 	public static void setText(String pMessage) {
-		if(listModel.elementAt(0).equals(message)) listModel.removeElement(message);
+		try {
+			for (int i = 0; i < listModel.getSize(); i++) {
+				if ((listModel.elementAt(i).equals(message)))
+					listModel.removeElement(message);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 		listModel.addElement(pMessage);
 	}
-	
+
+	public static DefaultListModel<String> getListModel() {
+		return listModel;
+	}
+
 	/**
 	 * Anpassung des ListCellRenderers auf unser Konzept
+	 * 
 	 * @author Oliver
 	 *
 	 */
 	public class SelectedListCellRenderer extends DefaultListCellRenderer {
-	     @Override
-	     public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	         c.setBackground(new Color(245,110,110));
-	         if(isSelected) c.setBackground(new Color(112,138,144));
-	         if(value.equals(message)) c.setBackground(new Color(110,138,142));
-	         return c;
-	     }
+		@Override
+		public Component getListCellRendererComponent(
+				@SuppressWarnings("rawtypes") JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+			Component c = super.getListCellRendererComponent(list, value,
+					index, isSelected, cellHasFocus);
+			c.setBackground(new Color(245, 110, 110));
+			if (isSelected)
+				c.setBackground(new Color(112, 138, 144));
+			if (value.equals(message))
+				c.setBackground(new Color(110, 138, 142));
+			return c;
+		}
 	}
 }

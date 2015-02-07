@@ -318,7 +318,7 @@ public class SchoolclassPanel extends JPanel {
 				DataSchulklasse.addSchulklasse(new Schoolclass((jg
 						.getSelectedItem()) + bezField.getText(), (int) jg
 						.getSelectedItem(), (Room) cb1.getSelectedItem(), kt,
-						hm, new HashMap<Weekday, Boolean>()));
+						hm));
 				updateList();
 			}
 		});
@@ -583,7 +583,7 @@ public class SchoolclassPanel extends JPanel {
 						new Schoolclass((jg2.getSelectedItem())
 								+ bezField2.getText(), (int) jg2
 								.getSelectedItem(), (Room) cb2
-								.getSelectedItem(), kt, hm, new HashMap<Weekday, Boolean>()));
+								.getSelectedItem(), kt, hm));
 
 				updateList();
 				((JFrame) SwingUtilities.getWindowAncestor(p)).dispose();

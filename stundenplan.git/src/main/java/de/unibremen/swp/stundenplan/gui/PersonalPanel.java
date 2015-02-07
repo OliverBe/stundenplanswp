@@ -381,11 +381,7 @@ public class PersonalPanel extends JPanel {
 						stdi.add(cb.getText());
 					}
 				}
-
-				Personal pe = new Personal(nameField.getText(), kuerzField
-						.getText(), Integer.parseInt(pflichtField.getText()),0,
-						Integer.parseInt(ersatzField.getText()), new HashMap<Weekday, Boolean>(), lehrerB
-								.isSelected(), stdi, wunsch);
+				Personal pe = new Personal(nameField.getText(), kuerzField.getText(),Integer.parseInt(pflichtField.getText()),0,Integer.parseInt(ersatzField.getText()),lehrerB.isSelected(),stdi,wunsch);
 				PersonalManager.addPersonalToDb(pe);
 				updateList();
 
@@ -661,8 +657,8 @@ public class PersonalPanel extends JPanel {
 				}
 				Personal pers = new Personal(nameField2.getText(), kuerzField2
 						.getText(), Integer.parseInt(pflichtField2
-						.getText()),pe.getErsatzZeit(), Integer.parseInt(ersatzField2
-						.getText()),new HashMap<Weekday, Boolean>(), lehrerB2.isSelected(), stunden,
+						.getText()),pe.getIstZeit(), Integer.parseInt(ersatzField2
+						.getText()), lehrerB2.isSelected(), stunden,
 						wunsch);
 				for(int i=0;i<7;i++) {
 					if(Weekday.getDay(i).isSchoolday()) {

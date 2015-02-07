@@ -82,28 +82,6 @@ public final class Personal {
 	 *            gibt die Wunschzeiten des Personals an
 	 */
 	public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit,
-			int pErsatzZeit, HashMap<Weekday, Boolean> pGependelt, boolean pLehrer,
-			ArrayList<String> pMoeglicheStundeninhalte,
-			HashMap<Weekday, int[]> pWunschzeiten) {
-		name = pName;
-		kuerzel = pKuerzel;
-		sollZeit = pSollZeit;
-		istZeit = pIstZeit;
-		ersatzZeit = pErsatzZeit;
-		if(pGependelt == null) {
-			initHashMap();
-		}else {
-			gependelt = pGependelt;
-			for(int i=0;i<7;i++) {
-				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
-			}
-		}
-		lehrer = pLehrer;
-		moeglicheStundeninhalte = pMoeglicheStundeninhalte;
-		wunschzeiten = pWunschzeiten;
-	}
-	
-	public Personal(String pName, String pKuerzel, int pSollZeit, int pIstZeit,
 			int pErsatzZeit, boolean pLehrer,
 			ArrayList<String> pMoeglicheStundeninhalte,
 			HashMap<Weekday, int[]> pWunschzeiten) {

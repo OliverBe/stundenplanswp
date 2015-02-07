@@ -41,21 +41,6 @@ public final class Schoolclass extends Jahrgang{
 	 * Ist die Schulklasse schon einmal an einem Tag gependelt, true, wenn nicht, dann false
 	 */
 	private HashMap<Weekday, Boolean> gependelt = new HashMap<Weekday, Boolean>();
-
-    public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf, HashMap<Weekday, Boolean> pGependelt) {
-		super(pJahrgang, pStundenbedarf);
-    	name = pName;
-		klassenraum = pKlassenraum;
-		klassenlehrer = pKlassenlehrer;
-		if(pGependelt == null) {
-			initHashMap();
-		}else {
-			gependelt = pGependelt;
-			for(int i=0;i<7;i++) {
-				if(Weekday.getDay(i).isSchoolday() && gependelt.get(Weekday.getDay(i))==null) gependelt.put(Weekday.getDay(i), false);
-			}
-		}
-	}
     
     public Schoolclass(String pName, int pJahrgang, Room pKlassenraum, ArrayList<String> pKlassenlehrer, HashMap<String,Integer> pStundenbedarf) {
 		super(pJahrgang, pStundenbedarf);
