@@ -27,11 +27,15 @@ public class PendelTablemodel extends AbstractTableModel {
      */
     private static final long serialVersionUID = -903748217005098057L;
     
-    private Personal owner;
+    private Object owner;
     
-    public PendelTablemodel(Personal pOwner) {
+    public PendelTablemodel(Object pOwner) {
 	super();
+	if(pOwner instanceof Personal || pOwner instanceof Schoolclass){
 	owner = pOwner;
+	}else{
+		throw new IllegalArgumentException("Object not PErsonal or Schoolclass, or null");
+	}
 	try {
 			Config.init(null);
 		} catch (IOException e) {

@@ -259,15 +259,23 @@ public final class PlanungseinheitManager {
 	}
 	
 	/**
-	 * Zaehlt wiviel mal eine Person am Tag die Gebaeude wechselt
-	 * @param pers Personal
+	 * Zaehlt wieviel mal eine Person  oder Schulklasse am Tag die Gebaeude wechselt
+	 * @param owner Personal oder Schulklasse
 	 * @param pDay Tag
 	 * @return gibt die Anzahl von Wechsel
 	 */
-	public static int pendelCounter( final Personal pers, final Weekday pDay){
+	public static int pendelCounter( final Object owner, final Weekday pDay){
 		int counter = 0;
 		int gebnr = -1;
-		for(Planungseinheit p : getPEForPersonalbyWeekday(pDay, pers)){
+		ArrayList<Planungseinheit> pes;
+		if(owner instanceof Personal){
+			pes = getPEForPersonalbyWeekday(pDay, (Personal)owner);
+		}else if(owner instanceof Schoolclass){
+			pes = getPEForSchoolclassbyWeekday(pDay, (Schoolclass)owner);
+		}else{
+			return -1;
+		}
+		for(Planungseinheit p : pes){
 			if(p.getRooms().size() != 0){
 			Room r = DataRaum.getRaumByName(p.getRooms().get(0));
 			if(gebnr != -1 && gebnr != r.getGebaeude()){
@@ -640,13 +648,13 @@ public final class PlanungseinheitManager {
 	 * @param per uebergebene Personal fuer die den Standortwechsel
 	 * @return gibt die maximale Standortwechselanzahl in der Woche
 	 */
-	public static int pendelTlength(final Personal per) {
+	public static int pendelTlength(final Object owner) {
 		int index = 0;
 		int maxlength = 0;
 		int[] pendelLength = new int[TimetableManager.validdays().length];
+		if(owner instanceof Personal || owner instanceof Schoolclass){
 		for(Weekday day : TimetableManager.validdays()){
-			pendelLength[index] = pendelCounter(per, day);
-			System.out.println(day.toString() + pendelLength[index]);
+			pendelLength[index] = pendelCounter(owner, day);
 			index++;
 		}
 		for(int i : pendelLength){
@@ -655,6 +663,9 @@ public final class PlanungseinheitManager {
 			}
 		}
 		return maxlength;
+		}else{
+			return -1;
+		}
 	}
 	
 	/**
@@ -664,10 +675,17 @@ public final class PlanungseinheitManager {
 	 * @param owner	der Personal an dem die Infos der Standortwechsel generiert werden soll
 	 * @return eine Array die jede Standortwechsel(falls vorhanden) zurueckgibt
 	 */
-	public static String[] getPStrings(Weekday weekday,Personal owner){
+	public static String[] getPStrings(Weekday weekday,Object owner){
 		String[] s = new String[pendelCounter(owner, weekday)];
 		int pindex = 0;
-		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(weekday, owner);
+		ArrayList<Planungseinheit> pes;
+		if(owner instanceof Personal){
+			pes = getPEForPersonalbyWeekday(weekday, (Personal)owner);
+		}else if(owner instanceof Schoolclass){
+			pes = getPEForSchoolclassbyWeekday(weekday, (Schoolclass)owner);
+		}else{
+			return null;
+		}
 		for(int i = 0; i< pes.size(); i++){
 			if(i<pes.size()-1){
 				if(twoPeRoomGcheck(pes.get(i), pes.get(i+1))){
@@ -703,15 +721,17 @@ public final class PlanungseinheitManager {
 	
 	/**
 	 * Methode fuer die PendeltimeModel, findet die Standortwechselinfo fuer eine Personal
+	 * oder Schulklasse
 	 * an eine bestimmten Tag. Es kann sein, dass am Tag keine Standortwechsel stattfindet,
 	 * es wird dann einen leeren String zurueckgegeben
 	 * @param weekday der Tag an dem die Standortwechsel, stattfindet
 	 * @param row die Reihe in der Tabelle
-	 * @param owner	der Personal der die Standort wechselt
+	 * @param owner	der Personal oder Schulklasse der die Standort wechselt
 	 * @return gibt den Wert fuer die Reihe und Tag(Spalte) zurueck
 	 */
 	public static String getPendelString(Weekday weekday, int row,
-			Personal owner) {
+			Object owner) {
+		if(getPStrings(weekday, owner) == null){throw new IllegalArgumentException("Huh sumthing went wrong");}
 		if(row > getPStrings(weekday, owner).length || getPStrings(weekday, owner).length == 0){
 			return "";
 		}else{
