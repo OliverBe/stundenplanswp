@@ -421,7 +421,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			if(bedarfTable != null && bedarf.isVisible()) {
 				bedarf.dispose();
 			}
-			if(pendelTable != null && bedarf.isVisible()) {
+			if(pendelTable != null && pendel.isVisible()) {
 				pendel.dispose();
 			}
 			
