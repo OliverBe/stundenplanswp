@@ -20,11 +20,13 @@ public class ExceptionsTest {
 
 	@BeforeClass
 	public static void before() {
+		System.out.println("TEST - Exception");
 		new WarningPanel();
 	}
 
 	@After
 	public void afterEvery() {
+		System.out.println("... done");
 		if (!WarningPanel.getListModel().isEmpty())
 			WarningPanel.getListModel().clear();
 	}

@@ -48,6 +48,7 @@ public class DataLeistungsTest {
 
 	@BeforeClass
 	public static void startDB() {
+		System.out.println("TEST - Leistung");
 		Data.start();
 		Data.deleteAll();
 	}
@@ -77,6 +78,7 @@ public class DataLeistungsTest {
 
 	@After
 	public void tearDown() {
+		System.out.println("... done");
 		Data.deleteAll();
 	}
 
@@ -301,19 +303,22 @@ public class DataLeistungsTest {
 					zaehler, 0, zaehler, 1);
 			// Personal fuer PE
 			for (int i = 0; i < 2; i++) {
+				p.setName("p"+zaehler+""+i);
 				Pe.addPersonal(p, ia);
 			}
 			// Room fuer PE
 			for (int i = 0; i < 2; i++) {
+				r.setName("r"+zaehler+""+i);
 				Pe.addRoom(r);
 			}
 			// Schulklassen fuer PE
 			for (int i = 0; i < 2; i++) {
+				sc.setName("sc"+zaehler+""+i);
 				Pe.addSchulklassen(sc);
 			}
 			// fuer Stundeninhalte
 			for (int i = 0; i < 2; i++) {
-				si.setKuerzel("sip"+zaehler);
+				si.setKuerzel("sip"+zaehler+""+i);
 				Pe.addStundeninhalt(si);
 			}
 			DataPlanungseinheit.addPlanungseinheit(Pe);
@@ -325,8 +330,8 @@ public class DataLeistungsTest {
 
 	@Test
 	public void massiveAddRaumfunktionToDB() {
-		// hundert Stdi
-		for (int i = 0; i < 100; i++) {
+		// fuenf Stdi
+		for (int i = 0; i < 5; i++) {
 			array.add("Si" + i);
 		}
 		int zaehler = 0;
