@@ -405,9 +405,9 @@ public class BedarfPanel extends JPanel {
 		for (Jahrgang ja : JahrgangsManager.getAllJahrgangFromDB()) {
 			for (Entry<String, Integer> entry : ja.getStundenbedarf()
 					.entrySet()) {
-				listModel.addElement("Jahrgang: '" + ja.getJahrgang()
-						+ "', Stundeninhalt: '" + entry.getKey()
-						+ "', Bedarf: " + entry.getValue() + " Stunden");
+				listModel.addElement("Jahrgang: " + ja.getJahrgang()
+						+ ", Stundeninhalt: " + entry.getKey()
+						+ ", Bedarf: " + entry.getValue() + " Stunden");
 			}
 		}
 	}

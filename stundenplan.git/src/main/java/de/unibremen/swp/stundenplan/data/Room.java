@@ -88,6 +88,6 @@ public final class Room{
 	
 	@Override
     public String toString() {
-        return String.format("Name=%s, Gebaeude=%d", name, gebaeude);
+        return String.format("Raum: "+name+" Gebaeude: "+ gebaeude);
     }
 }
