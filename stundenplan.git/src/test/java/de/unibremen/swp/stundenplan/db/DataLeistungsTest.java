@@ -114,8 +114,7 @@ public class DataLeistungsTest {
 		int zaehler = 0;
 		while ((System.currentTimeMillis() - tStart) / 1000 < 20
 				&& zaehler < 10000) {
-			list.add(new Personal("P", "" + zaehler, 0, 0, 0,
-					new HashMap<Weekday, Boolean>(), false, array, map));
+			list.add(new Personal("P", "" + zaehler, 0, 0, 0, false, array, map));
 			zaehler++;
 		}
 		// 10.000 Personal in höchstens 20 Sekunden erstellt
@@ -203,7 +202,7 @@ public class DataLeistungsTest {
 		while ((System.currentTimeMillis() - tStart) / 1000 < 20
 				&& zaehler <= 10000) {
 			list.add(new Schoolclass("Sc", 1, new Room("R", 1, rfs), array,
-					map2, new HashMap<Weekday, Boolean>()));
+					map2));
 			zaehler++;
 		}
 		// 10.000 Schulklassen in höchstens 20 Sekunden erstellt
