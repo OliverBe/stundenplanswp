@@ -87,7 +87,7 @@ public class DataSchulklasse {
 				stmt.executeUpdate(sql);
 			}
 			for(int i=0;i<7;i++) {
-				sql = "INSERT INTO gependelt_Personal VALUES ('"
+				sql = "INSERT INTO gependelt_Schulklasse VALUES ('"
 						+ schulklasse.getName() + "',"
 						+ i + ","
 						+ (schulklasse.isGependelt(Weekday.getDay(i)) ? 1:0) + ");";
