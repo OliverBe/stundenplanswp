@@ -399,7 +399,12 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 				bedarf.dispose();
 			}
 			bedarfTable = null;
+			//prueft ob personal ueberhaupt Standort wechseln muss
+			if(PlanungseinheitManager.pendelTlength(p)!=0){
 			pendelTable = creatependelTableforPers(p);
+			}else{
+				pendelTable = null;
+			}
 			System.out.println(PlanungseinheitManager.pendelTlength(p));
 			init();
 		} else if (ae.getSource() == show
@@ -476,6 +481,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if(table != null) {
 		table.repaint();
 		}
+		if(pendelTable!=null){
+			pendelTable.repaint();
+		}
 		Stundenplan.getMain().validate();
 		personalList.addMouseListener(this);
 		schoolclassList.addMouseListener(this);
@@ -484,7 +492,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private JTable creatependelTableforPers(final Personal pr){
 		JTable table = new JTable(new PendelTablemodel(pr));
 		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
-		table.setRowHeight(75);
+		table.setRowHeight(60);
 		return table;
 	}
 

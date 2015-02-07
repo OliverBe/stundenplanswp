@@ -46,6 +46,12 @@ public class DataSchulklasse {
 	 */
 	public static void addSchulklasse(Schoolclass schulklasse) {
 		try {
+			for(Schoolclass sc : getAllSchulklasse()) {
+				if(sc.getName().equals(schulklasse.getName())){ 
+					throw new BereitsVorhandenException();
+				}
+			}
+			if(checkKlassenlehrerUndRaum(schulklasse)) return;
 			addSchulklasseSQL(schulklasse);
 			for(int i=0;i<7;i++) {
 				sql = "INSERT INTO gependelt_Schulklasse VALUES ('"
@@ -56,7 +62,7 @@ public class DataSchulklasse {
 			}
 			StundenplanPanel.updateLists(); 
 			Data.setSaved(false);
-		}catch (SQLException e) {
+		}catch (SQLException | BereitsVorhandenException e) {
 			e.printStackTrace();
 		}
 	}
@@ -69,28 +75,6 @@ public class DataSchulklasse {
 	 * @throws SQLException
 	 */
 	private static void addSchulklasseSQL(Schoolclass schulklasse) throws SQLException {
-		boolean error = false;
-		for(Schoolclass sc : getAllSchulklasse()) {
-			if(sc.getName().equals(schulklasse.getName())){ 
-				new BereitsVorhandenException();
-				error = true;
-			}
-		}
-		for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
-			sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + klassenlehrer + "';";
-			ResultSet rs = stmt.executeQuery(sql);
-			if(rs.next()) {
-				new BesetztException("Personal");
-				error = true;
-			}
-		}
-		sql = "SELECT * FROM Schulklasse WHERE klassenraumName = '" + schulklasse.getKlassenraum().getName() + "';";
-		ResultSet rs = stmt.executeQuery(sql);
-		if(rs.next()) {
-			new BesetztException("Raum");
-			error = true;
-		}
-		if(error) return;
 		sql = "INSERT INTO Schulklasse "
 				+ "VALUES ('" + schulklasse.getName() + "',"
 				+ schulklasse.getJahrgang() + ",'"
@@ -293,6 +277,7 @@ public class DataSchulklasse {
 					throw new BereitsVorhandenException();
 				}
 			}
+			if(checkKlassenlehrerUndRaum(newSchulklasse)) return;
 			sql = "DELETE FROM Schulklasse WHERE name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM klassenlehrer WHERE schulklasse_name = '" + pName + "';";
@@ -352,6 +337,30 @@ public class DataSchulklasse {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * Hilfsmethode ueberprueft, ob Klassenlehrer oder Raum bereits besetzt sind.
+	 * 
+	 * @throws SQLException 
+	 */
+	private static boolean checkKlassenlehrerUndRaum(Schoolclass schulklasse) throws SQLException {
+		boolean error = false;
+		for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
+			sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + klassenlehrer + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				new BesetztException("Personal");
+				error = true;
+			}
+		}
+		sql = "SELECT * FROM Schulklasse WHERE klassenraumName = '" + schulklasse.getKlassenraum().getName() + "';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			new BesetztException("Raum");
+			error = true;
+		}
+		return error;
 	}
 	
 	/**
