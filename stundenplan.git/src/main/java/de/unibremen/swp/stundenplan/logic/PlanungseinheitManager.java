@@ -704,27 +704,37 @@ public final class PlanungseinheitManager {
 	 * @param owner	der Personal an dem die Infos der Standortwechsel generiert werden soll
 	 * @return eine Array die jede Standortwechsel(falls vorhanden) zurueckgibt
 	 */
-	public static String[] getPStrings(Weekday weekday,Object owner){
+	public static String[] getPStrings(Weekday weekday, Object owner) {
 		String[] s = new String[pendelCounter(owner, weekday)];
 		int pindex = 0;
 		ArrayList<Planungseinheit> pes;
-		if(owner instanceof Personal){
-			pes = getPEForPersonalbyWeekday(weekday, (Personal)owner);
-		}else if(owner instanceof Schoolclass){
-			pes = getPEForSchoolclassbyWeekday(weekday, (Schoolclass)owner);
-		}else{
+		if (owner instanceof Personal) {
+			pes = getPEForPersonalbyWeekday(weekday, (Personal) owner);
+		} else if (owner instanceof Schoolclass) {
+			pes = getPEForSchoolclassbyWeekday(weekday, (Schoolclass) owner);
+		} else {
 			return null;
 		}
-		for(int i = 0; i< pes.size(); i++){
-			if(i<pes.size()-1){
-				if(twoPeRoomGcheck(pes.get(i), pes.get(i+1))){
+		for (int i = 0; i < pes.size(); i++) {
+			if (i < pes.size() - 1) {
+				if (twoPeRoomGcheck(pes.get(i), pes.get(i + 1))) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(printTime(pes.get(i).getEndhour(),pes.get(i).getEndminute()));
-					sb.append(" - ");
-					sb.append(printTime(pes.get(i+1).getStartHour(),pes.get(i+1).getStartminute()));
+					sb.append(printTime(pes.get(i).getEndhour(), pes.get(i)
+							.getEndminute()));
+					if (TimetableManager.duration(pes.get(i).getEndhour(), pes
+							.get(i).getEndminute(), pes.get(i + 1)
+							.getStartHour(), pes.get(i + 1).getStartminute()) != 0) {
+						sb.append(" - ");
+						sb.append(printTime(pes.get(i + 1).getStartHour(), pes
+								.get(i + 1).getStartminute()));
+					}
 					sb.append("\n");
-					Room r = RaumManager.getRoomByName(pes.get(i+1).getRooms().get(0));
-					sb.append(r.getName()+ "\n"+ r.getGebaeude());
+					Room r = RaumManager.getRoomByName(pes.get(i).getRooms()
+							.get(0));
+					sb.append(r.getName() + "\n" + r.getGebaeude() + "\n");
+					r = RaumManager.getRoomByName(pes.get(i + 1).getRooms()
+							.get(0));
+					sb.append(r.getName() + "\n" + r.getGebaeude());
 					s[pindex] = sb.toString();
 					pindex++;
 				}

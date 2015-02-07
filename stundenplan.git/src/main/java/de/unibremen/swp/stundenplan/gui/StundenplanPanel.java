@@ -236,8 +236,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			pendel = new JFrame(ptitle);
 			JScrollPane pane2 = new JScrollPane(pendelTable);
 			pendel.add(pane2);
-			pendel.setSize(550, 300);
-			pendel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			pendel.setSize(600, 300);
+			pendel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			pendel.setLocation(0, 201);
 			pendel.setAlwaysOnTop(true);
 			pendel.setVisible(true);
@@ -495,6 +495,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if(table != null) {
 		table.repaint();
 		}
+		if(pendel != null &&!pendel.isVisible()){
+			pendel.setVisible(true);
+		}
 		if(pendelTable!=null){
 			pendelTable.repaint();
 		}
@@ -506,7 +509,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private JTable creatependelTable(final Object owner){
 		JTable table = new JTable(new PendelTablemodel(owner));
 		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
-		table.setRowHeight(60);
+		table.setRowHeight(75);
 		return table;
 	}
 
