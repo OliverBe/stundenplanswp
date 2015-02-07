@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
+import javax.xml.datatype.Duration;
 
 import de.unibremen.swp.stundenplan.command.CommandHistory;
 import de.unibremen.swp.stundenplan.config.Config;
@@ -342,21 +343,9 @@ public class PEedit extends JFrame {
 					return;
 				}
 				p.setWeekday((Weekday) tag.getSelectedItem());
-				Iterator it = pList.destinationIterator();
-				ArrayList<Personal> listp = new ArrayList<Personal>();
-				while (it.hasNext()) {
-					Personal pr = (Personal) it.next();
-					if (PlanungseinheitManager.checkPersonPE(pr, p)) {
-						JOptionPane.showMessageDialog(null,
-								"Personal (" + pr.getName()
-										+ ") ist schon zu dieser Zeit gebucht");
-						return;
-					} else {
-						listp.add(pr);
-					}
-				}
+				
 
-				it = sIList.destinationIterator();
+				Iterator it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
 					if (si.getRegeldauer() != p.duration()) {
@@ -385,20 +374,6 @@ public class PEedit extends JFrame {
 						}
 					}
 					p.addStundeninhalt(si);
-				}
-
-
-				it = scList.destinationIterator();
-				while (it.hasNext()) {
-					Schoolclass sc = (Schoolclass) it.next();
-					if (PlanungseinheitManager.checkScPE(sc, p)) {
-						JOptionPane.showMessageDialog(null,
-								"Die Klasse (" + sc.getName()
-										+ ") ist schon zu dieser Zeit gebucht");
-						return;
-					} else {
-						p.addSchulklassen(sc);
-					}
 				}
 				it = roomList.destinationIterator();
 				while (it.hasNext()) {
@@ -432,13 +407,125 @@ public class PEedit extends JFrame {
 						p.addRoom(r);
 					}
 				}
+				
+				it = scList.destinationIterator();
+				while (it.hasNext()) {
+					Schoolclass sc = (Schoolclass) it.next();
+					if (PlanungseinheitManager.checkScPE(sc, p)) {
+						JOptionPane.showMessageDialog(null,
+								"Die Klasse (" + sc.getName()
+										+ ") ist schon zu dieser Zeit gebucht");
+						return;
+					} else {
+						if(checkPendelbeforeSC(sc, p) != null){
+							if (getSpacebetweenPEs(checkPendelbeforeSC(sc, p),
+									p) < getPZeit()) {
+								int result = JOptionPane
+										.showOptionDialog(
+												null,
+												"Vor der geplante Unterricht ist Klasse "
+														+ sc.getName()
+														+ " in einer anderen Gebaeude und hat nicht genug Zeit zu pendeln.",
+												"Warnung", 0,
+												JOptionPane.YES_NO_OPTION,
+												null, options, null);
+								if (result == 0) {
+									WarningPanel.setText("Klasse "
+											+ sc.getName()
+											+ " hat nicht genug Zeit zu pendeln");
+								} else {
+									return;
+								}
+							}
+						}
+						if(checkPendelafterSC(sc, p) != null){
+							if (getSpacebetweenPEs(
+									p,checkPendelafterSC(sc, p)) < getPZeit()) {
+								int result = JOptionPane
+										.showOptionDialog(
+												null,
+												"Nach der geplante Unterricht ist Klasse "
+														+ sc.getName()
+														+ " in einer anderen Gebaeude und hat nicht genug Zeit zu pendeln.",
+												"Warnung", 0,
+												JOptionPane.YES_NO_OPTION,
+												null, options, null);
+								if (result == 0) {
+									WarningPanel.setText("Klasse "
+											+ sc.getName()
+											+ " hat nicht genug Zeit zu pendeln");
+								} else {
+									return;
+								}
+							}
+						}
+						p.addSchulklassen(sc);
+					}
+				}
+				
 
 				if (PlanungseinheitManager.peRoomGcheck(p)) {
 					JOptionPane.showMessageDialog(null,
 							"Raeume sind nicht im selben Gebaeude");
 					return;
 				}
-
+				
+				it = pList.destinationIterator();
+				ArrayList<Personal> listp = new ArrayList<Personal>();
+				while (it.hasNext()) {
+					Personal pr = (Personal) it.next();
+					if (PlanungseinheitManager.checkPersonPE(pr, p)) {
+						JOptionPane.showMessageDialog(null,
+								"Personal (" + pr.getName()
+										+ ") ist schon zu dieser Zeit gebucht");
+						return;
+					} else {
+						if(checkPendelbeforePers(pr, p) != null){
+							if (getSpacebetweenPEs(checkPendelbeforePers(pr, p),
+									p) < getPZeit()) {
+								int result = JOptionPane
+										.showOptionDialog(
+												null,
+												"Vor der geplante Unterricht ist Personal "
+														+ pr.getName()
+														+ " in einer anderen Gebaeude und hat nicht genug Zeit zu pendeln.",
+												"Warnung", 0,
+												JOptionPane.YES_NO_OPTION,
+												null, options, null);
+								if (result == 0) {
+									WarningPanel.setText("Personal "
+											+ pr.getName()
+											+ " hat nicht genug Zeit zu pendeln");
+								} else {
+									return;
+								}
+							}
+						}
+						if(checkPendelafterPers(pr, p) != null){
+							if (getSpacebetweenPEs(
+									p,checkPendelafterPers(pr, p)) < getPZeit()) {
+								int result = JOptionPane
+										.showOptionDialog(
+												null,
+												"Nach der geplante Unterricht ist Personal "
+														+ pr.getName()
+														+ " in einer anderen Gebaeude und hat nicht genug Zeit zu pendeln.",
+												"Warnung", 0,
+												JOptionPane.YES_NO_OPTION,
+												null, options, null);
+								if (result == 0) {
+									WarningPanel.setText("Personal "
+											+ pr.getName()
+											+ " hat nicht genug Zeit zu pendeln");
+								} else {
+									return;
+								}
+							}
+						}
+						listp.add(pr);
+					}
+				}
+				
 				for (Personal pers : listp) {
 					if (PlanungseinheitManager.personalsiCheck(pers, p)) {
 						int result = JOptionPane.showOptionDialog(
@@ -792,6 +879,34 @@ public class PEedit extends JFrame {
 		Object[] nlist = new Object[1];
 		nlist[0] = powner;
 		return nlist;
+	}
+	
+	private Planungseinheit checkPendelbeforePers(final Personal pers, final Planungseinheit pe){
+		ArrayList<Planungseinheit> pes = PlanungseinheitManager.getPEForPersonalbyWeekday(pe.getWeekday(),pers);
+		return PlanungseinheitManager.checkbeforePendelPES(pes, pe);
+	}
+	
+	private Planungseinheit checkPendelafterPers(final Personal pers, final Planungseinheit pe){
+		ArrayList<Planungseinheit> pes = PlanungseinheitManager.getPEForPersonalbyWeekday(pe.getWeekday(),pers);
+		return PlanungseinheitManager.checkafterPendelPES(pes, pe);
+	}
+	
+	private Planungseinheit checkPendelbeforeSC(final Schoolclass pSC, final Planungseinheit pe){
+		ArrayList<Planungseinheit> pes = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pe.getWeekday(),pSC);
+		return PlanungseinheitManager.checkbeforePendelPES(pes, pe);
+	}
+	
+	private Planungseinheit checkPendelafterSC(final Schoolclass pSC, final Planungseinheit pe){
+		ArrayList<Planungseinheit> pes = PlanungseinheitManager.getPEForSchoolclassbyWeekday(pe.getWeekday(),pSC);
+		return PlanungseinheitManager.checkafterPendelPES(pes, pe);
+	}
+	
+	private int getSpacebetweenPEs(Planungseinheit p1,Planungseinheit p2){
+		return TimetableManager.duration(p1.getEndhour(),p1.getEndminute(), p2.getStartHour(), p2.getStartminute());
+	}
+	
+	private int getPZeit(){
+		return Config.getInt(Config.PENDELTIME_STRING, Config.PENDELTIME);
 	}
 
 	private String printWZ(int[] wZ) {

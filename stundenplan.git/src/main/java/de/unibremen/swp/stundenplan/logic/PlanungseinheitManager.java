@@ -642,6 +642,35 @@ public final class PlanungseinheitManager {
 		}
 	}
 	
+	public static Planungseinheit checkbeforePendelPES(ArrayList<Planungseinheit> peList, Planungseinheit pe){
+		int index;
+		ArrayList<Planungseinheit> pes = peList;
+		pes.add(pe);
+		orderByTime(pes);
+		index =pes.indexOf(pe);
+		System.out.println(index);
+		System.out.println(TimetableManager.duration(10, 30, 10, 30));
+		if(index == 0){return null;}
+			if(twoPeRoomGcheck(pe, pes.get(index-1))){
+				return pes.get(index-1);
+			}
+		return null;
+	}
+	
+	public static Planungseinheit checkafterPendelPES(ArrayList<Planungseinheit> peList, Planungseinheit pe){
+		int index;
+		ArrayList<Planungseinheit> pes = peList;
+		pes.add(pe);
+		orderByTime(pes);
+		index =pes.indexOf(pe);
+		System.out.println(index);
+		if(index == pes.size()-1 ){return null;}
+		if(twoPeRoomGcheck(pe, pes.get(index+1))){
+				return pes.get(index+1);
+		}
+		return null;
+	} 
+	
 	/** gibt zurueck die Zahl der meisten Standortwechsel am Tag
 	 * fuer eine Personal. wird benutzt um die Reihenanzahl 
 	 * der Standoerwechseltabelle zu finden.
