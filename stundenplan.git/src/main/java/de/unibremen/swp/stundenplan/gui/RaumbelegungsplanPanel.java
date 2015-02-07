@@ -32,7 +32,7 @@ public class RaumbelegungsplanPanel extends JPanel implements ActionListener {
 	private static JMenuBar menuBar = new JMenuBar();
 	private static DefaultListModel rList;
 	private static JList roomList;
-	private static JLabel label1 = new JLabel("R�ume");
+	private static JLabel label1 = new JLabel("Raeume");
 
 	private static JButton show = new JButton("Anzeigen");
 
