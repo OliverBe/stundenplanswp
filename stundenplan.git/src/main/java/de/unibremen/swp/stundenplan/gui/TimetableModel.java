@@ -133,17 +133,10 @@ public class TimetableModel extends AbstractTableModel {
         if (col == 0) {
             return TimetableManager.getTimeframeDisplay(row);
         } else {
-            try {
-            	if(owner==null){
+            if(owner==null){
             	return new Timeslot(TimetableManager.validdays()[col-1]);
-            	}
-            	return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row, owner);
-            } catch (DatasetException e) {
-                /*
-                 * Exception wurde schon protokolliert.
-                 */
-                return null;
             }
+			return TimetableManager.getTimeslotAt(TimetableManager.validdays()[col - 1], row, owner);      
         }
     }
 

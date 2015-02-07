@@ -251,7 +251,7 @@ public final class TimetableManager {
      *             falls es ein Problem bei der Abfrage des unterliegenden Datenbestandes gibt oder der Datenbestand
      *             inkonsistent ist
      */
-    public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) throws DatasetException {
+    public static Timeslot getTimeslotAt(final Weekday weekday, final int position, Object clazz) {
         DayTable dayTable;
         if(clazz instanceof Personal){
         	dayTable = createTimeslotsForPersonal(weekday, (Personal)clazz);
@@ -261,8 +261,7 @@ public final class TimetableManager {
         	dayTable = createTimeslotsForRoom(weekday, (Room)clazz);
         }else{ 	
         	return null;
-        }
-       	
+        }	
         return dayTable.getTimeslot(position);
     }
 

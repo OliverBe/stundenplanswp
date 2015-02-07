@@ -103,7 +103,7 @@ public class DataPersonal {
 			int ersatzZeit = rs.getInt("ersatzZeit");
 			boolean lehrer = rs.getBoolean("lehrer");
 			int istZeit = istZeitMin/(lehrer ? 45:60);
-			Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>());
+			Personal p = new Personal(name, pKuerzel, sollZeit, istZeit, ersatzZeit, lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>());
 			sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
 					+ pKuerzel + "';";
 			rs = stmt.executeQuery(sql);
@@ -157,7 +157,7 @@ public class DataPersonal {
 				int ersatzZeit = rs.getInt("ersatzZeit");
 				boolean lehrer = rs.getBoolean("lehrer");
 				int istZeit = istZeitMin/(lehrer ? 45:60);
-				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, new HashMap<Weekday, Boolean>(), lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>()));
+				allPersonal.add(new Personal(name, kuerzel, sollZeit, istZeit, ersatzZeit, lehrer, new ArrayList<String>(), new HashMap<Weekday, int[]>()));
 			}
 			for(Personal p : allPersonal) {
 				sql = "SELECT * FROM moegliche_Stundeninhalte_Personal WHERE personal_kuerzel = '"
