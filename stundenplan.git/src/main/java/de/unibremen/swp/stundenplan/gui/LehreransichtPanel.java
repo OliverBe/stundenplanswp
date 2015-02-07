@@ -147,7 +147,7 @@ public class LehreransichtPanel extends JPanel {
 			// und nach in die List eingefuegt und danach
 			// in die eigentliche Tabellenreihe eingefuegt.
 			ArrayList<String> reihe = new ArrayList<>();
-			reihe.add(p.getKuerzel());
+			reihe.add(" "+p.getKuerzel());
 			reihe.add(" "+Integer.toString(p.getSollZeit()));
 			if (p.getErsatzZeit() == 0) {
 				reihe.add(" -");
@@ -275,13 +275,11 @@ public class LehreransichtPanel extends JPanel {
 							// und die Strings werden zusammengesetzt. Letzter
 							// Eintrag in der Reihe wird geloescht und
 							// mit neuer Klasse in Zelle + Dauer
-							// zusammengesetzt. Um die Eintraege in mehrere
-							// Zeilen
-							// zu bekommen, wurde HTML Code verwendet.
+							// zusammengesetzt. 
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size() - 1);
 								reihe.remove(reihe.size() - 1);
-								reihe.add(teilString + "\n" + " "+ k.getName()
+								reihe.add(teilString + "  "+ k.getName()
 										+ ": "
 										+ Double.toString(ergebnisInStunden));
 							} else {
@@ -322,7 +320,7 @@ public class LehreransichtPanel extends JPanel {
 		// nicht im Plan auftauchen.
 		for (Personal p : allPersonal) {
 			ArrayList<String> reihe = new ArrayList<String>();
-			if (!kuerzelInAllenReihen.contains(p.getKuerzel())) {
+			if (!kuerzelInAllenReihen.contains(" "+p.getKuerzel())) {
 				reihe.add(p.getKuerzel());
 				for (int i = 0; i < model.getColumnCount(); i++) {
 					reihe.add("-");
@@ -334,7 +332,10 @@ public class LehreransichtPanel extends JPanel {
 
 		table.setRowSelectionAllowed(true);
 		table.setEnabled(false);
-		table.setRowHeight(60);
+		table.setRowHeight(55);
+		for(int a=4; a<table.getColumnCount(); a++){
+			table.getColumnModel().getColumn(a).setResizable(true);
+		}
 		JScrollPane pane = new JScrollPane(table);
 		add(pane, c);
 	}
