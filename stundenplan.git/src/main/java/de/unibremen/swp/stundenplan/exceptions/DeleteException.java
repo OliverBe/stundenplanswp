@@ -4,12 +4,9 @@ import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 
+@SuppressWarnings("serial")
 public class DeleteException extends Exception {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6255145795467711340L;
-	
+
 	public DeleteException(final String message) {
         super(message);
         JOptionPane.showMessageDialog(Stundenplan.getMain(), message);

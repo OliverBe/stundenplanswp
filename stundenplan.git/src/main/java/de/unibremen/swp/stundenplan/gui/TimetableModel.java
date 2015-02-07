@@ -24,14 +24,13 @@ import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
-import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 /**
- * Das TimetableModel für die Timetable. Es handelt sich hierbei um ein Model, dass bestimmt, welche Daten in der
+ * Das TimetableModel fuer die Timetable. Es handelt sich hierbei um ein Model, dass bestimmt, welche Daten in der
  * Tabelle vorhanden sind und wie angezeigt werden. Dazu erbt TimetableModel von AbstractTableModel.
  * 
- * @author D. Lüdemann
+ * @author D. Luedemann
  * @version 0.1
  * 
  */
@@ -69,7 +68,7 @@ public class TimetableModel extends AbstractTableModel {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.table.TableModel#getColumnCount()Für Jeden Wochentag eine Spalte und für Stundenanzeige ganz
+     * @see javax.swing.table.TableModel#getColumnCount()Fuer Jeden Wochentag eine Spalte und fuer Stundenanzeige ganz
      * links eine Spalte.
      */
     @Override
@@ -126,7 +125,7 @@ public class TimetableModel extends AbstractTableModel {
      * (non-Javadoc)
      * 
      * @see javax.swing.table.TableModel#getValueAt(int, int) Hier darauf geachtet, dass wir ganz links die Uhrzeit der
-     * Tabelle anzeigen. Die weiteren Spalten greifen auf die Timeslots des TimetableManagers zurück.
+     * Tabelle anzeigen. Die weiteren Spalten greifen auf die Timeslots des TimetableManagers zurueck.
      */
     @Override
     public Object getValueAt(final int row, final int col) {
