@@ -224,12 +224,21 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			bedarf.setVisible(true);
 		}
 		if(pendelTable != null) {
-			Personal p = (Personal)tableowner;
-			pendel = new JFrame("Standortwechsel von "+ p.getName());
+			String ptitle = "";
+			if(tableowner instanceof Personal){
+				Personal p = (Personal)tableowner;
+				ptitle = "Standortwechsel von Personal "+ p.getName();
+			}
+			if(tableowner instanceof Schoolclass){
+				Schoolclass s = (Schoolclass)tableowner;
+				ptitle = "Standortwechsel von Schulklasse "+ s.getName();
+			}
+			pendel = new JFrame(ptitle);
 			JScrollPane pane2 = new JScrollPane(pendelTable);
 			pendel.add(pane2);
 			pendel.setSize(550, 300);
 			pendel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			pendel.setLocation(0, 201);
 			pendel.setAlwaysOnTop(true);
 			pendel.setVisible(true);
 		}
@@ -401,11 +410,10 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			bedarfTable = null;
 			//prueft ob personal ueberhaupt Standort wechseln muss
 			if(PlanungseinheitManager.pendelTlength(p)!=0){
-			pendelTable = creatependelTableforPers(p);
+			pendelTable = creatependelTable(p);
 			}else{
 				pendelTable = null;
 			}
-			System.out.println(PlanungseinheitManager.pendelTlength(p));
 			init();
 		} else if (ae.getSource() == show
 				&& (!schoolclassList.isSelectionEmpty())) {
@@ -416,9 +424,15 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			if(pendelTable != null && bedarf.isVisible()) {
 				pendel.dispose();
 			}
+			
 			pendelTable = null;
 			Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
 			tableowner = s;
+			if(PlanungseinheitManager.pendelTlength(s)!=0){
+				pendelTable = creatependelTable(s);
+				}else{
+				pendelTable = null;
+			}
 			System.out.println(s.getName());
 			table = new StundenplanTable(s).getTable();
 			
@@ -489,8 +503,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		schoolclassList.addMouseListener(this);
 	}
 	
-	private JTable creatependelTableforPers(final Personal pr){
-		JTable table = new JTable(new PendelTablemodel(pr));
+	private JTable creatependelTable(final Object owner){
+		JTable table = new JTable(new PendelTablemodel(owner));
 		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
 		table.setRowHeight(60);
 		return table;
