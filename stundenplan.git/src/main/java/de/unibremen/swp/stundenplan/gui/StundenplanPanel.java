@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -38,6 +39,8 @@ import de.unibremen.swp.stundenplan.logic.StundeninhaltManager;
 public class StundenplanPanel extends JPanel implements ActionListener,
 		MouseListener {
 
+	public JTable pendelTable;
+	public JFrame pendel;
 	
 	public static JTable bedarfTable;
 	public static JFrame bedarf; 
@@ -220,6 +223,16 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			bedarf.setAlwaysOnTop(true);
 			bedarf.setVisible(true);
 		}
+		if(pendelTable != null) {
+			Personal p = (Personal)tableowner;
+			pendel = new JFrame("Standortwechsel von "+ p.getName());
+			JScrollPane pane2 = new JScrollPane(pendelTable);
+			pendel.add(pane2);
+			pendel.setSize(550, 300);
+			pendel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			pendel.setAlwaysOnTop(true);
+			pendel.setVisible(true);
+		}
 		
 		if (table != null) {
 			table.addMouseListener(mousefunc);
@@ -228,8 +241,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * Erzeugt ein Popup zum hinzuf���gen, editieren und l���schen von Lehrern
-	 * F���chern und Klassen
+	 * Erzeugt ein Popup zum hinzufuegen, editieren und loeschen von Lehrern
+	 * Faechern und Klassen
 	 * 
 	 * @param row
 	 *            Die Zeile.
@@ -293,8 +306,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 	
 	/**
-	 * updated die GUI und die Listen. wird ausgef���hrt sobald eine relevante
-	 * ���nderung in der Datenbank geschieht. Wird von anderen Klassen statisch
+	 * updated die GUI und die Listen. wird ausgefuehrt sobald eine relevante
+	 * Aenderung in der Datenbank geschieht. Wird von anderen Klassen statisch
 	 * ausgerufen.
 	 */
 	public static void updateLists() {
@@ -366,7 +379,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	}
 
 	/**
-	 * stellt eine Aktion da. Sobald der Anzeigen Button gedr���ckt wird, wird von
+	 * stellt eine Aktion da. Sobald der Anzeigen Button gedrueckt wird, wird von
 	 * dem element in der JList der Stundenplan in Form eines JTables angezeigt
 	 * Danach wird die GUI aktualisiert
 	 * 
@@ -379,10 +392,15 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			tableowner = p;
 			System.out.println(p.getKuerzel());
 			table = new StundenplanTable(p).getTable();
+			if(pendelTable != null && pendel.isVisible()) {
+				pendel.dispose();
+			}
 			if(bedarfTable != null && bedarf.isVisible()) {
 				bedarf.dispose();
 			}
 			bedarfTable = null;
+			pendelTable = creatependelTableforPers(p);
+			System.out.println(PlanungseinheitManager.pendelTlength(p));
 			init();
 		} else if (ae.getSource() == show
 				&& (!schoolclassList.isSelectionEmpty())) {
@@ -390,6 +408,10 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			if(bedarfTable != null && bedarf.isVisible()) {
 				bedarf.dispose();
 			}
+			if(pendelTable != null && bedarf.isVisible()) {
+				pendel.dispose();
+			}
+			pendelTable = null;
 			Schoolclass s = (Schoolclass) schoolclassList.getSelectedValue();
 			tableowner = s;
 			System.out.println(s.getName());
@@ -458,10 +480,17 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		personalList.addMouseListener(this);
 		schoolclassList.addMouseListener(this);
 	}
+	
+	private JTable creatependelTableforPers(final Personal pr){
+		JTable table = new JTable(new PendelTablemodel(pr));
+		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
+		table.setRowHeight(75);
+		return table;
+	}
 
 	/**
-	 * Sobald ein Element in den J-Listen ausgew���hlt
-	 * wird, wird in der anderen JListe das ausgew���hlte Element "deselected".
+	 * Sobald ein Element in den J-Listen ausgewaehlt
+	 * wird, wird in der anderen JListe das ausgewaehlte Element "deselected".
 	 * @param evt
 	 */
 	@Override

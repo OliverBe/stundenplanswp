@@ -384,7 +384,7 @@ public class PersonalPanel extends JPanel {
 
 				Personal pe = new Personal(nameField.getText(), kuerzField
 						.getText(), Integer.parseInt(pflichtField.getText()),0,
-						Integer.parseInt(ersatzField.getText()), new HashMap<Weekday, Boolean>(), lehrerB
+						Integer.parseInt(ersatzField.getText()), lehrerB
 								.isSelected(), stdi, wunsch);
 				PersonalManager.addPersonalToDb(pe);
 				updateList();
