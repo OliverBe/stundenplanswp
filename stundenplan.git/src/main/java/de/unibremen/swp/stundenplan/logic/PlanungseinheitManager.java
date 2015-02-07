@@ -634,7 +634,13 @@ public final class PlanungseinheitManager {
 			return pes.get(pes.size() - 1).getId() + 1;
 		}
 	}
-
+	
+	/** gibt zurueck die Zahl der meisten Standortwechsel am Tag
+	 * fuer eine Personal. wird benutzt um die Reihenanzahl 
+	 * der Standoerwechseltabelle zu finden.
+	 * @param per uebergebene Personal fuer die den Standortwechsel
+	 * @return gibt die maximale Standortwechselanzahl in der Woche
+	 */
 	public static int pendelTlength(final Personal per) {
 		int index = 0;
 		int maxlength = 0;
@@ -652,6 +658,13 @@ public final class PlanungseinheitManager {
 		return maxlength;
 	}
 	
+	/**
+	 * erstellt eine Array, die alle Standortwechselinfo generiert fuer eine Personal
+	 * und an einem bestimmten Tag
+	 * @param weekday der Tag an dem die Infos der Standortwechsel generiert werden soll
+	 * @param owner	der Personal an dem die Infos der Standortwechsel generiert werden soll
+	 * @return eine Array die jede Standortwechsel(falls vorhanden) zurueckgibt
+	 */
 	public static String[] getPStrings(Weekday weekday,Personal owner){
 		String[] s = new String[pendelCounter(owner, weekday)];
 		int pindex = 0;
@@ -674,6 +687,12 @@ public final class PlanungseinheitManager {
 		return s;
 	}
 	
+	/**
+	 * gibt eine formatierte String(HH:MM) fuer eine Stundenzahl und minuten Zahl
+	 * @param hour Stundenzahl die formatiert werden soll
+	 * @param minute Minutenzahl die formatiert werden soll
+	 * @return eine String in (HH:MM) Format
+	 */
 	public static String printTime(int hour, int minute) {
 		if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
 			throw new IllegalArgumentException(" Parameters doesnt follow Time standards");
@@ -683,6 +702,15 @@ public final class PlanungseinheitManager {
 		return sb.toString();
 	}
 	
+	/**
+	 * Methode fuer die PendeltimeModel, findet die Standortwechselinfo fuer eine Personal
+	 * an eine bestimmten Tag. Es kann sein, dass am Tag keine Standortwechsel stattfindet,
+	 * es wird dann einen leeren String zurueckgegeben
+	 * @param weekday der Tag an dem die Standortwechsel, stattfindet
+	 * @param row die Reihe in der Tabelle
+	 * @param owner	der Personal der die Standort wechselt
+	 * @return gibt den Wert fuer die Reihe und Tag(Spalte) zurueck
+	 */
 	public static String getPendelString(Weekday weekday, int row,
 			Personal owner) {
 		if(row > getPStrings(weekday, owner).length || getPStrings(weekday, owner).length == 0){

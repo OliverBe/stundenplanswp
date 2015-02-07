@@ -93,7 +93,7 @@ public class PendelTablemodel extends AbstractTableModel {
     @Override
     public Object getValueAt(final int row, final int col) {
         if (col == 0) {
-            return "Zeitraum\nZeit zur Wechsel\nZielraum \nZielgeb.";
+            return "Zeitraum\nZielraum \nZielgeb.";
         } else {
             	return PlanungseinheitManager.getPendelString(TimetableManager.validdays()[col - 1], row, owner);
         }

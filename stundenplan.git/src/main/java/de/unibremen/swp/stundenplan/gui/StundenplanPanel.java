@@ -476,6 +476,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if(table != null) {
 		table.repaint();
 		}
+		if(pendelTable!=null){
+			pendelTable.repaint();
+		}
 		Stundenplan.getMain().validate();
 		personalList.addMouseListener(this);
 		schoolclassList.addMouseListener(this);
@@ -484,7 +487,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private JTable creatependelTableforPers(final Personal pr){
 		JTable table = new JTable(new PendelTablemodel(pr));
 		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
-		table.setRowHeight(75);
+		table.setRowHeight(60);
 		return table;
 	}
 
