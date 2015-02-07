@@ -4,12 +4,8 @@ import javax.swing.JOptionPane;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 
+@SuppressWarnings("serial")
 public class CommandHistoryException extends Exception {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	/**
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.

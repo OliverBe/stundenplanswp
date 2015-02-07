@@ -14,7 +14,7 @@ public class BesetztException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public BesetztException(String besetztesObjekt) {
-    	if(besetztesObjekt.equals("Personal")) WarningPanel.setText(besetztesObjekt + " ist bereits Klassenlehrer.");
-    	if(besetztesObjekt.equals("Raum")) WarningPanel.setText(besetztesObjekt + " ist bereits Klassenraum.");
+    	if(besetztesObjekt.equals("Personal")) WarningPanel.setText(besetztesObjekt + " bereits Klassenlehrer");
+    	if(besetztesObjekt.equals("Raum")) WarningPanel.setText(besetztesObjekt + " bereits Klassenraum");
     }
 }

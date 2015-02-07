@@ -259,14 +259,4 @@ public final class Personal {
 	public void setLehrer(final boolean pLehrer) {
 		lehrer = pLehrer;
 	}
-	
-	private void initHashMap() {
-		gependelt.put(Weekday.MONDAY, false);
-		gependelt.put(Weekday.TUESDAY, false);
-		gependelt.put(Weekday.WEDNESDAY, false);
-		gependelt.put(Weekday.THURSDAY, false);
-		gependelt.put(Weekday.FRIDAY, false);
-		gependelt.put(Weekday.SATURDAY, false);
-		gependelt.put(Weekday.SUNDAY, false);
-	}
 }

@@ -45,49 +45,10 @@ public class DataSchulklasse {
 	 * 		die Schulklasse, welche in die Datenbank gespeichert werden soll
 	 */
 	public static void addSchulklasse(Schoolclass schulklasse) {
-		boolean error = false;
 		try {
-			for(Schoolclass sc : getAllSchulklasse()) {
-				if(sc.getName().equals(schulklasse.getName())){ 
-					new BereitsVorhandenException();
-					error = true;
-				}
-			}
-			for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
-				sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + klassenlehrer + "';";
-				ResultSet rs = stmt.executeQuery(sql);
-				if(rs.next()) {
-					new BesetztException("Personal");
-					error = true;
-				}
-			}
-			sql = "SELECT * FROM Schulklasse WHERE klassenraumName = '" + schulklasse.getKlassenraum().getName() + "';";
-			ResultSet rs = stmt.executeQuery(sql);
-			if(rs.next()) {
-				new BesetztException("Raum");
-				error = true;
-			}
-			if(error) return;
-			sql = "INSERT INTO Schulklasse "
-					+ "VALUES ('" + schulklasse.getName() + "',"
-					+ schulklasse.getJahrgang() + ",'"
-					+ schulklasse.getKlassenraum().getName() + "');";
-			stmt.executeUpdate(sql);
-			for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
-				sql = "INSERT INTO klassenlehrer "
-						+ "VALUES ('" + schulklasse.getName() + "','"
-						+ klassenlehrer + "');";
-				stmt.executeUpdate(sql);
-			}
-			for (Entry<String, Integer> entry : schulklasse.getStundenbedarf().entrySet()) {
-				sql = "INSERT INTO stundenbedarf " + "VALUES ('" 
-						+ schulklasse.getName() + "', '"
-						+ entry.getKey() + "', "
-						+ entry.getValue() + ");";
-				stmt.executeUpdate(sql);
-			}
+			addSchulklasseSQL(schulklasse);
 			for(int i=0;i<7;i++) {
-				sql = "INSERT INTO gependelt_Personal VALUES ('"
+				sql = "INSERT INTO gependelt_Schulklasse VALUES ('"
 						+ schulklasse.getName() + "',"
 						+ i + ","
 						+ (schulklasse.isGependelt(Weekday.getDay(i)) ? 1:0) + ");";
@@ -97,6 +58,56 @@ public class DataSchulklasse {
 			Data.setSaved(false);
 		}catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Hilfsmethode zum Hinzufuegen von Schulklassen.
+	 * 
+	 * @param schulklasse
+	 * 		die hinzuzufuegende Schulklasse
+	 * @throws SQLException
+	 */
+	private static void addSchulklasseSQL(Schoolclass schulklasse) throws SQLException {
+		boolean error = false;
+		for(Schoolclass sc : getAllSchulklasse()) {
+			if(sc.getName().equals(schulklasse.getName())){ 
+				new BereitsVorhandenException();
+				error = true;
+			}
+		}
+		for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
+			sql = "SELECT * FROM klassenlehrer WHERE personal_kuerzel = '" + klassenlehrer + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				new BesetztException("Personal");
+				error = true;
+			}
+		}
+		sql = "SELECT * FROM Schulklasse WHERE klassenraumName = '" + schulklasse.getKlassenraum().getName() + "';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			new BesetztException("Raum");
+			error = true;
+		}
+		if(error) return;
+		sql = "INSERT INTO Schulklasse "
+				+ "VALUES ('" + schulklasse.getName() + "',"
+				+ schulklasse.getJahrgang() + ",'"
+				+ schulklasse.getKlassenraum().getName() + "');";
+		stmt.executeUpdate(sql);
+		for(String klassenlehrer : schulklasse.getKlassenlehrer()) {
+			sql = "INSERT INTO klassenlehrer "
+					+ "VALUES ('" + schulklasse.getName() + "','"
+					+ klassenlehrer + "');";
+			stmt.executeUpdate(sql);
+		}
+		for (Entry<String, Integer> entry : schulklasse.getStundenbedarf().entrySet()) {
+			sql = "INSERT INTO stundenbedarf " + "VALUES ('" 
+					+ schulklasse.getName() + "', '"
+					+ entry.getKey() + "', "
+					+ entry.getValue() + ");";
+			stmt.executeUpdate(sql);
 		}
 	}
 	
@@ -288,11 +299,11 @@ public class DataSchulklasse {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM stundenbedarf WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM gependelt_Schulklasse WHERE schulklasse_name = '" + pName + "';";
+			sql = "UPDATE gependelt_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE planungseinheit_Schulklasse SET schulklasse_name = '" + newSchulklasse.getName() + "' WHERE schulklasse_name = '" + pName + "';";
 			stmt.executeUpdate(sql);
-			addSchulklasse(newSchulklasse);
+			addSchulklasseSQL(newSchulklasse);
 		} catch (SQLException | BereitsVorhandenException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}

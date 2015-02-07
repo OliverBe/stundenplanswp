@@ -23,14 +23,11 @@ import de.unibremen.swp.stundenplan.Stundenplan;
  * Eine Ausnahme, die ein generelles Problem mit der Applikation anzeigt.
  * 
  * @author K. Hölscher, D. Lüdemann
- * @version 0.1
+ * @version 1.0
+ * @editor Kulturmeister
  */
+@SuppressWarnings("serial")
 public class StundenplanException extends Exception {
-
-    /**
-     * Die eineindeutige ID für Serialisierung.
-     */
-    private static final long serialVersionUID = -1537026985521086798L;
 
     /**
      * Erzeugt eine neue Ausnahme mit der gegebenen Nachricht.

@@ -43,7 +43,7 @@ public class AddJahrgangToDB implements Command {
 	 * gefunden wird, wird das Stundeninhaltkuerzel an die Datenbank weitergeleitet, wo die Loeschanfrage
 	 * realisiert wird.
 	 * 
-	 * @exception CommandHIstoryException
+	 * @exception CommandHistoryException
 	 * 			Wenn die beiden Jahrgaenge keine Differenz aufzeigen.
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class AddJahrgangToDB implements Command {
 			try {
 				throw new CommandHistoryException(
 						"Fehler bei Undo von add Jahrgangsbedarf: Kuerzel des"
-								+ " Stundeninhaltes wurde nicht beim  gefunden.");
+								+ " Stundeninhaltes wurde nicht gefunden.");
 			} catch (CommandHistoryException e) {
 				e.printStackTrace();
 			}

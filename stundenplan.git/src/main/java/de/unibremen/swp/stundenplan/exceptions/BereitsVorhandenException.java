@@ -3,6 +3,10 @@ package de.unibremen.swp.stundenplan.exceptions;
 
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
+/**
+ * Exception wird geworfen, sobald Primary bereits vergeben
+ * @author Oliver
+ */
 @SuppressWarnings("serial")
 public class BereitsVorhandenException extends Exception {
 
@@ -16,6 +20,6 @@ public class BereitsVorhandenException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public BereitsVorhandenException() {
-    	WarningPanel.setText("Bereits vorhanden.");
+    	WarningPanel.setText("Bereits vorhanden");
     }
 }

@@ -48,27 +48,7 @@ public class DataPersonal {
 					throw new BereitsVorhandenException();
 				}
 			}
-			sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
-					+ "', '" + personal.getKuerzel() + "', "
-					+ personal.getSollZeit() + ", 0, " + personal.getErsatzZeit() + ", "
-					+ (personal.isLehrer() ? 1:0) + ");";
-			stmt.executeUpdate(sql);
-			for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
-				sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
-						+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
-						+ "');";
-				stmt.executeUpdate(sql);
-			}
-			for (Entry<Weekday, int[]> entry : personal.getWunschzeiten().entrySet()) {
-				sql = "INSERT INTO Zeitwunsch VALUES ('" 
-						+ personal.getKuerzel() + "',"
-						+ entry.getKey().getOrdinal() + ","
-						+ entry.getValue()[0] + ","
-						+ entry.getValue()[1] + ","
-						+ entry.getValue()[2] + ","
-						+ entry.getValue()[3] + ");";
-				stmt.executeUpdate(sql);
-			}
+			addPersonalSQL(personal);
 			for(int i=0;i<7;i++) {
 				sql = "INSERT INTO gependelt_Personal VALUES ('"
 						+ personal.getKuerzel() + "',"
@@ -83,6 +63,29 @@ public class DataPersonal {
 		}
 	}
 	
+	private static void addPersonalSQL(Personal personal) throws SQLException {
+		sql = "INSERT INTO Personal " + "VALUES ('" + personal.getName()
+				+ "', '" + personal.getKuerzel() + "', "
+				+ personal.getSollZeit() + ", 0, " + personal.getErsatzZeit() + ", "
+				+ (personal.isLehrer() ? 1:0) + ");";
+		stmt.executeUpdate(sql);
+		for (String kuerzel : personal.getMoeglicheStundeninhalte()) {
+			sql = "INSERT INTO moegliche_Stundeninhalte_Personal "
+					+ "VALUES ('" + personal.getKuerzel() + "','" + kuerzel
+					+ "');";
+			stmt.executeUpdate(sql);
+		}
+		for (Entry<Weekday, int[]> entry : personal.getWunschzeiten().entrySet()) {
+			sql = "INSERT INTO Zeitwunsch VALUES ('" 
+					+ personal.getKuerzel() + "',"
+					+ entry.getKey().getOrdinal() + ","
+					+ entry.getValue()[0] + ","
+					+ entry.getValue()[1] + ","
+					+ entry.getValue()[2] + ","
+					+ entry.getValue()[3] + ");";
+			stmt.executeUpdate(sql);
+		}
+	}
 	/**
 	 * Methode gibt das Personal aus der Datenbank zurueck, 
 	 * das den uebergebenen Kuerzel besitzt.
@@ -300,13 +303,13 @@ public class DataPersonal {
 			stmt.executeUpdate(sql);
 			sql = "DELETE FROM Zeitwunsch WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			sql = "DELETE FROM gependelt_Personal WHERE personal_kuerzel = '" + pKuerzel + "';";
+			sql = "UPDATE gependelt_Personal SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE planungseinheit_Personal SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
 			sql = "UPDATE klassenlehrer SET personal_kuerzel = '" + newPersonal.getKuerzel() + "' WHERE personal_kuerzel = '" + pKuerzel + "';";
 			stmt.executeUpdate(sql);
-			addPersonal(newPersonal);
+			addPersonalSQL(newPersonal);
 		} catch (SQLException | BereitsVorhandenException | NichtVorhandenException e) {
 			e.printStackTrace();
 		}
