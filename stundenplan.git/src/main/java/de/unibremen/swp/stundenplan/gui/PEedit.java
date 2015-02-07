@@ -519,247 +519,247 @@ public class PEedit extends JFrame {
 					parentframe.updatetable();
 					parentframe.updateLists();
 					
-					for (int i = 0; i < listp.size(); i++) {
-						
-						
-						StundenplanTable table = new StundenplanTable(listp
-								.get(i));
-						int idForCheck = p.getId();
-						int reihe = -1;
-						int spalte = -1;
-						for(int row = 0; row < table.getTable().getRowCount(); row++) {
-							for(int col = 0; col < table.getTable().getColumnCount(); col++) {
-								if(table.getTable().getValueAt(row, col) instanceof Timeslot) {
-									Timeslot ts = (Timeslot) table.getTable().getValueAt(row, col);
-									if(ts.getpe() == idForCheck) {
-										reihe = row;
-										spalte = col;
-									}
-								}
-							}
-						}
-						
-						Planungseinheit p0;
-						Planungseinheit p1;
-						int pendelZeit = Config.getInt(Config.PENDELTIME_STRING, Config.PENDELTIME);
-						int anzahlReihen = (int)((double)pendelZeit / (double)Config.getInt(Config.TIMESLOT_LENGTH_STRING, Config.TIMESLOT_LENGTH )) +1;
-			
-						Room r0 = new Room();
-						Room r1 = new Room();
-						for (int e = 0; e < anzahlReihen; e = (e+1)) {
-							
-								if (table.getTable().getValueAt(e, spalte) instanceof Timeslot) {
-									Timeslot ts0 = (Timeslot) table.getTable()
-											.getValueAt(reihe, spalte);
-
-									Timeslot ts1 = (Timeslot) table.getTable()
-											.getValueAt(reihe-e, spalte);
-									
-									
-									if (!(PlanungseinheitManager
-											.getPlanungseinheitById(ts0.getpe()) == null || PlanungseinheitManager
-											.getPlanungseinheitById(ts1.getpe()) == null)) {
-									p0 = PlanungseinheitManager
-											.getPlanungseinheitById(ts0.getpe());
-									p1 = PlanungseinheitManager
-											.getPlanungseinheitById(ts1.getpe());
-									
-										
-											ArrayList<String> roomList1 = p0
-													.getRooms();
-											ArrayList<String> roomList2 = p1
-													.getRooms();
-											for (int a = 0; a < roomList1
-													.size(); a++) {
-												r0 = p0.getRoomByName(roomList1
-														.get(a));
-											}
-											for (int s = 0; s < roomList2.size(); s++) {
-												r1 = p1.getRoomByName(roomList2.get(s));
-											}
-													
-													
-													
-													
-													System.out.println(r0.getGebaeude());
-													System.out.println(r1.getGebaeude());
-													if (!(r0.getGebaeude()==(r1.getGebaeude()))) {
-														if(listp.get(i).isGependelt(p.getWeekday()) == true) {
-															JOptionPane.showMessageDialog(null,
-																	"Personal (" + listp.get(i).getName()
-																			+ ") pendelt  schon");
-															PlanungseinheitManager
-															.deletePlanungseinheitFromDB(p
-																	.getId());
-															return;
-														} else {
-														// gleiche Std
-														// angefangen /
-														// beendet
-														if (p0.getEndhour() == p1
-																.getStartHour()) {
-															if (p0.getEndminute() > (59 - pendelZeit)) {
-																int x = JOptionPane
-																		.showOptionDialog(
-																				null,
-																				"Das Personal ("
-																						+ listp.get(
-																								i)
-																								.getName()
-																						+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
-																				"Warnung",
-																				0,
-																				JOptionPane.YES_NO_OPTION,
-																				null,
-																				options,
-																				null);
-																if (x == 0) {
-																	listp.get(i).setGependelt(p.getWeekday(), true);
-																	WarningPanel
-																			.setText("Wegzeit des Personals "
-																					+ listp.get(
-																							i)
-																							.getName()
-																					+ " überschneitdet sich mit der Planungseinheit");
-																} else {
-																	PlanungseinheitManager
-																			.deletePlanungseinheitFromDB(p
-																					.getId());
-																}
-																parentframe.updatetable();
-																parentframe.updateLists();
-
-															} else {
-																if (p0.getEndminute()
-																		+ pendelZeit <= p1
-																		.getStartminute()) {
-																	listp.get(i).setGependelt(p.getWeekday(), true);
-
-																} else {
-																	int x = JOptionPane
-																			.showOptionDialog(
-																					null,
-																					"Das Personal ("
-																							+ listp.get(
-																									i)
-																									.getName()
-																							+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
-																					"Warnung",
-																					0,
-																					JOptionPane.YES_NO_OPTION,
-																					null,
-																					options,
-																					null);
-																	if (x == 0) {
-																		listp.get(i).setGependelt(p.getWeekday(), true);
-																		WarningPanel
-																				.setText("Wegzeit des Personals "
-																						+ listp.get(
-																								i)
-																								.getName()
-																						+ " überschneitdet sich mit der Planungseinheit");
-																	} else {
-																		PlanungseinheitManager
-																				.deletePlanungseinheitFromDB(p
-																						.getId());
-																	}
-																	parentframe
-																			.updatetable();
-																	parentframe
-																			.updateLists();
-																}
-															}
-														} // Std frï¿½her endet
-															// / spï¿½ter
-															// beginnt
-														else if (p0
-																.getEndhour() + 1 == p1
-																.getStartHour()) {
-															if (p0.getEndminute() > (p1
-																	.getStartminute() - pendelZeit)) {
-																int x = JOptionPane
-																		.showOptionDialog(
-																				null,
-																				"Das Personal ("
-																						+ listp.get(
-																								i)
-																								.getName()
-																						+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
-																				"Warnung",
-																				0,
-																				JOptionPane.YES_NO_OPTION,
-																				null,
-																				options,
-																				null);
-																if (x == 0) {
-																	listp.get(i).setGependelt(p.getWeekday(), true);
-																	WarningPanel
-																			.setText("Wegzeit des Personals "
-																					+ listp.get(
-																							i)
-																							.getName()
-																					+ " überschneitdet sich mit der Planungseinheit");
-																} else {
-																	PlanungseinheitManager
-																			.deletePlanungseinheitFromDB(p
-																					.getId());
-																}
-																parentframe
-																		.updatetable();
-																parentframe
-																		.updateLists();
-
-															} else {
-																if ((p0.getEndminute() + pendelZeit % 60) <= p1
-																		.getStartminute()) {
-																	listp.get(i).setGependelt(p.getWeekday(), true);
-																} else {
-																	int x = JOptionPane
-																			.showOptionDialog(
-																					null,
-																					"Das Personal ("
-																							+ listp.get(
-																									i)
-																									.getName()
-																							+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
-																					"Warnung",
-																					0,
-																					JOptionPane.YES_NO_OPTION,
-																					null,
-																					options,
-																					null);
-																	if (x == 0) {
-																		listp.get(i).setGependelt(p.getWeekday(), true);
-																		WarningPanel
-																				.setText("Wegzeit des Personals "
-																						+ listp.get(
-																								i)
-																								.getName()
-																						+ " überschneitdet sich mit der Planungseinheit");
-																	} else {
-																		PlanungseinheitManager
-																				.deletePlanungseinheitFromDB(p
-																						.getId());
-																	}
-																	parentframe
-																			.updatetable();
-																	parentframe
-																			.updateLists();
-																}
-															}
-														}
-
-													}
-												}
-											
-										
-									}
-								}
-							}
-
-						
-						
-					}
+//					for (int i = 0; i < listp.size(); i++) {
+//						
+//						
+//						StundenplanTable table = new StundenplanTable(listp
+//								.get(i));
+//						int idForCheck = p.getId();
+//						int reihe = -1;
+//						int spalte = -1;
+//						for(int row = 0; row < table.getTable().getRowCount(); row++) {
+//							for(int col = 0; col < table.getTable().getColumnCount(); col++) {
+//								if(table.getTable().getValueAt(row, col) instanceof Timeslot) {
+//									Timeslot ts = (Timeslot) table.getTable().getValueAt(row, col);
+//									if(ts.getpe() == idForCheck) {
+//										reihe = row;
+//										spalte = col;
+//									}
+//								}
+//							}
+//						}
+//						
+//						Planungseinheit p0;
+//						Planungseinheit p1;
+//						int pendelZeit = Config.getInt(Config.PENDELTIME_STRING, Config.PENDELTIME);
+//						int anzahlReihen = (int)((double)pendelZeit / (double)Config.getInt(Config.TIMESLOT_LENGTH_STRING, Config.TIMESLOT_LENGTH )) +1;
+//			
+//						Room r0 = new Room();
+//						Room r1 = new Room();
+//						for (int e = 0; e < anzahlReihen; e = (e+1)) {
+//							
+//								if (table.getTable().getValueAt(e, spalte) instanceof Timeslot) {
+//									Timeslot ts0 = (Timeslot) table.getTable()
+//											.getValueAt(reihe, spalte);
+//
+//									Timeslot ts1 = (Timeslot) table.getTable()
+//											.getValueAt(reihe-e, spalte);
+//									
+//									
+//									if (!(PlanungseinheitManager
+//											.getPlanungseinheitById(ts0.getpe()) == null || PlanungseinheitManager
+//											.getPlanungseinheitById(ts1.getpe()) == null)) {
+//									p0 = PlanungseinheitManager
+//											.getPlanungseinheitById(ts0.getpe());
+//									p1 = PlanungseinheitManager
+//											.getPlanungseinheitById(ts1.getpe());
+//									
+//										
+//											ArrayList<String> roomList1 = p0
+//													.getRooms();
+//											ArrayList<String> roomList2 = p1
+//													.getRooms();
+//											for (int a = 0; a < roomList1
+//													.size(); a++) {
+//												r0 = p0.getRoomByName(roomList1
+//														.get(a));
+//											}
+//											for (int s = 0; s < roomList2.size(); s++) {
+//												r1 = p1.getRoomByName(roomList2.get(s));
+//											}
+//													
+//													
+//													
+//													
+//													System.out.println(r0.getGebaeude());
+//													System.out.println(r1.getGebaeude());
+//													if (!(r0.getGebaeude()==(r1.getGebaeude()))) {
+//														if(listp.get(i).isGependelt(p.getWeekday()) == true) {
+//															JOptionPane.showMessageDialog(null,
+//																	"Personal (" + listp.get(i).getName()
+//																			+ ") pendelt  schon");
+//															PlanungseinheitManager
+//															.deletePlanungseinheitFromDB(p
+//																	.getId());
+//															return;
+//														} else {
+//														// gleiche Std
+//														// angefangen /
+//														// beendet
+//														if (p0.getEndhour() == p1
+//																.getStartHour()) {
+//															if (p0.getEndminute() > (59 - pendelZeit)) {
+//																int x = JOptionPane
+//																		.showOptionDialog(
+//																				null,
+//																				"Das Personal ("
+//																						+ listp.get(
+//																								i)
+//																								.getName()
+//																						+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
+//																				"Warnung",
+//																				0,
+//																				JOptionPane.YES_NO_OPTION,
+//																				null,
+//																				options,
+//																				null);
+//																if (x == 0) {
+//																	listp.get(i).setGependelt(p.getWeekday(), true);
+//																	WarningPanel
+//																			.setText("Wegzeit des Personals "
+//																					+ listp.get(
+//																							i)
+//																							.getName()
+//																					+ " ï¿½berschneitdet sich mit der Planungseinheit");
+//																} else {
+//																	PlanungseinheitManager
+//																			.deletePlanungseinheitFromDB(p
+//																					.getId());
+//																}
+//																parentframe.updatetable();
+//																parentframe.updateLists();
+//
+//															} else {
+//																if (p0.getEndminute()
+//																		+ pendelZeit <= p1
+//																		.getStartminute()) {
+//																	listp.get(i).setGependelt(p.getWeekday(), true);
+//
+//																} else {
+//																	int x = JOptionPane
+//																			.showOptionDialog(
+//																					null,
+//																					"Das Personal ("
+//																							+ listp.get(
+//																									i)
+//																									.getName()
+//																							+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
+//																					"Warnung",
+//																					0,
+//																					JOptionPane.YES_NO_OPTION,
+//																					null,
+//																					options,
+//																					null);
+//																	if (x == 0) {
+//																		listp.get(i).setGependelt(p.getWeekday(), true);
+//																		WarningPanel
+//																				.setText("Wegzeit des Personals "
+//																						+ listp.get(
+//																								i)
+//																								.getName()
+//																						+ " ï¿½berschneitdet sich mit der Planungseinheit");
+//																	} else {
+//																		PlanungseinheitManager
+//																				.deletePlanungseinheitFromDB(p
+//																						.getId());
+//																	}
+//																	parentframe
+//																			.updatetable();
+//																	parentframe
+//																			.updateLists();
+//																}
+//															}
+//														} // Std frï¿½her endet
+//															// / spï¿½ter
+//															// beginnt
+//														else if (p0
+//																.getEndhour() + 1 == p1
+//																.getStartHour()) {
+//															if (p0.getEndminute() > (p1
+//																	.getStartminute() - pendelZeit)) {
+//																int x = JOptionPane
+//																		.showOptionDialog(
+//																				null,
+//																				"Das Personal ("
+//																						+ listp.get(
+//																								i)
+//																								.getName()
+//																						+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
+//																				"Warnung",
+//																				0,
+//																				JOptionPane.YES_NO_OPTION,
+//																				null,
+//																				options,
+//																				null);
+//																if (x == 0) {
+//																	listp.get(i).setGependelt(p.getWeekday(), true);
+//																	WarningPanel
+//																			.setText("Wegzeit des Personals "
+//																					+ listp.get(
+//																							i)
+//																							.getName()
+//																					+ " ï¿½berschneitdet sich mit der Planungseinheit");
+//																} else {
+//																	PlanungseinheitManager
+//																			.deletePlanungseinheitFromDB(p
+//																					.getId());
+//																}
+//																parentframe
+//																		.updatetable();
+//																parentframe
+//																		.updateLists();
+//
+//															} else {
+//																if ((p0.getEndminute() + pendelZeit % 60) <= p1
+//																		.getStartminute()) {
+//																	listp.get(i).setGependelt(p.getWeekday(), true);
+//																} else {
+//																	int x = JOptionPane
+//																			.showOptionDialog(
+//																					null,
+//																					"Das Personal ("
+//																							+ listp.get(
+//																									i)
+//																									.getName()
+//																							+ ") schafft es nicht rechtzeitig zum anderen Gebaeude",
+//																					"Warnung",
+//																					0,
+//																					JOptionPane.YES_NO_OPTION,
+//																					null,
+//																					options,
+//																					null);
+//																	if (x == 0) {
+//																		listp.get(i).setGependelt(p.getWeekday(), true);
+//																		WarningPanel
+//																				.setText("Wegzeit des Personals "
+//																						+ listp.get(
+//																								i)
+//																								.getName()
+//																						+ " ï¿½berschneitdet sich mit der Planungseinheit");
+//																	} else {
+//																		PlanungseinheitManager
+//																				.deletePlanungseinheitFromDB(p
+//																						.getId());
+//																	}
+//																	parentframe
+//																			.updatetable();
+//																	parentframe
+//																			.updateLists();
+////																}
+//															}
+//														}
+//
+//													}
+//												}
+//											
+//										
+//									}
+//								}
+//							}
+//
+//						
+//						
+//					}
 				
 					
 					

@@ -19,6 +19,7 @@ import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
+import de.unibremen.swp.stundenplan.exceptions.DatasetException;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 
 public final class PlanungseinheitManager {
@@ -109,7 +110,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einer Schulklasse an einem Tag
-	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Anfangszeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -126,7 +127,7 @@ public final class PlanungseinheitManager {
 
 	/**
 	 * Soll Planungseinheiten in einer Liste von einem Raum an einem Tag
-	 * zurueckgeben. Die Planungseinheiten sollen nach Zeiten geordnet sein.
+	 * zurueckgeben. Die Planungseinheiten sollen nach Anfangszeiten geordnet sein.
 	 * 
 	 * @param pWeekday
 	 *            der Tag der Planungeinheiten
@@ -225,6 +226,21 @@ public final class PlanungseinheitManager {
 		ArrayList<Planungseinheit> p = getPEForWeekdayDemo(pWeekday);
 		orderByTime(p);
 		return p;
+	}
+	
+	/**
+	 * prueft ob zwei PEs in verschiedenen Gebaeude befindet
+	 * @param p1 erste Planungseinheit die ueberprueft wird
+	 * @param p1 zweite Planungseinheit die ueberprueft wird
+	 * @return gibt true zurueck, falls PE in verschiedene Gebaeude haben
+	 */
+	public static boolean twoPeRoomGcheck( final Planungseinheit p1, final Planungseinheit p2){
+		if(p1.getRooms().size() == 0 || p2.getRooms().size() == 0){return false;}
+		int gebnr = getRforPE(p1).get(0).getGebaeude();
+			if(gebnr != getRforPE(p2).get(0).getGebaeude()){
+				return true;
+			}
+		return false;
 	}
 	
 	/**
@@ -616,6 +632,63 @@ public final class PlanungseinheitManager {
 			return 1;
 		} else {
 			return pes.get(pes.size() - 1).getId() + 1;
+		}
+	}
+
+	public static int pendelTlength(final Personal per) {
+		int index = 0;
+		int maxlength = 0;
+		int[] pendelLength = new int[TimetableManager.validdays().length];
+		for(Weekday day : TimetableManager.validdays()){
+			pendelLength[index] = pendelCounter(per, day);
+			System.out.println(day.toString() + pendelLength[index]);
+			index++;
+		}
+		for(int i : pendelLength){
+			if(i>maxlength){
+				maxlength = i;
+			}
+		}
+		return maxlength;
+	}
+	
+	public static String[] getPStrings(Weekday weekday,Personal owner){
+		String[] s = new String[pendelCounter(owner, weekday)];
+		int pindex = 0;
+		ArrayList<Planungseinheit> pes = getPEForPersonalbyWeekday(weekday, owner);
+		for(int i = 0; i< pes.size(); i++){
+			if(i<pes.size()-1){
+				if(twoPeRoomGcheck(pes.get(i), pes.get(i+1))){
+					StringBuilder sb = new StringBuilder();
+					sb.append(printTime(pes.get(i).getEndhour(),pes.get(i).getEndminute()));
+					sb.append(" - ");
+					sb.append(printTime(pes.get(i+1).getStartHour(),pes.get(i+1).getStartminute()));
+					sb.append("\n");
+					Room r = RaumManager.getRoomByName(pes.get(i+1).getRooms().get(0));
+					sb.append(r.getName()+ "\n"+ r.getGebaeude());
+					s[pindex] = sb.toString();
+					pindex++;
+				}
+			}
+		}
+		return s;
+	}
+	
+	public static String printTime(int hour, int minute) {
+		if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+			throw new IllegalArgumentException(" Parameters doesnt follow Time standards");
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%02d:%02d", hour, minute));
+		return sb.toString();
+	}
+	
+	public static String getPendelString(Weekday weekday, int row,
+			Personal owner) {
+		if(row > getPStrings(weekday, owner).length || getPStrings(weekday, owner).length == 0){
+			return "";
+		}else{
+			return getPStrings(weekday, owner)[row];
 		}
 	}
 }

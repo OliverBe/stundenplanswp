@@ -713,7 +713,7 @@ public class SchoolclassPanel extends JPanel {
 	}
 
 	/**
-	 * leert die Liste des Panels und fuellt sie anschlie�end wieder mit allen
+	 * leert die Liste des Panels und fuellt sie anschlie���end wieder mit allen
 	 * Daten der Datenbank
 	 */
 	public static void updateList() {
