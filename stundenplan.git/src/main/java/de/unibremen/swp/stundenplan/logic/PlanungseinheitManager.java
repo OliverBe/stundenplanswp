@@ -721,11 +721,12 @@ public final class PlanungseinheitManager {
 	
 	/**
 	 * Methode fuer die PendeltimeModel, findet die Standortwechselinfo fuer eine Personal
+	 * oder Schulklasse
 	 * an eine bestimmten Tag. Es kann sein, dass am Tag keine Standortwechsel stattfindet,
 	 * es wird dann einen leeren String zurueckgegeben
 	 * @param weekday der Tag an dem die Standortwechsel, stattfindet
 	 * @param row die Reihe in der Tabelle
-	 * @param owner	der Personal der die Standort wechselt
+	 * @param owner	der Personal oder Schulklasse der die Standort wechselt
 	 * @return gibt den Wert fuer die Reihe und Tag(Spalte) zurueck
 	 */
 	public static String getPendelString(Weekday weekday, int row,
