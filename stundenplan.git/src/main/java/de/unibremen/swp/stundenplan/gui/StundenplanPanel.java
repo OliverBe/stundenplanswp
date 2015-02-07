@@ -399,7 +399,12 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 				bedarf.dispose();
 			}
 			bedarfTable = null;
+			//prueft ob personal ueberhaupt Standort wechseln muss
+			if(PlanungseinheitManager.pendelTlength(p)!=0){
 			pendelTable = creatependelTableforPers(p);
+			}else{
+				pendelTable = null;
+			}
 			System.out.println(PlanungseinheitManager.pendelTlength(p));
 			init();
 		} else if (ae.getSource() == show
