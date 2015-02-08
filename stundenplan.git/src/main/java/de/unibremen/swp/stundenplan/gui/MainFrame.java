@@ -91,7 +91,7 @@ public class MainFrame extends JFrame {
 	 * Konstruktor fuers Hauptfenster
 	 */
 	public MainFrame() {
-		super("StundenplanTool");
+		super("Stundenplan Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		init();
 		setMinimumSize(new Dimension(1280, 1024));
