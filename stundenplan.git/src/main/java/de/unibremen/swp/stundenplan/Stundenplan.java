@@ -40,17 +40,20 @@ public final class Stundenplan {
     /**
      * stellt das GUI-Hauptfenster dar 
      */
-    public static MainFrame main;
-    
-    
+    private static MainFrame main;
+    /**
+     * Der Timer fuer das Backup.
+     */
+    private static Timer timer;
+    /**
+     * Der Zaehler fuer den Timer.
+     */
     private static int time = 0;
     
     /**
      * Privater Konstruktor, der eine Instanziierung dieser Utility-Klasse verhindert.
      */
-    private Stundenplan() {
-    	
-    }  
+    private Stundenplan() {}  
     
     /**
      * Startet die Anwendung. Erzeugt dazu einen neuen Stundenplaner und dann das Hauptanzeigefenster und macht dieses
@@ -73,7 +76,7 @@ public final class Stundenplan {
     	main = new MainFrame();
     	main.pack();
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        Timer timer = new Timer(60000, new ActionListener() {
+        timer = new Timer(60000, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
         		time++;
@@ -95,5 +98,14 @@ public final class Stundenplan {
      */
     public static MainFrame getMain() {
     	return main;
+    }
+    
+    /**
+     * Gibt den Timer zurueck.
+     * 
+     * @return	den Timer
+     */
+    public static Timer getTimer() {
+    	return timer;
     }
 }

@@ -75,8 +75,12 @@ public enum Weekday {
     /**
      * Speichert ob an dem Tag unterricht stattfindet.
      */
-    private boolean isSchoolday;
+    @SuppressWarnings("unused")
+	private boolean isSchoolday;
     
+    /**
+     * 
+     */
     private String daystring;
     
     private String dayvalue;
@@ -94,7 +98,6 @@ public enum Weekday {
     	try {
 			Config.init(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         displayName = pDisplayName;

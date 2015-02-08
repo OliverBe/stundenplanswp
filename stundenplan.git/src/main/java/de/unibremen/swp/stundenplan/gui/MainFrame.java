@@ -187,20 +187,19 @@ public class MainFrame extends JFrame {
 								public void actionPerformed(ActionEvent ae) {
 									backupFrame.dispose();
 									Data.backup(tf.getText(), false);
+									closeAll();
 								}
 							});
 
 							button2.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent ae) {
 									backupFrame.dispose();
+									closeAll();
 								}
 							});
 						}
-					}
-				}
-				Data.close();
-				Stundenplan.getMain().dispose();
-				Config.setIntValue(Config.PROGRAM_STARTED_STRING, 0);
+					}else closeAll();
+				}else closeAll();
 			}
 		});
 
@@ -212,6 +211,13 @@ public class MainFrame extends JFrame {
 		});
 
 	};
+	
+	private void closeAll() {
+		Stundenplan.getTimer().stop();
+		Data.close();
+		Stundenplan.getMain().dispose();
+		Config.setIntValue(Config.PROGRAM_STARTED_STRING, 0);
+	}
 
 	/**
 	 * Checkt das ausgewaehlte Tab. Je nach Klasse des Tabs, fuehrt es
