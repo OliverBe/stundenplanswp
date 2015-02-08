@@ -15,10 +15,6 @@ public class AddRaumToDB implements Command {
 	 */
 	private Room r;
 	
-	public AddRaumToDB(){
-		
-	}
-	
 	/**
      * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
      * Speichert eingefuegten Raum als Attribut. Leitet Einfuegen an Datenbank weiter.

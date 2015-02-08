@@ -29,19 +29,16 @@ import org.apache.log4j.Logger;
  * @editor Oliver, Fathan
  */
 public final class Config {
-
     /**
      * Der Logger fuer diese Klasse.
      */
     private static final Logger LOGGER = Logger.getLogger(Config.class.getName());
-
     /**
      * Die Properties dieser Konfiguration.
      */
     private static PropertiesConfiguration propertiesConfig;
-
     /**
-     * Zu verplanende Wochentage jeweils mit true,false angegeben
+     * Zu verplanende Wochentage jeweils mit true und false angegeben
      */
     public static String MONDAY = "true";
     public final static String MONDAY_STRING = "Montag";
@@ -57,63 +54,65 @@ public final class Config {
     public final static String SATURDAY_STRING = "Samstag";
     public static String SUNDAY = "false";
     public final static String SUNDAY_STRING = "Sonntag";
-    
     /**
      * Default-Wert fuer die Stunde der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
      * ueberschrieben werden.
      */
     public static int DAY_STARTTIME_HOUR = 07;
-
     /**
      * Der Schluessel fuer den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
     public static final String DAY_STARTTIME_HOUR_STRING = "starthour";
-
     /**
-     * Default-Wert fuer die Minute der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
+     * Default-Wert fuer die Minuten der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
      * ueberschrieben werden.
      */
     public static int DAY_STARTTIME_MINUTE = 00;
-
     /**
-     * Der Schluessel fuer den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
+     * Der Schluessel fuer den Eintrag der Minuten-Startzeit in der Konfigurationsdatei.
      */
     public static final String DAY_STARTTIME_MINUTE_STRING = "startminute";
-    
+    /**
+     * Default-Wert fuer die Stunde der Endzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
+     * ueberschrieben werden.
+     */
     public static int DAY_ENDTIME_HOUR = 15;
+    /**
+     * Der Schluessel fuer den Eintrag der Stunden-Endzeit in der Konfigurationsdatei.
+     */
     public static final String DAY_ENDTIME_HOUR_STRING = "endhour";
-    
+    /**
+     * Default-Wert fuer die Minuten der Endzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
+     * ueberschrieben werden.
+     */
     public static int DAY_ENDTIME_MINUTE = 00;
+    /**
+     * Der Schluessel fuer den Eintrag der Minuten-Endzeit in der Konfigurationsdatei.
+     */
     public static final String DAY_ENDTIME_MINUTE_STRING = "endminute";
-
     /**
      * Default-Wert fuer die Laenge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
      * Konfigurationsdatei ueberschrieben werden.
      */
     public static int TIMESLOT_LENGTH = 10;
-    
     /**
      * Der Schluessel fuer den Eintrag der Zeiteinheit-Laenge in der Konfigurationsdatei.
      */
     public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
-    
     /**
      * Wert fuer die Dauer der Pendelzeit.
      */
     public static int PENDELTIME = 15;
-    
     /**
-     * Wert fuer die Dauer der Pendelzeit.
+     * Der Schluessel fuer den Eintrag der Pendelzeit in der Konfigurationsdatei.
      */
     public static String PENDELTIME_STRING = "pendeldauer";
-    
     /**
-     * Programm gestartet
+     * Wert speichert, ob das Programm bereits gestartet ist.
      */
     public static int PROGRAM_STARTED = 0;
-    
     /**
-     * Programm gestartet
+     * Der Schluessel fuer den Eintrag der "PROGRAM_STARTED"-Attribut in der Konfigurationsdatei.
      */
     public static final String PROGRAM_STARTED_STRING = "programstarted";
     

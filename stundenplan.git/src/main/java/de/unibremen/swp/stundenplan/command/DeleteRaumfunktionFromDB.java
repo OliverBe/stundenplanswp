@@ -15,10 +15,6 @@ public class DeleteRaumfunktionFromDB implements Command {
 	 */
 	private Raumfunktion r;
 	
-	public DeleteRaumfunktionFromDB(){
-		
-	}
-	
 	/**
 	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
 	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.

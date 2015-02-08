@@ -19,10 +19,6 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 	 */
 	private Jahrgang bearbeitet;
 	
-	public EditJahrgangsBedarf(){
-		
-	}
-	
 	/**
 	 * Leitet Edit-Anfrage an DB weiter. speichert den jetzigen Jahrgang in urspurenglich.
 	 * Speichert den neuen Jahrgang in bearbeitet. Fuegt dieses EditCommandObjekt der CommandHistory
@@ -36,7 +32,6 @@ public class EditJahrgangsBedarf implements Command, EditCommand {
 		DataSchulklasse.editJahrgang(bearbeitet);
 		CommandHistory.addCommand(this);
 	}
-
 
 	/**
 	 * Leitet Edit-Anfrage an DB weiter. Fuegt alten Jahrgang hinzu.

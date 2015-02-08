@@ -15,10 +15,6 @@ public class DeleteSchulklasseFromDB implements Command {
 	 */
 	private Schoolclass schoolClass;
 
-	public DeleteSchulklasseFromDB(){
-		
-	}
-
 	/**
 	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
 	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.

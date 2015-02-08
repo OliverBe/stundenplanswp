@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.unibremen.swp.stundenplan.command;
 
 import java.util.Set;

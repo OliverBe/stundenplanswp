@@ -32,7 +32,6 @@ public class DeleteJahrgangsBedarfFromDB implements Command {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
 		DataSchulklasse.addJahrgang(j);
 	}
 

@@ -32,7 +32,6 @@ public class AddStundeninhaltToDB implements Command {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
 		DataStundeninhalt.deleteStundeninhaltByKuerzel(inhalt.getKuerzel());
 	}
 
