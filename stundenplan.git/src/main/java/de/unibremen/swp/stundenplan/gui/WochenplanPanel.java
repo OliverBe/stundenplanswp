@@ -1,18 +1,13 @@
 package de.unibremen.swp.stundenplan.gui;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.config.Weekday;
 
+@SuppressWarnings("serial")
 public class WochenplanPanel extends JPanel {
 
 	public static JTabbedPane tabPane = new JTabbedPane();

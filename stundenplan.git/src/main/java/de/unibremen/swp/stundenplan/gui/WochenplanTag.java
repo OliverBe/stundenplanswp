@@ -9,12 +9,14 @@ import java.util.List;
 
 
 
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 
 
 
@@ -27,13 +29,13 @@ import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
 //Diese Klasse repraesentiert einen Plan und einem bestimmten Tag im Wochenplan.
+@SuppressWarnings("serial")
 public class WochenplanTag extends JPanel {
 
 	Weekday day;
 	public static JTable table;
 	public JLabel warning = new JLabel();
 	
-	@SuppressWarnings("serial")
 	public DefaultTableModel model = new DefaultTableModel(){
 		@Override
 		public boolean isCellEditable(int row, int column) {
