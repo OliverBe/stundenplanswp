@@ -22,7 +22,7 @@ import de.unibremen.swp.stundenplan.Stundenplan;
 /**
  * Eine Ausnahme, die ein generelles Problem mit der Applikation anzeigt.
  * 
- * @author K. Hölscher, D. Lüdemann
+ * @author K. Hoelscher, D. Luedemann
  * @version 1.0
  * @editor Kulturmeister
  */

@@ -24,14 +24,14 @@ import org.apache.log4j.Logger;
 /**
  * Verwaltet die Konfiguration des Stundenplaners.
  * 
- * @author D. Lüdemann, K. Hölscher
+ * @author D. Luedemann, K. Hoelscher
  * @version 1.0
  * @editor Oliver, Fathan
  */
 public final class Config {
 
     /**
-     * Der Logger für diese Klasse.
+     * Der Logger fuer diese Klasse.
      */
     private static final Logger LOGGER = Logger.getLogger(Config.class.getName());
 
@@ -58,36 +58,25 @@ public final class Config {
     public static String SUNDAY = "false";
     public final static String SUNDAY_STRING = "Sonntag";
     
-//    /**
-//     * Die Anzahl an Zeiteinheiten, die alle Tagespläne per Default haben. Kann durch einen Eintrag in der
-//     * Konfigurationsdatei überschrieben werden.
-//     */
-//    public static final int DAYTABLE_LENGTH_DEFAULT = 8;
-//
-//    /**
-//     * Der Schlüssel für den Eintrag der Tagesplan-Anzahl in der Konfigurationsdatei.
-//     */
-//    public static final String DAYTABLE_LENGTH_STRING = "daytablelength";
-
     /**
-     * Default-Wert für die Stunde der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
-     * überschrieben werden.
+     * Default-Wert fuer die Stunde der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
+     * ueberschrieben werden.
      */
     public static int DAY_STARTTIME_HOUR = 07;
 
     /**
-     * Der Schlüssel für den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
+     * Der Schluessel fuer den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
     public static final String DAY_STARTTIME_HOUR_STRING = "starthour";
 
     /**
-     * Default-Wert für die Minute der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
-     * überschrieben werden.
+     * Default-Wert fuer die Minute der Startzeit jedes Tagesplans. Kann durch einen Eintrag in der Konfigurationsdatei
+     * ueberschrieben werden.
      */
     public static int DAY_STARTTIME_MINUTE = 00;
 
     /**
-     * Der Schlüssel für den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
+     * Der Schluessel fuer den Eintrag der Stunden-Startzeit in der Konfigurationsdatei.
      */
     public static final String DAY_STARTTIME_MINUTE_STRING = "startminute";
     
@@ -98,23 +87,23 @@ public final class Config {
     public static final String DAY_ENDTIME_MINUTE_STRING = "endminute";
 
     /**
-     * Default-Wert für die Länge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
-     * Konfigurationsdatei überschrieben werden.
+     * Default-Wert fuer die Laenge jeder Zeiteinheit eines Tagesplans in Minuten. Kann durch einen Eintrag in der
+     * Konfigurationsdatei ueberschrieben werden.
      */
     public static int TIMESLOT_LENGTH = 10;
     
     /**
-     * Wert f�r die Dauer der Pendelzeit.
+     * Wert fuer die Dauer der Pendelzeit.
      */
     public static int PENDELTIME = 15;
     
     /**
-     * Wert f�r die Dauer der Pendelzeit.
+     * Wert fuer die Dauer der Pendelzeit.
      */
     public static String PENDELTIME_STRING = "pendeldauer";
 
     /**
-     * Der Schlüssel für den Eintrag der Zeiteinheit-Länge in der Konfigurationsdatei.
+     * Der Schluessel fuer den Eintrag der Zeiteinheit-Laenge in der Konfigurationsdatei.
      */
     public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
     
@@ -137,7 +126,7 @@ public final class Config {
     }
 
     /**
-     * Erzeugt eine neue Konfiguration für den Stundenplan, indem die Konfigurationsdatei mit dem gegebenen Pfad
+     * Erzeugt eine neue Konfiguration fuer den Stundenplan, indem die Konfigurationsdatei mit dem gegebenen Pfad
      * eingelesen wird. Falls dieser Pfad {@code null} ist, wird die Konfigurationsdatei mit dem Pfad
      * {@linkplain Config#PROPERTIES_FILE_NAME} eingelesen. Falls die Konfigurationsdatei nicht gefunden werden kann
      * oder fehlerhaft ist, wird eine neue, leere Konfigurationsdatei erzeugt.
@@ -165,7 +154,7 @@ public final class Config {
     }
 
     /**
-     * Erzeugt eine neue, leere Konfigurationsdatei für den Stundenplan und speichert diese unter
+     * Erzeugt eine neue, leere Konfigurationsdatei fuer den Stundenplan und speichert diese unter
      * {@linkplain Config#PROPERTIES_FILE_NAME}.
      * 
      * @throws IOException
@@ -182,28 +171,28 @@ public final class Config {
     }
 
     /**
-     * Gibt den Wert zum gegebenen Schlüssel der Konfiguration zurück. Falls es in der Konfiguration keinen
-     * entsprechenden Schlüssel gibt, wird der gegebene Standardwert zurückgegeben.
+     * Gibt den Wert zum gegebenen Schluessel der Konfiguration zurueck. Falls es in der Konfiguration keinen
+     * entsprechenden Schluessel gibt, wird der gegebene Standardwert zurueckgegeben.
      * 
      * @param pKey
-     *            der Schlüssel des gesuchten Wertes
+     *            der Schluessel des gesuchten Wertes
      * @param pDefaultValue
-     *            der Standardwert, falls es den Schlüssel in der Konfiguration nicht gibt
-     * @return den Wert zum gegebenen Schlüssel
+     *            der Standardwert, falls es den Schluessel in der Konfiguration nicht gibt
+     * @return den Wert zum gegebenen Schluessel
      */
     public static String getString(final String pKey, final String pDefaultValue) {
         return propertiesConfig.getString(pKey, pDefaultValue);
     }
 
     /**
-     * Gibt den Wert zum gegebenen Schlüssel zurück. Falls es in der Konfiguration keinen entsprechenden Schlüssel gibt,
-     * wird der gegebene Standardwert zurückgegeben.
+     * Gibt den Wert zum gegebenen Schluessel zurueck. Falls es in der Konfiguration keinen entsprechenden Schluessel gibt,
+     * wird der gegebene Standardwert zurueckgegeben.
      * 
      * @param pKey
-     *            der Schlüssel des gesuchten Wertes
+     *            der Schluessel des gesuchten Wertes
      * @param pDefaultValue
-     *            der Standardwert, falls es den Schlüssel in der Konfiguration nicht gibt
-     * @return den Wert zum gegebenen Schlüssel
+     *            der Standardwert, falls es den Schluessel in der Konfiguration nicht gibt
+     * @return den Wert zum gegebenen Schluessel
      */
     public static int getInt(final String pKey, final int pDefaultValue) {
         return propertiesConfig.getInt(pKey, pDefaultValue);

@@ -48,7 +48,7 @@ public final class TimetableManager {
     }
     
     /**
-     * gibt eine Array der geplanten Wochentagen zurück, wird in Timetablemodel benutzt um 
+     * gibt eine Array der geplanten Wochentagen zurueck, wird in Timetablemodel benutzt um 
      * die Berrechnung der Anzahl und die Beschriftung der Spalten benutzt 
      * @return
      */

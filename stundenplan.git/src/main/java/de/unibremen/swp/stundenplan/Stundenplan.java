@@ -32,7 +32,7 @@ import de.unibremen.swp.stundenplan.gui.MainFrame;
  * Hauptklasse fuer den Stundenplan mit main-Methode. Erzeugt eine Konfiguration und initialisiert die Logik-Komponenten
  * und die GUI und zeigt dann das Hauptfenster an.
  * 
- * @author D. Lüdemann, K. Hölscher
+ * @author D. Luedemann, K. Hoelscher
  * Erweitert von gesamter Gruppe Kulturmeister
  * @version 0.9
  */
@@ -54,7 +54,7 @@ public final class Stundenplan {
     
     /**
      * Startet die Anwendung. Erzeugt dazu einen neuen Stundenplaner und dann das Hauptanzeigefenster und macht dieses
-     * sichtbar. Der Pfad zur Konfigurationsdatei kann als Parameter übergeben werden.
+     * sichtbar. Der Pfad zur Konfigurationsdatei kann als Parameter uebergeben werden.
      * 
      * Falls die Konfiguration nicht erzeugt werden kann, wird eine {@link IllegalStateException} ausgeloest.
      * 
