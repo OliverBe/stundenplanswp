@@ -276,10 +276,10 @@ public class PEedit extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
-				if (pList.getDestsize() == 0 || roomList.getDestsize() == 0) {
+				if (pList.getDestsize() == 0 ) {
 					JOptionPane
 							.showMessageDialog(null,
-									"Es sind keine Raeume und/oder kein Personal eingeplant");
+									"Es sind kein Personal eingeplant");
 					return;
 				} else if ((sIList.getDestsize() > 1
 						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
@@ -375,6 +375,13 @@ public class PEedit extends JFrame {
 					}
 					p.addStundeninhalt(si);
 				}
+				if(roomList.getDestsize() == 0 && PlanungseinheitManager.istKeinPause(p)){
+					JOptionPane
+					.showMessageDialog(null,
+							"Nur Pausen haben keine Raeume");
+					return;
+				}
+				
 				it = roomList.destinationIterator();
 				while (it.hasNext()) {
 					Room r = (Room) it.next();

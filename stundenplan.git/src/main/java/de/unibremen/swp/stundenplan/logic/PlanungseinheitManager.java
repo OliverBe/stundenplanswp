@@ -777,4 +777,19 @@ public final class PlanungseinheitManager {
 			return getPStrings(weekday, owner)[row];
 		}
 	}
+	
+	/**
+	 * prueft ob Stundeninhalte im Planungseinheit Pausen sind oder nicht
+	 * @param p zu ueberpruefenden Planungseinheit
+	 * @return true falls Stundeninhalt kein Pause ist sonst false
+	 */
+	public static boolean istKeinPause(Planungseinheit p) {
+		ArrayList<Stundeninhalt> sil = getSIforPE(p);
+		for(Stundeninhalt si : sil){
+			if(si.getRhythmustyp()!=0){
+				return true;
+			}
+		}
+		return false;
+	}
 }
