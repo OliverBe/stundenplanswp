@@ -224,7 +224,7 @@ public class DataLeistungsTest {
 			array.add("Si" + i);
 		}
 		int zaehler = 0;
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 30) {
 			DataPersonal.addPersonal(new Personal("P", "P" + zaehler, 0, 0, 0,
 					false, array, map));
@@ -241,7 +241,7 @@ public class DataLeistungsTest {
 			map2.put("B" + i, i);
 		}
 		int zaehler = 0;
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 50) {
 			DataSchulklasse.addJahrgang(new Jahrgang(zaehler, map2));
 			zaehler++;
@@ -268,7 +268,7 @@ public class DataLeistungsTest {
 		int zaehler = 0;
 		Room r1 = new Room("R", 1, rfs);
 		DataRaum.addRaum(new Room("R1", 1, rfs));
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 50) {
 			DataSchulklasse.addSchulklasse(new Schoolclass("Sc" + zaehler, 1,
 					r1, array, map2));
@@ -281,7 +281,7 @@ public class DataLeistungsTest {
 	@Test
 	public void massiveAddStundeninhaltToDB() {
 		int zaehler = 0;
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 100) {
 			DataStundeninhalt.addStundeninhalt(new Stundeninhalt("Si", "si"
 					+ zaehler, 1, 1));
@@ -295,7 +295,7 @@ public class DataLeistungsTest {
 	public void massiveAddPlanungseinheitToDB() {
 		int[] ia = { 1, 2, 3, 4 };
 		int zaehler = 0;
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 100) {
 			Planungseinheit Pe = new Planungseinheit(zaehler, Weekday.MONDAY,
 					zaehler, 0, zaehler, 1);
@@ -333,7 +333,7 @@ public class DataLeistungsTest {
 			array.add("Si" + i);
 		}
 		int zaehler = 0;
-		while ((System.currentTimeMillis() - tStart) / 1000 < 60
+		while ((System.currentTimeMillis() - tStart) / 1000 < 120
 				&& zaehler < 50) {
 			DataRaum.addRaumfunktion(new Raumfunktion("Rf" + zaehler, array));
 			zaehler++;
