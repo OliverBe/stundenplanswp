@@ -500,7 +500,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	private JTable creatependelTable(final Object owner){
 		JTable table = new JTable(new PendelTablemodel(owner));
 		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
-		table.setRowHeight(75);
+		table.setRowHeight(80);
 		return table;
 	}
 
