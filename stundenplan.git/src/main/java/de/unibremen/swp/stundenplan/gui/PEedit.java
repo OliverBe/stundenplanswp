@@ -265,14 +265,13 @@ public class PEedit extends JFrame {
 							.showMessageDialog(null,
 									"Es sind kein Personal eingeplant");
 					return;
-				} else if ((sIList.getDestsize() > 1
-						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1) //prueft ob Bandunterricht gewaehlt wurde,
+				} else if (roomList.getDestsize() > 1 //prueft ob Bandunterricht gewaehlt wurde,
 																				   //und ob mehr als ein Raum , 
 																				   //Stundeninhalt oder Klassen haben
 						&& !bandselect.isSelected()) {
 					JOptionPane
 							.showMessageDialog(null,
-									"Nur ein Bandunterricht kann mehrere Stundeninhalte, Klassen oder Raeume haben");
+									"Nur ein Bandunterricht kann mehrere Raeume haben");
 					return;
 				}
 				
@@ -287,6 +286,12 @@ public class PEedit extends JFrame {
 					.showMessageDialog(null,
 							"In der Teamzeit soll keine Klasse eingetragen werden");
 					return;
+				}else if(sIList.getDestsize() == 0 && !teamzeit.isSelected()){
+					JOptionPane
+					.showMessageDialog(null,
+							"Es sind kein Stundeninhalt eingeplant");
+					return;
+					
 				}
 				
 				Planungseinheit p;
