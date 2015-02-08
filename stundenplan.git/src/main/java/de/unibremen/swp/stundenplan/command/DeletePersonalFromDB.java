@@ -14,9 +14,6 @@ public class DeletePersonalFromDB implements Command {
 	 */
 	private Personal personal;
 	
-	public DeletePersonalFromDB(){		
-	}
-	
 	/**
 	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
 	 * Kuerzel. Fuegt dieses Objekt der CommandHistory hinzu.

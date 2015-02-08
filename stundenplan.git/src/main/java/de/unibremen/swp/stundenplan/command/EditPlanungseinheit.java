@@ -20,7 +20,7 @@ public class EditPlanungseinheit implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCommand Objekt an
 	 * CommandHistory an.
 	 * @param iD
 	 * 		ID der PE, die bearbeitet werden soll

@@ -13,10 +13,6 @@ public class DeleteRaumFromDB implements Command {
 	 * Raum, der geloescht werden soll.
 	 */
 	private Room r;
-	
-	public DeleteRaumFromDB(){
-		
-	}
 		
 	/**
 	 * Leitet Loeschanfrage an die Datenbank weiter, mit dem Uebergebenem
@@ -31,7 +27,7 @@ public class DeleteRaumFromDB implements Command {
 	}
 
 	/**
-	 * Leitet Einfuegen-Anfrage an Datenbank weiter mit der Person, die geluescht wurde.
+	 * Leitet Einfuegen-Anfrage an Datenbank weiter mit der Person, die geloescht wurde.
 	 */
 	@Override
 	public void undo() {

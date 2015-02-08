@@ -15,9 +15,6 @@ public class AddSchulklasseToDB implements Command {
 	 */
 	private Schoolclass schoolclass;
 	
-	public AddSchulklasseToDB(){
-	}
-	
 	/**
      * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
      * Speichert eingefuegte SK als Attribut. Leitet Einfuegen an Datenbank weiter.

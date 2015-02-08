@@ -3,6 +3,7 @@ package de.unibremen.swp.stundenplan.command;
 import java.util.ArrayList;
 
 import de.unibremen.swp.stundenplan.exceptions.StundenplanException;
+import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
 /**
  * Verwaltet die History der ausgefuehrten Commands. Funktioniert nach dem LIFO-Prinzip.
@@ -56,7 +57,7 @@ public class CommandHistory {
 			commandHistory.remove(CommandHistory.getLast());
 			if(commandHistory.size()>0) if(getLast() instanceof EditCommand) lastIsEditCommand = true;
 		}catch(StundenplanException n){
-			System.out.println("[COMMANDHISTORY]: No Command in history yet.");
+			WarningPanel.setText("Nichts zum Rueckgaengig machen");
 		}
 	}
 	

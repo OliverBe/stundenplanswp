@@ -15,10 +15,6 @@ public class AddRaumfunktionToDB implements Command {
 	 */
 	private Raumfunktion r;
 	
-	public AddRaumfunktionToDB(){
-		
-	}
-	
 	/**
      * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
      * Speichert eingefuegte RF als Attribut. Leitet Einfuegen an Datenbank weiter.

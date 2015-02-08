@@ -21,7 +21,7 @@ public class EditRaumfunktion implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCommand Objekt an
 	 * CommandHistory an.
 	 * @param name
 	 * 		Name der RF, die bearbeitet werden soll.
@@ -41,7 +41,6 @@ public class EditRaumfunktion implements Command, EditCommand {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
 		DataRaum.editRaumfunktion(bearbeitet.getName(), urspruenglich);
 	}
 

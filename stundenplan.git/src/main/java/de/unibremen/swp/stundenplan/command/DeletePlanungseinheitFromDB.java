@@ -36,7 +36,6 @@ public class DeletePlanungseinheitFromDB implements Command {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
 		DataPlanungseinheit.addPlanungseinheit(pl);
 	}
 

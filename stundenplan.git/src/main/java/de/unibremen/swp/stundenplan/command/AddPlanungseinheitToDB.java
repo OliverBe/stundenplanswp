@@ -15,10 +15,6 @@ public class AddPlanungseinheitToDB implements Command {
 	 */
 	private Planungseinheit einheit;
 	
-	public AddPlanungseinheitToDB(){
-		
-	}
-	
 	/**
      * Execute-Methode dieser Klasse. Fuegt dieses Comand- Objekt zur CommandHistory hinzu
      * Speichert eingefuegte PE als Attribut. Leitet Einfuegen an Datenbank weiter.
