@@ -322,7 +322,7 @@ public final class PlanungseinheitManager {
 	public static boolean personalsiCheck(final Personal pPer, final Planungseinheit pPe){
 		if(pPe.getStundeninhalte().size() == 0){return false;}
 		if(pPe.getSchoolclasses().size() == 0){return false;}
-		if(pPer.getMoeglicheStundeninhalte().size() == 0){return true;}
+		if(pPer.getMoeglicheStundeninhalte().size() == 0){return false;}
 			for(String si : pPe.getStundeninhalte()){
 				if(!pPer.getMoeglicheStundeninhalte().contains(si)){
 				return true;
@@ -340,7 +340,7 @@ public final class PlanungseinheitManager {
 	 * @return gibt true zurueck, falls Stundeninhalte im PE nicht fuer die Raum eingetragen ist.
 	 */
 	public static boolean roomsiCheck(final Room pr, final Planungseinheit pPe){
-		if(pr.getMoeglicheFunktionen().size()==0){return true;}
+		if(pr.getMoeglicheFunktionen().size()==0){return false;}
 		if(pPe.getSchoolclasses().size() == 0){return false;}
 		if(pPe.getStundeninhalte().size() == 0){return false;}
 		for(String s : pr.getMoeglicheFunktionen()){

@@ -212,8 +212,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		c.gridx = 2;
 		c.weightx = 0.2;
 		c.gridy = 0;
-		
-		
+		drawPTable();
 		if(bedarfTable!= null) {
 			bedarf = new JFrame("Bedarf der Klasse");
 			JScrollPane pane2 = new JScrollPane(bedarfTable);
@@ -223,6 +222,15 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			bedarf.setAlwaysOnTop(true);
 			bedarf.setVisible(true);
 		}
+		
+		
+		if (table != null) {
+			table.addMouseListener(mousefunc);
+		}
+		
+	}
+	
+	private void drawPTable(){
 		if(pendelTable != null) {
 			String ptitle = "";
 			if(tableowner instanceof Personal){
@@ -242,11 +250,6 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			pendel.setAlwaysOnTop(true);
 			pendel.setVisible(true);
 		}
-		
-		if (table != null) {
-			table.addMouseListener(mousefunc);
-		}
-		
 	}
 
 	/**
@@ -494,6 +497,12 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	public void updatetable() {
 		if(table != null) {
 		table.repaint();
+		}
+		if(PlanungseinheitManager.pendelTlength(tableowner)!=0){
+			if(pendelTable==null){
+				pendelTable=creatependelTable(tableowner);
+				drawPTable();
+			}
 		}
 		if(pendel != null &&!pendel.isVisible()){
 			pendel.setVisible(true);
