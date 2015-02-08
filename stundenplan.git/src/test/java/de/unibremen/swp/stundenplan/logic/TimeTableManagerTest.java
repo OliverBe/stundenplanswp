@@ -12,7 +12,10 @@ import org.junit.Test;
 import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.data.Planungseinheit;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
-
+/*
+ * Testet die Klasse Timetablemanager
+ * @author Fathan Vidjaja
+ */
 public class TimeTableManagerTest {
 	
 	@Before
@@ -23,7 +26,9 @@ public class TimeTableManagerTest {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Testet die Konvertierung von PE fuer den Stundenplan
+	 */
 	@Test
 	public void testPEConversion() {
 		Planungseinheit pe = new Planungseinheit();
@@ -34,27 +39,40 @@ public class TimeTableManagerTest {
 		int peints = pe.duration()/Timeslot.timeslotlength();
 		assertEquals(TimetableManager.planungsEinheitToTimeslot(pe).size(), peints);
 	}
-
+	
+	/**
+	 * testet ob die richtigen Werten fuer Startzeit Minute vom Config geladen wird
+	 */
 	@Test
 	public void testStartTimeMinute() {
 		assertEquals(TimetableManager.startTimeMinute(), Config.getInt(Config.DAY_STARTTIME_MINUTE_STRING, Config.DAY_STARTTIME_MINUTE));
 	}
-
+	/**
+	 * testet ob die richtigen Werten fuer Startzeit Stunde vom Config geladen wird
+	 */
 	@Test
 	public void testStartTimeHour() {
 		assertEquals(TimetableManager.startTimeHour(), Config.getInt(Config.DAY_STARTTIME_HOUR_STRING, Config.DAY_STARTTIME_HOUR));
 	}
-
+	/**
+	 * testet ob die richtigen Werten fuer Endzeit Minute vom Config geladen wird
+	 */
 	@Test
 	public void testEndTimeMinute() {
 		assertEquals(TimetableManager.endTimeMinute(), Config.getInt(Config.DAY_ENDTIME_MINUTE_STRING, Config.DAY_ENDTIME_MINUTE));
 	}
-
+	
+	/**
+	 * testet ob die richtigen Werten fuer Endzeit Stunden vom Config geladen wird
+	 */
 	@Test
 	public void testEndTimeHour() {
 		assertEquals(TimetableManager.endTimeHour(), Config.getInt(Config.DAY_ENDTIME_HOUR_STRING, Config.DAY_ENDTIME_HOUR));
 	}
-
+	
+	/**
+	 * testet Zeitrechnung korrekt ist
+	 */
 	@Test
 	public void testDuration() {
 		assertEquals(TimetableManager.duration(10,0,11,0),60);
@@ -62,7 +80,10 @@ public class TimeTableManagerTest {
 		assertEquals(TimetableManager.duration(14,0,14,5),5);
 		assertEquals(TimetableManager.duration(15,0,14,0),60);
 	}
-
+	
+	/**
+	 * testet ob die anzahl der Reihen fuer den Stundeplan richtig ausgerechnet wird
+	 */
 	@Test
 	public void testDaytablelength() {
 		int testvalue = TimetableManager.duration(TimetableManager.startTimeHour(),
