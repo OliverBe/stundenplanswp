@@ -115,24 +115,22 @@ public final class Config {
      * Der Schluessel fuer den Eintrag der "PROGRAM_STARTED"-Attribut in der Konfigurationsdatei.
      */
     public static final String PROGRAM_STARTED_STRING = "programstarted";
-    
     /**
-     * in minuten
+     * Die Standarddauer in Minuten bis wieder ein Backup erstellt wird.
      */
     public static int BACKUPINTERVALL = 60;
-
+    /**
+     * Der Schlussel fuer das Backupintervall in der Konfigurationsdatei.
+     */
     public static final String BACKUPINTERVALL_STRING = "backupintervall";
-
     /**
      * Der Dateiname der Konfigurationsdatei.
      */
     private static final String PROPERTIES_FILE_NAME = "stundenplan.properties";
-
     /**
      * Privater Konstruktor, der die Instanziierung dieser Utility-Klasse verhindert.
      */
-    private Config() {
-    }
+    private Config() {}
 
     /**
      * Erzeugt eine neue Konfiguration fuer den Stundenplan, indem die Konfigurationsdatei mit dem gegebenen Pfad
@@ -207,6 +205,14 @@ public final class Config {
         return propertiesConfig.getInt(pKey, pDefaultValue);
     }
     
+    /**
+     * Methode setzt den Integer fuer den gegebenen Key auf den gegebenen Integer.
+     * 
+     * @param pKey
+     * 		der Key bei dem der Wert gesetzt werden soll
+     * @param pValue
+     * 		der Integer-Wert, der den alten ersetzen soll
+     */
     public static void setIntValue(final String pKey, final int pValue){
     	if((pKey == null || pKey.length() == 0))throw new IllegalArgumentException("There must be a key");
     	if(pKey.equals(TIMESLOT_LENGTH_STRING) && pValue <= 0)throw new IllegalArgumentException("Value of timeslot must be greater than zero");
@@ -214,12 +220,18 @@ public final class Config {
     	try {
 			propertiesConfig.save();
 		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("saved");
     }
     
+    /**
+     * Methode setzt den String fuer den gegebenen Key auf den gegebenen String.
+     * 
+     * @param pKey
+     * 		der Key bei dem der Wert gesetzt werden soll
+     * @param pValue
+     * 		der String-Wert, der den alten ersetzen soll
+     */
     public static void setStringValue(final String pKey, final String pValue){
     	if((pKey == null || pKey.length() == 0))throw new IllegalArgumentException("There must be a key");
     	if((pValue == null || pValue.length() == 0))throw new IllegalArgumentException("There must be a key");
@@ -227,9 +239,7 @@ public final class Config {
     	try {
 			propertiesConfig.save();
 		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("saved");
     }
 }
