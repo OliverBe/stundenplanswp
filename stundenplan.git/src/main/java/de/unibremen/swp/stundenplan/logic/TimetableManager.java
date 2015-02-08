@@ -189,7 +189,7 @@ public final class TimetableManager {
      * @param pPE
      * @return gibt eine Liste von Timeslots zurueck
      */
-    private static ArrayList<Timeslot> planungsEinheitToTimeslot(final Planungseinheit pPE){
+    protected static ArrayList<Timeslot> planungsEinheitToTimeslot(final Planungseinheit pPE){
     	ArrayList<Timeslot> timeslots = new ArrayList<Timeslot>();
     	int timeslotcount = duration(pPE.getStartHour(), pPE.getStartminute(), pPE.getEndhour(), pPE.getEndminute());
     	timeslotcount = timeslotcount/Timeslot.timeslotlength();

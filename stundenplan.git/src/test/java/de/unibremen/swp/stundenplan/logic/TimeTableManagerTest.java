@@ -23,7 +23,17 @@ public class TimeTableManagerTest {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Test
+	public void testPEConversion() {
+		Planungseinheit pe = new Planungseinheit();
+		pe.setStarthour(10);
+		pe.setStartminute(0);
+		pe.setEndhour(11);
+		pe.setEndminute(0);
+		int peints = pe.duration()/Timeslot.timeslotlength();
+		assertEquals(TimetableManager.planungsEinheitToTimeslot(pe).size(), peints);
+	}
 
 	@Test
 	public void testStartTimeMinute() {
