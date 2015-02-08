@@ -213,6 +213,15 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		c.weightx = 0.2;
 		c.gridy = 0;
 		drawPTable();
+		drawBTable();
+		
+		
+		if (table != null) {
+			table.addMouseListener(mousefunc);
+		}
+		
+	}
+	private void drawBTable(){
 		if(bedarfTable!= null) {
 			bedarf = new JFrame("Bedarf der Klasse");
 			JScrollPane pane2 = new JScrollPane(bedarfTable);
@@ -222,12 +231,6 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			bedarf.setAlwaysOnTop(true);
 			bedarf.setVisible(true);
 		}
-		
-		
-		if (table != null) {
-			table.addMouseListener(mousefunc);
-		}
-		
 	}
 	
 	private void drawPTable(){
@@ -472,6 +475,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		table.repaint();
 		}
 		if(bedarfTable != null) {
+			bedarf.dispose();
+			bedarfZeigen((Schoolclass)tableowner);
+			drawBTable();
 			bedarfTable.repaint();
 		}
 		
