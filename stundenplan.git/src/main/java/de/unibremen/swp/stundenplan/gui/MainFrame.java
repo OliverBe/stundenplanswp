@@ -133,6 +133,7 @@ public class MainFrame extends JFrame {
 					if (result == JOptionPane.YES_OPTION) {
 						if (!Data.getLastRestoredFileName().equals("")) {
 							Data.backup(Data.getLastRestoredFileName(), true);
+							closeAll();
 						} else {
 							final JFrame backupFrame = new JFrame();
 							GridBagConstraints c = new GridBagConstraints();
@@ -194,7 +195,6 @@ public class MainFrame extends JFrame {
 							button2.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent ae) {
 									backupFrame.dispose();
-									closeAll();
 								}
 							});
 						}
