@@ -63,7 +63,6 @@ public class ExportPDF {
 	 * erstellt mit itext API
 	 * 
 	 * @param jTable
-	 * 		der Stundenplan zu dem eine PDF-Datei erstellt werden soll
 	 */
 	public static void createPDF(JTable jTable) {
 		try {
@@ -131,9 +130,7 @@ public class ExportPDF {
 	 * und Paragraph den Paragraphen nennt in dem die Zeilen eingefuegt werden.
 	 * 
 	 * @param paragraph
-	 * 		der Paragraph in dem die Zeilen eingefuegt werden
 	 * @param number
-	 * 		die Anzahl der leeren Zeilen
 	 */
 	private static void addEmptyLine(Paragraph paragraph, int number) {
 		for (int i = 0; i < number; i++) {
@@ -147,7 +144,6 @@ public class ExportPDF {
 	 * Stundenplan.
 	 * 
 	 * @param jTable
-	 * 		der Stundenplan zu dem eine comma-seperated-values Datei erstellt werden soll
 	 */
 	public static void createCSV(JTable jTable) {
 
@@ -194,6 +190,7 @@ public class ExportPDF {
 			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".csv");
 
 		} catch (IOException e1) {
+			System.out.println("ExportFehler");
 			e1.printStackTrace();
 		}
 
@@ -203,7 +200,6 @@ public class ExportPDF {
 	 * erstellt eine .doc-Datei die den Inhalt des Stundenplan wiedergibt
 	 * 
 	 * @param jTable
-	 * 		der Stundenplan zu dem eine .doc-Datei erstellt werden soll
 	 */
 	public static void createDOC(JTable jTable) {
 
@@ -261,6 +257,7 @@ public class ExportPDF {
 			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".doc");
 
 		} catch (IOException e1) {
+			System.out.println("ExportFehler");
 			e1.printStackTrace();
 		}
 
@@ -273,7 +270,6 @@ public class ExportPDF {
 	 * erstellt mit verschiedenen Namen.
 	 * 
 	 * @param jTable
-	 * 		der Stundenplan von dem die Informationen genutzt werden sollen
 	 */
 	public static void setOwnerAndFile(JTable jTable) {
 		if (planOwner != null && planOwner.equals("Personalplan")) {
@@ -309,11 +305,79 @@ public class ExportPDF {
 
 	/**
 	 * aendert den Owner-Namen zu dem Strin der in dem Parameter enthalten ist
-	 * 
 	 * @param name
-	 * 		der Name des neuen Owners
 	 */
 	public static void setOwner(String name) {
 		planOwner = name;
 	}
+	
+	
+	
+	/**
+	 * create PDF für WochenplanPanel
+	 */
+	public static void wochenplanCreatePDF(PdfPTable table, JTable jTable) {
+		try {
+			Document document = new Document(PageSize.A4.rotate());
+
+			setOwnerAndFile(jTable);
+
+			PdfWriter
+					.getInstance(document, new FileOutputStream(FILE + ".pdf"));
+			document.open();
+
+			
+			Paragraph pot = new Paragraph(planOwner);
+			addEmptyLine(pot, 2);
+			document.add(pot);
+			document.add(table);
+
+			document.close();
+
+			// oeffnet die PDF
+			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".pdf");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void wochenplanCreateCSV(JTable jTable) {
+
+		try {
+
+			setOwnerAndFile(jTable);
+
+			FileWriter writer = new FileWriter(FILE + ".csv");
+			
+			for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+				for (int e = 0; e < jTable.getModel().getRowCount(); e++) {
+					Object obj = jTable.getModel().getValueAt(e, i);
+					if (obj == null) {
+
+					} else {
+					
+							writer.append(obj.toString());
+							writer.append(",");
+						
+
+					}
+				}
+				writer.append("\r\n");
+
+			}
+			writer.flush();
+			writer.close();
+
+			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".csv");
+
+		} catch (IOException e1) {
+			System.out.println("ExportFehler");
+			e1.printStackTrace();
+		}
+
+	}
+
+	
+	
 }
