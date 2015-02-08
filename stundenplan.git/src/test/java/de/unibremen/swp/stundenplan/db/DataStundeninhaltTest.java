@@ -3,19 +3,16 @@ package de.unibremen.swp.stundenplan.db;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FilenameFilter;
 
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
 
-import de.unibremen.swp.stundenplan.config.Weekday;
 import de.unibremen.swp.stundenplan.data.Personal;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 
@@ -41,6 +38,22 @@ public class DataStundeninhaltTest {
 	public void tearDown() {
 		System.out.println("... done");
 		Data.deleteAll();
+	}
+	
+	@AfterClass
+	public static void endDB() {
+		File dir = new File(System.getProperty("user.dir"));
+		File[] files = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".db") && filename.equals("temp.db");
+			}
+		});
+		for (int i = 0; i < files.length; i++) {
+			System.out.println(files[i].toString());
+			if (files[i].equals("temp.db")) {
+				Data.close();
+			}
+		}
 	}
 
 	@Test

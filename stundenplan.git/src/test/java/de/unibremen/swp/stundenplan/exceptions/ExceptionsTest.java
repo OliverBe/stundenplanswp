@@ -2,8 +2,6 @@ package de.unibremen.swp.stundenplan.exceptions;
 
 import static org.junit.Assert.*;
 
-import javax.swing.JOptionPane;
-
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,6 +20,8 @@ public class ExceptionsTest {
 	public static void before() {
 		System.out.println("TEST - Exception");
 		new WarningPanel();
+		if (!WarningPanel.getListModel().isEmpty())
+			WarningPanel.getListModel().clear();
 	}
 
 	@After
@@ -236,7 +236,7 @@ public class ExceptionsTest {
 		new ZahlException();
 		try {
 			if ((WarningPanel.getListModel().elementAt(0)
-					.equals("Feld benoetigt (positive) Zahl"))) {
+					.equals("Feld benoetigt (gueltige, positive) Zahl"))) {
 				assertTrue(true);
 				return;
 			}
