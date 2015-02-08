@@ -52,13 +52,13 @@ public class PEedit extends JFrame {
 	private JCheckBox bandselect;
 	public static Comparator<Personal> PersonalComparator = new Comparator<Personal>() {
 		public int compare(Personal p1, Personal p2) {
-			if (p1.getName() == null) {
+			if (p1.getKuerzel() == null) {
 				return 1;
 			}
-			if (p2.getName() == null) {
+			if (p2.getKuerzel() == null) {
 				return -1;
 			}
-			return p1.getName().compareTo(p2.getName());
+			return p1.getKuerzel().compareTo(p2.getKuerzel());
 		}
 
 	};
@@ -76,13 +76,13 @@ public class PEedit extends JFrame {
 	};
 	public static Comparator<Stundeninhalt> SIComparator = new Comparator<Stundeninhalt>() {
 		public int compare(Stundeninhalt s1, Stundeninhalt s2) {
-			if (s1.getName() == null) {
+			if (s1.getKuerzel() == null) {
 				return 1;
 			}
-			if (s2.getName() == null) {
+			if (s2.getKuerzel() == null) {
 				return -1;
 			}
-			return s1.getName().compareTo(s2.getName());
+			return s1.getKuerzel().compareTo(s2.getKuerzel());
 		}
 
 	};
@@ -353,14 +353,14 @@ public class PEedit extends JFrame {
 								.showOptionDialog(
 										null,
 										"Die Dauer der Planungseinheit ist anders als die Regeldauer des Stundeninhaltes ("
-												+ si.getName()
+												+ si.getKuerzel()
 												+ ")"
 												+ "\n"
 												+ "Dauer der Planungseinheit in min: "
 												+ p.duration()
 												+ "\n"
 												+ "Regeldauer von "
-												+ si.getName()
+												+ si.getKuerzel()
 												+ " in min: "
 												+ si.getRegeldauer(),
 										"Warnung", 0,
@@ -368,7 +368,7 @@ public class PEedit extends JFrame {
 										options, null);
 						if (result == 0) {
 							WarningPanel.setText("Regeldauer bei Planung von "
-									+ si.getName());
+									+ si.getKuerzel());
 						} else {
 							return;
 						}
