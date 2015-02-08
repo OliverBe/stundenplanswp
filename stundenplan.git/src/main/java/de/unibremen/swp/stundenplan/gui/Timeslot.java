@@ -56,6 +56,8 @@ public final class Timeslot implements Serializable {
     private int pe = -1; 
     private int rhytm = -1;
     
+    private String content = "";
+    
     /**
      * Erzeugt eine neue Zeiteinheit.
      */
@@ -179,4 +181,18 @@ public final class Timeslot implements Serializable {
                 Config.TIMESLOT_LENGTH);
     }
     
+    public String getContent() {
+    	return content;
+    }
+    
+    public void setContent(String s) {
+    	content = s;
+    }
+    
+    @Override
+    public String toString(){
+    	if (!(content.isEmpty() && content.length() != 0))  {
+    		return content;
+    	} return klassetext + "," +  raumtext + "," + stundeninhaltetext;
+    }
 }
