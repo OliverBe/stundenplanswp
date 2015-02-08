@@ -133,7 +133,6 @@ public class DataSchulklasse {
 			}
 			return sc;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}

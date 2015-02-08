@@ -137,7 +137,6 @@ public class DataPersonal {
 			}
 			return p;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}

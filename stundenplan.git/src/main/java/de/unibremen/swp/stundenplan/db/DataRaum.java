@@ -85,7 +85,6 @@ public class DataRaum {
 			}
 			return raum;
 		}catch (SQLException e){
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -258,7 +257,6 @@ public class DataRaum {
 			}
 			return new Raumfunktion(name, stundeninhalte);
 		}catch (Exception e){
-			e.printStackTrace();
 			return null;
 		}
 	}

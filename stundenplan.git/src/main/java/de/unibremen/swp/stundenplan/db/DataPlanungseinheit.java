@@ -289,7 +289,6 @@ public class DataPlanungseinheit {
 			}
 			return pl;
 		}catch(SQLException e){
-			e.printStackTrace();
 			return null;
 		}
 	}

@@ -73,7 +73,6 @@ public class DataStundeninhalt {
 			int rhythmustyp = rs.getInt("rhythmustyp");
 			return new Stundeninhalt(name, pKuerzel, regeldauer, rhythmustyp);
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
