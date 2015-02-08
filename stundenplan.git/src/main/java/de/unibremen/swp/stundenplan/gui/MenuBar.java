@@ -414,6 +414,10 @@ public class MenuBar extends JMenuBar {
 						ArrayList<StundenplanTable>  tables = new ArrayList();
 						ArrayList<Personal> person = new ArrayList();
 						person = DataPersonal.getAllPersonal();
+						if(person.isEmpty()) {
+							JOptionPane.showMessageDialog(Stundenplan.getMain(),
+									"Es stehen keine Personen zur Verfügung");
+						} else {
 						
 						for(int i= 0; i < person.size(); i++) {
 							Personal personal =  person.get(i);
@@ -493,7 +497,7 @@ public class MenuBar extends JMenuBar {
 						
 					
 
-				} else
+				} } else
 					JOptionPane.showMessageDialog(
 							Stundenplan.getMain(),
 							"Exportieren ist nur in Stundenplaenen, Raumbelegungsplaenen, Lehreransicht und Wochenplanansicht moeglich");
