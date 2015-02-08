@@ -38,6 +38,8 @@ public class DataStundeninhaltTest {
 	public void tearDown() {
 		System.out.println("... done");
 		Data.deleteAll();
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Neu");
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Phil");
 	}
 	
 	@AfterClass
@@ -163,8 +165,8 @@ public class DataStundeninhaltTest {
 	@Test
 	public void testEditPersonalWithValidChange() {
 		// Not in DB
-		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Si1");
-		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Si2");
+		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Phil");
+		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Ma");
 		assertNull(s1);
 		assertNull(s2);
 		// Create in DB
@@ -186,8 +188,8 @@ public class DataStundeninhaltTest {
 	@Test
 	public void testEditStundeninhaltToOtherStundeninhaltWhichAlreadyHasKuerzel() {
 		// Not in DB
-		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Si1");
-		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Si2");
+		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Phil");
+		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Ma");
 		assertNull(s1);
 		assertNull(s2);
 		// Create in DB
@@ -210,8 +212,8 @@ public class DataStundeninhaltTest {
 	@Test
 	public void testEditStundeninhaltToNewKuerzel() {
 		// Not in DB
-		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Si1");
-		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Si2");
+		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Phil");
+		Stundeninhalt s2 = DataStundeninhalt.getStundeninhaltByKuerzel("Ma");
 		assertNull(s1);
 		assertNull(s2);
 		// Create in DB
@@ -233,7 +235,7 @@ public class DataStundeninhaltTest {
 	@Test
 	public void testEditStundeninhaltThatDoesNotExist() {
 		// Not in DB
-		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Si1");
+		Stundeninhalt s1 = DataStundeninhalt.getStundeninhaltByKuerzel("Phil");
 		assertNull(s1);
 		// Edit in DB
 		DataStundeninhalt.editStundeninhalt("Phil", new Stundeninhalt("Neu",
