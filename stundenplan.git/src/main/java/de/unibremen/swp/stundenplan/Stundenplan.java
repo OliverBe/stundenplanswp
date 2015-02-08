@@ -74,7 +74,7 @@ public final class Stundenplan {
     	Config.setIntValue(Config.PROGRAM_STARTED_STRING, 1);
     	Data.start();
     	main = new MainFrame();
-    	main.pack();
+    //	main.pack();
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         timer = new Timer(60000, new ActionListener() {
         	@Override

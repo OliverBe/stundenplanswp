@@ -20,7 +20,7 @@ public class ZahlException extends Exception {
      *            die Nachricht der neuen Ausnahme
      */  
     public ZahlException() {
-    	WarningPanel.setText("Feld benoetigt (positive) Zahl");
+    	WarningPanel.setText("Feld benoetigt (gueltige, positive) Zahl");
     }
 
 }

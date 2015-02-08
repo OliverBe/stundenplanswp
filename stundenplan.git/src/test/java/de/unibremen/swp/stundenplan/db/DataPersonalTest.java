@@ -169,7 +169,7 @@ public class DataPersonalTest {
 	}
 
 	@Test
-	public void testGetPersonalByInalidInput() {
+	public void testGetPersonalByInvalidInput() {
 		// Not in DB
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No");
 		assertNull(p1);
@@ -183,7 +183,7 @@ public class DataPersonalTest {
 	}
 
 	@Test
-	public void testEditPersonalToOtherPersonalWhichAlreadyHasKuerzel() {
+	public void testEditPersonalWithValidChanges() {
 		// Not in DB
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No1");
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No2");
@@ -272,7 +272,7 @@ public class DataPersonalTest {
 	}
 
 	@Test
-	public void testEditPersonalWithValidChanges() {
+	public void testEditPersonalToOtherPersonalWhichAlreadyHasKuerzel() {
 		// Not in DB
 		Personal p1 = DataPersonal.getPersonalByKuerzel("No1");
 		Personal p2 = DataPersonal.getPersonalByKuerzel("No2");
@@ -394,7 +394,6 @@ public class DataPersonalTest {
 		// Edit in DB
 		DataPersonal.editPersonal("No1", new Personal("Nobody2", "No2", 2, 0,
 				0, false, array, map));
-		// still the same, intercepted in DataPersonal
 		p2 = DataPersonal.getPersonalByKuerzel("No2");
 		assertEquals("Nobody2", p2.getName());
 		assertEquals("No2", p2.getKuerzel());
