@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
+import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 
 public class StundeninhaltManagerTest {
 	Stundeninhalt Deutsch, Sport;
@@ -21,7 +22,7 @@ public class StundeninhaltManagerTest {
 	
 	@BeforeClass
 	public static void startDB() {
-		System.out.println("TEST - PlanungseinheitManager");
+		System.out.println("TEST - StundeninhaltManager");
 		Data.start();
 		Data.deleteAll();
 	}
@@ -38,6 +39,9 @@ public class StundeninhaltManagerTest {
 	public void tearDown() {
 		System.out.println("... done");
 		Data.deleteAll();
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Deu");
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Spo");
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Mat");
 	}
 	
 	@AfterClass
