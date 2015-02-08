@@ -40,7 +40,7 @@ public class ExportPDF {
 	/**
 	 * der Systempfad in dem sich die zu oeffnenden Dateien befinden
 	 */
-	private static String path = System.getProperty("user.dir") + "/";
+	private static String path = System.getProperty("user.dir") + "/Dokumente/";
 
 	/**
 	 * Name der Datei + dessen Pfad. Die Dateiendung wird sich nicht in diesem
