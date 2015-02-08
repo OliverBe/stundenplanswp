@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.gui.WarningPanel;
 
 /**

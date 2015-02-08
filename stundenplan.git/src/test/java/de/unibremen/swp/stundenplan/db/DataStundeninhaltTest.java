@@ -40,6 +40,7 @@ public class DataStundeninhaltTest {
 		Data.deleteAll();
 		DataStundeninhalt.deleteStundeninhaltByKuerzel("Neu");
 		DataStundeninhalt.deleteStundeninhaltByKuerzel("Phil");
+		DataStundeninhalt.deleteStundeninhaltByKuerzel("Ma");
 	}
 	
 	@AfterClass
