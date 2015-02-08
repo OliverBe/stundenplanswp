@@ -248,7 +248,7 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			JScrollPane pane2 = new JScrollPane(pendelTable);
 			pendel.add(pane2);
 			pendel.setSize(600, 300);
-			pendel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			pendel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			pendel.setLocation(0, 201);
 			pendel.setAlwaysOnTop(true);
 			pendel.setVisible(true);

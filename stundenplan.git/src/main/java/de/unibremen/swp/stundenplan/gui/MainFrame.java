@@ -240,16 +240,13 @@ public class MainFrame extends JFrame {
 		if (!(c instanceof StundenplanPanel)) {
 			paneStundenplan.popmen.setVisible(false);
 			if (paneStundenplan.bedarf != null) {
-				if (paneStundenplan.bedarf.isVisible()) {
 					paneStundenplan.bedarf.dispose();
 					paneStundenplan.bedarfTable = null;
-				}
 			}
 			if (paneStundenplan.pendel != null) {
-				if (paneStundenplan.pendel.isVisible()) {
 					paneStundenplan.pendel.dispose();
 					paneStundenplan.pendelTable = null;
-				}
+				
 			}
 		}
 
