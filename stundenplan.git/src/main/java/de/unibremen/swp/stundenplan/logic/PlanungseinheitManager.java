@@ -771,7 +771,7 @@ public final class PlanungseinheitManager {
 	public static String getPendelString(Weekday weekday, int row,
 			Object owner) {
 		if(getPStrings(weekday, owner) == null){throw new IllegalArgumentException("Huh sumthing went wrong");}
-		if(row > getPStrings(weekday, owner).length || getPStrings(weekday, owner).length == 0){
+		if(row >= getPStrings(weekday, owner).length || getPStrings(weekday, owner).length == 0){
 			return "";
 		}else{
 			return getPStrings(weekday, owner)[row];
