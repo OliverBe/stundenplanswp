@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +17,6 @@ import de.unibremen.swp.stundenplan.data.Room;
 import de.unibremen.swp.stundenplan.data.Schoolclass;
 import de.unibremen.swp.stundenplan.data.Stundeninhalt;
 import de.unibremen.swp.stundenplan.db.Data;
-import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
 import de.unibremen.swp.stundenplan.db.DataRaum;
 import de.unibremen.swp.stundenplan.db.DataSchulklasse;

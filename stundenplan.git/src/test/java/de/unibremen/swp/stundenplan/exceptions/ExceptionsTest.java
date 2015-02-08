@@ -2,8 +2,6 @@ package de.unibremen.swp.stundenplan.exceptions;
 
 import static org.junit.Assert.*;
 
-import javax.swing.JOptionPane;
-
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -38,7 +38,6 @@ public class DataLeistungsTest {
 	private ArrayList<String> array;
 	private HashMap<Weekday, int[]> map;
 	private HashMap<String, Integer> map2;
-	private HashMap<Weekday, Boolean> map3;
 	private Room r;
 	private Jahrgang j;
 	private Schoolclass sc;
@@ -59,7 +58,6 @@ public class DataLeistungsTest {
 		array = new ArrayList<String>();
 		map = new HashMap<Weekday, int[]>();
 		map2 = new HashMap<String, Integer>();
-		map3 = new HashMap<Weekday, Boolean>();
 		j = new Jahrgang(1, new HashMap<String, Integer>());
 		si = new Stundeninhalt("Si", "Si", 1, 1);
 		rf = new Raumfunktion("Rf", new ArrayList<String>());
@@ -273,7 +271,7 @@ public class DataLeistungsTest {
 		while ((System.currentTimeMillis() - tStart) / 1000 < 60
 				&& zaehler < 50) {
 			DataSchulklasse.addSchulklasse(new Schoolclass("Sc" + zaehler, 1,
-					r, array, map2));
+					r1, array, map2));
 			zaehler++;
 		}
 		// 50 Schulklassen in höchstens 30 Sekunden erstellt
