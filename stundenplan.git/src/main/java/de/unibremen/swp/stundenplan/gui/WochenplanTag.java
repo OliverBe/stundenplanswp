@@ -29,7 +29,7 @@ public class WochenplanTag extends JPanel {
 	Weekday day;
 	public static JTable table;
 	public JLabel warning = new JLabel();
-	public DefaultTableModel model = new DefaultTableModel();
+	public static DefaultTableModel model = new DefaultTableModel();
 
 	/**
 	 * Konstruktor der Klasse WochenplanTag

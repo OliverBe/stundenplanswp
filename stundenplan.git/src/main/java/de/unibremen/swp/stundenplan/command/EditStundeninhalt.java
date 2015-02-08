@@ -21,7 +21,7 @@ public class EditStundeninhalt implements Command, EditCommand {
 	
 	/**
 	 * Leitet Edit-Anfrage an Datenbank weiter. Speichert urspruengliches Objekt und
-	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCOmmand Objekt an
+	 * das Objekt, wie es nach Bearbeiten sein soll. Fuegt dieses EditCommand Objekt an
 	 * CommandHistory an.
 	 * @param pKuerzel
 	 * 		Kuerzel des SI, der bearbeitet werden soll
@@ -41,7 +41,6 @@ public class EditStundeninhalt implements Command, EditCommand {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
 		DataStundeninhalt.editStundeninhalt(bearbeitet.getKuerzel(), urspruenglich);
 	}
 

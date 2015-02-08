@@ -13,9 +13,6 @@ public class AddPersonalToDB implements Command {
 	 * Person, die eingefuegt wird.
 	 */
 	private Personal personal;
-
-    public AddPersonalToDB(){
-    }
     
     /**
      * Execute-Methode dieser Klasse. Fuegt dieses Command- Objekt zur CommandHistory hinzu
@@ -28,7 +25,6 @@ public class AddPersonalToDB implements Command {
 		CommandHistory.addCommand(this);
 		personal = p;
 	}
-
 	
 	/**
 	 * Undo-Methoder dieser Klasse. Leitet Loeschanfrage an Datenbank weiter.
