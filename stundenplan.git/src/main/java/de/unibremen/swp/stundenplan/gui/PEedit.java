@@ -38,6 +38,11 @@ import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.logic.PlanungseinheitManager;
 import de.unibremen.swp.stundenplan.logic.TimetableManager;
 
+/**
+ * erzeugt eine Bearbeitungsfenster fuer Planungseinheit
+ * @author Fathan
+ *
+ */
 public class PEedit extends JFrame {
 	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 	private StundenplanPanel parentframe;
@@ -112,27 +117,6 @@ public class PEedit extends JFrame {
 	private JButton button;
 	private Planungseinheit pe;
 
-	// /**
-	// * Launch the application.
-	// */
-	// public static void main(String[] args) {
-	// try {
-	// Config.init(null);
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	// PEedit frame = new PEedit();
-	// frame.setVisible(true);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
 
 	/**
 	 * erzeugt Editor fuer ERzeugung von einer Planungseinheit.
@@ -151,7 +135,7 @@ public class PEedit extends JFrame {
 	}
 
 	/**
-	 * erzeugt Editor fuer Erzeugung von einer Planungseinheit.
+	 * erzeugt Editor fuer Bearbeitung von einer existierender Planungseinheit.
 	 */
 	public PEedit(final StundenplanPanel pParent, final int pPeid) {
 		super("Planungseinheit bearbeiten");
@@ -276,13 +260,15 @@ public class PEedit extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 
-				if (pList.getDestsize() == 0 ) {
+				if (pList.getDestsize() == 0 ) { // Prueft ob mindestens einen Personal in der PE eingeplant ist
 					JOptionPane
 							.showMessageDialog(null,
 									"Es sind kein Personal eingeplant");
 					return;
 				} else if ((sIList.getDestsize() > 1
-						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1)
+						|| scList.getDestsize() > 1 || roomList.getDestsize() > 1) //prueft ob Bandunterricht gewaehlt wurde,
+																				   //und ob mehr als ein Raum , 
+																				   //Stundeninhalt oder Klassen haben
 						&& !bandselect.isSelected()) {
 					JOptionPane
 							.showMessageDialog(null,
@@ -290,7 +276,8 @@ public class PEedit extends JFrame {
 					return;
 				}
 				
-				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {
+				if (scList.getDestsize() == 0 && !teamzeit.isSelected()) {// prueft ob PE als Teamzeit angewaehlt wurde und
+																		  // ob keine Klassen in der PE ist
 					JOptionPane
 							.showMessageDialog(null,
 									"Nur in der Teamzeit kann keine Klasse eingetragen werden");
@@ -312,29 +299,29 @@ public class PEedit extends JFrame {
 				p.setStartminute((int) spinner2.getValue());
 				p.setEndhour((int) spinner3.getValue());
 				p.setEndminute((int) spinner4.getValue());
-				if ((p.getStartHour() == p.getEndhour())
+				if ((p.getStartHour() == p.getEndhour())   //prueft ob Startzeit und Endzeit gleich ist
 						&& (p.getStartminute() == p.getEndminute())) {
 					JOptionPane
 							.showMessageDialog(null,
 									"Planungseinheit darf nicht gleiche Startzeit und Endzeit haben");
 					return;
-				} else if (p.getStartHour() > p.getEndhour()
+				} else if (p.getStartHour() > p.getEndhour() //prueft ob Startzeit vor Endzeit ist
 						|| (p.getStartHour() == p.getEndhour() && p
 								.getStartminute() > p.getEndminute())) {
 					JOptionPane.showMessageDialog(null,
 							"Die Startzeit muss vor der Endzeit beginnen");
 					return;
 				}
-				if ((p.getEndhour() == TimetableManager.endTimeHour() && p
-						.getEndminute() > TimetableManager.endTimeMinute())
-						|| p.getEndhour() > TimetableManager.endTimeHour()) {
+				if ((p.getEndhour() == TimetableManager.endTimeHour() && p //prueft ob zeiten in geplante
+						.getEndminute() > TimetableManager.endTimeMinute())//Zeiten der Wochentage sind
+						|| p.getEndhour() > TimetableManager.endTimeHour()) {//hier Endzeit
 					JOptionPane.showMessageDialog(null,
 							"Der Tag ist leider bereits um " + p.getEndhour()
 									+ ":" + p.getEndminute() + " zu Ende");
 					return;
 				}
 				if ((p.getStartHour() == TimetableManager.startTimeHour() && p
-						.getStartminute() < TimetableManager.startTimeMinute())
+						.getStartminute() < TimetableManager.startTimeMinute())//Hier Startzeit
 						|| p.getStartHour() < TimetableManager.startTimeHour()) {
 					JOptionPane.showMessageDialog(null,
 							"Der Tag hat leider  um " + p.getStartHour() + ":"
@@ -348,7 +335,7 @@ public class PEedit extends JFrame {
 				Iterator it = sIList.destinationIterator();
 				while (it.hasNext()) {
 					Stundeninhalt si = (Stundeninhalt) it.next();
-					if (si.getRegeldauer() != p.duration()) {
+					if (si.getRegeldauer() != p.duration()) {//prueft ob PE Dauer mit Regeldauer von SI uebereinstimmt
 						int result = JOptionPane
 								.showOptionDialog(
 										null,
@@ -375,7 +362,7 @@ public class PEedit extends JFrame {
 					}
 					p.addStundeninhalt(si);
 				}
-				if(roomList.getDestsize() == 0 && PlanungseinheitManager.istKeinPause(p)){
+				if(roomList.getDestsize() == 0 && PlanungseinheitManager.istKeinPause(p)){ //prueft ob SI Pause ist
 					JOptionPane
 					.showMessageDialog(null,
 							"Nur Pausen haben keine Raeume");
@@ -385,7 +372,7 @@ public class PEedit extends JFrame {
 				it = roomList.destinationIterator();
 				while (it.hasNext()) {
 					Room r = (Room) it.next();
-					if (PlanungseinheitManager.roomsiCheck(r, p)) {
+					if (PlanungseinheitManager.roomsiCheck(r, p)) { // prueft ob Raum mit SI im PE uebereinstimmen
 						int result = JOptionPane.showOptionDialog(
 								null,
 								"Der Raum ("
@@ -405,7 +392,7 @@ public class PEedit extends JFrame {
 							return;
 						}
 					}
-					if (PlanungseinheitManager.checkRoomPE(r, p)) {
+					if (PlanungseinheitManager.checkRoomPE(r, p)) { // prueft ob Raum zur PE ZEit besetzt ist
 						JOptionPane.showMessageDialog(null,
 								"Der Raum (" + r.getName()
 										+ ") ist schon zu dieser Zeit gebucht");
@@ -418,13 +405,13 @@ public class PEedit extends JFrame {
 				it = scList.destinationIterator();
 				while (it.hasNext()) {
 					Schoolclass sc = (Schoolclass) it.next();
-					if (PlanungseinheitManager.checkScPE(sc, p)) {
+					if (PlanungseinheitManager.checkScPE(sc, p)) { //Prueft ob Klasse schon verplant ist
 						JOptionPane.showMessageDialog(null,
 								"Die Klasse (" + sc.getName()
 										+ ") ist schon zu dieser Zeit gebucht");
 						return;
 					} else {
-						if(checkPendelbeforeSC(sc, p) != null){
+						if(checkPendelbeforeSC(sc, p) != null){//prueft ob Klasse genug Zeit zu pendeln hat von PE bevor
 							if (getSpacebetweenPEs(checkPendelbeforeSC(sc, p),
 									p) < getPZeit()) {
 								int result = JOptionPane
@@ -445,7 +432,7 @@ public class PEedit extends JFrame {
 								}
 							}
 						}
-						if(checkPendelafterSC(sc, p) != null){
+						if(checkPendelafterSC(sc, p) != null){//prueft ob Klasse genug Zeit zu pendeln hat zu PE danach
 							if (getSpacebetweenPEs(
 									p,checkPendelafterSC(sc, p)) < getPZeit()) {
 								int result = JOptionPane
@@ -471,7 +458,7 @@ public class PEedit extends JFrame {
 				}
 				
 
-				if (PlanungseinheitManager.peRoomGcheck(p)) {
+				if (PlanungseinheitManager.peRoomGcheck(p)) { // prueft ob Raeum in PE im selben Gebaude befindet
 					JOptionPane.showMessageDialog(null,
 							"Raeume sind nicht im selben Gebaeude");
 					return;
@@ -481,13 +468,13 @@ public class PEedit extends JFrame {
 				ArrayList<Personal> listp = new ArrayList<Personal>();
 				while (it.hasNext()) {
 					Personal pr = (Personal) it.next();
-					if (PlanungseinheitManager.checkPersonPE(pr, p)) {
+					if (PlanungseinheitManager.checkPersonPE(pr, p)) { //prueft ob Personal verplant ist
 						JOptionPane.showMessageDialog(null,
 								"Personal (" + pr.getName()
 										+ ") ist schon zu dieser Zeit gebucht");
 						return;
 					} else {
-						if(checkPendelbeforePers(pr, p) != null){
+						if(checkPendelbeforePers(pr, p) != null){//prueft ob Personal genug Zeit zu pendeln hat von PE bevor
 							if (getSpacebetweenPEs(checkPendelbeforePers(pr, p),
 									p) < getPZeit()) {
 								int result = JOptionPane
@@ -508,7 +495,7 @@ public class PEedit extends JFrame {
 								}
 							}
 						}
-						if(checkPendelafterPers(pr, p) != null){
+						if(checkPendelafterPers(pr, p) != null){//prueft ob personal genug Zeit zu pendeln hat von PE danach
 							if (getSpacebetweenPEs(
 									p,checkPendelafterPers(pr, p)) < getPZeit()) {
 								int result = JOptionPane
@@ -534,7 +521,7 @@ public class PEedit extends JFrame {
 				}
 				
 				for (Personal pers : listp) {
-					if (PlanungseinheitManager.personalsiCheck(pers, p)) {
+					if (PlanungseinheitManager.personalsiCheck(pers, p)) {//prueft ob Personal fuer SI im PE vorgesehen ist
 						int result = JOptionPane.showOptionDialog(
 								null,
 								"Das Personal ("
@@ -556,7 +543,7 @@ public class PEedit extends JFrame {
 						}
 					}
 
-					if (PlanungseinheitManager.personalWZCheck(pers, p)) {
+					if (PlanungseinheitManager.personalWZCheck(pers, p)) { // prueft ob WZ  mit PE-Zeit uebereinstimmt
 						int result = JOptionPane.showOptionDialog(
 								null,
 								"Das Personal ("
@@ -579,7 +566,7 @@ public class PEedit extends JFrame {
 						}
 					}
 
-					if (PlanungseinheitManager.overtimePers(pers, p.duration())) {
+					if (PlanungseinheitManager.overtimePers(pers, p.duration())) {//prueft ob istzeit sollzeit uebersteigt
 						int result = JOptionPane
 								.showOptionDialog(
 										null,

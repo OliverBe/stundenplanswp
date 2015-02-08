@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -81,7 +82,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		int i = 0;
 		pe.getPersonalMap().clear();
 		for (Personal p : pList) {
-			if (PlanungseinheitManager.checkTimeInPE(pe,
+			if (PlanungseinheitManager.checkTimeInPE(pe, //prueft ob indiv. Zeit mit PE passt
 					(int) shspinner[i].getValue(),
 					(int) smspinner[i].getValue())) {
 				JOptionPane
@@ -92,7 +93,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 										+ " befindet sich nicht in der Startzeit der Planungseinheit");
 				return;
 			}
-			if (PlanungseinheitManager.checkTimeInPE(pe,
+			if (PlanungseinheitManager.checkTimeInPE(pe,//prueft ob indiv. Zeit mit PE passt
 					(int) ehspinner[i].getValue(),
 					(int) emspinner[i].getValue())) {
 				JOptionPane
@@ -103,13 +104,13 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 										+ " befindet sich nicht in der Endzeit der Planungseinheit");
 				return;
 			}
-			if (((int) shspinner[i].getValue() == (int) ehspinner[i].getValue())
-					&& ((int) smspinner[i].getValue() == (int) emspinner[i]
+			if (((int) shspinner[i].getValue() == (int) ehspinner[i].getValue())//prueft ob indiv. Zeit 
+					&& ((int) smspinner[i].getValue() == (int) emspinner[i]		//nicht selbe Start und Endzeit haben
 							.getValue())) {
 				JOptionPane.showMessageDialog(null, "Das Personal (" + p.getName()
 						+ ") darf nicht die gleiche Start- und Endzeit haben");
 				return;
-			} else if ((int) shspinner[i].getValue() > (int) ehspinner[i]
+			} else if ((int) shspinner[i].getValue() > (int) ehspinner[i]//Startzeit soll vor Endzeit sein
 					.getValue()) {
 				JOptionPane.showMessageDialog(null,
 						"Die Startzeit von (" + p.getName()
@@ -124,7 +125,7 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 							(int) emspinner[i].getValue() });
 			i++;
 		}
-		if (!isonefulltime()) {
+		if (!isonefulltime()) {//prueft ob mind ein Personal da ist
 			JOptionPane
 					.showMessageDialog(
 							null,
@@ -144,7 +145,11 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 	public boolean getsaved() {
 		return saved;
 	}
-
+    
+	/**
+	 * prueft ob mind eine Person im gesamten PE da ist
+	 * @return true falls einer durchgehend da ist
+	 */
 	private boolean isonefulltime() {
 		Iterator it = pe.getPersonalMap().values().iterator();
 		while (it.hasNext()) {
@@ -157,7 +162,11 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * gibt eine Liste alle Personal
+	 * @return gibt eine Array zurueck mit Strings fuer alle Personal im PE
+	 */
 	private String[] giveLabelforPersonal() {
 		String[] labels = new String[pList.size()];
 		int i = 0;
@@ -167,12 +176,17 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 		}
 		return labels;
 	}
-
+    
+	/**
+	 * erzeugt startzeitspinner fuer alle PErsonal im PE 
+	 * @return Array von Panel fuer Startzeit
+	 */
 	private JPanel[] givestartTimePanelforPersonal() {
 		JPanel[] panels = new JPanel[pList.size()];
 		int i = 0;
 		int sh;
 		int sm;
+		JFormattedTextField tf; 
 		for (Personal p : pList) {
 			int[] times = pe.getTimesofPersonal(p);
 			if(pe.getTimesofPersonal(p)!= null && times[0] <=pe.getStartHour() && times[0] >=pe.getEndhour()){
@@ -190,17 +204,25 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 			shspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(shspinner[i]);
 			smspinner[i] = new JSpinner(minmodel);
+			tf = ((JSpinner.DefaultEditor) smspinner[i].getEditor())
+					.getTextField();
+			tf.setEditable(false);
 			panels[i].add(smspinner[i]);
 			i++;
 		}
 		return panels;
 	}
-
+	
+	/**
+	 * erzeugt endzeitspinner fuer alle PErsonal im PE 
+	 * @return Array von Panel fuer Endzeit
+	 */
 	private JPanel[] giveendTimePanelforPersonal() {
 		JPanel[] panels = new JPanel[pList.size()];
 		int i = 0;
 		int eh;
 		int em;
+		JFormattedTextField tf;
 		for (Personal p : pList) {
 			int[] times = pe.getTimesofPersonal(p);
 			if(pe.getTimesofPersonal(p)!= null && times[2] >=pe.getStartHour() &&times[2] <=pe.getEndhour()){
@@ -218,6 +240,9 @@ public class PersonalTimePEDialog extends JDialog implements ActionListener {
 			ehspinner[i] = new JSpinner(hourmodel);
 			panels[i].add(ehspinner[i]);
 			emspinner[i] = new JSpinner(minmodel);
+			tf = ((JSpinner.DefaultEditor) emspinner[i].getEditor())
+					.getTextField();
+			tf.setEditable(false);
 			panels[i].add(emspinner[i]);
 			i++;
 		}
