@@ -20,6 +20,8 @@ public class ExceptionsTest {
 	public static void before() {
 		System.out.println("TEST - Exception");
 		new WarningPanel();
+		if (!WarningPanel.getListModel().isEmpty())
+			WarningPanel.getListModel().clear();
 	}
 
 	@After
