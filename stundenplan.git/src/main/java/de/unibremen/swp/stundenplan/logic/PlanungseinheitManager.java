@@ -642,14 +642,19 @@ public final class PlanungseinheitManager {
 		}
 	}
 	
+	/**
+	 * prueft ob der vorherige Planungseinheit von der  gegebene Planungseinheit in einer anderen Gebaeude
+	 * stattfindet
+	 * @param peList die Liste in der die neue PE eingefuegt wird.
+	 * @param pe der gegeben PE auch neu erstellte
+	 * @return gibt den vorherige Planungseinheit, die in eine andere Gebaeude stattfindet
+	 */
 	public static Planungseinheit checkbeforePendelPES(ArrayList<Planungseinheit> peList, Planungseinheit pe){
 		int index;
 		ArrayList<Planungseinheit> pes = peList;
 		pes.add(pe);
 		orderByTime(pes);
 		index =pes.indexOf(pe);
-		System.out.println(index);
-		System.out.println(TimetableManager.duration(10, 30, 10, 30));
 		if(index == 0){return null;}
 			if(twoPeRoomGcheck(pe, pes.get(index-1))){
 				return pes.get(index-1);
@@ -657,6 +662,13 @@ public final class PlanungseinheitManager {
 		return null;
 	}
 	
+	/**
+	 * prueft ob der nachfolgende Planungseinheit von der  gegebene Planungseinheit in einer anderen Gebaeude
+	 * stattfindet
+	 * @param peList die Liste in der die neue PE eingefuegt wird.
+	 * @param pe der gegeben PE auch neu erstellte
+	 * @return gibt den nachfolgenden Planungseinheit, die in eine andere Gebaeude stattfindet
+	 */
 	public static Planungseinheit checkafterPendelPES(ArrayList<Planungseinheit> peList, Planungseinheit pe){
 		int index;
 		ArrayList<Planungseinheit> pes = peList;

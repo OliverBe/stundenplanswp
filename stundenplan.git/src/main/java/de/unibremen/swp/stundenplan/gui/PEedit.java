@@ -653,14 +653,28 @@ public class PEedit extends JFrame {
 		return PlanungseinheitManager.checkafterPendelPES(pes, pe);
 	}
 	
+	/**
+	 * rechnet die Differenz zwischen zwei Planungseinheiten.
+	 * @param p1
+	 * @param p2
+	 * @return gibt differenz in minuten zurueck
+	 */
 	private int getSpacebetweenPEs(Planungseinheit p1,Planungseinheit p2){
 		return TimetableManager.duration(p1.getEndhour(),p1.getEndminute(), p2.getStartHour(), p2.getStartminute());
 	}
 	
+	/**
+	 * holt die eingestellte mindestpendelzeit im Konfigdatei
+	 * @return mindestpendelzeit in Minuten
+	 */
 	private int getPZeit(){
 		return Config.getInt(Config.PENDELTIME_STRING, Config.PENDELTIME);
 	}
-
+	/**
+	 * Formatiert Anfangszeit und Endzeit in Format (SH:SM - EH:EM)
+	 * @param wZ die Stundenzahl und Minutenzahl in 4elementige Array
+	 * @return gibt Zeichenkette zurueck, falls Eingabe richtig ist sonst, leere String
+	 */
 	private String printWZ(int[] wZ) {
 		if (wZ.length != 4) {
 			return "";
