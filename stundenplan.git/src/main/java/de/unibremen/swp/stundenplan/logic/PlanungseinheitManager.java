@@ -21,10 +21,17 @@ import de.unibremen.swp.stundenplan.db.DataSchulklasse;
 import de.unibremen.swp.stundenplan.db.DataStundeninhalt;
 import de.unibremen.swp.stundenplan.gui.Timeslot;
 
+/**
+ *   Verwaltungsklasse fuer Planungseinheiten sowie DB-Schnittstelle fuer GUI
+ * @author Fathan Vidjaja
+ *
+ */
 public final class PlanungseinheitManager {
-
+	
 	private static int peindex = 0;
-
+	/**
+	 * privater Konstruktor da Methoden statisch sind
+	 */
 	private PlanungseinheitManager() {
 	}
 
