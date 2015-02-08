@@ -264,6 +264,58 @@ public class ExportPDF {
 		}
 
 	}
+	
+	
+	public static void createTXT(JTable jTable) {
+
+		try {
+
+			setOwnerAndFile(jTable);
+
+			FileWriter writer = new FileWriter(FILE + ".txt");
+			for (int i = 0; i < jTable.getModel().getRowCount(); i++) {
+				for (int e = 0; e < jTable.getModel().getColumnCount(); e++) {
+					Object obj = jTable.getModel().getValueAt(i, e);
+					if (obj == null) {
+
+					} else {
+						if (obj instanceof Timeslot) {
+							Timeslot ts = (Timeslot) obj;
+							String text = "";
+							if (!ts.getKlassentext().isEmpty()) {
+								text = text + ts.getKlassentext() + ",";
+							}
+							if (!ts.getPersonaltext().isEmpty()) {
+								text = text + ts.getPersonaltext() + ",";
+							}
+							if (!ts.getRaeumetext().isEmpty()) {
+								text = text + ts.getRaeumetext() + ",";
+							}
+							if (!ts.getStundeninhalttext().isEmpty()) {
+								text = text + ts.getStundeninhalttext() + ",";
+							}
+							writer.append(text);
+						} else {
+							writer.append(obj.toString());
+							writer.append(",");
+						}
+
+					}
+				}
+				writer.append("\r\n");
+
+			}
+			writer.flush();
+			writer.close();
+
+			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".txt");
+
+		} catch (IOException e1) {
+			System.out.println("ExportFehler");
+			e1.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * setzt die Strings FILE und planOwner fest, indem auf das jTable
@@ -365,7 +417,7 @@ public class ExportPDF {
 				
 					PdfPCell[] cells = rows.get(i).getCells();
 					for(int e = 0; e < cells.length; e++) {
-							writer.append(cells[e].getPhrase().getContent());
+							writer.append(cells[e].getPhrase().toString());
 							writer.append(",");
 						
 					
@@ -407,12 +459,12 @@ public class ExportPDF {
 				
 					PdfPCell[] cells = rows.get(i).getCells();
 					for(int e = 0; e < cells.length; e++) {
-							writer.append(cells[e].getPhrase().toString());
+							writer.append(cells[e].getPhrase().getContent().toString());
 							writer.append(",");
 						
 					
 					
-				}
+					}
 				writer.append("\r\n");
 
 			}
@@ -428,6 +480,47 @@ public class ExportPDF {
 
 	}
 
+	public static void wochenplanCreateTXT(PdfPTable table, JTable jTable) {
+
+		try {
+
+			setOwnerAndFile(jTable);
+
+			
+			ArrayList<PdfPRow> rows = new ArrayList<PdfPRow>();
+			
+			for(int i= 0; i < table.getRows().size(); i++) {
+				rows.add(table.getRows().get(i));
+				
+			}
+			
+			
+			FileWriter writer = new FileWriter(FILE + ".txt");
+			
+			for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+				
+					PdfPCell[] cells = rows.get(i).getCells();
+					for(int e = 0; e < cells.length; e++) {
+							writer.append(cells[e].getPhrase().toString());
+							writer.append(",");
+						
+					
+					
+				}
+				writer.append("\r\n");
+
+			}
+			writer.flush();
+			writer.close();
+
+			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".txt");
+
+		} catch (IOException e1) {
+			System.out.println("ExportFehler");
+			e1.printStackTrace();
+		}
+
+	}
 	
 	
 }
