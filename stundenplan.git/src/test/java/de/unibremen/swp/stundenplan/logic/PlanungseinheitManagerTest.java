@@ -2,10 +2,15 @@ package de.unibremen.swp.stundenplan.logic;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.unibremen.swp.stundenplan.config.Config;
@@ -66,10 +71,18 @@ public class PlanungseinheitManagerTest {
 	HashMap<String, Integer> stundenBedarf = new HashMap<String, Integer>();
 	Stundeninhalt Deutsch, Mathe, Kunst, Sport;
 	Raumfunktion Deu, rfMathe, rfKunst, rfSport;
-	@Before
-	public void createDataForTest(){
+	
+	
+	@BeforeClass
+	public static void startDB() {
+		System.out.println("TEST - PlanungseinheitManager");
 		Data.start();
 		Data.deleteAll();
+	}
+	
+	
+	@Before
+	public void createDataForTest(){
 		gependelt.put(Weekday.MONDAY, false);
 		gependelt.put(Weekday.TUESDAY, false);
 		gependelt.put(Weekday.WEDNESDAY, false);
@@ -253,6 +266,28 @@ public class PlanungseinheitManagerTest {
 		DataPlanungseinheit.addPlanungseinheit(klasse3Sport);
 		
 		
+	}
+	
+	@After
+	public void tearDown() {
+		System.out.println("... done");
+		Data.deleteAll();
+	}
+	
+	@AfterClass
+	public static void endDB() {
+		File dir = new File(System.getProperty("user.dir"));
+		File[] files = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".db") && filename.equals("temp.db");
+			}
+		});
+		for (int i = 0; i < files.length; i++) {
+			System.out.println(files[i].toString());
+			if (files[i].equals("temp.db")) {
+				Data.close();
+			}
+		}
 	}
 	
 	@Test
