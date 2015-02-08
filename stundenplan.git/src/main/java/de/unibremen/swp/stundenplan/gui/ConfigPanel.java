@@ -323,13 +323,11 @@ public class ConfigPanel extends JPanel {
 			c.gridx = 0;
 			c.gridy = 1;
 			add(button, c);
-			tf.setText("" + Config.BACKUPINTERVALL);
+			tf.setText("" + Config.getInt(Config.BACKUPINTERVALL_STRING,Config.BACKUPINTERVALL));
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					try {
 						if (Integer.parseInt(tf.getText()) > 0) {
-							Config.BACKUPINTERVALL = Integer.parseInt(tf
-									.getText());
 							Config.setIntValue(Config.BACKUPINTERVALL_STRING,
 									Integer.parseInt(tf.getText()));
 						} else {
