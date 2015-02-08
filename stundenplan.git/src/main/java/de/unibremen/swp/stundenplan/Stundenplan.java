@@ -89,8 +89,9 @@ public final class Stundenplan {
     }
     
     /**
-     * gibt die Mainframe zurueck
-     * @return
+     * Gibt die Mainframe zurueck.
+     * 
+     * @return	die Mainframe
      */
     public static MainFrame getMain() {
     	return main;
