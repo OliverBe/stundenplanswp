@@ -296,7 +296,7 @@ public class WochenplanTag extends JPanel {
 	}
 
 	public static JTable getTable() {
-		return new JTable(model);
+		return table;
 	}
 
 }
