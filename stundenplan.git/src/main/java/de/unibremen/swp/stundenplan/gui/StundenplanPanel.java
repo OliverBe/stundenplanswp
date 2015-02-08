@@ -160,8 +160,8 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 	public JLabel warning = new JLabel();
 
 	/**
-	 * ist das Popup Men��� welches erscheint, wenn in dem Stundenplan rechtsklick
-	 * ausgef���hrt wird
+	 * ist das Popup Menue welches erscheint, wenn in dem Stundenplan rechtsklick
+	 * ausgefuehrt wird
 	 */
 	JPopupMenu popmen = new JPopupMenu();
 
