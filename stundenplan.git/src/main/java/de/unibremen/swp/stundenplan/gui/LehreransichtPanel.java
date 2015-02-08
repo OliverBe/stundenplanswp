@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -43,8 +42,6 @@ public class LehreransichtPanel extends JPanel {
 	 */
 	private JTable table;
 
-	// private JFileChooser chooser = new JFileChooser();
-	// private JFrame f;
 	/**
 	 * Constraints zum festlegen, wo im Panel Elemente hinzugefuegt werden
 	 */
@@ -66,11 +63,6 @@ public class LehreransichtPanel extends JPanel {
 	 * Personen fuehrt.
 	 */
 	private ArrayList<String> allPersoKuerzel;
-
-	/**
-	 * Warning-Panel
-	 */
-	public JLabel warning = new JLabel();
 
 	/**
 	 * Konstruktor, ruft lediglich die init Methode auf.
@@ -104,6 +96,7 @@ public class LehreransichtPanel extends JPanel {
 		// getroffen.
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model);
+		table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
 		model.addColumn("Kuerzel");
 		model.addColumn("Arbeitszeit");
 		model.addColumn("Ersatzzeit");
@@ -279,7 +272,7 @@ public class LehreransichtPanel extends JPanel {
 							if (anzahlKlassenInZelle > 1) {
 								String teilString = reihe.get(reihe.size() - 1);
 								reihe.remove(reihe.size() - 1);
-								reihe.add(teilString + "  "+ k.getName()
+								reihe.add(teilString + "\n "+ k.getName()
 										+ ": "
 										+ Double.toString(ergebnisInStunden));
 							} else {
@@ -294,12 +287,6 @@ public class LehreransichtPanel extends JPanel {
 						}
 					}
 				}
-				// Zum Schluss muss noch der/das HTML Body geschlossen werden.
-//				String substring = reihe.get(reihe.size() - 1);
-//				if (!substring.equals("-")) {
-//					reihe.remove(reihe.size() - 1);
-//					reihe.add(substring + "</center></body></html>");
-//				}
 			}
 			// Hier wird die nun fertige Reihe als ArrayList in ein normales
 			// Aray das model uebergeben
@@ -330,7 +317,7 @@ public class LehreransichtPanel extends JPanel {
 			}
 		}
 
-		table.setRowSelectionAllowed(true);
+//		table.setRowSelectionAllowed(true);
 		table.setEnabled(false);
 		table.setRowHeight(55);
 		for(int a=4; a<table.getColumnCount(); a++){
