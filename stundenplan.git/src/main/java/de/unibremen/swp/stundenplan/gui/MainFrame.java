@@ -200,6 +200,7 @@ public class MainFrame extends JFrame {
 						}
 					}else closeAll();
 				}else closeAll();
+				Config.setIntValue(Config.PROGRAM_STARTED_STRING, 0);
 			}
 		});
 
@@ -216,7 +217,6 @@ public class MainFrame extends JFrame {
 		Stundenplan.getTimer().stop();
 		Data.close();
 		Stundenplan.getMain().dispose();
-		Config.setIntValue(Config.PROGRAM_STARTED_STRING, 0);
 	}
 
 	/**
