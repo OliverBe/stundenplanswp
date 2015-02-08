@@ -480,6 +480,11 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 				pendelTable=creatependelTable(tableowner);
 				drawPTable();
 			}
+		}else{
+			if(pendel!=null){
+				pendel.setVisible(false);
+				pendel = null;
+			}
 		}
 		if(pendel != null &&!pendel.isVisible()){
 			pendel.setVisible(true);
