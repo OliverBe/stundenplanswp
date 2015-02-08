@@ -439,36 +439,9 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 			System.out.println(s.getName());
 			table = new StundenplanTable(s).getTable();
 			
-			DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
-			modelSchoolclassBedarf.addColumn("Stundeninhalt");
-			modelSchoolclassBedarf.addColumn("Bedarf");
-			modelSchoolclassBedarf.addColumn("Ist-Zeit");
-			ArrayList<Planungseinheit> pEs = DataPlanungseinheit.getAllPlanungseinheitByObject(s);
-			for (Stundeninhalt si : StundeninhaltManager
-					.getAllStundeninhalteFromDB()) {
-				modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0", "0" });
-			}
-			for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
-				for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
-					if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
-						modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
-					}
-				}
-			}
-			for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
-				for(Planungseinheit p: pEs){
-					if(p.getStundeninhalte().contains(modelSchoolclassBedarf.getValueAt(i, 0))){
-						int dauer = Integer.parseInt(modelSchoolclassBedarf.getValueAt(i, 2).toString());
-						dauer += p.duration()/45;
-						modelSchoolclassBedarf.setValueAt(dauer, i, 2);
-					}
-				}
-			}
+			
 
-			bedarfTable= new JTable(modelSchoolclassBedarf);
-			bedarfTable.setColumnSelectionAllowed(false);
-			bedarfTable.getTableHeader().setReorderingAllowed(false);
-			bedarfTable.getTableHeader().setResizingAllowed(false);
+			bedarfZeigen(s);
 
 			
 			
@@ -498,6 +471,10 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 		if(table != null) {
 		table.repaint();
 		}
+		if(bedarfTable != null) {
+			bedarfTable.repaint();
+		}
+		
 		if(PlanungseinheitManager.pendelTlength(tableowner)!=0){
 			if(pendelTable==null){
 				pendelTable=creatependelTable(tableowner);
@@ -566,7 +543,37 @@ public class StundenplanPanel extends JPanel implements ActionListener,
 
 	}
 	
-	
+	public static void bedarfZeigen(Schoolclass s) {
+		DefaultTableModel modelSchoolclassBedarf = new DefaultTableModel();
+		modelSchoolclassBedarf.addColumn("Stundeninhalt");
+		modelSchoolclassBedarf.addColumn("Bedarf");
+		modelSchoolclassBedarf.addColumn("Ist-Zeit");
+		ArrayList<Planungseinheit> pEs = DataPlanungseinheit.getAllPlanungseinheitByObject(s);
+		for (Stundeninhalt si : StundeninhaltManager
+				.getAllStundeninhalteFromDB()) {
+			modelSchoolclassBedarf.addRow(new String[] { si.getKuerzel(), "0", "0" });
+		}
+		for (Entry<String, Integer> entry : s.getStundenbedarf().entrySet()) {
+			for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
+				if (modelSchoolclassBedarf.getValueAt(i, 0).toString().equals(entry.getKey())) {
+					modelSchoolclassBedarf.setValueAt(entry.getValue(), i, 1);
+				}
+			}
+		}
+		for (int i = 0; i < modelSchoolclassBedarf.getRowCount(); i++) {
+			for(Planungseinheit p: pEs){
+				if(p.getStundeninhalte().contains(modelSchoolclassBedarf.getValueAt(i, 0))){
+					int dauer = Integer.parseInt(modelSchoolclassBedarf.getValueAt(i, 2).toString());
+					dauer += p.duration()/45;
+					modelSchoolclassBedarf.setValueAt(dauer, i, 2);
+				}
+			}
+		}
+		bedarfTable= new JTable(modelSchoolclassBedarf);
+		bedarfTable.setColumnSelectionAllowed(false);
+		bedarfTable.getTableHeader().setReorderingAllowed(false);
+		bedarfTable.getTableHeader().setResizingAllowed(false);
+	}
 
 
 }
