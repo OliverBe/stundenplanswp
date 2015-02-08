@@ -561,28 +561,36 @@ public class MenuBar extends JMenuBar {
 						}
 						
 						
-						StundenplanTable tableOther = new StundenplanTable();
 						
-						
-		              
-						Object obja = (Object)tableOther.getTable().getModel().getValueAt(0, 0);
-						if(obja instanceof Timeslot) {
-							Timeslot ts = (Timeslot) obja;
-							ts.setContent("");
+						PdfPTable table = new PdfPTable(endTable.getTable().getModel().getRowCount()+1);
+						BaseFont bf ;
+						Font font = null;
+						try {
+							bf = BaseFont.createFont(
+							        BaseFont.TIMES_ROMAN,
+							        BaseFont.CP1252,
+							        BaseFont.EMBEDDED);
+							  font = new Font(bf, 6);
+						} catch (DocumentException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
+		              
+						PdfPCell c1 = new PdfPCell(new Phrase("Name/Stunden", font));
+						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c1);
 						for (int i = 0; i < tables.get(0).getTable().getModel().getRowCount(); i++) {
 							
 							
 
 							Object plObj = tables.get(0).getTable().getModel().getValueAt(i, 0);
 							
-							 obja = (Object)tableOther.getTable().getModel().getValueAt(i, 0);
-							if(obja instanceof Timeslot) {
-								Timeslot ts = (Timeslot) obja;
-								ts.setContent(plObj.toString());
-							}
-							
-									
+									 c1 = new PdfPCell(new Phrase(plObj.toString(), font));
+									c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+									table.addCell(c1);
 								
 							
 						}
@@ -590,44 +598,39 @@ public class MenuBar extends JMenuBar {
 
 							for (int i = 0; i < tables.size(); i++) {
 								
-								 obja = (Object)tableOther.getTable().getModel().getValueAt(i+1, 0);
-									if(obja instanceof Timeslot) {
-										Timeslot ts = (Timeslot) obja;
-										ts.setContent(person.get(i).getKuerzel());
-									}
+								 c1 = new PdfPCell(new Phrase(person.get(i).getKuerzel(), font));
+								c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c1);
 								for (int e = 0; e < tables.get(i).getTable().getModel().getRowCount(); e++) {
 								
 									StundenplanTable spT = tables.get(i);
 									String ausgabe = "";
 
-									Object plObj = spT.getTable().getModel().getValueAt(e+1, day.getOrdinal()+1);
+									Object plObj = spT.getTable().getModel().getValueAt(e, day.getOrdinal()+1);
 									if(plObj instanceof Timeslot) {
 										Timeslot ts = (Timeslot) plObj;
 										ausgabe = ausgabe + ts.getKlassentext() + " \n" + ts.getRaeumetext() + " \n" +  ts.getStundeninhalttext();
 									}
-										tableOther.getTable().getModel().setValueAt(ausgabe, e+1, i+1);
-										 obja = (Object)tableOther.getTable().getModel().getValueAt(e+1, i+1);
-											if(obja instanceof Timeslot) {
-												Timeslot ts = (Timeslot) obja;
-												ausgabe = ausgabe + ts.getKlassentext() + " \n" + ts.getRaeumetext() + " \n" +  ts.getStundeninhalttext();
-												ts.setContent(ausgabe);
-											}
+											c1 = new PdfPCell(new Phrase(ausgabe, font));
+											c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+											table.addCell(c1);
 										
 									
 								}
 							}
 							
 							
+							
 						
 						ExportPDF.setOwner("Wochenplan-"
 								+ wpT.day.toString());
-						ExportPDF.wochenplanCreateCSV(tableOther.getTable());
+						ExportPDF.wochenplanCreateCSV(table, endTable.getTable());
 						
 						
 						ExportPDF.setOwner("");
-							
 						
 					
+
 						
 						
 					}
@@ -684,17 +687,94 @@ public class MenuBar extends JMenuBar {
 				} else if (obj instanceof WochenplanPanel) {
 					obj = WochenplanPanel.getTabPane().getSelectedComponent();
 					if (obj instanceof WochenplanTag) {
+						obj = WochenplanPanel.getTabPane().getSelectedComponent();
+						
 						WochenplanTag wpT = (WochenplanTag) obj;
-						if (wpT.getTable() == null) {
-							JOptionPane.showMessageDialog(
-									Stundenplan.getMain(),
-									"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
-						} else {
-							ExportPDF.setOwner("Wochenplan-"
-									+ wpT.day.toString());
-							ExportPDF.createDOC(wpT.getTable());
-							ExportPDF.setOwner("");
+						Weekday day = wpT.day;
+						ArrayList<StundenplanTable>  tables = new ArrayList();
+						ArrayList<Personal> person = new ArrayList();
+						person = DataPersonal.getAllPersonal();
+						
+						for(int i= 0; i < person.size(); i++) {
+							Personal personal =  person.get(i);
+							
+								exportTable = new StundenplanTable(personal);
+								tables.add(exportTable);
+							
 						}
+						
+						
+						
+						PdfPTable table = new PdfPTable(endTable.getTable().getModel().getRowCount()+1);
+						BaseFont bf ;
+						Font font = null;
+						try {
+							bf = BaseFont.createFont(
+							        BaseFont.TIMES_ROMAN,
+							        BaseFont.CP1252,
+							        BaseFont.EMBEDDED);
+							  font = new Font(bf, 6);
+						} catch (DocumentException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+		              
+						PdfPCell c1 = new PdfPCell(new Phrase("Name/Stunden", font));
+						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c1);
+						for (int i = 0; i < tables.get(0).getTable().getModel().getRowCount(); i++) {
+							
+							
+
+							Object plObj = tables.get(0).getTable().getModel().getValueAt(i, 0);
+							
+									 c1 = new PdfPCell(new Phrase(plObj.toString(), font));
+									c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+									table.addCell(c1);
+								
+							
+						}
+						
+
+							for (int i = 0; i < tables.size(); i++) {
+								
+								 c1 = new PdfPCell(new Phrase(person.get(i).getKuerzel(), font));
+								c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c1);
+								for (int e = 0; e < tables.get(i).getTable().getModel().getRowCount(); e++) {
+								
+									StundenplanTable spT = tables.get(i);
+									String ausgabe = "";
+
+									Object plObj = spT.getTable().getModel().getValueAt(e, day.getOrdinal()+1);
+									if(plObj instanceof Timeslot) {
+										Timeslot ts = (Timeslot) plObj;
+										ausgabe = ausgabe + ts.getKlassentext() + " \n" + ts.getRaeumetext() + " \n" +  ts.getStundeninhalttext();
+									}
+											c1 = new PdfPCell(new Phrase(ausgabe, font));
+											c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+											table.addCell(c1);
+										
+									
+								}
+							}
+							
+							
+							
+						
+						ExportPDF.setOwner("Wochenplan-"
+								+ wpT.day.toString());
+						ExportPDF.wochenplanCreateDOC(table, endTable.getTable());
+						
+						
+						ExportPDF.setOwner("");
+						
+					
+
+						
 					}
 
 				} else

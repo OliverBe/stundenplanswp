@@ -3,6 +3,7 @@ package de.unibremen.swp.stundenplan.config;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
 
@@ -12,6 +13,7 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -342,26 +344,32 @@ public class ExportPDF {
 		}
 	}
 	
-	public static void wochenplanCreateCSV(JTable jTable) {
+	public static void wochenplanCreateCSV(PdfPTable table, JTable jTable) {
 
 		try {
 
 			setOwnerAndFile(jTable);
 
+			
+			ArrayList<PdfPRow> rows = new ArrayList<PdfPRow>();
+			
+			for(int i= 0; i < table.getRows().size(); i++) {
+				rows.add(table.getRows().get(i));
+				
+			}
+			
+			
 			FileWriter writer = new FileWriter(FILE + ".csv");
 			
 			for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
-				for (int e = 0; e < jTable.getModel().getRowCount(); e++) {
-					Object obj = jTable.getModel().getValueAt(e, i);
-					if (obj == null) {
-
-					} else {
-					
-							writer.append(obj.toString());
+				
+					PdfPCell[] cells = rows.get(i).getCells();
+					for(int e = 0; e < cells.length; e++) {
+							writer.append(cells[e].getPhrase().getContent());
 							writer.append(",");
 						
-
-					}
+					
+					
 				}
 				writer.append("\r\n");
 
@@ -370,6 +378,48 @@ public class ExportPDF {
 			writer.close();
 
 			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".csv");
+
+		} catch (IOException e1) {
+			System.out.println("ExportFehler");
+			e1.printStackTrace();
+		}
+
+	}
+
+	public static void wochenplanCreateDOC(PdfPTable table, JTable jTable) {
+
+		try {
+
+			setOwnerAndFile(jTable);
+
+			
+			ArrayList<PdfPRow> rows = new ArrayList<PdfPRow>();
+			
+			for(int i= 0; i < table.getRows().size(); i++) {
+				rows.add(table.getRows().get(i));
+				
+			}
+			
+			
+			FileWriter writer = new FileWriter(FILE + ".doc");
+			
+			for (int i = 0; i < jTable.getModel().getColumnCount(); i++) {
+				
+					PdfPCell[] cells = rows.get(i).getCells();
+					for(int e = 0; e < cells.length; e++) {
+							writer.append(cells[e].getPhrase().toString());
+							writer.append(",");
+						
+					
+					
+				}
+				writer.append("\r\n");
+
+			}
+			writer.flush();
+			writer.close();
+
+			Runtime.getRuntime().exec("cmd.exe /c " + FILE + ".doc");
 
 		} catch (IOException e1) {
 			System.out.println("ExportFehler");
