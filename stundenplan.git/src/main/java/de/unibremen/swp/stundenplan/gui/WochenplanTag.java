@@ -106,7 +106,7 @@ public class WochenplanTag extends JPanel {
 
 			for (Personal e : pliste) {
 
-				String nachname = e.getName();
+				String nachname = e.getKuerzel();
 				model.addRow(new Object[] { nachname });
 			}
 
@@ -138,7 +138,7 @@ public class WochenplanTag extends JPanel {
 					break;
 				}
 				for (int k = 0; k < ppliste.size(); k++) {
-					personalName = ppliste.get(k).getName();
+					personalName = ppliste.get(k).getKuerzel();
 					int[] zeite = p.getTimesofPersonal(ppliste.get(k));
 					int starthour = zeite[0];
 					int startminute = zeite[1];
