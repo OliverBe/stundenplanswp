@@ -236,7 +236,7 @@ public class ExceptionsTest {
 		new ZahlException();
 		try {
 			if ((WarningPanel.getListModel().elementAt(0)
-					.equals("Feld benoetigt (positive) Zahl"))) {
+					.equals("Feld benoetigt (gueltige, positive) Zahl"))) {
 				assertTrue(true);
 				return;
 			}
