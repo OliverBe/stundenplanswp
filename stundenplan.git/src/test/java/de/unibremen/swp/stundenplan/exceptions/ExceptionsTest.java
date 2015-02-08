@@ -122,7 +122,7 @@ public class ExceptionsTest {
 	}
 	
 	@Test(expected = NichtVorhandenException.class)
-	public void NichtVorhanden() throws NichtVorhandenException {
+	public void testNichtVorhanden() throws NichtVorhandenException {
 		throw new NichtVorhandenException();
 	}
 	
