@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -43,16 +44,22 @@ public class DataPersonalTest {
 	
 	@BeforeClass
 	public static void startDB(){
+		System.out.println("TEST - DataPersonal");
 		Data.start();
+		Data.deleteAll();
 	}
 	@Before
-	public void setUp() {
-		Data.deleteAll();
-		
+	public void setUp() {		
 		array = new ArrayList<String>();
 		map = new HashMap<Weekday, int[]>();
 		map2 = new HashMap<Weekday, Boolean>();
 		map2.put(Weekday.MONDAY, true);
+	}
+	
+	@After
+	public void tearDown() {
+		System.out.println("... done");
+		Data.deleteAll();
 	}
 
 	@Test

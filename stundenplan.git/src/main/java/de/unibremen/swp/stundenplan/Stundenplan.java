@@ -62,13 +62,15 @@ public final class Stundenplan {
      *            als erstes Argument kann der Pfad zur Konfigurationsdatei angegeben werden
      */
     public static void main(final String[] args) {
-    	Data.start();
-    	main = new MainFrame();
     	try {
 			Config.init(null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    	if(Config.getInt(Config.PROGRAM_STARTED_STRING,Config.PROGRAM_STARTED)==0){
+    	Config.setIntValue(Config.PROGRAM_STARTED_STRING, 1);
+    	Data.start();
+    	main = new MainFrame();
     	main.pack();
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Timer timer = new Timer(60000, new ActionListener() {
@@ -83,7 +85,7 @@ public final class Stundenplan {
             }
         });
         timer.start();
-        main.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        main.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);}
     }
     
     /**

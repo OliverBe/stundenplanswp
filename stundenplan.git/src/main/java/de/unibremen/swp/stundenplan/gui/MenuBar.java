@@ -396,7 +396,7 @@ public class MenuBar extends JMenuBar {
 									Stundenplan.getMain(),
 									"Waehlen Sie einen Stundenplan aus und lassen Sie diesen anzeigen");
 						} else {
-
+							System.out.println("--  "+wpT.getTable().getModel().getValueAt(1, 1));
 							ExportPDF.setOwner("Wochenplan-"
 									+ wpT.day.toString());
 							ExportPDF.createPDF(wpT.getTable());

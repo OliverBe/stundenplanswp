@@ -29,6 +29,7 @@ import javax.swing.event.ChangeListener;
 
 import de.unibremen.swp.stundenplan.Stundenplan;
 import de.unibremen.swp.stundenplan.command.CommandHistory;
+import de.unibremen.swp.stundenplan.config.Config;
 import de.unibremen.swp.stundenplan.db.Data;
 import de.unibremen.swp.stundenplan.db.DataPersonal;
 import de.unibremen.swp.stundenplan.db.DataPlanungseinheit;
@@ -199,6 +200,7 @@ public class MainFrame extends JFrame {
 				}
 				Data.close();
 				Stundenplan.getMain().dispose();
+				Config.setIntValue(Config.PROGRAM_STARTED_STRING, 0);
 			}
 		});
 

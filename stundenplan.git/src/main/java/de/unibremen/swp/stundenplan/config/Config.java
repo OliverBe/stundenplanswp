@@ -93,6 +93,11 @@ public final class Config {
     public static int TIMESLOT_LENGTH = 10;
     
     /**
+     * Der Schluessel fuer den Eintrag der Zeiteinheit-Laenge in der Konfigurationsdatei.
+     */
+    public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
+    
+    /**
      * Wert fuer die Dauer der Pendelzeit.
      */
     public static int PENDELTIME = 15;
@@ -101,11 +106,16 @@ public final class Config {
      * Wert fuer die Dauer der Pendelzeit.
      */
     public static String PENDELTIME_STRING = "pendeldauer";
-
+    
     /**
-     * Der Schluessel fuer den Eintrag der Zeiteinheit-Laenge in der Konfigurationsdatei.
+     * Programm gestartet
      */
-    public static final String TIMESLOT_LENGTH_STRING = "timeslotlength";
+    public static int PROGRAM_STARTED = 0;
+    
+    /**
+     * Programm gestartet
+     */
+    public static final String PROGRAM_STARTED_STRING = "programstarted";
     
     /**
      * in minuten
